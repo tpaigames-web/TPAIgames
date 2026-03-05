@@ -1,0 +1,82 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/LoginScene.gd" id="1_script"]
+
+[node name="LoginScene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_script")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 1080.0
+offset_bottom = 1920.0
+color = Color(0.12, 0.18, 0.1, 1)
+
+[node name="TitleLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 240.0
+offset_top = 300.0
+offset_right = 840.0
+offset_bottom = 420.0
+horizontal_alignment = 1
+text = "阿福守农场"
+theme_override_font_sizes/font_size = 72
+
+[node name="SubtitleLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 240.0
+offset_top = 440.0
+offset_right = 840.0
+offset_bottom = 510.0
+horizontal_alignment = 1
+text = "Harvest Defence"
+theme_override_font_sizes/font_size = 36
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 0
+offset_left = 140.0
+offset_top = 900.0
+offset_right = 940.0
+offset_bottom = 1500.0
+
+[node name="VBox" type="VBoxContainer" parent="CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 30
+
+[node name="GuestButton" type="Button" parent="CenterContainer/VBox"]
+custom_minimum_size = Vector2(800, 120)
+text = "以游客身份进入"
+theme_override_font_sizes/font_size = 40
+
+[node name="GoogleButton" type="Button" parent="CenterContainer/VBox"]
+custom_minimum_size = Vector2(800, 100)
+text = "Google 登入"
+theme_override_font_sizes/font_size = 36
+modulate = Color(1, 1, 1, 0.5)
+
+[node name="FacebookButton" type="Button" parent="CenterContainer/VBox"]
+custom_minimum_size = Vector2(800, 100)
+text = "Facebook 登入"
+theme_override_font_sizes/font_size = 36
+modulate = Color(1, 1, 1, 0.5)
+
+[node name="WechatButton" type="Button" parent="CenterContainer/VBox"]
+custom_minimum_size = Vector2(800, 100)
+text = "微信登入"
+theme_override_font_sizes/font_size = 36
+modulate = Color(1, 1, 1, 0.5)
+
+[node name="ComingSoonDialog" type="AcceptDialog" parent="."]
+title = "提示"
+dialog_text = "功能即将开放，敬请期待！"
+min_size = Vector2(600, 250)
+
+[node name="GuestWarningDialog" type="ConfirmationDialog" parent="."]
+title = "游客模式提醒"
+dialog_text = "游客模式数据不会保存在服务器。\n卸载游戏后，所有进度将会丢失。\n\n是否以游客身份继续？"
+min_size = Vector2(650, 300)
+ok_button_text = "继续"
+cancel_button_text = "取消"

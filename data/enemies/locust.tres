@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3 uid="uid://bb0sfn8j825ad"]
+
+[ext_resource type="Script" uid="uid://dapicbkaarem1" path="res://enemy/enemy_data.gd" id="1_locust"]
+
+[resource]
+script = ExtResource("1_locust")
+enemy_id = "locust"
+display_name = "蝗虫"
+display_emoji = "🦗"
+max_hp = 40
+move_speed = 170.0
+damage_to_player = 1
+gold_reward = 3
+xp_reward = 3
+is_flying = true
+metadata/_custom_type_script = "uid://dapicbkaarem1"

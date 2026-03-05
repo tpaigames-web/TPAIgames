@@ -1,0 +1,55 @@
+[gd_resource type="Resource" script_class="TowerCollectionData" format=3 uid="uid://fcn7t5ry2wqlp3"]
+
+[ext_resource type="Script" uid="uid://dh7u72sh06tc3" path="res://data/tower_collection_data.gd" id="1_tcd"]
+[ext_resource type="Script" uid="uid://cs8acmmyvm8t5" path="res://data/tower_upgrade_path.gd" id="2_tup"]
+
+[sub_resource type="Resource" id="Path_0"]
+script = ExtResource("2_tup")
+path_name = "炮弹威力"
+tier_names = Array[String](["重型炮弹", "穿甲弹头", "燃烧炮弹", "超级穿甲", "末日炮击"])
+tier_effects = Array[String](["炮击伤害+15%", "穿甲弹头，无视目标10%护甲", "命中附加燃烧效果持续3秒", "穿甲弹无视30%护甲，燃烧效果增强", "末日炮击：伤害极限，击杀时附近产生爆炸"])
+tier_costs = Array[int]([150, 300, 500, 700, 1000])
+damage_bonus_per_tier = 0.15
+
+[sub_resource type="Resource" id="Path_1"]
+script = ExtResource("2_tup")
+path_name = "射程提升"
+tier_names = Array[String](["加长炮管", "精准弹道", "远程炮击", "超远程炮", "洲际导弹"])
+tier_effects = Array[String](["加长炮管，射程+15%", "精准弹道，射程累积提升", "远程炮击，射程大幅增加", "超远程炮，可覆盖大半地图", "洲际导弹：射程极大提升，可覆盖全图"])
+tier_costs = Array[int]([120, 240, 400, 600, 900])
+range_bonus_per_tier = 0.15
+
+[sub_resource type="Resource" id="Path_2"]
+script = ExtResource("2_tup")
+path_name = "榴弹炮"
+tier_names = Array[String](["爆炸弹头", "溅射扩大", "燃烧弹幕", "磷弹攻击", "核心炮击"])
+tier_effects = Array[String](["炮弹变为榴弹，命中时造成小范围溅射伤害", "溅射范围扩大，波及更多敌人", "榴弹附加燃烧效果，持续灼烧3秒", "磷弹攻击：强烈燃烧，持续伤害大幅提升", "核心炮击：命中时产生大爆炸，高额燃烧效果"])
+tier_costs = Array[int]([180, 360, 600, 850, 1200])
+
+[sub_resource type="Resource" id="Path_3"]
+script = ExtResource("2_tup")
+path_name = "射速提升"
+tier_names = Array[String](["自动装填", "快速弹药", "连续炮击", "速射模式", "极速炮兵"])
+tier_effects = Array[String](["自动装填系统，射速+15%", "快速弹药供给，装填速度累积提升", "连续炮击模式，攻速大幅提升", "速射模式激活，炮管过热也不停歇", "极速炮兵：射速极大提升，输出达极限"])
+tier_costs = Array[int]([150, 300, 500, 700, 1000])
+speed_bonus_per_tier = 0.15
+
+[resource]
+script = ExtResource("1_tcd")
+tower_id = "farm_cannon"
+display_name = "农场大炮"
+tower_emoji = "💣"
+rarity = 1
+base_damage = 35.0
+attack_speed = 0.35
+attack_range = 240.0
+placement_cost = 250
+attack_type = 0
+effect_description = "强力单发炮击，慢速但伤害高，对地面敌人造成高额单体伤害"
+upgrade_paths = Array[ExtResource("2_tup")]([SubResource("Path_0"), SubResource("Path_1"), SubResource("Path_2"), SubResource("Path_3")])
+level_required = 10
+unlock_fragments = 30
+unlock_gold = 600
+upgrade_fragments = Array[int]([25, 50, 100, 200, 400])
+upgrade_gold = Array[int]([250, 500, 1000, 2000, 4000])
+fragment_shop_price = Array[int]([120, 240, 600])

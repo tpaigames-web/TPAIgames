@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3 uid="uid://bap1xqgfs0dmp"]
+
+[ext_resource type="Script" uid="uid://dapicbkaarem1" path="res://enemy/enemy_data.gd" id="1_crowk"]
+
+[resource]
+script = ExtResource("1_crowk")
+enemy_id = "crow_king"
+display_name = "乌鸦王"
+display_emoji = "🐦"
+max_hp = 400
+move_speed = 130.0
+damage_to_player = 6
+gold_reward = 25
+xp_reward = 25
+is_flying = true
+spawn_interval = 10.0
+spawn_enemy_type = "crow"
+spawn_count = 2
+metadata/_custom_type_script = "uid://dapicbkaarem1"

@@ -1,0 +1,94 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/tabs/ShopTab.gd" id="1_script"]
+
+[node name="ShopTab" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_script")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 1080.0
+offset_bottom = 1700.0
+color = Color(0.08, 0.07, 0.05, 1)
+
+[node name="TitleLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 1060.0
+offset_bottom = 82.0
+text = "商城"
+theme_override_font_sizes/font_size = 44
+horizontal_alignment = 1
+
+[node name="MainScroll" type="ScrollContainer" parent="."]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 88.0
+offset_right = 1080.0
+offset_bottom = 1700.0
+
+[node name="MainVBox" type="VBoxContainer" parent="MainScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 18
+
+[node name="ConfirmOverlay" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 1080.0
+offset_bottom = 1920.0
+color = Color(0, 0, 0, 0.65)
+mouse_filter = 0
+visible = false
+z_index = 20
+
+[node name="ConfirmCard" type="Panel" parent="ConfirmOverlay"]
+layout_mode = 0
+offset_left = 90.0
+offset_top = 680.0
+offset_right = 990.0
+offset_bottom = 1120.0
+
+[node name="ContentVBox" type="VBoxContainer" parent="ConfirmOverlay/ConfirmCard"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 32.0
+offset_top = 24.0
+offset_right = -32.0
+offset_bottom = -20.0
+theme_override_constants/separation = 24
+
+[node name="ConfirmMsg" type="Label" parent="ConfirmOverlay/ConfirmCard/ContentVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "确认购买？"
+theme_override_font_sizes/font_size = 30
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="BtnRow" type="HBoxContainer" parent="ConfirmOverlay/ConfirmCard/ContentVBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 90)
+alignment = 1
+theme_override_constants/separation = 40
+
+[node name="CancelBtn" type="Button" parent="ConfirmOverlay/ConfirmCard/ContentVBox/BtnRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(280, 80)
+text = "取消"
+theme_override_font_sizes/font_size = 30
+
+[node name="ConfirmBtn" type="Button" parent="ConfirmOverlay/ConfirmCard/ContentVBox/BtnRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(280, 80)
+text = "确认"
+theme_override_font_sizes/font_size = 30

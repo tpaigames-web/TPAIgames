@@ -1,0 +1,56 @@
+[gd_resource type="Resource" script_class="TowerCollectionData" load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://data/tower_collection_data.gd" id="1_tcd"]
+[ext_resource type="Script" path="res://data/tower_upgrade_path.gd" id="2_tup"]
+
+[sub_resource type="Resource" id="Path_0"]
+script = ExtResource("2_tup")
+path_name = "高压水枪"
+tier_names = ["高压水枪", "多向高压", "高压水炮", "液氮喷射", "超高压洪流"]
+tier_effects = ["可对单体敌人造成少量伤害", "可同时对3个目标造成伤害和减速", "对小范围敌人造成伤害、少量击退和减速", "伤害大幅提升，减速效果增强至40%", "大范围，造成大量伤害和强力击退"]
+tier_costs = [150, 300, 500, 700, 1000]
+damage_bonus_per_tier = 0.2
+
+[sub_resource type="Resource" id="Path_1"]
+script = ExtResource("2_tup")
+path_name = "速度"
+tier_names = ["加压泵", "高效水泵", "涡轮增压", "极速喷射", "无限水流"]
+tier_effects = ["喷射频率+10%", "喷射频率累计+10%", "喷射频率累计+10%", "喷射频率累计+10%", "喷射频率累计+10%"]
+tier_costs = [100, 200, 350, 550, 800]
+speed_bonus_per_tier = 0.1
+
+[sub_resource type="Resource" id="Path_2"]
+script = ExtResource("2_tup")
+path_name = "射程"
+tier_names = ["延长水管", "加压延伸", "远程水枪", "广域喷射", "全场覆盖"]
+tier_effects = ["射程+15%", "射程累计+15%", "射程累计+15%", "射程累计+15%", "射程累计+15%"]
+tier_costs = [90, 180, 300, 480, 700]
+range_bonus_per_tier = 0.15
+
+[sub_resource type="Resource" id="Path_3"]
+script = ExtResource("2_tup")
+path_name = "效果增益"
+tier_names = ["强化减速", "冰冷之水", "冰封之力", "群体蔓延", "永恒寒冰"]
+tier_effects = ["减速效果提升至30%", "减速效果提升至40%，持续时间延长", "有几率完全冻结敌人1秒", "减速效果扩散至附近敌人", "大幅提升所有减速效果和持续时间"]
+tier_costs = [120, 250, 400, 600, 900]
+
+[resource]
+script = ExtResource("1_tcd")
+tower_id = "water_pipe"
+display_name = "水压管道"
+tower_emoji = "🚿"
+rarity = 1
+base_damage = 0.0
+attack_speed = 1.5
+attack_range = 200.0
+placement_cost = 220
+attack_type = 2
+effect_description = "对单体敌人造成强力减速（20%），初始无伤害"
+upgrade_paths = [SubResource("Path_0"), SubResource("Path_1"), SubResource("Path_2"), SubResource("Path_3")]
+level_required = 1
+unlock_fragments = 30
+unlock_gold = 600
+upgrade_fragments = [25, 50, 100, 200, 400]
+upgrade_gold = [250, 500, 1000, 2000, 4000]
+max_level = 6
+fragment_shop_price = [120, 240, 600]

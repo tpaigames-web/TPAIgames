@@ -1,0 +1,67 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/components/ChestCard.gd" id="1_script"]
+
+[node name="ChestCard" type="Panel"]
+custom_minimum_size = Vector2(300, 420)
+script = ExtResource("1_script")
+
+[node name="CardVBox" type="VBoxContainer" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/separation = 10
+
+[node name="TitleLabel" type="Label" parent="CardVBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 50)
+text = "宝箱名称"
+theme_override_font_sizes/font_size = 30
+horizontal_alignment = 1
+
+[node name="ChestImageRect" type="ColorRect" parent="CardVBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 200)
+size_flags_vertical = 3
+color = Color(0.35, 0.25, 0.1, 1)
+mouse_filter = 0
+
+[node name="ChestImageLabel" type="Label" parent="CardVBox/ChestImageRect"]
+layout_mode = 0
+offset_right = 300.0
+offset_bottom = 200.0
+text = "🎁"
+theme_override_font_sizes/font_size = 72
+horizontal_alignment = 1
+vertical_alignment = 1
+mouse_filter = 2
+
+[node name="PriceLabel" type="Label" parent="CardVBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 40)
+text = "免费"
+theme_override_font_sizes/font_size = 28
+horizontal_alignment = 1
+
+[node name="InfoLine1" type="Label" parent="CardVBox"]
+layout_mode = 2
+text = "- ? 张卡片"
+theme_override_font_sizes/font_size = 22
+horizontal_alignment = 1
+
+[node name="InfoLine2" type="Label" parent="CardVBox"]
+layout_mode = 2
+text = "- ? 稀有"
+theme_override_font_sizes/font_size = 22
+horizontal_alignment = 1
+
+[node name="InfoBtn" type="Button" parent="."]
+layout_mode = 0
+offset_left = 242.0
+offset_top = 6.0
+offset_right = 294.0
+offset_bottom = 52.0
+text = "ⓘ"
+theme_override_font_sizes/font_size = 26
+flat = true

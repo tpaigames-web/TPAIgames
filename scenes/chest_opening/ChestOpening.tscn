@@ -1,0 +1,77 @@
+[gd_scene format=3 uid="uid://b70w2l3bs8oeh"]
+
+[ext_resource type="Script" uid="uid://bc05vgcaoi14" path="res://scenes/chest_opening/ChestOpening.gd" id="1_script"]
+
+[node name="ChestOpening" type="CanvasLayer" unique_id=1082761757]
+layer = 20
+script = ExtResource("1_script")
+
+[node name="DimBg" type="ColorRect" parent="." unique_id=737133206]
+offset_right = 1080.0
+offset_bottom = 1920.0
+color = Color(0, 0, 0, 0.82)
+
+[node name="ChestStage" type="Control" parent="." unique_id=182622775]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1080.0
+offset_bottom = 1920.0
+
+[node name="ChestRect" type="ColorRect" parent="ChestStage" unique_id=66218500]
+layout_mode = 0
+offset_left = 340.0
+offset_top = 680.0
+offset_right = 740.0
+offset_bottom = 1080.0
+color = Color(0.55, 0.38, 0.12, 1)
+
+[node name="ChestIcon" type="Label" parent="ChestStage/ChestRect" unique_id=721812108]
+layout_mode = 0
+offset_right = 400.0
+offset_bottom = 400.0
+theme_override_font_sizes/font_size = 120
+text = "🎁"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TapHint" type="Label" parent="ChestStage" unique_id=779538762]
+layout_mode = 0
+offset_top = 1120.0
+offset_right = 1080.0
+offset_bottom = 1200.0
+theme_override_font_sizes/font_size = 36
+text = "点击宝箱打开"
+horizontal_alignment = 1
+
+[node name="CardsStage" type="Control" parent="." unique_id=91126572]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1080.0
+offset_bottom = 1920.0
+
+[node name="CardsContainer" type="VBoxContainer" parent="CardsStage" unique_id=1444336678]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 80.0
+offset_right = 1040.0
+offset_bottom = 1820.0
+theme_override_constants/separation = 24
+alignment = 1
+
+[node name="SkipButton" type="Button" parent="." unique_id=2062878453]
+offset_left = 860.0
+offset_top = 40.0
+offset_right = 1060.0
+offset_bottom = 110.0
+theme_override_font_sizes/font_size = 30
+text = "跳过 »"
+
+[node name="ContinueButton" type="Button" parent="." unique_id=1130330476]
+visible = false
+offset_left = 340.0
+offset_top = 1620.0
+offset_right = 740.0
+offset_bottom = 1720.0
+theme_override_font_sizes/font_size = 36
+text = "继续"

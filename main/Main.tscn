@@ -1,0 +1,57 @@
+[gd_scene format=3 uid="uid://dqoe8qjk6w02m"]
+
+[ext_resource type="PackedScene" uid="uid://map" path="res://map/Map01.tscn" id="1_qv31u"]
+[ext_resource type="Script" uid="uid://c5gmo1fq2scq6" path="res://managers/BuildManager.gd" id="2_cmtxc"]
+[ext_resource type="Script" uid="uid://sppjdq4mk2lj" path="res://managers/WaveManager.gd" id="3_cmtxc"]
+[ext_resource type="PackedScene" uid="uid://d1tu7y8b2raa5" path="res://tower/Tower.tscn" id="3_tv7ag"]
+[ext_resource type="Script" uid="uid://jub6vmuu00qx" path="res://managers/GameManager.gd" id="4_qtrhv"]
+
+[node name="Main" type="Node" unique_id=1618033791]
+
+[node name="Map01" parent="." unique_id=936421581 instance=ExtResource("1_qv31u")]
+
+[node name="BuildManager" type="Node" parent="." unique_id=1464711072]
+script = ExtResource("2_cmtxc")
+tower_scene = ExtResource("3_tv7ag")
+
+[node name="WaveManager" type="Node" parent="." unique_id=623821192]
+script = ExtResource("3_cmtxc")
+
+[node name="GameManager" type="Node" parent="." unique_id=1222603691]
+script = ExtResource("4_qtrhv")
+
+[node name="TowerFactory" type="Node" parent="." unique_id=1183523099]
+
+[node name="GameUI (Control)" type="Control" parent="." unique_id=1124279747]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="BottomPanel" type="Panel" parent="GameUI (Control)" unique_id=81414171]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ContentPanel" type="Panel" parent="GameUI (Control)/BottomPanel" unique_id=1596376408]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TowerGrid" type="GridContainer" parent="GameUI (Control)/BottomPanel/ContentPanel" unique_id=410496008]
+layout_mode = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameUI (Control)/BottomPanel" unique_id=212430007]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TabBar" type="HBoxContainer" parent="GameUI (Control)/BottomPanel/VBoxContainer" unique_id=916994800]
+layout_mode = 2
+
+[node name="Btn_Tower" type="Button" parent="GameUI (Control)/BottomPanel/VBoxContainer/TabBar" unique_id=1768654875]
+layout_mode = 2
+
+[node name="Btn_Hero" type="Button" parent="GameUI (Control)/BottomPanel/VBoxContainer/TabBar" unique_id=58966628]
+layout_mode = 2
+
+[node name="Btn_Item" type="Button" parent="GameUI (Control)/BottomPanel/VBoxContainer/TabBar" unique_id=1632996624]
+layout_mode = 2

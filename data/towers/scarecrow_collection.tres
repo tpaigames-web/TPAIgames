@@ -1,0 +1,46 @@
+[gd_resource type="Resource" script_class="TowerCollectionData" format=3 uid="uid://xrwaepl3p4mt"]
+
+[ext_resource type="Script" uid="uid://dh7u72sh06tc3" path="res://data/tower_collection_data.gd" id="1_tcd"]
+[ext_resource type="Script" uid="uid://cs8acmmyvm8t5" path="res://data/tower_upgrade_path.gd" id="2_tup"]
+
+[sub_resource type="Resource" id="Path_0"]
+script = ExtResource("2_tup")
+path_name = "攻击提升"
+tier_names = Array[String](["精准投掷", "双倍草束", "稳定摆臂", "锋利草刃", "终极收割"])
+tier_effects = Array[String](["攻击伤害提升12%", "攻击伤害累计提升+12%", "攻击伤害累计提升+12%", "攻击伤害累计提升+12%", "攻击伤害累计提升+12%"])
+tier_costs = Array[int]([100, 200, 350, 550, 800])
+damage_bonus_per_tier = 0.12
+
+[sub_resource type="Resource" id="Path_1"]
+script = ExtResource("2_tup")
+path_name = "攻击速度"
+tier_names = Array[String](["快速摆动", "节奏加快", "稻草旋风", "极速摇摆", "永动稻草人"])
+tier_effects = Array[String](["攻击速度提升10%", "攻击速度累计提升+10%", "攻击速度累计提升+10%", "攻击速度累计提升+10%", "攻击速度累计提升+10%"])
+tier_costs = Array[int]([80, 160, 280, 450, 650])
+speed_bonus_per_tier = 0.1
+
+[sub_resource type="Resource" id="Path_2"]
+script = ExtResource("2_tup")
+path_name = "射程提升"
+tier_names = Array[String](["手臂延伸", "长臂草人", "远程覆盖", "广域守望", "全场守护"])
+tier_effects = Array[String](["射程提升15%", "射程累计提升+15%", "射程累计提升+15%", "射程累计提升+15%", "射程累计提升+15%"])
+tier_costs = Array[int]([90, 180, 300, 500, 750])
+range_bonus_per_tier = 0.15
+
+[sub_resource type="Resource" id="Path_3"]
+script = ExtResource("2_tup")
+path_name = "增加效果"
+tier_names = Array[String](["缓步枯草", "强化缠绕", "巨物捆绑", "防空稻草", "全域减速"])
+tier_effects = Array[String](["伤害敌人时附加减速10%", "对已减速敌人攻击时减速提升至20%", "可对大型单位施加减速", "可攻击空中单位", "对所有类型单位均可造成减速"])
+tier_costs = Array[int]([150, 300, 500, 700, 1000])
+
+[resource]
+script = ExtResource("1_tcd")
+tower_id = "scarecrow"
+display_name = "稻草人"
+tower_emoji = "🌾"
+base_damage = 15.0
+attack_speed = 0.8
+attack_range = 180.0
+effect_description = "在小射程内对地面敌人造成持续伤害"
+upgrade_paths = Array[ExtResource("2_tup")]([SubResource("Path_0"), SubResource("Path_1"), SubResource("Path_2"), SubResource("Path_3")])

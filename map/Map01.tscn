@@ -1,0 +1,82 @@
+[gd_scene format=3 uid="uid://map"]
+
+[ext_resource type="Texture2D" uid="uid://c47feygk5w8yt" path="res://assets/sprites/background/Map01.png" id="2_q7fuq"]
+[ext_resource type="Script" uid="uid://b6lxh6i8rkbkb" path="res://map/GoalArea.gd" id="3_goalarea"]
+
+[sub_resource type="GDScript" id="GDScript_07vl2"]
+script/source = "extends Node2D
+
+# ============================================
+# Map01 - BTD6 完全无网格版本
+# ============================================
+# 本地图不再负责：
+# - 网格系统
+# - 占格判断
+# - 建造合法性
+#
+# 所有建造逻辑改为：
+# Area2D 碰撞检测模式（BTD6方式）
+# ============================================
+
+
+func _ready():
+	pass
+
+
+# 如以后需要地图级点击处理可在这里扩展
+func _unhandled_input(_event):
+	pass
+"
+
+[sub_resource type="Curve2D" id="Curve2D_33axt"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 102.94117, 74, 0, 0, 0, 0, 104.41176, 431, 0, 0, 0, 0, 114.117645, 469, 0, 0, 0, 0, 151.7647, 463, 0, 0, 0, 0, 164.11765, 419, 0, 0, 0, 0, 170.29411, 276, 0, 0, 0, 0, 180.29411, 254, 0, 0, 0, 0, 249.11763, 258, 0, 0, 0, 0, 259.11765, 294, 0, 0, 0, 0, 261.17645, 736, 0, 0, 0, 0, 249.41176, 798, 0, 0, 0, 0, 156.7647, 799, 0, 0, 0, 0, 64.70588, 798, 0, 0, 0, 0, 52.058823, 840, 0, 0, 0, 0, 51.764706, 1169, 0, 0, 0, 0, 67.352936, 1230, 0, 0, 0, 0, 159.41176, 1234, 0, 0, 0, 0, 167.35294, 1272, 0, 0, 0, 0, 166.47058, 1383)
+}
+point_count = 19
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_goal"]
+radius = 80.0
+
+[node name="Map01" type="Node2D" unique_id=936421581]
+script = SubResource("GDScript_07vl2")
+
+[node name="Background" type="Sprite2D" parent="." unique_id=98173142]
+z_index = -10
+texture = ExtResource("2_q7fuq")
+centered = false
+
+[node name="Path2D" type="Path2D" parent="." unique_id=1408000179]
+position = Vector2(14, -74)
+scale = Vector2(3.4000003, 1)
+curve = SubResource("Curve2D_33axt")
+
+[node name="PathArea" type="Area2D" parent="." unique_id=642819547 groups=["path"]]
+collision_layer = 1024
+collision_mask = 0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="PathArea" unique_id=1404603730]
+position = Vector2(-0.76501274, -3.8124838)
+scale = Vector2(0.71444446, 0.7229712)
+polygon = PackedVector2Array(456, 1, 454, 564, 485, 593, 567, 604, 800, 597, 859, 541, 868, 320, 914, 298, 1163, 300, 1190, 315, 1212, 371, 1207, 652, 1205, 810, 1193, 935, 534, 954, 445, 947, 416, 963, 276, 969, 228, 1005, 209, 1037, 207, 1540, 233, 1598, 312, 1674, 758, 1664, 764, 1799, 890, 1797, 890, 1669, 826, 1576, 632, 1559, 358, 1561, 323, 1526, 332, 1075, 534, 1072, 619, 1051, 682, 1058, 1283, 1057, 1332, 993, 1330, 911, 1316, 579, 1322, 301, 1280, 227, 1194, 205, 1021, 193, 810, 214, 774, 247, 748, 476, 735, 488, 575, 494, 564, 472, 557, 0)
+
+[node name="BlockArea" type="Area2D" parent="." unique_id=1078491494 groups=["block"]]
+collision_layer = 256
+collision_mask = 2
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="BlockArea" unique_id=532622452]
+polygon = PackedVector2Array(296, 1201, 513, 1198, 512, 1259, 578, 1222, 674, 1272, 679, 1190, 1072, 1193, 1074, 1111, 987, 1138, 731, 1061, 716, 1005, 731, 963, 795, 903, 850, 855, 932, 844, 972, 847, 1017, 792, 1072, 781, 1071, 694, 1056, 621, 1024, 602, 996, 562, 1040, 499, 1069, 472, 1027, 447, 1075, 373, 1077, 190, 1024, 204, 977, 161, 872, 120, 786, 96, 779, 58, 728, 48, 716, 4, 1079, 1, 1080, 188, 1080, 786, 1080, 1915, 3, 1919, -2, 1127, 1, 605, 3, 253, 56, 246, 80, 275, 132, 280, 161, 320, 230, 335, 251, 383, 283, 410, 269, 481, 202, 499, 194, 544, 116, 531, 77, 550, 43, 584, 0, 584, 3, 607, 35, 612, 70, 674, 75, 726, 24, 752, 3, 755, 32, 782, 21, 815, 1, 824, 1, 1125, 83, 1145, 156, 1233, 254, 1378, 298, 1378)
+
+[node name="TowerLayer" type="Node2D" parent="." unique_id=89830414]
+
+[node name="EnemyLayer" type="Node2D" parent="." unique_id=92817383]
+
+[node name="UILayer" type="CanvasLayer" parent="." unique_id=863810912]
+
+[node name="GoalArea" type="Area2D" parent="." unique_id=1904182893]
+position = Vector2(580, 1309)
+collision_layer = 0
+collision_mask = 8
+script = ExtResource("3_goalarea")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GoalArea" unique_id=2107801548]
+shape = SubResource("CircleShape2D_goal")

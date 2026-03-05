@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3 uid="uid://youv4olxm34b"]
+
+[ext_resource type="Script" uid="uid://dapicbkaarem1" path="res://enemy/enemy_data.gd" id="1_fmuvw"]
+
+[resource]
+script = ExtResource("1_fmuvw")
+enemy_id = "rat_fat"
+display_name = "肥老鼠"
+display_emoji = "🐁"
+max_hp = 200
+move_speed = 70.0
+damage_to_player = 3
+gold_reward = 8
+xp_reward = 8
+metadata/_custom_type_script = "uid://dapicbkaarem1"

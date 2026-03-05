@@ -1,0 +1,55 @@
+[gd_resource type="Resource" script_class="TowerCollectionData" format=3 uid="uid://mbm8k4nt5rxpq2"]
+
+[ext_resource type="Script" uid="uid://dh7u72sh06tc3" path="res://data/tower_collection_data.gd" id="1_tcd"]
+[ext_resource type="Script" uid="uid://cs8acmmyvm8t5" path="res://data/tower_upgrade_path.gd" id="2_tup"]
+
+[sub_resource type="Resource" id="Path_0"]
+script = ExtResource("2_tup")
+path_name = "爆炸威力"
+tier_names = Array[String](["强力炸药", "爆炸增幅", "碎片飞溅", "连锁爆炸", "末日蘑菇"])
+tier_effects = Array[String](["蘑菇炸药更强，爆炸伤害+15%", "爆炸冲击波增幅，伤害累积提升", "爆炸产生碎片飞溅，二次击中周围敌人", "连锁爆炸：命中敌人死亡时引发小爆炸", "末日蘑菇：爆炸伤害极限，范围极大提升"])
+tier_costs = Array[int]([180, 360, 600, 850, 1200])
+damage_bonus_per_tier = 0.15
+
+[sub_resource type="Resource" id="Path_1"]
+script = ExtResource("2_tup")
+path_name = "投掷速度"
+tier_names = Array[String](["快速投掷", "连续投掷", "自动投弹", "高速投掷机", "极速轰炸"])
+tier_effects = Array[String](["投掷速度加快，攻速+12%", "连续投掷节奏提升，攻速累积提升", "自动投弹系统，减少装填时间", "高速投掷机，攻速大幅提升", "极速轰炸：攻速极限，蘑菇炸弹如雨而降"])
+tier_costs = Array[int]([150, 300, 500, 700, 1000])
+speed_bonus_per_tier = 0.12
+
+[sub_resource type="Resource" id="Path_2"]
+script = ExtResource("2_tup")
+path_name = "爆炸范围"
+tier_names = Array[String](["扩大爆心", "大型炸弹", "广域爆破", "超级炸弹", "核爆蘑菇"])
+tier_effects = Array[String](["爆炸半径+15%，波及更多敌人", "大型炸弹结构，爆炸范围累积扩大", "广域爆破，大范围同时命中", "超级炸弹，几乎覆盖整个区域", "核爆蘑菇：爆炸范围极大提升，无处可逃"])
+tier_costs = Array[int]([160, 320, 540, 780, 1100])
+range_bonus_per_tier = 0.15
+
+[sub_resource type="Resource" id="Path_3"]
+script = ExtResource("2_tup")
+path_name = "孢子毒气"
+tier_names = Array[String](["毒气云", "浓缩毒素", "扩散毒雾", "减速毒气", "劇毒孢子"])
+tier_effects = Array[String](["爆炸后留下毒气云，每秒造扐3点伤害持续4秒", "毒素浓度提升，毒气伤害提升至每秒拟5点", "毒气扩散范围+50%，覆盖更大区域", "毒气附加减速效果，经过的敌人移速-25%", "劇毒孢子：毒气持续10秒，大范围减速+高额持续伤害"])
+tier_costs = Array[int]([200, 400, 650, 900, 1300])
+
+[resource]
+script = ExtResource("1_tcd")
+tower_id = "mushroom_bomb"
+display_name = "蘑菇炸弹"
+tower_emoji = "🍄"
+rarity = 2
+base_damage = 25.0
+attack_speed = 0.4
+attack_range = 220.0
+placement_cost = 350
+attack_type = 0
+effect_description = "投掷蘑菇炸弹对地面敌人造成范围伤害，爆炸后留下持续伤害毒气云"
+upgrade_paths = Array[ExtResource("2_tup")]([SubResource("Path_0"), SubResource("Path_1"), SubResource("Path_2"), SubResource("Path_3")])
+level_required = 25
+unlock_fragments = 40
+unlock_gold = 1000
+upgrade_fragments = Array[int]([30, 60, 120, 240, 480])
+upgrade_gold = Array[int]([350, 700, 1400, 2800, 5600])
+fragment_shop_price = Array[int]([150, 300, 750])

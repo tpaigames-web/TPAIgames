@@ -1,0 +1,54 @@
+[gd_resource type="Resource" script_class="TowerCollectionData" format=3 uid="uid://bwr9x4kd6mjn3t"]
+
+[ext_resource type="Script" uid="uid://dh7u72sh06tc3" path="res://data/tower_collection_data.gd" id="1_tcd"]
+[ext_resource type="Script" uid="uid://cs8acmmyvm8t5" path="res://data/tower_upgrade_path.gd" id="2_tup"]
+
+[sub_resource type="Resource" id="Path_0"]
+script = ExtResource("2_tup")
+path_name = "刺伤强化"
+tier_names = Array[String](["锋利铁刺", "穿透铁刺", "出血铁网", "深度出血", "终极铁刺"])
+tier_effects = Array[String](["铁刺更锋利，每次触碰伤害+15%", "锐刺穿透敌人护甲，无视10%护甲", "刺伤附加出血效果，每秒造成2点持续伤害", "出血伤害提升至每秒4点，可叠加2层", "终极铁刺：出血伤害极限，3层叠加持续灼伤"])
+tier_costs = Array[int]([120, 240, 400, 600, 900])
+damage_bonus_per_tier = 0.12
+
+[sub_resource type="Resource" id="Path_1"]
+script = ExtResource("2_tup")
+path_name = "减速铁网"
+tier_names = Array[String](["缠绕减速", "强力缠绕", "持续拖拽", "重度减速", "极致缠绕"])
+tier_effects = Array[String](["铁网触碰减速敌人20%", "减速效果提升至30%", "减速持续时间+1秒，脱离后仍有残留", "被减速敌人受到的所有伤害+15%", "极致缠绕：减速达50%，敌人几乎无法移动"])
+tier_costs = Array[int]([100, 200, 350, 550, 800])
+
+[sub_resource type="Resource" id="Path_2"]
+script = ExtResource("2_tup")
+path_name = "铺设范围"
+tier_names = Array[String](["扩展铁网", "大型铁网", "广域铺设", "超级铁网", "全场铁幕"])
+tier_effects = Array[String](["铁网铺设范围+15%", "铁网面积进一步扩大，覆盖更多通道", "广域铺设，覆盖范围大幅提升", "超级铁网，几乎封锁整条通道", "全场铁幕：射程极大提升，多路封堵"])
+tier_costs = Array[int]([90, 180, 300, 480, 700])
+range_bonus_per_tier = 0.15
+
+[sub_resource type="Resource" id="Path_3"]
+script = ExtResource("2_tup")
+path_name = "强化铁网"
+tier_names = Array[String](["自动修复", "爆炸铁网", "带电铁丝", "双层铁网", "磁化铁网"])
+tier_effects = Array[String](["铁网自动修复，被破坏后3秒内还原", "触发时炸开小范围伤害，波及周围敌人", "铁网带电，触碰有30%几率造成0.5秒麻痹", "双层铁网结构，伤害翻倍且减速效果增强", "磁化铁网：主动拉近附近敌人，集中打击"])
+tier_costs = Array[int]([150, 300, 500, 700, 1000])
+
+[resource]
+script = ExtResource("1_tcd")
+tower_id = "barbed_wire"
+display_name = "带刺铁网"
+tower_emoji = "🪤"
+rarity = 1
+base_damage = 5.0
+attack_speed = 0.5
+attack_range = 120.0
+placement_cost = 150
+attack_type = 0
+effect_description = "放置在路面阻碍敌人，持续造成伤害并减速，擅长封锁狭窄通道"
+upgrade_paths = Array[ExtResource("2_tup")]([SubResource("Path_0"), SubResource("Path_1"), SubResource("Path_2"), SubResource("Path_3")])
+level_required = 5
+unlock_fragments = 30
+unlock_gold = 600
+upgrade_fragments = Array[int]([25, 50, 100, 200, 400])
+upgrade_gold = Array[int]([250, 500, 1000, 2000, 4000])
+fragment_shop_price = Array[int]([120, 240, 600])

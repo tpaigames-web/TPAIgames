@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3 uid="uid://cc1tgpala35be"]
+
+[ext_resource type="Script" uid="uid://dapicbkaarem1" path="res://enemy/enemy_data.gd" id="1_mole1"]
+
+[resource]
+script = ExtResource("1_mole1")
+enemy_id = "mole"
+display_name = "地鼠"
+display_emoji = "🐾"
+max_hp = 120
+move_speed = 105.0
+damage_to_player = 2
+gold_reward = 10
+xp_reward = 10
+can_bypass_traps = true
+metadata/_custom_type_script = "uid://dapicbkaarem1"

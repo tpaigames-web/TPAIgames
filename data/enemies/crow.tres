@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3 uid="uid://b3ck7m2pqvwx1"]
+
+[ext_resource type="Script" uid="uid://dapicbkaarem1" path="res://enemy/enemy_data.gd" id="1_crow1"]
+
+[resource]
+script = ExtResource("1_crow1")
+enemy_id = "crow"
+display_name = "乌鸦"
+display_emoji = "🐦"
+max_hp = 100
+move_speed = 160.0
+damage_to_player = 2
+gold_reward = 7
+xp_reward = 7
+is_flying = true
+metadata/_custom_type_script = "uid://dapicbkaarem1"

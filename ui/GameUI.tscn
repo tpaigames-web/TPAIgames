@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://bxj2yo0dmaalr"]
+
+[node name="GameUI" type="Control" unique_id=1750157058]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="BottomPanel" type="Panel" parent="." unique_id=58102047]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0

@@ -1,0 +1,138 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/tabs/LevelPassTab.gd" id="1_script"]
+
+[node name="LevelPassTab" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_script")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 1080.0
+offset_bottom = 1920.0
+color = Color(0.08, 0.1, 0.2, 1)
+
+[node name="TitleBar" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 1080.0
+offset_bottom = 80.0
+theme_override_constants/separation = 0
+
+[node name="BackBtn" type="Button" parent="TitleBar"]
+layout_mode = 2
+custom_minimum_size = Vector2(160, 80)
+text = "← 返回"
+theme_override_font_sizes/font_size = 28
+
+[node name="TitleLabel" type="Label" parent="TitleBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "升级通行证"
+theme_override_font_sizes/font_size = 40
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TitleSpacer" type="Control" parent="TitleBar"]
+layout_mode = 2
+custom_minimum_size = Vector2(160, 0)
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 80.0
+offset_right = 1080.0
+offset_bottom = 1800.0
+
+[node name="LevelsVBox" type="VBoxContainer" parent="ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+
+[node name="BottomBar" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 1800.0
+offset_right = 1080.0
+offset_bottom = 1920.0
+
+[node name="BottomBarContent" type="HBoxContainer" parent="BottomBar"]
+layout_mode = 1
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/separation = 0
+
+[node name="FreeLbl" type="Label" parent="BottomBar/BottomBarContent"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "免费"
+theme_override_font_sizes/font_size = 28
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LevelColumnSpacer" type="Control" parent="BottomBar/BottomBarContent"]
+layout_mode = 2
+custom_minimum_size = Vector2(140, 0)
+
+[node name="BuyPassBtn" type="Button" parent="BottomBar/BottomBarContent"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "RM 8.88"
+theme_override_font_sizes/font_size = 28
+
+[node name="ConfirmOverlay" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 1080.0
+offset_bottom = 1920.0
+color = Color(0, 0, 0, 0.65)
+mouse_filter = 0
+z_index = 20
+visible = false
+
+[node name="ConfirmCard" type="Panel" parent="ConfirmOverlay"]
+layout_mode = 0
+offset_left = 140.0
+offset_top = 580.0
+offset_right = 940.0
+offset_bottom = 980.0
+
+[node name="ContentVBox" type="VBoxContainer" parent="ConfirmOverlay/ConfirmCard"]
+layout_mode = 1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 28.0
+offset_top = 28.0
+offset_right = -28.0
+offset_bottom = -28.0
+theme_override_constants/separation = 24
+
+[node name="ConfirmMsg" type="Label" parent="ConfirmOverlay/ConfirmCard/ContentVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+text = ""
+theme_override_font_sizes/font_size = 28
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="BtnRow" type="HBoxContainer" parent="ConfirmOverlay/ConfirmCard/ContentVBox"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="CancelBtn" type="Button" parent="ConfirmOverlay/ConfirmCard/ContentVBox/BtnRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 80)
+text = "取消"
+theme_override_font_sizes/font_size = 30
+
+[node name="ConfirmBtn" type="Button" parent="ConfirmOverlay/ConfirmCard/ContentVBox/BtnRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 80)
+text = "确认"
+theme_override_font_sizes/font_size = 30

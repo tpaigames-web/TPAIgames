@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3 uid="uid://bjgbhscjcwlyr"]
+
+[ext_resource type="Script" uid="uid://dapicbkaarem1" path="res://enemy/enemy_data.gd" id="1_foxl"]
+
+[resource]
+script = ExtResource("1_foxl")
+enemy_id = "fox_leader"
+display_name = "狐狸首领"
+display_emoji = "🦊"
+max_hp = 300
+move_speed = 190.0
+damage_to_player = 5
+gold_reward = 22
+xp_reward = 22
+attack_immunity_chance = 0.1
+metadata/_custom_type_script = "uid://dapicbkaarem1"

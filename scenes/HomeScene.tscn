@@ -1,0 +1,181 @@
+[gd_scene format=3 uid="uid://btju58xriatk4"]
+
+[ext_resource type="Script" path="res://scenes/HomeScene.gd" id="1_script"]
+
+[node name="HomeScene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_script")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 1080.0
+offset_bottom = 1920.0
+color = Color(0.15, 0.22, 0.12, 1)
+
+[node name="TopBar" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 1060.0
+offset_bottom = 140.0
+theme_override_constants/separation = 20
+
+[node name="ProfileArea" type="Control" parent="TopBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 0
+
+[node name="PlayerAvatar" type="ColorRect" parent="TopBar/ProfileArea"]
+layout_mode = 0
+offset_top = 0.0
+offset_left = 0.0
+offset_right = 100.0
+offset_bottom = 100.0
+color = Color(0.4, 0.6, 0.3, 1)
+mouse_filter = 2
+
+[node name="PlayerInfo" type="VBoxContainer" parent="TopBar/ProfileArea"]
+layout_mode = 0
+offset_left = 116.0
+offset_top = 0.0
+offset_right = 600.0
+offset_bottom = 120.0
+mouse_filter = 2
+
+[node name="NameLabel" type="Label" parent="TopBar/ProfileArea/PlayerInfo"]
+layout_mode = 2
+text = "游客"
+theme_override_font_sizes/font_size = 36
+
+[node name="LevelLabel" type="Label" parent="TopBar/ProfileArea/PlayerInfo"]
+layout_mode = 2
+text = "Lv. 1"
+theme_override_font_sizes/font_size = 28
+mouse_filter = 0
+
+[node name="CurrencyBar" type="HBoxContainer" parent="TopBar"]
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_constants/separation = 20
+
+[node name="GoldIcon" type="Label" parent="TopBar/CurrencyBar"]
+layout_mode = 2
+text = "💰"
+theme_override_font_sizes/font_size = 32
+
+[node name="GoldLabel" type="Label" parent="TopBar/CurrencyBar"]
+layout_mode = 2
+text = "0"
+theme_override_font_sizes/font_size = 32
+
+[node name="GemsIcon" type="Label" parent="TopBar/CurrencyBar"]
+layout_mode = 2
+text = "💎"
+theme_override_font_sizes/font_size = 32
+
+[node name="GemsLabel" type="Label" parent="TopBar/CurrencyBar"]
+layout_mode = 2
+text = "0"
+theme_override_font_sizes/font_size = 32
+
+[node name="LeftSideButtons" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 500.0
+offset_right = 130.0
+offset_bottom = 700.0
+theme_override_constants/separation = 20
+visible = true
+
+[node name="LevelPassBtn" type="Button" parent="LeftSideButtons"]
+custom_minimum_size = Vector2(130, 130)
+text = "升级
+⭐"
+theme_override_font_sizes/font_size = 26
+
+[node name="SideButtons" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 920.0
+offset_top = 500.0
+offset_right = 1060.0
+offset_bottom = 900.0
+theme_override_constants/separation = 20
+visible = true
+
+[node name="QuestButton" type="Button" parent="SideButtons"]
+custom_minimum_size = Vector2(130, 100)
+text = "任务"
+theme_override_font_sizes/font_size = 28
+
+[node name="OfferButton" type="Button" parent="SideButtons"]
+custom_minimum_size = Vector2(130, 100)
+text = "优惠"
+theme_override_font_sizes/font_size = 28
+
+[node name="AdsButton" type="Button" parent="SideButtons"]
+custom_minimum_size = Vector2(130, 100)
+text = "广告"
+theme_override_font_sizes/font_size = 28
+
+[node name="TabContainer" type="Control" parent="."]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 140.0
+offset_right = 1080.0
+offset_bottom = 1720.0
+
+[node name="BottomNav" type="Control" parent="."]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 1720.0
+offset_right = 1080.0
+offset_bottom = 1920.0
+
+[node name="ButtonRow" type="HBoxContainer" parent="BottomNav"]
+layout_mode = 0
+offset_right = 1080.0
+offset_bottom = 200.0
+theme_override_constants/separation = 0
+
+[node name="ShopNavBtn" type="Button" parent="BottomNav/ButtonRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 200)
+text = "商城"
+theme_override_font_sizes/font_size = 28
+
+[node name="ArsenalNavBtn" type="Button" parent="BottomNav/ButtonRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 200)
+text = "军火库"
+theme_override_font_sizes/font_size = 28
+
+[node name="BattleNavBtn" type="Button" parent="BottomNav/ButtonRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 220)
+text = "⚔ 战斗"
+theme_override_font_sizes/font_size = 30
+
+[node name="FactoryNavBtn" type="Button" parent="BottomNav/ButtonRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 200)
+text = "兵工厂"
+theme_override_font_sizes/font_size = 28
+
+[node name="ChestNavBtn" type="Button" parent="BottomNav/ButtonRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 200)
+text = "宝箱"
+theme_override_font_sizes/font_size = 28
+
+[node name="ComingSoonDialog" type="AcceptDialog" parent="."]
+title = "提示"
+dialog_text = "功能开发中，敬请期待！"
+min_size = Vector2(600, 250)

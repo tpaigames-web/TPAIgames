@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://bmwliva02rmlx"]
+
+[ext_resource type="Script" path="res://ui/GameRoot.gd" id="1_root"]
+
+[node name="GameRoot" type="Node"]
+script = ExtResource("1_root")
+
+[node name="CurrentScene" type="CanvasLayer" parent="."]

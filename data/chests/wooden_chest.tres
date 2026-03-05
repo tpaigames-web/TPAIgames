@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="ChestData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/chest_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+chest_name = "木宝箱"
+chest_type = 0
+info_line1 = "- 3 张卡片"
+info_line2 = "- 含白/绿稀有"
+gem_purchase_cost = 0
+unlock_time_seconds = 10800
+card_count = 3
+white_weight = 70
+green_weight = 20
+blue_weight = 8
+purple_weight = 2
+orange_weight = 0
+fragments_min = 5
+fragments_max = 15
+gold_min = 50
+gold_max = 150

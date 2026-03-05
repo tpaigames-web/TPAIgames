@@ -1,0 +1,55 @@
+[gd_resource type="Resource" script_class="TowerCollectionData" format=3 uid="uid://hfm3r9kn5pxqv8"]
+
+[ext_resource type="Script" uid="uid://dh7u72sh06tc3" path="res://data/tower_collection_data.gd" id="1_tcd"]
+[ext_resource type="Script" uid="uid://cs8acmmyvm8t5" path="res://data/tower_upgrade_path.gd" id="2_tup"]
+
+[sub_resource type="Resource" id="Path_0"]
+script = ExtResource("2_tup")
+path_name = "英雄力量"
+tier_names = Array[String](["农具强化", "锻造大师", "传奇武器", "神器打造", "农神之力"])
+tier_effects = Array[String](["农具强化，伤害+20%", "锻造大师：暴击率提升，对大型单位额外+30%伤害", "传奇武器：武器升至传奇品质，伤害大幅提升", "神器打造：必定附加燃烧效果，伤害再次飞跃", "农神之力：伤害达极限，所有攻击必暴击且附加全部效果"])
+tier_costs = Array[int]([350, 700, 1100, 1500, 2200])
+damage_bonus_per_tier = 0.2
+
+[sub_resource type="Resource" id="Path_1"]
+script = ExtResource("2_tup")
+path_name = "英雄速度"
+tier_names = Array[String](["敏捷老农", "双手操作", "三连攻击", "超速战斗", "传说战士"])
+tier_effects = Array[String](["身手矫健，攻速+12%", "双手同时操作农具，动作更迅猛", "三连攻击：每次出招连击3下", "超速战斗模式，每轮额外多打一次", "传说战士：攻速极限，连击数翻倍"])
+tier_costs = Array[int]([320, 640, 1000, 1400, 2050])
+speed_bonus_per_tier = 0.12
+
+[sub_resource type="Resource" id="Path_2"]
+script = ExtResource("2_tup")
+path_name = "英雄气场"
+tier_names = Array[String](["农场威严", "领地扩张", "守护者气场", "英雄领域", "农神庇护"])
+tier_effects = Array[String](["老阿福威严展现，射程+15%", "领地扩张，射程大幅提升，周围炮台攻速+5%", "守护者气场：射程累积提升，周围炮台攻速+10%", "英雄领域：射程极大提升，炮台增益提升至+20%攻速", "农神庇护：射程极限，所有友方炮台获得全面最大增益"])
+tier_costs = Array[int]([350, 700, 1100, 1500, 2200])
+range_bonus_per_tier = 0.15
+
+[sub_resource type="Resource" id="Path_3"]
+script = ExtResource("2_tup")
+path_name = "农场守护"
+tier_names = Array[String](["震慑一击", "农夫之魂", "田园守卫", "传说英雄", "农场之神"])
+tier_effects = Array[String](["攻击有20%几率造成1秒晕眩效果", "附加出血效果每秒3点，晕眩几率提升至30%", "出血+晕眩同时生效，并附加燃烧效果", "三重控制效果持续时间翻倍", "农场之神：晕眩+燃烧+出血极致化，对大型单位100%触发，效果持续时间极限"])
+tier_costs = Array[int]([400, 800, 1250, 1750, 2500])
+
+[resource]
+script = ExtResource("1_tcd")
+tower_id = "hero_farmer"
+display_name = "老阿福"
+tower_emoji = "🧑‍🌾"
+rarity = 4
+base_damage = 65.0
+attack_speed = 0.7
+attack_range = 300.0
+placement_cost = 1200
+attack_type = 2
+effect_description = "传奇老农夫，精通各种农场武器，对地面和空中敌人均造成大量伤害和三重控制"
+upgrade_paths = Array[ExtResource("2_tup")]([SubResource("Path_0"), SubResource("Path_1"), SubResource("Path_2"), SubResource("Path_3")])
+level_required = 75
+unlock_fragments = 120
+unlock_gold = 2500
+upgrade_fragments = Array[int]([60, 120, 240, 480, 960])
+upgrade_gold = Array[int]([800, 1600, 3200, 6400, 12800])
+fragment_shop_price = Array[int]([300, 600, 1500])

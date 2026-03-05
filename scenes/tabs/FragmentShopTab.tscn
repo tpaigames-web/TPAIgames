@@ -1,0 +1,209 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/tabs/FragmentShopTab.gd" id="1_script"]
+
+[node name="FragmentShopTab" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_script")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 1080.0
+offset_bottom = 1580.0
+color = Color(0.08, 0.1, 0.2, 1)
+
+[node name="TitleLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 10.0
+offset_right = 1060.0
+offset_bottom = 70.0
+text = "军火库"
+theme_override_font_sizes/font_size = 44
+horizontal_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 75.0
+offset_right = 1080.0
+offset_bottom = 1580.0
+
+[node name="MainVBox" type="VBoxContainer" parent="ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 24
+
+[node name="TopPad" type="Control" parent="ScrollContainer/MainVBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 8)
+
+[node name="Section6h" type="VBoxContainer" parent="ScrollContainer/MainVBox"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="HeaderMargin6h" type="MarginContainer" parent="ScrollContainer/MainVBox/Section6h"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_top = 4
+
+[node name="Section6hHeader" type="HBoxContainer" parent="ScrollContainer/MainVBox/Section6h/HeaderMargin6h"]
+layout_mode = 2
+
+[node name="Section6hTitle" type="Label" parent="ScrollContainer/MainVBox/Section6h/HeaderMargin6h/Section6hHeader"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "⏱ 6小时刷新"
+theme_override_font_sizes/font_size = 32
+
+[node name="Section6hTimer" type="Label" parent="ScrollContainer/MainVBox/Section6h/HeaderMargin6h/Section6hHeader"]
+layout_mode = 2
+text = "00:00:00"
+theme_override_font_sizes/font_size = 26
+modulate = Color(1, 0.85, 0.3, 1)
+
+[node name="CardsMargin6h" type="MarginContainer" parent="ScrollContainer/MainVBox/Section6h"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_right = 16
+
+[node name="Cards6h" type="HBoxContainer" parent="ScrollContainer/MainVBox/Section6h/CardsMargin6h"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Separator1" type="HSeparator" parent="ScrollContainer/MainVBox"]
+layout_mode = 2
+modulate = Color(1, 1, 1, 0.15)
+
+[node name="SectionDaily" type="VBoxContainer" parent="ScrollContainer/MainVBox"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="HeaderMarginD" type="MarginContainer" parent="ScrollContainer/MainVBox/SectionDaily"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_top = 4
+
+[node name="SectionDailyHeader" type="HBoxContainer" parent="ScrollContainer/MainVBox/SectionDaily/HeaderMarginD"]
+layout_mode = 2
+
+[node name="SectionDailyTitle" type="Label" parent="ScrollContainer/MainVBox/SectionDaily/HeaderMarginD/SectionDailyHeader"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "📅 每日刷新"
+theme_override_font_sizes/font_size = 32
+
+[node name="SectionDailyTimer" type="Label" parent="ScrollContainer/MainVBox/SectionDaily/HeaderMarginD/SectionDailyHeader"]
+layout_mode = 2
+text = "00:00:00"
+theme_override_font_sizes/font_size = 26
+modulate = Color(1, 0.85, 0.3, 1)
+
+[node name="CardsMarginD" type="MarginContainer" parent="ScrollContainer/MainVBox/SectionDaily"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_right = 16
+
+[node name="CardsDaily" type="HBoxContainer" parent="ScrollContainer/MainVBox/SectionDaily/CardsMarginD"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Separator2" type="HSeparator" parent="ScrollContainer/MainVBox"]
+layout_mode = 2
+modulate = Color(1, 1, 1, 0.15)
+
+[node name="SectionWeekly" type="VBoxContainer" parent="ScrollContainer/MainVBox"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="HeaderMarginW" type="MarginContainer" parent="ScrollContainer/MainVBox/SectionWeekly"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_top = 4
+
+[node name="SectionWeeklyHeader" type="HBoxContainer" parent="ScrollContainer/MainVBox/SectionWeekly/HeaderMarginW"]
+layout_mode = 2
+
+[node name="SectionWeeklyTitle" type="Label" parent="ScrollContainer/MainVBox/SectionWeekly/HeaderMarginW/SectionWeeklyHeader"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "📆 每周刷新"
+theme_override_font_sizes/font_size = 32
+
+[node name="SectionWeeklyTimer" type="Label" parent="ScrollContainer/MainVBox/SectionWeekly/HeaderMarginW/SectionWeeklyHeader"]
+layout_mode = 2
+text = "0d 00:00"
+theme_override_font_sizes/font_size = 26
+modulate = Color(1, 0.85, 0.3, 1)
+
+[node name="CardsMarginW" type="MarginContainer" parent="ScrollContainer/MainVBox/SectionWeekly"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_right = 16
+
+[node name="CardsWeekly" type="HBoxContainer" parent="ScrollContainer/MainVBox/SectionWeekly/CardsMarginW"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="BotPad" type="Control" parent="ScrollContainer/MainVBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 60)
+
+[node name="ConfirmOverlay" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 1080.0
+offset_bottom = 1580.0
+color = Color(0, 0, 0, 0.65)
+mouse_filter = 0
+z_index = 20
+visible = false
+
+[node name="ConfirmCard" type="Panel" parent="ConfirmOverlay"]
+layout_mode = 0
+offset_left = 140.0
+offset_top = 580.0
+offset_right = 940.0
+offset_bottom = 980.0
+
+[node name="ContentVBox" type="VBoxContainer" parent="ConfirmOverlay/ConfirmCard"]
+layout_mode = 1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 28.0
+offset_top = 28.0
+offset_right = -28.0
+offset_bottom = -28.0
+theme_override_constants/separation = 24
+
+[node name="ConfirmMsg" type="Label" parent="ConfirmOverlay/ConfirmCard/ContentVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+text = ""
+theme_override_font_sizes/font_size = 28
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="BtnRow" type="HBoxContainer" parent="ConfirmOverlay/ConfirmCard/ContentVBox"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="CancelBtn" type="Button" parent="ConfirmOverlay/ConfirmCard/ContentVBox/BtnRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 80)
+text = "取消"
+theme_override_font_sizes/font_size = 30
+
+[node name="ConfirmBtn" type="Button" parent="ConfirmOverlay/ConfirmCard/ContentVBox/BtnRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 80)
+text = "确认"
+theme_override_font_sizes/font_size = 30

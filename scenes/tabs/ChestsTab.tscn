@@ -1,0 +1,151 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/tabs/ChestsTab.gd" id="1_script"]
+
+[node name="ChestsTab" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_script")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 1080.0
+offset_bottom = 1580.0
+color = Color(0.18, 0.14, 0.08, 1)
+
+[node name="TitleLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 1060.0
+offset_bottom = 80.0
+text = "宝箱"
+theme_override_font_sizes/font_size = 44
+horizontal_alignment = 1
+
+[node name="SlotsLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 90.0
+offset_right = 1060.0
+offset_bottom = 140.0
+text = "宝箱槽位"
+theme_override_font_sizes/font_size = 30
+
+[node name="ChestSlotsRow" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 145.0
+offset_right = 1060.0
+offset_bottom = 340.0
+theme_override_constants/separation = 16
+
+[node name="ChestSlot0" type="PanelContainer" parent="ChestSlotsRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="EmptyState0" type="Label" parent="ChestSlotsRow/ChestSlot0"]
+layout_mode = 2
+text = "空\n槽位"
+theme_override_font_sizes/font_size = 22
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ChestSlot1" type="PanelContainer" parent="ChestSlotsRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="EmptyState1" type="Label" parent="ChestSlotsRow/ChestSlot1"]
+layout_mode = 2
+text = "空\n槽位"
+theme_override_font_sizes/font_size = 22
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ChestSlot2" type="PanelContainer" parent="ChestSlotsRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="EmptyState2" type="Label" parent="ChestSlotsRow/ChestSlot2"]
+layout_mode = 2
+text = "空\n槽位"
+theme_override_font_sizes/font_size = 22
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ChestSlot3" type="PanelContainer" parent="ChestSlotsRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="EmptyState3" type="Label" parent="ChestSlotsRow/ChestSlot3"]
+layout_mode = 2
+text = "空\n槽位"
+theme_override_font_sizes/font_size = 22
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BuySectionLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 355.0
+offset_right = 1060.0
+offset_bottom = 410.0
+text = "购买宝箱"
+theme_override_font_sizes/font_size = 34
+
+[node name="BuyCardsRow" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 420.0
+offset_right = 1060.0
+offset_bottom = 870.0
+theme_override_constants/separation = 20
+
+[node name="InfoPanel" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = 60.0
+offset_top = 300.0
+offset_right = 1020.0
+offset_bottom = 1100.0
+visible = false
+
+[node name="InfoVBox" type="VBoxContainer" parent="InfoPanel"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="InfoHeaderRow" type="HBoxContainer" parent="InfoPanel/InfoVBox"]
+layout_mode = 2
+
+[node name="InfoTitle" type="Label" parent="InfoPanel/InfoVBox/InfoHeaderRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "宝箱内容"
+theme_override_font_sizes/font_size = 38
+
+[node name="CloseBtn" type="Button" parent="InfoPanel/InfoVBox/InfoHeaderRow"]
+custom_minimum_size = Vector2(70, 70)
+text = "✕"
+theme_override_font_sizes/font_size = 32
+
+[node name="InfoCardCount" type="Label" parent="InfoPanel/InfoVBox"]
+layout_mode = 2
+text = "开箱张数：?"
+theme_override_font_sizes/font_size = 28
+
+[node name="RarityTitle" type="Label" parent="InfoPanel/InfoVBox"]
+layout_mode = 2
+text = "稀有度概率"
+theme_override_font_sizes/font_size = 28
+
+[node name="InfoRarityGrid" type="GridContainer" parent="InfoPanel/InfoVBox"]
+layout_mode = 2
+columns = 2
+theme_override_constants/h_separation = 40
+theme_override_constants/v_separation = 12
+
+[node name="PurchaseDialog" type="ConfirmationDialog" parent="."]
+title = "确认购买"
+dialog_text = "确认购买？"
+min_size = Vector2(600, 250)

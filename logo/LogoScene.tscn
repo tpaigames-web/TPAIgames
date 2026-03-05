@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://chxoyio8ki4ap"]
+
+[ext_resource type="VideoStream" uid="uid://dfb2um36ga5qu" path="res://assets/sprites/video/logo.ogv" id="1_1v5s8"]
+[ext_resource type="Script" path="res://logo/LogoScene.gd" id="2_script"]
+
+[node name="LogoScene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_script")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stream = ExtResource("1_1v5s8")
+expand = true

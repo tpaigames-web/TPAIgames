@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3 uid="uid://ce0qp3ajlxwoq"]
+
+[ext_resource type="Script" uid="uid://dapicbkaarem1" path="res://enemy/enemy_data.gd" id="1_2edje"]
+
+[resource]
+script = ExtResource("1_2edje")
+enemy_id = "squirrel"
+display_name = "松鼠"
+display_emoji = "🐿️"
+max_hp = 80
+move_speed = 180.0
+damage_to_player = 2
+gold_reward = 6
+xp_reward = 6
+metadata/_custom_type_script = "uid://dapicbkaarem1"

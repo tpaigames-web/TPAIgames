@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3 uid="uid://ifagrcabvkxq"]
+
+[ext_resource type="Script" uid="uid://dapicbkaarem1" path="res://enemy/enemy_data.gd" id="1_gmole"]
+
+[resource]
+script = ExtResource("1_gmole")
+enemy_id = "giant_mole"
+display_name = "巨型地鼠"
+display_emoji = "🦡"
+max_hp = 600
+move_speed = 90.0
+damage_to_player = 8
+gold_reward = 28
+xp_reward = 28
+is_giant = true
+can_bypass_traps = true
+metadata/_custom_type_script = "uid://dapicbkaarem1"

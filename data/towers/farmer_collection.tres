@@ -1,0 +1,58 @@
+[gd_resource type="Resource" script_class="TowerCollectionData" format=3 uid="uid://b66kavowat6rs"]
+
+[ext_resource type="Script" uid="uid://dh7u72sh06tc3" path="res://data/tower_collection_data.gd" id="1_tcd"]
+[ext_resource type="Script" uid="uid://igm0o4p3kx5q" path="res://data/bullet_effects/BulletEffect.gd" id="1_yfl5d"]
+[ext_resource type="Script" uid="uid://cs8acmmyvm8t5" path="res://data/tower_upgrade_path.gd" id="2_tup"]
+
+[sub_resource type="Resource" id="Path_0"]
+script = ExtResource("2_tup")
+path_name = "散弹枪"
+tier_names = Array[String](["加强装弹", "穿透弹丸", "爆炸弹丸", "超级散射", "霰弹之王"])
+tier_effects = Array[String](["每次射击弹丸数+1", "弹丸可穿透一个敌人", "弹丸命中时造成小范围爆炸", "弹丸数翻倍，射程+20%", "弹丸伤害大幅提升，可击退"])
+tier_costs = Array[int]([200, 400, 650, 900, 1300])
+damage_bonus_per_tier = 0.15
+
+[sub_resource type="Resource" id="Path_1"]
+script = ExtResource("2_tup")
+path_name = "机关枪"
+tier_names = Array[String](["半自动", "全自动", "重机枪", "加特林", "终极连射"])
+tier_effects = Array[String](["攻击速度+30%", "攻击速度大幅提升", "伤害提升，对大型单位额外伤害", "极高射速，持续攻击", "攻击速度最大化，伤害持续提升"])
+tier_costs = Array[int]([180, 360, 600, 850, 1200])
+damage_bonus_per_tier = 0.1
+speed_bonus_per_tier = 0.15
+
+[sub_resource type="Resource" id="Path_2"]
+script = ExtResource("2_tup")
+path_name = "狙击枪"
+tier_names = Array[String](["瞄准镜", "穿透射击", "爆头", "反器材枪", "神枪手"])
+tier_effects = Array[String](["射程+40%，专攻第一个敌人", "子弹穿透所有敌人", "25%几率造成双倍伤害", "对大型单位造成大量额外伤害", "极远射程，极高伤害，必定暴击"])
+tier_costs = Array[int]([220, 440, 700, 950, 1400])
+damage_bonus_per_tier = 0.12
+range_bonus_per_tier = 0.08
+
+[sub_resource type="Resource" id="Path_3"]
+script = ExtResource("2_tup")
+path_name = "机械手臂"
+tier_names = Array[String](["机械助手", "武器替换", "扩展上限I", "扩展上限II", "双臂机械"])
+tier_effects = Array[String](["额外获得1条机械臂，持当前最高升级方向武器", "机械臂可持任意已升级方向的武器", "其他升级方向最高层级上限提升至3层", "其他升级方向最高层级上限提升至4层", "再获得1条机械臂（共3条）"])
+tier_costs = Array[int]([350, 600, 900, 1200, 1600])
+
+[resource]
+script = ExtResource("1_tcd")
+tower_id = "farmer"
+display_name = "农夫"
+tower_emoji = "👨‍🌾"
+rarity = 3
+base_damage = 30.0
+attack_speed = 0.6
+attack_range = 280.0
+placement_cost = 500
+attack_type = 2
+effect_description = "猎枪散射攻击，对地面和空中敌人均有效"
+upgrade_paths = Array[ExtResource("2_tup")]([SubResource("Path_0"), SubResource("Path_1"), SubResource("Path_2"), SubResource("Path_3")])
+level_required = 5
+unlock_fragments = 50
+unlock_gold = 1500
+upgrade_fragments = Array[int]([40, 80, 160, 320, 640])
+upgrade_gold = Array[int]([500, 1000, 2000, 4000, 8000])
+fragment_shop_price = Array[int]([200, 400, 1000])

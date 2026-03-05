@@ -1,0 +1,55 @@
+[gd_resource type="Resource" script_class="TowerCollectionData" format=3 uid="uid://wtw4q8nk7mxrp5"]
+
+[ext_resource type="Script" uid="uid://dh7u72sh06tc3" path="res://data/tower_collection_data.gd" id="1_tcd"]
+[ext_resource type="Script" uid="uid://cs8acmmyvm8t5" path="res://data/tower_upgrade_path.gd" id="2_tup"]
+
+[sub_resource type="Resource" id="Path_0"]
+script = ExtResource("2_tup")
+path_name = "狙击威力"
+tier_names = Array[String](["精准射击", "暴击弹头", "穿甲狙击", "必定暴击", "终极狙击"])
+tier_effects = Array[String](["精准校准，狙击伤害+15%", "25%几率造成双倍伤害暴击", "无视目标25%护甲", "必定造成暴击，伤害大幅提升", "终极狙击：极限伤害，击穿大型单位造成穿透伤害"])
+tier_costs = Array[int]([300, 600, 1000, 1400, 2000])
+damage_bonus_per_tier = 0.15
+
+[sub_resource type="Resource" id="Path_1"]
+script = ExtResource("2_tup")
+path_name = "射速提升"
+tier_names = Array[String](["快速装弹", "高效弹夹", "连发模式", "自动装弹", "极速射击"])
+tier_effects = Array[String](["快速装弹，攻速+10%", "大容量弹夹，减少换弹时间，攻速累积提升", "连发模式：单次触发连射2发", "自动装弹系统，攻速大幅提升", "极速射击：攻速极限，弹如雨点"])
+tier_costs = Array[int]([250, 500, 800, 1100, 1600])
+speed_bonus_per_tier = 0.1
+
+[sub_resource type="Resource" id="Path_2"]
+script = ExtResource("2_tup")
+path_name = "超远射程"
+tier_names = Array[String](["瞄准镜", "长管狙击", "穿透射击", "全图狙击", "超级射程"])
+tier_effects = Array[String](["安装瞄准镜，射程+20%", "加长枪管，射程累积大幅提升", "子弹可穿透一个敌人击中后方目标", "子弹穿透所有敌人，射程覆盖全图", "超级射程：100%覆盖全地图，无论多远皆可击中"])
+tier_costs = Array[int]([280, 560, 900, 1250, 1800])
+range_bonus_per_tier = 0.2
+
+[sub_resource type="Resource" id="Path_3"]
+script = ExtResource("2_tup")
+path_name = "标记猎杀"
+tier_names = Array[String](["猎人标记", "持久标记", "暴击追踪", "连锁标记", "永久猎杀"])
+tier_effects = Array[String](["命中附加猎人标记，目标5秒内受额外伤害+20%", "标记持续时间翻倍至10秒", "对已标记目标暴击率+50%", "击杀已标记目标后，自动连锁标记下一个敌人", "永久猎杀：多个目标同时标记，暴击与增伤同时生效"])
+tier_costs = Array[int]([350, 700, 1100, 1500, 2200])
+
+[resource]
+script = ExtResource("1_tcd")
+tower_id = "watchtower"
+display_name = "守望塔"
+tower_emoji = "🗼"
+rarity = 3
+base_damage = 55.0
+attack_speed = 0.25
+attack_range = 500.0
+placement_cost = 600
+attack_type = 0
+effect_description = "超远程精准狙击，射程极长，单发伤害极高，擅长标记并猎杀高价值目标"
+upgrade_paths = Array[ExtResource("2_tup")]([SubResource("Path_0"), SubResource("Path_1"), SubResource("Path_2"), SubResource("Path_3")])
+level_required = 50
+unlock_fragments = 50
+unlock_gold = 1500
+upgrade_fragments = Array[int]([40, 80, 160, 320, 640])
+upgrade_gold = Array[int]([500, 1000, 2000, 4000, 8000])
+fragment_shop_price = Array[int]([200, 400, 1000])

@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3 uid="uid://ckhcitdkdxm0s"]
+
+[ext_resource type="Script" uid="uid://dapicbkaarem1" path="res://enemy/enemy_data.gd" id="1_fking"]
+
+[resource]
+script = ExtResource("1_fking")
+enemy_id = "forest_king"
+display_name = "森林之王"
+display_emoji = "🌳"
+max_hp = 3000
+move_speed = 100.0
+damage_to_player = 15
+gold_reward = 100
+xp_reward = 100
+is_flying = true
+shield_threshold = 0.25
+spawn_interval = 10.0
+spawn_enemy_type = "boar"
+spawn_count = 1
+metadata/_custom_type_script = "uid://dapicbkaarem1"

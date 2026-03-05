@@ -1,0 +1,97 @@
+[gd_scene format=3 uid="uid://cyxm6fl4br8pu"]
+
+[ext_resource type="Script" uid="uid://cexryhv0ljwlc" path="res://scenes/tabs/TowersTab.gd" id="1_script"]
+
+[node name="TowersTab" type="Control" unique_id=1837747569]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="Background" type="ColorRect" parent="." unique_id=856925955]
+layout_mode = 0
+offset_right = 1080.0
+offset_bottom = 1580.0
+color = Color(0.1, 0.12, 0.18, 1)
+
+[node name="TitleLabel" type="Label" parent="." unique_id=1548498475]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 1060.0
+offset_bottom = 80.0
+theme_override_font_sizes/font_size = 44
+text = "兵工厂"
+horizontal_alignment = 1
+
+[node name="FilterRow" type="HBoxContainer" parent="." unique_id=257067190]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 90.0
+offset_right = 1060.0
+offset_bottom = 170.0
+theme_override_constants/separation = 8
+
+[node name="FilterAll" type="Button" parent="FilterRow" unique_id=1805440431]
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "全部"
+
+[node name="FilterWhite" type="Button" parent="FilterRow" unique_id=5106705]
+modulate = Color(0.85, 0.85, 0.85, 1)
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "白"
+
+[node name="FilterGreen" type="Button" parent="FilterRow" unique_id=654229716]
+modulate = Color(0.4, 0.9, 0.4, 1)
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "绿"
+
+[node name="FilterBlue" type="Button" parent="FilterRow" unique_id=703885597]
+modulate = Color(0.4, 0.7, 1, 1)
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "蓝"
+
+[node name="FilterPurple" type="Button" parent="FilterRow" unique_id=400024618]
+modulate = Color(0.85, 0.4, 1, 1)
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "紫"
+
+[node name="FilterOrange" type="Button" parent="FilterRow" unique_id=1889186134]
+modulate = Color(1, 0.65, 0.2, 1)
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "橙"
+
+[node name="GridScrollContainer" type="ScrollContainer" parent="." unique_id=1266925438]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 185.0
+offset_right = 1060.0
+offset_bottom = 1560.0
+
+[node name="TowerGrid" type="GridContainer" parent="GridScrollContainer" unique_id=145724633]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 16
+theme_override_constants/v_separation = 16
+columns = 3

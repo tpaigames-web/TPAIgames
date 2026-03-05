@@ -1,0 +1,85 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="阿福守农场"
+run/main_scene="uid://bmwliva02rmlx"
+config/features=PackedStringArray("4.6", "Mobile")
+
+[autoload]
+
+GameManager="*uid://jub6vmuu00qx"
+SceneManager="*res://managers/SceneManager.gd"
+UserManager="*res://managers/UserManager.gd"
+CollectionManager="*res://managers/CollectionManager.gd"
+PaymentManager="*res://managers/PaymentManager.gd"
+SaveManager="*res://managers/SaveManager.gd"
+
+[display]
+
+window/size/viewport_width=1080
+window/size/viewport_height=1920
+window/size/window_width_override=540
+window/size/window_height_override=960
+window/stretch/mode="canvas_items"
+window/handheld/orientation=1
+
+[editor]
+
+version_control/autoload_on_startup=true
+
+[global_group]
+
+tower=""
+path=""
+block=""
+enemy=""
+
+[importer_defaults]
+
+animation_library={
+&"nodes/root_script": null
+}
+
+[layer_names]
+
+2d_render/layer_1="map 地图整体"
+2d_render/layer_2="tower 普通炮台"
+2d_render/layer_3="trap 陷阱类塔（放在path）"
+2d_render/layer_4="enemy_ground 地面敌人"
+2d_render/layer_5="enemy_air 空中敌人"
+2d_render/layer_6="enemy_water 水下敌人"
+2d_render/layer_7="projectile 子弹"
+2d_render/layer_8="tower_range 塔攻击范围"
+2d_render/layer_9="block 禁止放置区域"
+2d_render/layer_10="decoration 装饰物"
+2d_render/layer_11="path 路径检测"
+2d_render/layer_12="interactable 可拆卸装饰"
+2d_physics/layer_1="map 地图整体"
+2d_physics/layer_2="tower 普通炮台"
+2d_physics/layer_3="trap 陷阱类塔（放在path）"
+2d_physics/layer_4="enemy_ground 地面敌人"
+2d_physics/layer_5="enemy_air 空中敌人"
+2d_physics/layer_6="enemy_water 水下敌人"
+2d_physics/layer_7="projectile 子弹"
+2d_physics/layer_8="tower_range 塔攻击范围"
+2d_physics/layer_9="block 禁止放置区域"
+2d_physics/layer_10="decoration 装饰物"
+2d_physics/layer_11="path 路径检测"
+2d_physics/layer_12="interactable 可拆卸装饰"
+
+[physics]
+
+3d/physics_engine="Jolt Physics"
+
+[rendering]
+
+renderer/rendering_method="mobile"

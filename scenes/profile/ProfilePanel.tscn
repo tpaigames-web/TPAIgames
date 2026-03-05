@@ -1,0 +1,445 @@
+[gd_scene format=3 uid="uid://1ln2ky72es62"]
+
+[ext_resource type="Script" uid="uid://clkusua0midw3" path="res://scenes/profile/ProfilePanel.gd" id="1_script"]
+
+[node name="ProfilePanel" type="CanvasLayer" unique_id=1090839377]
+layer = 15
+script = ExtResource("1_script")
+
+[node name="DimBg" type="ColorRect" parent="." unique_id=1631209474]
+offset_right = 1080.0
+offset_bottom = 1920.0
+color = Color(0, 0, 0, 0.6)
+
+[node name="Card" type="Panel" parent="." unique_id=541721627]
+offset_left = 40.0
+offset_top = 100.0
+offset_right = 1040.0
+offset_bottom = 1820.0
+
+[node name="CloseBtn" type="Button" parent="Card" unique_id=1647685745]
+layout_mode = 0
+offset_left = 920.0
+offset_top = 10.0
+offset_right = 990.0
+offset_bottom = 80.0
+theme_override_font_sizes/font_size = 36
+text = "✕"
+
+[node name="HeaderRow" type="HBoxContainer" parent="Card" unique_id=1113227646]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 914.0
+offset_bottom = 220.0
+theme_override_constants/separation = 24
+
+[node name="AvatarBtn" type="Button" parent="Card/HeaderRow" unique_id=1788876493]
+custom_minimum_size = Vector2(160, 160)
+layout_mode = 2
+flat = true
+
+[node name="AvatarBg" type="ColorRect" parent="Card/HeaderRow/AvatarBtn" unique_id=394196506]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.22, 0.35, 0.18, 1)
+
+[node name="AvatarEmoji" type="Label" parent="Card/HeaderRow/AvatarBtn" unique_id=652887127]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 64
+text = "🌾"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AvatarTexture" type="TextureRect" parent="Card/HeaderRow/AvatarBtn" unique_id=870678747]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="NameInfoVBox" type="VBoxContainer" parent="Card/HeaderRow" unique_id=1916538042]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="NameRow" type="HBoxContainer" parent="Card/HeaderRow/NameInfoVBox" unique_id=500484476]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="NameLabel" type="Label" parent="Card/HeaderRow/NameInfoVBox/NameRow" unique_id=392014707]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 40
+text = "农场主"
+
+[node name="EditNameBtn" type="Button" parent="Card/HeaderRow/NameInfoVBox/NameRow" unique_id=1721314058]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "🖊"
+flat = true
+
+[node name="LevelRow" type="HBoxContainer" parent="Card/HeaderRow/NameInfoVBox" unique_id=1961944125]
+layout_mode = 2
+mouse_filter = 0
+theme_override_constants/separation = 16
+
+[node name="LevelLabel" type="Label" parent="Card/HeaderRow/NameInfoVBox/LevelRow" unique_id=1375765366]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Lv. 1"
+
+[node name="LevelHint" type="Label" parent="Card/HeaderRow/NameInfoVBox/LevelRow" unique_id=568478101]
+modulate = Color(1, 1, 1, 0.55)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "▶ 升级"
+
+[node name="XpBarContainer" type="Control" parent="Card/HeaderRow/NameInfoVBox" unique_id=664526821]
+custom_minimum_size = Vector2(0, 28)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="XpBg" type="ColorRect" parent="Card/HeaderRow/NameInfoVBox/XpBarContainer" unique_id=816242515]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.2, 0.2, 0.2, 1)
+
+[node name="XpFill" type="ColorRect" parent="Card/HeaderRow/NameInfoVBox/XpBarContainer" unique_id=1537521918]
+layout_mode = 0
+offset_bottom = 28.0
+color = Color(0.25, 0.75, 0.25, 1)
+
+[node name="XpLabel" type="Label" parent="Card/HeaderRow/NameInfoVBox/XpBarContainer" unique_id=1512660341]
+layout_mode = 0
+offset_right = 600.0
+offset_bottom = 28.0
+theme_override_font_sizes/font_size = 18
+text = "0 / 100 XP"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="IdLabel" type="Label" parent="Card/HeaderRow/NameInfoVBox" unique_id=876543210]
+layout_mode = 2
+modulate = Color(1, 1, 1, 0.45)
+theme_override_font_sizes/font_size = 18
+text = "ID: --------"
+
+[node name="AchievSection" type="VBoxContainer" parent="Card" unique_id=1480366117]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 240.0
+offset_right = 980.0
+offset_bottom = 510.0
+theme_override_constants/separation = 12
+
+[node name="AchievTitle" type="Label" parent="Card/AchievSection" unique_id=560625431]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "🏆 成就"
+
+[node name="AchievBox" type="Panel" parent="Card/AchievSection" unique_id=887270966]
+custom_minimum_size = Vector2(0, 180)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="AchievPlaceholder" type="Label" parent="Card/AchievSection/AchievBox" unique_id=53816776]
+modulate = Color(1, 1, 1, 0.5)
+layout_mode = 0
+offset_right = 960.0
+offset_bottom = 180.0
+theme_override_font_sizes/font_size = 26
+text = "暂无成就，完成挑战即可解锁"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BottomRow" type="HBoxContainer" parent="Card" unique_id=1478972545]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 530.0
+offset_right = 980.0
+offset_bottom = 840.0
+theme_override_constants/separation = 20
+
+[node name="TowerHeroBox" type="VBoxContainer" parent="Card/BottomRow" unique_id=713638683]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="TowerHeroTitle" type="Label" parent="Card/BottomRow/TowerHeroBox" unique_id=684409726]
+layout_mode = 2
+theme_override_font_sizes/font_size = 26
+text = "常用炮台 & 英雄"
+
+[node name="IconsRow" type="HBoxContainer" parent="Card/BottomRow/TowerHeroBox" unique_id=588946619]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Icon0" type="Panel" parent="Card/BottomRow/TowerHeroBox/IconsRow" unique_id=362778891]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+
+[node name="Icon1" type="Panel" parent="Card/BottomRow/TowerHeroBox/IconsRow" unique_id=454555550]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+
+[node name="Icon2" type="Panel" parent="Card/BottomRow/TowerHeroBox/IconsRow" unique_id=1876474639]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+
+[node name="Icon3" type="Panel" parent="Card/BottomRow/TowerHeroBox/IconsRow" unique_id=304484332]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+
+[node name="Icon4" type="Panel" parent="Card/BottomRow/TowerHeroBox/IconsRow" unique_id=1739032225]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+
+[node name="Icon5" type="Panel" parent="Card/BottomRow/TowerHeroBox/IconsRow" unique_id=1844217790]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+
+[node name="StatsBox" type="VBoxContainer" parent="Card/BottomRow" unique_id=2134458546]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="StatsTitle" type="Label" parent="Card/BottomRow/StatsBox" unique_id=1115062927]
+layout_mode = 2
+theme_override_font_sizes/font_size = 26
+text = "战绩"
+
+[node name="GamesPlayedLabel" type="Label" parent="Card/BottomRow/StatsBox" unique_id=1145464402]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "游戏场次：0"
+
+[node name="GamesWonLabel" type="Label" parent="Card/BottomRow/StatsBox" unique_id=472381189]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "胜场：0"
+
+[node name="EnemiesLabel" type="Label" parent="Card/BottomRow/StatsBox" unique_id=1774530657]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "击败敌人：0"
+
+[node name="AchievUnlockedLabel" type="Label" parent="Card/BottomRow/StatsBox" unique_id=1439096344]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "成就解锁：0"
+
+[node name="AvatarPicker" type="Panel" parent="Card" unique_id=1780812290]
+visible = false
+layout_mode = 0
+offset_left = 30.0
+offset_top = 380.0
+offset_right = 970.0
+offset_bottom = 880.0
+
+[node name="PickerTitle" type="Label" parent="Card/AvatarPicker" unique_id=1898117903]
+layout_mode = 0
+offset_top = 14.0
+offset_right = 940.0
+offset_bottom = 74.0
+theme_override_font_sizes/font_size = 34
+text = "选择头像"
+horizontal_alignment = 1
+
+[node name="PickerRow" type="HBoxContainer" parent="Card/AvatarPicker" unique_id=1160207341]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 84.0
+offset_right = 910.0
+offset_bottom = 440.0
+theme_override_constants/separation = 40
+alignment = 1
+
+[node name="AvatarOpt0" type="Button" parent="Card/AvatarPicker/PickerRow" unique_id=338791923]
+custom_minimum_size = Vector2(200, 240)
+layout_mode = 2
+flat = true
+
+[node name="AvatarOptBg0" type="ColorRect" parent="Card/AvatarPicker/PickerRow/AvatarOpt0" unique_id=1842475074]
+layout_mode = 0
+offset_right = 200.0
+offset_bottom = 195.0
+mouse_filter = 2
+color = Color(0.18, 0.18, 0.2, 1)
+
+[node name="AvatarEmoji0" type="Label" parent="Card/AvatarPicker/PickerRow/AvatarOpt0" unique_id=913061671]
+layout_mode = 0
+offset_right = 200.0
+offset_bottom = 195.0
+theme_override_font_sizes/font_size = 56
+text = "🌾"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AvatarTex0" type="TextureRect" parent="Card/AvatarPicker/PickerRow/AvatarOpt0" unique_id=263040146]
+layout_mode = 0
+offset_right = 200.0
+offset_bottom = 195.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="AvatarLabel0" type="Label" parent="Card/AvatarPicker/PickerRow/AvatarOpt0" unique_id=1869655774]
+layout_mode = 0
+offset_top = 198.0
+offset_right = 200.0
+offset_bottom = 240.0
+theme_override_font_sizes/font_size = 24
+text = "稻草人"
+horizontal_alignment = 1
+
+[node name="AvatarOpt1" type="Button" parent="Card/AvatarPicker/PickerRow" unique_id=1402652429]
+custom_minimum_size = Vector2(200, 240)
+layout_mode = 2
+flat = true
+
+[node name="AvatarOptBg1" type="ColorRect" parent="Card/AvatarPicker/PickerRow/AvatarOpt1" unique_id=1960699417]
+layout_mode = 0
+offset_right = 200.0
+offset_bottom = 195.0
+mouse_filter = 2
+color = Color(0.18, 0.18, 0.2, 1)
+
+[node name="AvatarEmoji1" type="Label" parent="Card/AvatarPicker/PickerRow/AvatarOpt1" unique_id=157350992]
+layout_mode = 0
+offset_right = 200.0
+offset_bottom = 195.0
+theme_override_font_sizes/font_size = 56
+text = "🐭"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AvatarTex1" type="TextureRect" parent="Card/AvatarPicker/PickerRow/AvatarOpt1" unique_id=1658824789]
+layout_mode = 0
+offset_right = 200.0
+offset_bottom = 195.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="AvatarLabel1" type="Label" parent="Card/AvatarPicker/PickerRow/AvatarOpt1" unique_id=938549194]
+layout_mode = 0
+offset_top = 198.0
+offset_right = 200.0
+offset_bottom = 240.0
+theme_override_font_sizes/font_size = 24
+text = "老鼠"
+horizontal_alignment = 1
+
+[node name="AvatarOpt2" type="Button" parent="Card/AvatarPicker/PickerRow" unique_id=1392420324]
+custom_minimum_size = Vector2(200, 240)
+layout_mode = 2
+flat = true
+
+[node name="AvatarOptBg2" type="ColorRect" parent="Card/AvatarPicker/PickerRow/AvatarOpt2" unique_id=1988049028]
+layout_mode = 0
+offset_right = 200.0
+offset_bottom = 195.0
+mouse_filter = 2
+color = Color(0.18, 0.18, 0.2, 1)
+
+[node name="AvatarEmoji2" type="Label" parent="Card/AvatarPicker/PickerRow/AvatarOpt2" unique_id=490979904]
+layout_mode = 0
+offset_right = 200.0
+offset_bottom = 195.0
+theme_override_font_sizes/font_size = 56
+text = "🐿"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AvatarTex2" type="TextureRect" parent="Card/AvatarPicker/PickerRow/AvatarOpt2" unique_id=388114203]
+layout_mode = 0
+offset_right = 200.0
+offset_bottom = 195.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="AvatarLabel2" type="Label" parent="Card/AvatarPicker/PickerRow/AvatarOpt2" unique_id=752403092]
+layout_mode = 0
+offset_top = 198.0
+offset_right = 200.0
+offset_bottom = 240.0
+theme_override_font_sizes/font_size = 24
+text = "松鼠"
+horizontal_alignment = 1
+
+[node name="PickerCloseBtn" type="Button" parent="Card/AvatarPicker" unique_id=826653643]
+layout_mode = 0
+offset_left = 872.0
+offset_top = 10.0
+offset_right = 940.0
+offset_bottom = 74.0
+theme_override_font_sizes/font_size = 28
+text = "✕"
+
+[node name="RenameBox" type="Panel" parent="Card" unique_id=1596564844]
+visible = false
+layout_mode = 0
+offset_left = 100.0
+offset_top = 620.0
+offset_right = 900.0
+offset_bottom = 960.0
+
+[node name="RenameTitle" type="Label" parent="Card/RenameBox" unique_id=1686358737]
+layout_mode = 0
+offset_top = 20.0
+offset_right = 800.0
+offset_bottom = 80.0
+theme_override_font_sizes/font_size = 32
+text = "修改名字"
+horizontal_alignment = 1
+
+[node name="NameInput" type="LineEdit" parent="Card/RenameBox" unique_id=1135663413]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 100.0
+offset_right = 760.0
+offset_bottom = 170.0
+theme_override_font_sizes/font_size = 30
+placeholder_text = "输入新名字"
+
+[node name="RenameButtons" type="HBoxContainer" parent="Card/RenameBox" unique_id=1034670970]
+layout_mode = 0
+offset_left = 100.0
+offset_top = 200.0
+offset_right = 700.0
+offset_bottom = 300.0
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="ConfirmBtn" type="Button" parent="Card/RenameBox/RenameButtons" unique_id=1496669977]
+custom_minimum_size = Vector2(220, 80)
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "确认"
+
+[node name="CancelBtn" type="Button" parent="Card/RenameBox/RenameButtons" unique_id=1059700330]
+custom_minimum_size = Vector2(220, 80)
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "取消"

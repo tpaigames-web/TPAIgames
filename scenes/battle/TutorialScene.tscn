@@ -1,0 +1,129 @@
+[gd_scene format=3 uid="uid://tutorial_scene"]
+
+[ext_resource type="PackedScene" uid="uid://tutorial_map" path="res://map/TutorialMap.tscn" id="1_tutmap"]
+[ext_resource type="Script" path="res://managers/BuildManager.gd" id="2_build"]
+[ext_resource type="Script" path="res://managers/WaveManager.gd" id="3_wave"]
+[ext_resource type="PackedScene" uid="uid://d1tu7y8b2raa5" path="res://tower/Tower.tscn" id="4_tower"]
+[ext_resource type="Script" path="res://scenes/battle/TutorialScene.gd" id="6_script"]
+
+[node name="TutorialScene" type="Node"]
+script = ExtResource("6_script")
+
+[node name="TutorialMap" parent="." instance=ExtResource("1_tutmap")]
+
+[node name="BuildManager" type="Node" parent="."]
+script = ExtResource("2_build")
+tower_scene = ExtResource("4_tower")
+tower_layer_path = NodePath("../TutorialMap/TowerLayer")
+
+[node name="WaveManager" type="Node" parent="."]
+script = ExtResource("3_wave")
+map_path_node = NodePath("../TutorialMap/Path2D")
+
+[node name="HUD" type="CanvasLayer" parent="."]
+layer = 5
+
+[node name="TopBar" type="HBoxContainer" parent="HUD"]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 1080.0
+offset_bottom = 80.0
+theme_override_constants/separation = 0
+
+[node name="BackBtn" type="Button" parent="HUD/TopBar"]
+layout_mode = 2
+custom_minimum_size = Vector2(80, 0)
+theme_override_font_sizes/font_size = 32
+text = "←"
+
+[node name="HPPanel" type="PanelContainer" parent="HUD/TopBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HPLabel" type="Label" parent="HUD/TopBar/HPPanel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "❤️ 100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GoldPanel" type="PanelContainer" parent="HUD/TopBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="GoldLabel" type="Label" parent="HUD/TopBar/GoldPanel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "🪙 500"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="BottomPanel" type="Control" parent="HUD"]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 1560.0
+offset_right = 1080.0
+offset_bottom = 1920.0
+
+[node name="ToggleBtn" type="Button" parent="HUD/BottomPanel"]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 1080.0
+offset_bottom = 50.0
+theme_override_font_sizes/font_size = 28
+text = "▲"
+
+[node name="TabBar" type="HBoxContainer" parent="HUD/BottomPanel"]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 50.0
+offset_right = 1080.0
+offset_bottom = 120.0
+theme_override_constants/separation = 0
+
+[node name="TowerTabBtn" type="Button" parent="HUD/BottomPanel/TabBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 28
+text = "炮台"
+
+[node name="HeroTabBtn" type="Button" parent="HUD/BottomPanel/TabBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 28
+text = "英雄 🔒"
+disabled = true
+
+[node name="ItemTabBtn" type="Button" parent="HUD/BottomPanel/TabBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 28
+text = "道具 🔒"
+disabled = true
+
+[node name="TowerScroll" type="ScrollContainer" parent="HUD/BottomPanel"]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 120.0
+offset_right = 1080.0
+offset_bottom = 360.0
+
+[node name="TowerHBox" type="HBoxContainer" parent="HUD/BottomPanel/TowerScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="UpgradePanel" type="ScrollContainer" parent="HUD/BottomPanel"]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 120.0
+offset_right = 1080.0
+offset_bottom = 360.0
+visible = false
+
+[node name="UpgradeVBox" type="VBoxContainer" parent="HUD/BottomPanel/UpgradePanel"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
