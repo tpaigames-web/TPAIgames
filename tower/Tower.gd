@@ -597,6 +597,11 @@ func _fire_at(tgt: Area2D) -> void:
 		)
 		return
 
+	# Hitscan 模式：立即判定伤害 + Tween 视觉飞行
+	if td.use_hitscan:
+		_fire_hitscan(tgt, dmg, td)
+		return
+
 	# 生成并发射子弹（优先从对象池获取）
 	var bullet: Node
 	if bullet_pool and not td.bullet_scene:
@@ -616,6 +621,39 @@ func _fire_at(tgt: Area2D) -> void:
 	if bullet_pool and not td.bullet_scene:
 		bullet._pool = bullet_pool
 	get_tree().current_scene.add_child(bullet)
+
+
+## Hitscan 攻击：立即结算伤害，视觉用 Tween 飞行 emoji
+func _fire_hitscan(tgt: Area2D, dmg: float, td: TowerCollectionData) -> void:
+	# 1. 立即结算伤害
+	var tgt_pos: Vector2 = tgt.global_position if is_instance_valid(tgt) else global_position
+	CombatService.deal_damage(
+		{"source_tower": self, "armor_penetration": armor_penetration,
+		 "pierce_giant": buff_giant_pierce, "ignore_dodge": false},
+		tgt, dmg, td.bullet_effects
+	)
+
+	# 2. 视觉飞行动画（轻量 Node2D + Tween，不影响物理）
+	if not SettingsManager.hit_vfx_enabled:
+		return
+	var vfx := Node2D.new()
+	vfx.global_position = global_position
+	vfx.z_index = 15
+	var lbl := Label.new()
+	lbl.text = td.bullet_emoji if td.bullet_emoji != "" else "⚫"
+	lbl.add_theme_font_size_override("font_size", 20)
+	lbl.position = Vector2(-10, -10)
+	lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	vfx.add_child(lbl)
+	get_tree().current_scene.add_child(vfx)
+
+	# Tween 飞行：从炮台飞到目标位置
+	var flight_time: float = global_position.distance_to(tgt_pos) / maxf(td.bullet_speed, 200.0)
+	flight_time = clampf(flight_time, 0.05, 0.3)  # 限制飞行时间
+	var tw := vfx.create_tween()
+	tw.tween_property(vfx, "global_position", tgt_pos, flight_time)
+	tw.tween_property(lbl, "modulate:a", 0.0, 0.1)
+	tw.tween_callback(vfx.queue_free)
 
 
 ## ═══ 能力系统 ═══

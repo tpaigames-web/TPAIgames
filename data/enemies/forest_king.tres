@@ -18,6 +18,7 @@ is_flying = true
 spawn_interval = 10.0
 spawn_enemy_type = "boar"
 spawn_count = 1
+spawn_max_active = 6
 shield_threshold = 0.25
 counter_strategy = "全队穿甲·多段爆发·眩晕断召唤"
 metadata/_custom_type_script = "uid://dapicbkaarem1"

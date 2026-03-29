@@ -37,6 +37,7 @@ tier_costs = Array[int]([100, 200, 350, 550, 800])
 script = ExtResource("1_tcd")
 tower_scene = ExtResource("tower_scn")
 tower_id = "seed_shooter"
+use_hitscan = true
 display_name = "播种机"
 tower_emoji = "🌱"
 rarity = 2

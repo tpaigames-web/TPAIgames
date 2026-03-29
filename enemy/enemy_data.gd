@@ -63,6 +63,11 @@ class_name EnemyData
 @export var spawn_enemy_type:  String = ""
 ## 每次召唤数量
 @export var spawn_count:       int    = 0
+## 召唤最大数量上限（场上同类召唤物超过此数则停止召唤，0=无上限）
+@export var spawn_max_active:  int    = 0
+## 动态冷却曲线：X轴=场上召唤物数量(0~1归一化)，Y轴=间隔倍率(1.0~3.0)
+## 为 null 时使用默认线性曲线（0个=1.0x，满=2.5x）
+@export var spawn_cooldown_curve: Curve = null
 
 # ── 特殊位移（地鼠 / 巨型地鼠 / 大兔子）─────────────────────────────
 ## 遇到陷阱炮台时可位移跳过

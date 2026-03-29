@@ -38,6 +38,7 @@ tier_costs = Array[int]([350, 600, 900, 1200, 1600])
 script = ExtResource("1_tcd")
 tower_scene = ExtResource("tower_scn")
 tower_id = "farmer"
+use_hitscan = true
 display_name = "农夫"
 tower_emoji = "👨‍🌾"
 rarity = 3

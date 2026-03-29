@@ -64,6 +64,9 @@ class_name TowerCollectionData extends Resource
 ## 子弹飞行速度（像素/秒）；0 = 瞬间命中（不生成子弹实体，直接结算伤害和效果）
 @export var bullet_speed: float = 400.0
 
+## Hitscan 模式：攻击立即判定伤害，视觉用 Tween 飞行动画（适合快速射击炮台）
+@export var use_hitscan: bool = false
+
 ## 子弹携带的效果资源列表（BulletEffect .tres）
 @export var bullet_effects: Array[BulletEffect] = []
 

@@ -41,6 +41,7 @@ tier_costs = Array[int]([350, 700, 1100, 1500, 2200])
 script = ExtResource("1_tcd")
 tower_scene = ExtResource("tower_scn")
 tower_id = "watchtower"
+use_hitscan = true
 display_name = "弓弩"
 tower_emoji = "🗼"
 icon_texture = ExtResource("7_icon")

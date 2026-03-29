@@ -20,5 +20,6 @@ is_giant = true
 spawn_interval = 10.0
 spawn_enemy_type = "crow"
 spawn_count = 2
+spawn_max_active = 8
 counter_strategy = "眩晕打断召唤·穿甲空中炮台"
 metadata/_custom_type_script = "uid://dapicbkaarem1"

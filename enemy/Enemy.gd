@@ -218,17 +218,57 @@ func _update_speed(delta: float) -> void:
 		speed = enemy_data.move_speed   # 冲锋结束，恢复正常速度
 
 
-# ── 召唤逻辑 ──────────────────────────────────────────────────────────
+# ── 召唤逻辑（动态冷却）──────────────────────────────────────────────
 func _update_spawn(delta: float) -> void:
 	if not enemy_data or enemy_data.spawn_interval <= 0.0:
 		return
+
+	# 计算动态冷却间隔
+	var effective_interval: float = _get_spawn_cooldown()
+
 	_spawn_timer += delta
-	if _spawn_timer >= enemy_data.spawn_interval:
+	if _spawn_timer >= effective_interval:
+		# 检查场上召唤物上限
+		if enemy_data.spawn_max_active > 0:
+			var active_count: int = _count_active_summons()
+			if active_count >= enemy_data.spawn_max_active:
+				return  # 达到上限，不召唤但保留计时器
+
 		_spawn_timer = 0.0
 		var parent = get_parent()
 		var prog: float = parent.progress if parent is PathFollow2D else 0.0
 		want_spawn.emit(enemy_data.spawn_enemy_type, enemy_data.spawn_count, prog)
 		_show_spawn_vfx()
+
+
+## 根据场上召唤物数量计算动态冷却间隔
+func _get_spawn_cooldown() -> float:
+	var base: float = enemy_data.spawn_interval
+	var max_active: int = enemy_data.spawn_max_active if enemy_data.spawn_max_active > 0 else 10
+	var active: int = _count_active_summons()
+
+	# 归一化：0.0（无召唤物）→ 1.0（满）
+	var ratio: float = clampf(float(active) / float(max_active), 0.0, 1.0)
+
+	# 使用 Curve 资源或默认线性（1.0x → 2.5x）
+	var multiplier: float
+	if enemy_data.spawn_cooldown_curve:
+		multiplier = enemy_data.spawn_cooldown_curve.sample(ratio)
+	else:
+		multiplier = lerpf(1.0, 2.5, ratio)
+
+	return base * maxf(multiplier, 0.5)
+
+
+## 统计场上同类型的已召唤单位数量
+func _count_active_summons() -> int:
+	var count: int = 0
+	var target_type: String = enemy_data.spawn_enemy_type
+	for enemy in GameManager.get_all_enemies():
+		if is_instance_valid(enemy) and enemy.get("is_summoned") and enemy.is_summoned:
+			if enemy.enemy_data and enemy.enemy_data.enemy_id == target_type:
+				count += 1
+	return count
 
 
 # ── 状态效果处理 ──────────────────────────────────────────────────────

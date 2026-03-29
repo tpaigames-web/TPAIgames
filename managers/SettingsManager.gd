@@ -10,8 +10,12 @@ const SETTINGS_PATH: String = "user://settings.json"
 @export var sfx_volume: int = 80         ## 0-100
 
 # ── 画面/性能 ───────────────────────────────────────────────────────────
-@export var quality: int = 1             ## 0=流畅，1=高画质
+## 0=低（流畅），1=中（均衡），2=高（高画质）
+@export var quality: int = 1
 @export var particles_enabled: bool = true  ## 粒子特效开关
+@export var target_fps: int = 60           ## 目标帧率 30/60
+@export var shadow_enabled: bool = true    ## 炮台阴影
+@export var hit_vfx_enabled: bool = true   ## 命中特效
 
 # ── 游戏辅助 ────────────────────────────────────────────────────────────
 @export var damage_numbers: bool = true     ## 伤害数字显示
@@ -28,6 +32,7 @@ const SETTINGS_PATH: String = "user://settings.json"
 func _ready() -> void:
 	load_settings()
 	_apply_audio()
+	apply_quality()
 
 
 ## 保存设置到文件
@@ -37,6 +42,9 @@ func save_settings() -> void:
 		"sfx_volume": sfx_volume,
 		"quality": quality,
 		"particles_enabled": particles_enabled,
+		"target_fps": target_fps,
+		"shadow_enabled": shadow_enabled,
+		"hit_vfx_enabled": hit_vfx_enabled,
 		"damage_numbers": damage_numbers,
 		"range_display": range_display,
 		"default_speed": default_speed,
@@ -63,6 +71,9 @@ func load_settings() -> void:
 	sfx_volume = int(data.get("sfx_volume", sfx_volume))
 	quality = int(data.get("quality", quality))
 	particles_enabled = bool(data.get("particles_enabled", particles_enabled))
+	target_fps = int(data.get("target_fps", target_fps))
+	shadow_enabled = bool(data.get("shadow_enabled", shadow_enabled))
+	hit_vfx_enabled = bool(data.get("hit_vfx_enabled", hit_vfx_enabled))
 	damage_numbers = bool(data.get("damage_numbers", damage_numbers))
 	range_display = int(data.get("range_display", range_display))
 	default_speed = int(data.get("default_speed", default_speed))
@@ -98,3 +109,47 @@ func set_music_volume(val: int) -> void:
 func set_sfx_volume(val: int) -> void:
 	sfx_volume = clampi(val, 0, 100)
 	_set_bus_volume("SFX", sfx_volume)
+
+
+## ── 画质预设 ─────────────────────────────────────────────────────────
+
+## 设置画质等级并应用（0=低，1=中，2=高）
+func set_quality(level: int) -> void:
+	quality = clampi(level, 0, 2)
+	match quality:
+		0:  # 低（流畅）
+			particles_enabled = false
+			shadow_enabled    = false
+			hit_vfx_enabled   = false
+			target_fps        = 30
+		1:  # 中（均衡）
+			particles_enabled = true
+			shadow_enabled    = true
+			hit_vfx_enabled   = true
+			target_fps        = 60
+		2:  # 高（高画质）
+			particles_enabled = true
+			shadow_enabled    = true
+			hit_vfx_enabled   = true
+			target_fps        = 60
+	apply_quality()
+
+
+## 应用画质设置到引擎
+func apply_quality() -> void:
+	# 帧率限制
+	Engine.max_fps = target_fps
+
+	# 渲染质量（Godot 4 视口缩放）
+	var vp := get_viewport()
+	if vp:
+		match quality:
+			0:
+				vp.scaling_3d_scale = 0.5
+				vp.msaa_2d = Viewport.MSAA_DISABLED
+			1:
+				vp.scaling_3d_scale = 0.75
+				vp.msaa_2d = Viewport.MSAA_DISABLED
+			2:
+				vp.scaling_3d_scale = 1.0
+				vp.msaa_2d = Viewport.MSAA_2X
