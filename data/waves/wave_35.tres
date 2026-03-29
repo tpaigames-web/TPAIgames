@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="WaveConfig" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/wave_config.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+wave_number = 35
+wave_name = "★巅峰军团"
+is_boss_wave = true
+groups = [{ "type": "armored_boar", "count": 7 }, { "type": "giant_mole", "count": 6 }, { "type": "fox_leader", "count": 6 }, { "type": "ant_queen", "count": 3 }, { "type": "crow_king", "count": 1 }]

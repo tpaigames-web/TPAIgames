@@ -1,28 +1,29 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://dbl8d2pleuni3"]
 
-[ext_resource type="Texture2D" path="res://assets/sprites/ui/Flag_01.png" id="tex_flag"]
+[ext_resource type="Texture2D" uid="uid://b7gymrsfxqel4" path="res://assets/sprites/ui/Flag_01.png" id="tex_flag"]
 
 [sub_resource type="StyleBoxEmpty" id="empty_style"]
 
-[node name="UpgradeButton" type="Control"]
+[node name="UpgradeButton" type="Control" unique_id=477134806]
 custom_minimum_size = Vector2(110, 120)
+layout_mode = 3
+anchors_preset = 0
 
-[node name="FlagBg" type="TextureRect" parent="."]
+[node name="FlagBg" type="TextureRect" parent="." unique_id=1993515987]
 layout_mode = 0
-offset_right = 110.0
-offset_bottom = 120.0
+offset_right = 149.0
+offset_bottom = 162.54546
 mouse_filter = 2
 texture = ExtResource("tex_flag")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Label" type="Label" parent="."]
+[node name="Label" type="Label" parent="." unique_id=596058886]
 layout_mode = 0
-offset_left = 10.0
-offset_top = 15.0
-offset_right = 100.0
-offset_bottom = 95.0
-mouse_filter = 2
+offset_left = 31.0
+offset_top = 43.0
+offset_right = 121.0
+offset_bottom = 123.0
 theme_override_colors/font_color = Color(0.3, 0.2, 0.1, 1)
 theme_override_font_sizes/font_size = 32
 text = "升级
@@ -30,10 +31,12 @@ text = "升级
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HitButton" type="Button" parent="."]
+[node name="HitButton" type="Button" parent="." unique_id=718621375]
 layout_mode = 0
-offset_right = 110.0
-offset_bottom = 120.0
+offset_left = 21.0
+offset_top = 23.0
+offset_right = 131.0
+offset_bottom = 143.0
 theme_override_styles/normal = SubResource("empty_style")
-theme_override_styles/hover = SubResource("empty_style")
 theme_override_styles/pressed = SubResource("empty_style")
+theme_override_styles/hover = SubResource("empty_style")

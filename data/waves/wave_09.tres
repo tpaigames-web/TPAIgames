@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="WaveConfig" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/wave_config.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+wave_number = 9
+wave_name = "狐狸狂奔"
+is_boss_wave = false
+groups = [{ "type": "fox_leader", "count": 4 }, { "type": "boar", "count": 3 }, { "type": "ant_queen", "count": 2 }, { "type": "giant_rabbit", "count": 3 }, { "type": "ant_swarm", "count": 6 }]

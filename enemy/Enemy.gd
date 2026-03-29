@@ -233,40 +233,14 @@ func _update_spawn(delta: float) -> void:
 
 # ── 状态效果处理 ──────────────────────────────────────────────────────
 
-## 获取受控制效果（减速 / 定身）影响后的实际移动速度
+## 获取受控制效果影响后的实际移动速度（委托 EffectService）
 func _get_effective_speed() -> float:
-	for eff in _active_effects:
-		if eff.type == BulletEffect.Type.STUN:
-			return 0.0
-	var s: float = speed
-	# 子弹减速效果
-	for eff in _active_effects:
-		if eff.type == BulletEffect.Type.SLOW:
-			s *= (1.0 - eff.potency)
-	# 地形减速（守卫者领域）
-	if terrain_slow > 0.0:
-		s *= (1.0 - terrain_slow)
-	return max(s, 0.0)
+	return EffectService.get_effective_speed(self, speed)
 
 
-## 每帧处理所有激活效果（倒计时、DoT tick）
+## 每帧处理所有激活效果（委托 EffectService）
 func _process_effects(delta: float) -> void:
-	var i: int = _active_effects.size() - 1
-	while i >= 0:
-		var eff: Dictionary = _active_effects[i]
-		eff.remaining -= delta
-		# DoT tick（BURN / POISON / BLEED）
-		var tick_iv: float = eff.get("tick_interval", 0.0)
-		if tick_iv > 0.0:
-			eff.tick_timer += delta
-			if eff.tick_timer >= tick_iv:
-				eff.tick_timer -= tick_iv
-				_apply_dot_tick(eff.get("damage_per_tick", 0.0))
-		if eff.remaining <= 0.0:
-			_active_effects.remove_at(i)
-			_effects_dirty = true
-		i -= 1
-	_check_berserk()
+	EffectService.process_tick(self, delta)
 
 
 ## 再生：每帧回复 HP（毒蛙等）
@@ -294,42 +268,18 @@ func _apply_dot_tick(dmg: float) -> void:
 		die()
 
 
-## 子弹命中入口（由 Bullet._on_hit 调用）
+## 子弹命中入口（向后兼容包装器 — 新代码应使用 CombatService.deal_damage）
 func take_damage_from_bullet(dmg: float, bullet_effects: Array, pierce_giant: bool = false, armor_penetration: int = 0, ignore_dodge: bool = false) -> void:
-	# 全局闪避检查（ignore_dodge 无视闪避）
-	if not ignore_dodge and enemy_data and randf() < enemy_data.attack_immunity_chance:
-		return
-
-	# 标记效果：受到额外伤害加成
-	var dmg_mult: float = 1.0
-	for eff in _active_effects:
-		if eff.type == BulletEffect.Type.MARK:
-			dmg_mult += eff.potency
-
-	var final_dmg: float = dmg * dmg_mult
-
-	# 护甲减伤（护穿降低有效护甲等级）
-	if enemy_data and enemy_data.armor > 0:
-		var effective_armor: int = maxi(enemy_data.armor - armor_penetration, 0)
-		if effective_armor > 0:
-			var idx: int = mini(effective_armor, ARMOR_REDUCTION.size() - 1)
-			var reduction: float = ARMOR_REDUCTION[idx]
-			# 护甲减免（地形 + debuff 叠加）
-			var total_armor_red: float = terrain_armor_reduction + debuff_armor_reduction
-			if total_armor_red > 0.0:
-				reduction = maxf(reduction - total_armor_red, 0.0)
-			final_dmg *= (1.0 - reduction)
-
-	take_damage(final_dmg)
-
-	# 施加子弹携带的效果
-	for effect in bullet_effects:
-		_try_apply_effect(effect, pierce_giant)
+	CombatService.deal_damage(
+		{"source_tower": null, "armor_penetration": armor_penetration,
+		 "pierce_giant": pierce_giant, "ignore_dodge": ignore_dodge},
+		self, dmg, bullet_effects
+	)
 
 
-## 公开接口：施加单个效果（供地形能力等外部调用）
+## 公开接口：施加单个效果（委托 EffectService）
 func apply_effect(effect: BulletEffect, pierce_giant: bool = false) -> void:
-	_try_apply_effect(effect, pierce_giant)
+	EffectService.apply_single_effect(self, effect, pierce_giant)
 
 
 ## 尝试施加单个效果（检查免疫 → 加入激活列表）

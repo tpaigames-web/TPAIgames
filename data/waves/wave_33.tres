@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="WaveConfig" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/wave_config.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+wave_number = 33
+wave_name = "空中死神"
+is_boss_wave = false
+groups = [{ "type": "crow_king", "count": 4 }, { "type": "crow", "count": 18 }, { "type": "locust", "count": 20 }, { "type": "armored_boar", "count": 4 }, { "type": "armadillo", "count": 2 }]

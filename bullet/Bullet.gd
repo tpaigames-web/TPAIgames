@@ -68,6 +68,44 @@ var _last_direction: Vector2 = Vector2.RIGHT
 var _target_last_pos: Vector2 = Vector2.ZERO
 var _target_lost: bool = false
 
+## 对象池引用（null = 不使用池，直接 queue_free）
+var _pool: ObjectPool = null
+
+
+## 回收到池或直接销毁
+func _return_to_pool() -> void:
+	if _pool:
+		_pool.release(self)
+	else:
+		queue_free()
+
+
+## 重置所有状态（对象池回收前调用）
+func reset() -> void:
+	target = null
+	damage = 10.0
+	move_speed = 400.0
+	effects = []
+	attack_type = 0
+	bullet_emoji = "⚫"
+	splash_radius = 0.0
+	splash_damage_ratio = 0.5
+	splash_cone_deg = 0.0
+	splash_burn_duration = 0.0
+	splash_end_explode = false
+	splash_frag_count = 0
+	source_tower = null
+	knockback_distance = 0.0
+	pierce_giant = false
+	armor_penetration = 0
+	ignore_dodge = false
+	pierce_count = 0
+	_pierced_enemies.clear()
+	_last_direction = Vector2.RIGHT
+	_target_last_pos = Vector2.ZERO
+	_target_lost = false
+	global_position = Vector2(-9999, -9999)  # 移出屏幕
+
 
 func _ready() -> void:
 	# 初始化飞行方向
@@ -86,12 +124,21 @@ func _ready() -> void:
 	$EmojiLabel.text = bullet_emoji
 
 
+func _make_source_info() -> Dictionary:
+	return {
+		"source_tower": source_tower,
+		"armor_penetration": armor_penetration,
+		"pierce_giant": pierce_giant,
+		"ignore_dodge": ignore_dodge,
+	}
+
+
 func _process(delta: float) -> void:
 	# 更新目标最后位置 / 检测目标失效
 	if is_instance_valid(target):
 		_target_last_pos = target.global_position
 	elif _target_last_pos == Vector2.ZERO:
-		queue_free()
+		_return_to_pool()
 		return
 	else:
 		_target_lost = true
@@ -115,14 +162,11 @@ func _process(delta: float) -> void:
 
 
 func _on_hit() -> void:
-	# 主目标伤害
-	if is_instance_valid(target) and target.has_method("take_damage_from_bullet"):
-		var was_alive: bool = target.hp > 0
-		target.take_damage_from_bullet(damage, effects, pierce_giant, armor_penetration, ignore_dodge)
-		if is_instance_valid(source_tower):
-			source_tower.notify_damage(damage)
-			if was_alive and (not is_instance_valid(target) or target.hp <= 0):
-				source_tower.notify_kill()
+	# 主目标伤害（通过 CombatService）
+	if is_instance_valid(target):
+		CombatService.deal_damage(
+			_make_source_info(), target, damage, effects
+		)
 
 	# 溅射
 	if splash_radius > 0.0:
@@ -147,7 +191,7 @@ func _on_hit() -> void:
 			target = next
 			_target_lost = false
 			return   # 不销毁，继续飞行
-	queue_free()
+	_return_to_pool()
 
 
 ## 穿透：寻找沿飞行方向的下一个目标
@@ -179,10 +223,9 @@ func _circular_splash() -> void:
 		if enemy == target or not is_instance_valid(enemy):
 			continue
 		if enemy.global_position.distance_squared_to(global_position) <= sp_r2:
-			if enemy.has_method("take_damage_from_bullet"):
-				enemy.take_damage_from_bullet(splash_dmg, effects, pierce_giant, armor_penetration, ignore_dodge)
-				if is_instance_valid(source_tower):
-					source_tower.notify_damage(splash_dmg)
+			CombatService.deal_damage(
+				_make_source_info(), enemy, splash_dmg, effects
+			)
 
 
 ## 弹片模式（splash_cone_deg > 0 时使用）
@@ -263,10 +306,11 @@ class _SplashFragment extends Node2D:
 			if not is_instance_valid(enemy) or enemy in _hit_enemies:
 				continue
 			if enemy.global_position.distance_squared_to(global_position) <= FRAG_HIT_RADIUS * FRAG_HIT_RADIUS:
-				if enemy.has_method("take_damage_from_bullet"):
-					enemy.take_damage_from_bullet(frag_damage, frag_effects, frag_pierce_giant, frag_armor_pen)
-					if is_instance_valid(frag_source_tower):
-						frag_source_tower.notify_damage(frag_damage)
+				CombatService.deal_damage(
+					{"source_tower": frag_source_tower, "armor_penetration": frag_armor_pen,
+					 "pierce_giant": frag_pierce_giant, "ignore_dodge": false},
+					enemy, frag_damage, frag_effects
+				)
 				_hit_enemies.append(enemy)
 
 		# 飞行距离结束
@@ -281,10 +325,11 @@ class _SplashFragment extends Node2D:
 			if not is_instance_valid(enemy):
 				continue
 			if enemy.global_position.distance_squared_to(global_position) <= END_EXPLODE_RADIUS * END_EXPLODE_RADIUS:
-				if enemy.has_method("take_damage_from_bullet"):
-					enemy.take_damage_from_bullet(explode_dmg, frag_effects, frag_pierce_giant, frag_armor_pen)
-					if is_instance_valid(frag_source_tower):
-						frag_source_tower.notify_damage(explode_dmg)
+				CombatService.deal_damage(
+					{"source_tower": frag_source_tower, "armor_penetration": frag_armor_pen,
+					 "pierce_giant": frag_pierce_giant, "ignore_dodge": false},
+					enemy, explode_dmg, frag_effects
+				)
 		# 爆炸视觉
 		var lbl := Label.new()
 		lbl.text = "💥"

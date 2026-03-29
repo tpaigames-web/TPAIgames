@@ -25,6 +25,9 @@ SaveManager="*res://managers/SaveManager.gd"
 AdManager="*res://managers/AdManager.gd"
 TowerResourceRegistry="*res://managers/TowerResourceRegistry.gd"
 SettingsManager="*res://managers/SettingsManager.gd"
+EffectService="*res://managers/EffectService.gd"
+CombatService="*res://managers/CombatService.gd"
+AudioService="*res://managers/AudioService.gd"
 
 [display]
 

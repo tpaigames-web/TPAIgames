@@ -1,7 +1,19 @@
 extends Area2D
+## Tower — 炮台主体
+## 代码区域：
+##   #region CONSTANTS       — 常量 & 能力映射
+##   #region VARIABLES       — 所有变量声明
+##   #region LIFECYCLE       — _ready, apply_tower_data, _process
+##   #region STATS           — 伤害/攻速/射程 计算 & Buff 系统
+##   #region COMBAT          — _fire_at, spawn_bullet_at, 能力系统
+##   #region TARGETING       — 目标选取, 范围内敌人查询
+##   #region GLOBAL_UPGRADES — 波次强化应用
+##   #region VISUALS         — 贴图切换, 范围显示, Buff 图标, _draw
+##   #region PLACEMENT       — 放置检查, 碰撞检测, 输入处理
 
 signal tower_tapped(tower: Area2D)
 
+#region CONSTANTS
 const BULLET_SCENE: PackedScene = preload("res://bullet/Bullet.tscn")
 
 ## tower_id → 能力脚本映射
@@ -22,11 +34,14 @@ const ABILITY_MAP: Dictionary = {
 	"hero_farmer":    preload("res://tower/abilities/AbilityHeroAfu.gd"),
 	"farm_guardian":  preload("res://tower/abilities/AbilityHeroGuardian.gd"),
 }
+#endregion
 
+#region VARIABLES
 @export var tower_data: Resource
 
 var can_place: bool = true
 var is_preview: bool = true
+var bullet_pool: ObjectPool = null  ## 子弹对象池（由 BattleScene 注入）
 var attack_timer: float = 0.0
 var attack_range: Area2D
 var _current_target: Area2D = null
@@ -132,8 +147,9 @@ var buff_upgrade_discount: float = 0.0
 @onready var _attack_spr: Sprite2D = $AttackSprite
 @onready var _anim_spr:   AnimatedSprite2D = $AnimSprite
 @onready var _emoji_lbl:  Label    = $EmojiLabel
+#endregion
 
-
+#region LIFECYCLE
 func _ready():
 
 	monitoring = true
@@ -398,6 +414,9 @@ func _process(delta):
 				_fire_at(_current_target)
 
 
+#endregion
+
+#region STATS
 ## ═══ 数值分解（供 ⓘ 详情面板使用）═══════════════════════════════════════
 
 func get_damage_breakdown() -> Dictionary:
@@ -535,8 +554,9 @@ func apply_stat_upgrades() -> void:
 		attack_range.attack_radius = new_range
 	_effective_range = new_range
 	queue_redraw()
+#endregion
 
-
+#region COMBAT
 func _fire_at(tgt: Area2D) -> void:
 	_current_target = tgt   # 记录当前目标供旋转用
 	var td := tower_data as TowerCollectionData
@@ -570,19 +590,20 @@ func _fire_at(tgt: Area2D) -> void:
 
 	# bullet_speed == 0 → 瞬间命中，不生成子弹实体
 	if td.bullet_speed <= 0.0:
-		if tgt.has_method("take_damage_from_bullet"):
-			var was_alive: bool = tgt.hp > 0
-			tgt.take_damage_from_bullet(dmg, td.bullet_effects, false, armor_penetration)
-			notify_damage(dmg)
-			if was_alive and (not is_instance_valid(tgt) or tgt.hp <= 0):
-				notify_kill()
-		else:
-			tgt.take_damage(dmg)
+		CombatService.deal_damage(
+			{"source_tower": self, "armor_penetration": armor_penetration,
+			 "pierce_giant": false, "ignore_dodge": false},
+			tgt, dmg, td.bullet_effects
+		)
 		return
 
-	# 生成并发射子弹（使用塔楼自定义子弹场景，或默认）
-	var scene: PackedScene = td.bullet_scene if td.bullet_scene else BULLET_SCENE
-	var bullet = scene.instantiate()
+	# 生成并发射子弹（优先从对象池获取）
+	var bullet: Node
+	if bullet_pool and not td.bullet_scene:
+		bullet = bullet_pool.acquire()
+	else:
+		var scene: PackedScene = td.bullet_scene if td.bullet_scene else BULLET_SCENE
+		bullet = scene.instantiate()
 	bullet.global_position = global_position
 	bullet.target          = tgt
 	bullet.damage          = dmg
@@ -591,6 +612,9 @@ func _fire_at(tgt: Area2D) -> void:
 	bullet.attack_type     = td.attack_type
 	bullet.bullet_emoji    = td.bullet_emoji
 	bullet.armor_penetration = armor_penetration
+	bullet.source_tower    = self
+	if bullet_pool and not td.bullet_scene:
+		bullet._pool = bullet_pool
 	get_tree().current_scene.add_child(bullet)
 
 
@@ -633,8 +657,13 @@ func get_effective_damage() -> float:
 func spawn_bullet_at(tgt: Area2D, dmg: float, spd: float, effects: Array, emoji: String, splash: float = 0.0, splash_ratio: float = 0.5, scene: PackedScene = null) -> Node:
 	if not is_instance_valid(tgt):
 		return null
-	var s: PackedScene = scene if scene else BULLET_SCENE
-	var bullet = s.instantiate()
+	var bullet: Node
+	if bullet_pool and scene == null:
+		bullet = bullet_pool.acquire()
+		bullet._pool = bullet_pool
+	else:
+		var s: PackedScene = scene if scene else BULLET_SCENE
+		bullet = s.instantiate()
 	bullet.global_position = global_position
 	bullet.target          = tgt
 	bullet.damage          = dmg
@@ -661,8 +690,9 @@ func get_nearby_towers(radius: float) -> Array:
 		if t.global_position.distance_to(global_position) <= radius:
 			result.append(t)
 	return result
+#endregion
 
-## 触发攻击范围闪光（瞬发塔在 do_attack 中调用）
+#region VISUALS
 ## 刷新炮台上方 buff 图标（仅选中时显示）
 func _refresh_buff_icons() -> void:
 	if is_preview:
@@ -744,6 +774,9 @@ func get_effective_attack_interval() -> float:
 	return _get_effective_attack_interval()
 
 
+#endregion
+
+#region GLOBAL_UPGRADES
 ## 应用全局升级加成（由 BattleScene 在升级选中或新塔放置时调用）
 ## upgrades:       当前局已选的 Array[GlobalUpgradeData]
 ## synergy_active: Dictionary{ upgrade_id → true }，由 BattleScene._check_synergies() 计算
@@ -817,8 +850,9 @@ func _upgrade_matches_tower(upg: GlobalUpgradeData, tid: String, synergy_active:
 			return tid in upg.target_tower_ids
 		return upg.target_tower_id == "" or upg.target_tower_id == tid
 	return false
+#endregion
 
-
+#region PLACEMENT
 ## 处理炮台点击（放置后）— 单击/单次 tap 即可打开升级面板
 func _on_tower_input(_viewport, event, _shape_idx) -> void:
 	if is_preview:
@@ -909,3 +943,4 @@ func _draw():
 		radius = _get_display_range()
 
 	draw_circle(Vector2.ZERO, radius, color)
+#endregion

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="DifficultyTier" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/difficulty_tier.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+day_min = 4
+day_max = 6
+hp_multiplier = 1.3
+speed_multiplier = 1.05
+spawn_interval = 0.6

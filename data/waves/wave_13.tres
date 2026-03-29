@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="WaveConfig" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/wave_config.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+wave_number = 13
+wave_name = "空地双线"
+is_boss_wave = false
+groups = [{ "type": "crow", "count": 14 }, { "type": "locust", "count": 10 }, { "type": "armored_boar", "count": 2 }, { "type": "giant_mole", "count": 2 }]

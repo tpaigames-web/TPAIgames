@@ -22,16 +22,16 @@ func on_placed() -> void:
 	pass
 
 
-## 统一伤害入口：自动统计 damage / kill，并支持巨型穿透标记
+## 统一伤害入口：通过 CombatService 处理伤害计算、效果施加、统计
 func deal_damage(enemy: Area2D, dmg: float, effects: Array, pierce_giant: bool = false) -> void:
 	if not is_instance_valid(enemy):
 		return
-	var was_alive: bool = enemy.hp > 0
-	if enemy.has_method("take_damage_from_bullet"):
-		enemy.take_damage_from_bullet(dmg, effects, pierce_giant, tower.armor_penetration if tower else 0)
-	if is_instance_valid(tower):
-		tower.notify_damage(dmg)
-		if was_alive and not is_instance_valid(enemy):
-			tower.notify_kill()
-		elif was_alive and is_instance_valid(enemy) and enemy.hp <= 0:
-			tower.notify_kill()
+	CombatService.deal_damage(
+		{
+			"source_tower": tower,
+			"armor_penetration": tower.armor_penetration if tower else 0,
+			"pierce_giant": pierce_giant,
+			"ignore_dodge": false,
+		},
+		enemy, dmg, effects
+	)
