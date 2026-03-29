@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="GlobalUpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/global_upgrade_data.gd" id="1_s19"]
+
+[resource]
+script = ExtResource("1_s19")
+upgrade_id = "synergy_full_defense"
+display_name = "全防体系"
+description = "需要：捕兽夹+带刺铁网+稻草人+水压管道\n四者 伤害各 +30%"
+icon_emoji = "🛡"
+rarity = 2
+upgrade_type = 2
+target_tower_id = ""
+stat_type = 0
+stat_bonus = 0.3
+required_tower_ids = Array[String](["bear_trap", "barbed_wire", "scarecrow", "water_pipe"])
+target_tower_ids = Array[String](["bear_trap", "barbed_wire", "scarecrow", "water_pipe"])

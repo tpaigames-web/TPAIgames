@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="PackedScene" uid="uid://d1tu7y8b2raa5" path="res://tower/Tower.tscn" id="1_base"]
+[ext_resource type="Texture2D" path="res://assets/sprites/tower/Windmill/Windmill_01.png" id="tex_wm"]
+
+[node name="Tower" instance=ExtResource("1_base")]
+
+[node name="BaseSprite" parent="." index=1]
+visible = true
+texture = ExtResource("tex_wm")
+scale = Vector2(0.39, 0.39)
+
+[node name="PlacementPolygon" parent="." index=4]
+polygon = PackedVector2Array(-40, -40, 40, -40, 40, 40, -40, 40)

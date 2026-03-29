@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://bw20hjjgokspd"]
+
+[ext_resource type="PackedScene" uid="uid://d1tu7y8b2raa5" path="res://tower/Tower.tscn" id="1_base"]
+[ext_resource type="Texture2D" uid="uid://dyu0vvctr7ob8" path="res://assets/sprites/tower/Crossbow/Crossbow_Full.png" id="2_full"]
+
+[node name="Tower" unique_id=2047283659 instance=ExtResource("1_base")]
+
+[node name="BaseSprite" parent="." index="1" unique_id=555333444]
+visible = true
+position = Vector2(-0.30001092, 0.29999924)
+scale = Vector2(0.09283854, 0.09283854)
+texture = ExtResource("2_full")
+
+[node name="EmojiLabel" parent="." index="4" unique_id=223344556]
+visible = false
+
+[node name="PlacementPolygon" parent="." index="5" unique_id=823270444]
+position = Vector2(-0.5281973, -0.9619082)
+scale = Vector2(0.44359756, 0.4435976)
+polygon = PackedVector2Array(-79, -71, -52, -89, -18, -102, 33, -99, 77, -71, 97, -39, 102, 6, 100, 28, 92, 58, 79, 78, 50, 102, 22, 112, -21, 111, -46, 103, -76, 83, -88, 65, -99, 28, -101, -9, -103, -15, -96, -36)

@@ -1,0 +1,296 @@
+[gd_scene format=3 uid="uid://dgkks0rowfrd2"]
+
+[ext_resource type="Script" uid="uid://bncouovwy7vir" path="res://scenes/components/ModeSelectDialog.gd" id="1_script"]
+[ext_resource type="FontFile" uid="uid://bmi3oq701indj" path="res://assets/sprites/Font/+¡¦¦+¦¦s 700W.ttf" id="font_700"]
+[ext_resource type="Texture2D" uid="uid://dsx0gmgpywlo" path="res://assets/sprites/ui/Chest_Gold.png" id="tex_chest_gold"]
+[ext_resource type="Texture2D" uid="uid://xmu0eg0tbi62" path="res://assets/sprites/ui/Chest_Silver.png" id="tex_chest_silver"]
+[ext_resource type="Texture2D" uid="uid://bngqt8a4ig85k" path="res://assets/sprites/ui/Chest_Wood.png" id="tex_chest_wood"]
+[ext_resource type="Texture2D" uid="uid://dukodiv4myjlt" path="res://assets/sprites/ui/Close.png" id="tex_close"]
+[ext_resource type="Texture2D" uid="uid://djfqcb8i0ufg1" path="res://assets/sprites/ui/Day_panel.png" id="tex_day"]
+[ext_resource type="Texture2D" uid="uid://y3vnov05447y" path="res://assets/sprites/ui/Level_Info.png" id="tex_info"]
+[ext_resource type="Texture2D" uid="uid://x7rbowopc4hj" path="res://assets/sprites/ui/Level_mode.png" id="tex_mode"]
+[ext_resource type="Texture2D" uid="uid://dfqf78f310dv7" path="res://assets/sprites/ui/Level_panel.png" id="tex_panel"]
+[ext_resource type="Texture2D" uid="uid://cf0hvko0pongd" path="res://assets/sprites/ui/Start.png" id="tex_start"]
+[ext_resource type="Texture2D" uid="uid://bgywqnpedx6t0" path="res://assets/sprites/ui/Tick.png" id="tex_tick"]
+
+[node name="ModeSelectDialog" type="CanvasLayer" unique_id=1590736990]
+layer = 10
+script = ExtResource("1_script")
+
+[node name="DimBg" type="ColorRect" parent="." unique_id=935651597]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.55)
+
+[node name="Panel" type="TextureRect" parent="." unique_id=1297702854]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -450.0
+offset_top = -389.0
+offset_right = 450.0
+offset_bottom = 611.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("tex_panel")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="DayPanel" type="TextureRect" parent="Panel" unique_id=484183957]
+layout_mode = 0
+offset_left = -91.0
+offset_top = -50.0
+offset_right = 375.0
+offset_bottom = 151.0
+mouse_filter = 2
+texture = ExtResource("tex_day")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TitleLabel" type="Label" parent="Panel/DayPanel" unique_id=226090528]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -3.0
+offset_top = -3.0
+offset_right = -3.0
+offset_bottom = -3.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_fonts/font = ExtResource("font_700")
+theme_override_font_sizes/font_size = 48
+text = "Day 01"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CloseBtn" type="TextureButton" parent="Panel" unique_id=2071130726]
+layout_mode = 0
+offset_left = 797.0
+offset_top = 60.0
+offset_right = 897.0
+offset_bottom = 160.0
+texture_normal = ExtResource("tex_close")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="NormalMode" type="TextureButton" parent="Panel" unique_id=1747381180]
+layout_mode = 0
+offset_left = 161.0
+offset_top = 152.0
+offset_right = 891.0
+offset_bottom = 392.0
+scale = Vector2(0.8191223, 0.8191223)
+texture_normal = ExtResource("tex_mode")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="ModeLabel" type="Label" parent="Panel/NormalMode" unique_id=1709835671]
+layout_mode = 0
+offset_left = 163.0
+offset_top = 53.0
+offset_right = 683.0
+offset_bottom = 173.0
+theme_override_colors/font_color = Color(1, 0.95, 0.85, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.4)
+theme_override_constants/shadow_offset_y = 2
+theme_override_fonts/font = ExtResource("font_700")
+theme_override_font_sizes/font_size = 56
+text = "普通模式"
+vertical_alignment = 1
+
+[node name="ChestIcon" type="TextureRect" parent="Panel/NormalMode" unique_id=2045790695]
+layout_mode = 0
+offset_left = 495.0
+offset_top = 32.0
+offset_right = 675.0
+offset_bottom = 192.0
+mouse_filter = 2
+texture = ExtResource("tex_chest_wood")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TickIcon" type="TextureRect" parent="Panel/NormalMode" unique_id=420589607]
+visible = false
+layout_mode = 0
+offset_left = 588.0
+offset_top = 120.0
+offset_right = 658.0
+offset_bottom = 190.0
+mouse_filter = 2
+texture = ExtResource("tex_tick")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="HardMode" type="TextureButton" parent="Panel" unique_id=340044274]
+layout_mode = 0
+offset_left = 159.0
+offset_top = 374.0
+offset_right = 889.0
+offset_bottom = 614.0
+scale = Vector2(0.8191223, 0.8191223)
+texture_normal = ExtResource("tex_mode")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="ModeLabel" type="Label" parent="Panel/HardMode" unique_id=1614351446]
+layout_mode = 0
+offset_left = 163.0
+offset_top = 60.0
+offset_right = 683.0
+offset_bottom = 180.0
+theme_override_colors/font_color = Color(1, 0.95, 0.85, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.4)
+theme_override_constants/shadow_offset_y = 2
+theme_override_fonts/font = ExtResource("font_700")
+theme_override_font_sizes/font_size = 56
+text = "困难模式"
+vertical_alignment = 1
+
+[node name="ChestIcon" type="TextureRect" parent="Panel/HardMode" unique_id=276001315]
+layout_mode = 0
+offset_left = 495.0
+offset_top = 30.0
+offset_right = 675.0
+offset_bottom = 190.0
+mouse_filter = 2
+texture = ExtResource("tex_chest_silver")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TickIcon" type="TextureRect" parent="Panel/HardMode" unique_id=917310450]
+visible = false
+layout_mode = 0
+offset_left = 588.0
+offset_top = 120.0
+offset_right = 658.0
+offset_bottom = 190.0
+mouse_filter = 2
+texture = ExtResource("tex_tick")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="LockLabel" type="Label" parent="Panel/HardMode" unique_id=152908133]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 56.0
+offset_top = 57.0
+offset_right = 56.0
+offset_bottom = 57.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.8, 0.3, 1)
+theme_override_font_sizes/font_size = 32
+text = "即将推出"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ChallengeMode" type="TextureButton" parent="Panel" unique_id=1393947601]
+layout_mode = 0
+offset_left = 154.0
+offset_top = 589.0
+offset_right = 884.0
+offset_bottom = 829.0
+scale = Vector2(0.8191223, 0.8191223)
+texture_normal = ExtResource("tex_mode")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="ModeLabel" type="Label" parent="Panel/ChallengeMode" unique_id=270028088]
+layout_mode = 0
+offset_left = 163.0
+offset_top = 58.0
+offset_right = 683.0
+offset_bottom = 178.0
+theme_override_colors/font_color = Color(1, 0.95, 0.85, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.4)
+theme_override_constants/shadow_offset_y = 2
+theme_override_fonts/font = ExtResource("font_700")
+theme_override_font_sizes/font_size = 56
+text = "挑战模式"
+vertical_alignment = 1
+
+[node name="ChestIcon" type="TextureRect" parent="Panel/ChallengeMode" unique_id=1584325150]
+layout_mode = 0
+offset_left = 495.0
+offset_top = 32.0
+offset_right = 675.0
+offset_bottom = 192.0
+mouse_filter = 2
+texture = ExtResource("tex_chest_gold")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TickIcon" type="TextureRect" parent="Panel/ChallengeMode" unique_id=10023729]
+visible = false
+layout_mode = 0
+offset_left = 588.0
+offset_top = 120.0
+offset_right = 658.0
+offset_bottom = 190.0
+mouse_filter = 2
+texture = ExtResource("tex_tick")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="InfoPanel" type="TextureRect" parent="Panel" unique_id=719624132]
+visible = false
+layout_mode = 0
+offset_left = 26.0
+offset_top = -347.0
+offset_right = 886.0
+offset_bottom = -25.0
+mouse_filter = 2
+texture = ExtResource("tex_info")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="InfoLabel" type="Label" parent="Panel/InfoPanel" unique_id=42492362]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.3, 0.25, 0.15, 1)
+theme_override_font_sizes/font_size = 38
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="StartBtn" type="TextureButton" parent="Panel" unique_id=922768114]
+visible = false
+layout_mode = 0
+offset_left = 200.0
+offset_top = 900.0
+offset_right = 700.0
+offset_bottom = 980.0
+texture_normal = ExtResource("tex_start")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="StartLabel" type="Label" parent="Panel/StartBtn" unique_id=1058729681]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.25, 0.2, 0.1, 1)
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 0.15)
+theme_override_constants/shadow_offset_y = 1
+theme_override_fonts/font = ExtResource("font_700")
+theme_override_font_sizes/font_size = 38
+text = "开始游戏"
+horizontal_alignment = 1
+vertical_alignment = 1

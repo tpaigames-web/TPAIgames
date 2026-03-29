@@ -1,0 +1,136 @@
+[gd_scene format=3 uid="uid://bx3oqc762anyw"]
+
+[ext_resource type="Script" uid="uid://cffxmu4u66tlp" path="res://scenes/global_upgrade/GlobalUpgradePanel.gd" id="1_panel"]
+[ext_resource type="FontFile" uid="uid://bmi3oq701indj" path="res://assets/sprites/Font/+¡¦¦+¦¦s 700W.ttf" id="font_700"]
+[ext_resource type="Texture2D" uid="uid://cerh1mwot56ko" path="res://assets/sprites/ui/Coin.png" id="tex_coin"]
+[ext_resource type="Texture2D" uid="uid://cymxllvxsqbdk" path="res://assets/sprites/ui/Left.png" id="tex_left"]
+[ext_resource type="Texture2D" uid="uid://wydqmkavrk5s" path="res://assets/sprites/ui/Refresh.png" id="tex_refresh"]
+[ext_resource type="Texture2D" uid="uid://brolpx3qwfeqn" path="res://assets/sprites/ui/Right.png" id="tex_right"]
+[ext_resource type="Texture2D" uid="uid://cf0hvko0pongd" path="res://assets/sprites/ui/Start.png" id="tex_start"]
+
+[node name="GlobalUpgradePanel" type="CanvasLayer" unique_id=313732259]
+process_mode = 3
+layer = 10
+script = ExtResource("1_panel")
+
+[node name="Overlay" type="ColorRect" parent="." unique_id=850783034]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 1
+color = Color(0, 0, 0, 0.78)
+
+[node name="Content" type="Control" parent="." unique_id=1432133956]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="TitleLabel" type="Label" parent="Content" unique_id=550996006]
+layout_mode = 0
+offset_top = 80.0
+offset_right = 1080.0
+offset_bottom = 180.0
+theme_override_colors/font_color = Color(1, 0.9, 0.2, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.6)
+theme_override_constants/shadow_offset_x = 3
+theme_override_constants/shadow_offset_y = 3
+theme_override_fonts/font = ExtResource("font_700")
+theme_override_font_sizes/font_size = 80
+text = "选择强化"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CardArea" type="Control" parent="Content" unique_id=2083093847]
+anchors_preset = 0
+offset_top = 180.0
+offset_right = 1080.0
+offset_bottom = 1280.0
+mouse_filter = 2
+
+[node name="CardContainer" type="Control" parent="Content/CardArea" unique_id=1824566808]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="LeftBtn" type="TextureButton" parent="Content/CardArea" unique_id=1796887654]
+layout_mode = 0
+offset_left = 164.0
+offset_top = 1167.0
+offset_right = 284.0
+offset_bottom = 1287.0
+texture_normal = ExtResource("tex_left")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="RightBtn" type="TextureButton" parent="Content/CardArea" unique_id=40547264]
+layout_mode = 0
+offset_left = 752.0
+offset_top = 1163.0
+offset_right = 872.0
+offset_bottom = 1283.0
+texture_normal = ExtResource("tex_right")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="ConfirmBtn" type="TextureButton" parent="Content" unique_id=796947225]
+layout_mode = 0
+offset_left = 300.0
+offset_top = 1340.0
+offset_right = 780.0
+offset_bottom = 1460.0
+texture_normal = ExtResource("tex_start")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="Content/ConfirmBtn" unique_id=2126223954]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.25, 0.2, 0.1, 1)
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 0.15)
+theme_override_constants/shadow_offset_y = 1
+theme_override_fonts/font = ExtResource("font_700")
+theme_override_font_sizes/font_size = 38
+text = "确认选择"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RefreshRow" type="HBoxContainer" parent="Content" unique_id=634341262]
+layout_mode = 0
+offset_left = 370.0
+offset_top = 1500.0
+offset_right = 710.0
+offset_bottom = 1580.0
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="RefreshBtn" type="TextureButton" parent="Content/RefreshRow" unique_id=2020155523]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+texture_normal = ExtResource("tex_refresh")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="CostIcon" type="TextureRect" parent="Content/RefreshRow" unique_id=1840284041]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+texture = ExtResource("tex_coin")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CostLabel" type="Label" parent="Content/RefreshRow" unique_id=1103802199]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.5, 1)
+theme_override_fonts/font = ExtResource("font_700")
+theme_override_font_sizes/font_size = 38
+text = "100"
+vertical_alignment = 1

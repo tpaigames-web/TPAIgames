@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="GlobalUpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/global_upgrade_data.gd" id="1_25"]
+
+[resource]
+script = ExtResource("1_25")
+upgrade_id = "scarecrow_rng_b"
+display_name = "威慑扩域·蓝"
+description = "稻草人 射程 +25%"
+icon_emoji = "🌾"
+rarity = 1
+upgrade_type = 0
+target_tower_id = "scarecrow"
+stat_type = 2
+stat_bonus = 0.25
+required_tower_ids = Array[String]([])
+target_tower_ids = Array[String]([])

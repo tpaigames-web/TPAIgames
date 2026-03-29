@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="GlobalUpgradeData" format=3]
+
+[ext_resource type="Script" uid="uid://bgu_data" path="res://data/global_upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+upgrade_id = "seed_grass_b"
+display_name = "草丛培育"
+description = "超级草丛路线：持续时间+3s"
+icon_emoji = "🌱"
+rarity = 1
+upgrade_type = 0
+target_tower_id = "seed_shooter"
+stat_type = 9
+stat_bonus = 3.0

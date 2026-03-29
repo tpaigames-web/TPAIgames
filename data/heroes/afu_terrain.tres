@@ -1,0 +1,59 @@
+[gd_resource type="Resource" script_class="HeroTerrainData" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://data/hero_terrain_data.gd" id="1"]
+[ext_resource type="Script" path="res://data/hero_upgrade_data.gd" id="2"]
+
+[sub_resource type="Resource" id="tier1"]
+script = ExtResource("2")
+tier = 1
+wave_trigger = 5
+option_a_name = "圣地深耕"
+option_a_desc = "圣地内伤害加成提升至+32%"
+option_a_icon = "🌾"
+option_b_name = "金穗满田"
+option_b_desc = "击杀+2金币，精英击杀+5金币"
+option_b_icon = "💰"
+
+[sub_resource type="Resource" id="tier2"]
+script = ExtResource("2")
+tier = 2
+wave_trigger = 10
+option_a_name = "广袤农场"
+option_a_desc = "圣地半径扩展至260px"
+option_a_icon = "🏕️"
+option_b_name = "丰收节奏"
+option_b_desc = "圣地内每10次击杀触发爆发：伤害×2持续3秒"
+option_b_icon = "⚡"
+
+[sub_resource type="Resource" id="tier3"]
+script = ExtResource("2")
+tier = 3
+wave_trigger = 15
+option_a_name = "农神庇护"
+option_a_desc = "圣地内炮台受伤-20%"
+option_a_icon = "🛡️"
+option_b_name = "黄金地脉"
+option_b_desc = "圣地内炮台升级费用-25%"
+option_b_icon = "💎"
+
+[sub_resource type="Resource" id="tier4"]
+script = ExtResource("2")
+tier = 4
+wave_trigger = 20
+option_a_name = "永恒圣地"
+option_a_desc = "半径扩展至350px，伤害加成叠加全部路线效果"
+option_a_icon = "☀️"
+option_b_name = "农场之神"
+option_b_desc = "圣地内精英击杀10%概率获得免费强化刷新"
+option_b_icon = "🌟"
+
+[resource]
+script = ExtResource("1")
+hero_id = "hero_farmer"
+terrain_name = "丰收圣地"
+terrain_color = Color(1.0, 0.85, 0.2, 0.18)
+base_radius = 180.0
+base_effect_desc = "圣地内炮台伤害+12%，每次击杀+1金币"
+max_form_a_desc = "全覆盖输出圣地（350px 伤+20% 受伤-20%）"
+max_form_b_desc = "经济爆发圣地（精英+5金 升级-25% 丰收爆发）"
+upgrades = [SubResource("tier1"), SubResource("tier2"), SubResource("tier3"), SubResource("tier4")]

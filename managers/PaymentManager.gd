@@ -34,7 +34,7 @@ func purchase(product_id: String, price_rm: float,
 
 ## 模拟付款 —— 开发/测试阶段使用，直接触发成功回调
 func _fake_purchase(product_id: String, on_success: Callable) -> void:
-	print("[PaymentManager] 模拟付款成功：%s" % product_id)
+	#print("[PaymentManager] 模拟付款成功：%s" % product_id)
 	if on_success.is_valid():
 		on_success.call()
 

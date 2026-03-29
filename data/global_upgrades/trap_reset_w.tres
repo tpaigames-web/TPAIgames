@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="GlobalUpgradeData" format=3]
+
+[ext_resource type="Script" uid="uid://bgu_data" path="res://data/global_upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+upgrade_id = "trap_reset_w"
+display_name = "弹簧升级"
+description = "捕兽夹冷却-1s"
+icon_emoji = "🪤"
+rarity = 0
+upgrade_type = 0
+target_tower_id = "bear_trap"
+stat_type = 9
+stat_bonus = -1.0

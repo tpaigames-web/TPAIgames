@@ -12,6 +12,9 @@ script = ExtResource("1_d1f0f")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1903576192]
 
+[node name="AnimSprite" type="AnimatedSprite2D" parent="."]
+visible = false
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=520956132]
 shape = SubResource("CircleShape2D_enemy")
 
@@ -22,7 +25,7 @@ offset_top = -30.0
 offset_right = 30.0
 offset_bottom = 30.0
 visible = false
-theme_override_font_sizes/font_size = 48
+theme_override_font_sizes/font_size = 56
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -36,3 +39,27 @@ show_percentage = false
 min_value = 0
 max_value = 100
 value = 100
+
+[node name="ArmorLabel" type="Label" parent="." unique_id=2100000004]
+layout_mode = 0
+offset_left = -30.0
+offset_top = -76.0
+offset_right = 30.0
+offset_bottom = -60.0
+visible = false
+theme_override_font_sizes/font_size = 14
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ShieldBar" type="ProgressBar" parent="." unique_id=2100000003]
+layout_mode = 0
+offset_left = -30.0
+offset_top = -65.0
+offset_right = 30.0
+offset_bottom = -57.0
+visible = false
+show_percentage = false
+min_value = 0
+max_value = 100
+value = 100
+modulate = Color(1.0, 1.0, 1.0, 1.0)

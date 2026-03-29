@@ -7,14 +7,7 @@ extends Control
 const MAX_LEVEL: int         = 100
 const PAID_PASS_PRICE_RM: float = 8.88
 
-## 稀有度颜色（用于碎片奖励图标颜色）
-const RARITY_COLORS: Array[Color] = [
-	Color(0.88, 0.88, 0.88),  # 0 白
-	Color(0.27, 0.68, 0.31),  # 1 绿
-	Color(0.13, 0.59, 0.95),  # 2 蓝
-	Color(0.61, 0.15, 0.69),  # 3 紫
-	Color(1.00, 0.43, 0.00),  # 4 橙
-]
+## 稀有度颜色（集中定义于 TowerResourceRegistry Autoload）
 
 ## 进度条颜色
 const BAR_FILLED_COLOR:   Color = Color(0.20, 0.70, 0.30)   # 绿色（已完成）
@@ -27,29 +20,14 @@ const BADGE_MAJOR_COLOR:  Color = Color(0.61, 0.15, 0.69)   # 紫（×10）
 const BADGE_MINOR_COLOR:  Color = Color(0.13, 0.59, 0.95)   # 蓝（×5）
 const BADGE_NORMAL_COLOR: Color = Color(0.25, 0.25, 0.35)   # 暗灰
 
-# ── 炮台资源路径（用于随机碎片奖励）────────────────────────────────
-const TOWER_RESOURCE_PATHS: Array[String] = [
-	"res://data/towers/scarecrow_collection.tres",
-	"res://data/towers/water_pipe_collection.tres",
-	"res://data/towers/farmer_collection.tres",
-	"res://data/towers/bear_trap_collection.tres",
-	"res://data/towers/beehive_collection.tres",
-	"res://data/towers/farm_cannon_collection.tres",
-	"res://data/towers/barbed_wire_collection.tres",
-	"res://data/towers/windmill_collection.tres",
-	"res://data/towers/seed_shooter_collection.tres",
-	"res://data/towers/mushroom_bomb_collection.tres",
-	"res://data/towers/chili_flamer_collection.tres",
-	"res://data/towers/watchtower_collection.tres",
-	"res://data/towers/sunflower_collection.tres",
-	"res://data/towers/hero_farmer_collection.tres",
-]
+# ── 炮台资源（集中定义于 TowerResourceRegistry Autoload）──────────────
 
 # ── 节点引用 ──────────────────────────────────────────────────────────
 @onready var back_btn:        Button        = $TitleBar/BackBtn
 @onready var levels_vbox:     VBoxContainer = $ScrollContainer/LevelsVBox
 @onready var scroll_container: ScrollContainer = $ScrollContainer
 @onready var buy_pass_btn:    Button        = $BottomBar/BottomBarContent/BuyPassBtn
+@onready var claim_all_btn:   Button        = $BottomBar/BottomBarContent/ClaimAllBtn
 @onready var confirm_overlay: ColorRect     = $ConfirmOverlay
 @onready var confirm_msg:     Label         = $ConfirmOverlay/ConfirmCard/ContentVBox/ConfirmMsg
 @onready var confirm_btn:     Button        = $ConfirmOverlay/ConfirmCard/ContentVBox/BtnRow/ConfirmBtn
@@ -60,6 +38,8 @@ var _towers_by_rarity: Dictionary = {}
 var _pending_action:   Callable   = Callable()
 ## 每行的 claim 按钮引用：lv → {free_btn, paid_btn}
 var _row_btns: Dictionary = {}
+## 延迟构建：下一个待构建等级
+var _deferred_build_lv: int = 0
 
 # ── 初始化 ────────────────────────────────────────────────────────────
 func _ready() -> void:
@@ -72,6 +52,8 @@ func _ready() -> void:
 	confirm_overlay.hide()
 	back_btn.pressed.connect(_on_back_pressed)
 	buy_pass_btn.pressed.connect(_on_buy_pass)
+	claim_all_btn.pressed.connect(_on_claim_all)
+	_update_claim_all_btn()
 	UserManager.currency_changed.connect(_refresh_xp_bars)
 	UserManager.level_changed.connect(_on_level_changed)
 	# 等布局稳定后滚动到当前等级
@@ -81,7 +63,7 @@ func _ready() -> void:
 func _load_tower_resources() -> void:
 	if not _towers_by_rarity.is_empty():
 		return
-	for path in TOWER_RESOURCE_PATHS:
+	for path in TowerResourceRegistry.TOWER_RESOURCE_PATHS:
 		var res = load(path)
 		if res == null:
 			continue
@@ -94,9 +76,24 @@ func _load_tower_resources() -> void:
 		_towers_by_rarity[r].append(res)
 
 # ── 构建所有等级行（倒序：高级在上，低级在下，与 Battle Pass 惯例一致）──
+## 优先同步构建当前等级及以上的行（可见区域），其余行延迟分帧追加，避免首帧卡顿
+const _BUILD_CHUNK: int = 15
 func _build_rows() -> void:
-	for lv: int in range(MAX_LEVEL, 0, -1):
+	var cur: int = UserManager.level
+	var sync_end: int = maxi(1, cur - 5)
+	for lv: int in range(MAX_LEVEL, sync_end - 1, -1):
 		levels_vbox.add_child(_make_level_row(lv))
+	_deferred_build_lv = sync_end - 1
+	if _deferred_build_lv >= 1:
+		call_deferred("_build_rows_deferred")
+
+func _build_rows_deferred() -> void:
+	var chunk_end: int = maxi(1, _deferred_build_lv - _BUILD_CHUNK + 1)
+	for lv: int in range(_deferred_build_lv, chunk_end - 1, -1):
+		levels_vbox.add_child(_make_level_row(lv))
+	_deferred_build_lv = chunk_end - 1
+	if _deferred_build_lv >= 1:
+		call_deferred("_build_rows_deferred")
 
 # ── 构建单行 ──────────────────────────────────────────────────────────
 func _make_level_row(lv: int) -> HBoxContainer:
@@ -334,6 +331,7 @@ func _on_claim(lv: int, is_paid: bool) -> void:
 			_update_claim_btn(btns["paid_btn"], lv, true)
 		elif not is_paid and "free_btn" in btns:
 			_update_claim_btn(btns["free_btn"], lv, false)
+	_update_claim_all_btn()
 
 ## 发放奖励
 func _apply_reward(reward: Dictionary) -> void:
@@ -400,6 +398,7 @@ func _refresh_all_claim_btns() -> void:
 			_update_claim_btn(btns["free_btn"], lv, false)
 		if "paid_btn" in btns:
 			_update_claim_btn(btns["paid_btn"], lv, true)
+	_update_claim_all_btn()
 
 ## 刷新进度条着色（XP 变化时调用）
 func _refresh_xp_bars() -> void:
@@ -474,6 +473,44 @@ func _on_confirm_no() -> void:
 func _on_overlay_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		_on_confirm_no()
+
+# ── 全部领取 ──────────────────────────────────────────────────────────
+## 一键领取所有已达等级但未领取的免费（及付费）奖励
+func _on_claim_all() -> void:
+	var cur_lv: int = UserManager.level
+	var claimed_any: bool = false
+	for lv: int in range(1, cur_lv + 1):
+		# 免费奖励
+		if lv not in UserManager.claimed_free_rewards:
+			_apply_reward(_get_reward(lv, false))
+			UserManager.claim_free_reward(lv)
+			claimed_any = true
+		# 付费奖励（有通行证时一并领取）
+		if UserManager.has_paid_pass and lv not in UserManager.claimed_paid_rewards:
+			_apply_reward(_get_reward(lv, true))
+			UserManager.claim_paid_reward(lv)
+			claimed_any = true
+	if claimed_any:
+		SaveManager.save()
+		_refresh_all_claim_btns()  # 已含 _update_claim_all_btn()
+
+## 更新"全部领取"按钮的文字和可用状态
+func _update_claim_all_btn() -> void:
+	var cur_lv: int = UserManager.level
+	var total: int = 0
+	for lv: int in range(1, cur_lv + 1):
+		if lv not in UserManager.claimed_free_rewards:
+			total += 1
+		if UserManager.has_paid_pass and lv not in UserManager.claimed_paid_rewards:
+			total += 1
+	if total > 0:
+		claim_all_btn.text     = "全部领取 (%d)" % total
+		claim_all_btn.disabled = false
+		claim_all_btn.modulate = Color(0.4, 1.0, 0.5)
+	else:
+		claim_all_btn.text     = "已全部领取"
+		claim_all_btn.disabled = true
+		claim_all_btn.modulate = Color(0.6, 0.6, 0.6)
 
 # ── 返回战斗页 ────────────────────────────────────────────────────────
 func _on_back_pressed() -> void:

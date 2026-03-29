@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="GlobalUpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/global_upgrade_data.gd" id="1_s13"]
+
+[resource]
+script = ExtResource("1_s13")
+upgrade_id = "synergy_farm_full"
+display_name = "农场全军"
+description = "需要：农夫 + 播种机\n蘑菇炸弹 射程 +40%"
+icon_emoji = "🚜"
+rarity = 1
+upgrade_type = 2
+target_tower_id = "mushroom_bomb"
+stat_type = 2
+stat_bonus = 0.4
+required_tower_ids = Array[String](["farmer", "seed_shooter"])
+target_tower_ids = Array[String]([])

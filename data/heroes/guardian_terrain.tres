@@ -1,0 +1,59 @@
+[gd_resource type="Resource" script_class="HeroTerrainData" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://data/hero_terrain_data.gd" id="1"]
+[ext_resource type="Script" path="res://data/hero_upgrade_data.gd" id="2"]
+
+[sub_resource type="Resource" id="tier1"]
+script = ExtResource("2")
+tier = 1
+wave_trigger = 5
+option_a_name = "铁壁嘲讽"
+option_a_desc = "嘲讽范围200px，敌人停留+1.5秒"
+option_a_icon = "🪨"
+option_b_name = "重力领域"
+option_b_desc = "领域内移速-35%，大型敌人同样生效"
+option_b_icon = "🌀"
+
+[sub_resource type="Resource" id="tier2"]
+script = ExtResource("2")
+tier = 2
+wave_trigger = 10
+option_a_name = "石刻地面"
+option_a_desc = "领域每秒对敌人造成8点伤害"
+option_a_icon = "🗿"
+option_b_name = "破甲领域"
+option_b_desc = "领域内敌人护甲降低10%"
+option_b_icon = "⚔️"
+
+[sub_resource type="Resource" id="tier3"]
+script = ExtResource("2")
+tier = 3
+wave_trigger = 15
+option_a_name = "冲击余波"
+option_a_desc = "每20秒地震100px范围，眩晕1.2秒"
+option_a_icon = "💥"
+option_b_name = "磁力核心"
+option_b_desc = "将范围外100px的敌人吸引入领域"
+option_b_icon = "🧲"
+
+[sub_resource type="Resource" id="tier4"]
+script = ExtResource("2")
+tier = 4
+wave_trigger = 20
+option_a_name = "永恒禁锢"
+option_a_desc = "半径扩展至280px，嘲讽期间全场+25%伤害"
+option_a_icon = "⛓️"
+option_b_name = "石之迫近"
+option_b_desc = "领域内死亡留下石化标记，后续敌人减速10秒"
+option_b_icon = "🪦"
+
+[resource]
+script = ExtResource("1")
+hero_id = "farm_guardian"
+terrain_name = "禁锢领域"
+terrain_color = Color(0.6, 0.2, 0.8, 0.18)
+base_radius = 160.0
+base_effect_desc = "领域内敌人移速-20%，优先朝守卫者移动（嘲讽）"
+max_form_a_desc = "嘲讽控场核心（280px 地震 全场+25%）"
+max_form_b_desc = "减速高甲漏斗（磁力吸引+移速-35%+护甲-10%+石化）"
+upgrades = [SubResource("tier1"), SubResource("tier2"), SubResource("tier3"), SubResource("tier4")]

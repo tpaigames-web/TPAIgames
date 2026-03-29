@@ -1,0 +1,134 @@
+[gd_scene format=3 uid="uid://dyhdhk2npf1fs"]
+
+[ext_resource type="Script" uid="uid://c12k47cja154l" path="res://scenes/components/DayCard.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://d30chkra48m38" path="res://assets/sprites/ui/Button_Square_01.png" id="tex_btn_sq"]
+[ext_resource type="Texture2D" uid="uid://lfbf5i1f8i53" path="res://assets/sprites/ui/Button_Green_empty.png" id="tex_green"]
+[ext_resource type="Texture2D" uid="uid://j18d77q67n4o" path="res://assets/sprites/ui/Lock.png" id="tex_lock"]
+[ext_resource type="Texture2D" uid="uid://djfqcb8i0ufg1" path="res://assets/sprites/ui/Day_panel.png" id="tex_panel"]
+[ext_resource type="Texture2D" uid="uid://cxr0rbbugquq3" path="res://assets/sprites/ui/Button_Red_empty.png" id="tex_red"]
+[ext_resource type="Texture2D" uid="uid://bgywqnpedx6t0" path="res://assets/sprites/ui/Tick.png" id="tex_tick"]
+
+[sub_resource type="StyleBoxEmpty" id="empty_style"]
+
+[node name="DayCard" type="Control" unique_id=1223903511]
+custom_minimum_size = Vector2(320, 160)
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_script")
+
+[node name="PanelBg" type="TextureRect" parent="." unique_id=1790987699]
+layout_mode = 0
+offset_right = 386.9091
+offset_bottom = 133.0
+mouse_filter = 2
+texture = ExtResource("tex_panel")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="HitButton" type="Button" parent="." unique_id=1994803227]
+layout_mode = 0
+offset_right = 320.0
+offset_bottom = 110.0
+theme_override_styles/normal = SubResource("empty_style")
+theme_override_styles/pressed = SubResource("empty_style")
+theme_override_styles/hover = SubResource("empty_style")
+theme_override_styles/disabled = SubResource("empty_style")
+
+[node name="DayLabel" type="Label" parent="." unique_id=1568999084]
+layout_mode = 0
+offset_left = 26.0
+offset_top = 12.0
+offset_right = 346.0
+offset_bottom = 47.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
+text = "Day 01"
+horizontal_alignment = 1
+
+[node name="StarLabel" type="Label" parent="." unique_id=1175291370]
+layout_mode = 0
+offset_top = 47.0
+offset_right = 383.0
+offset_bottom = 87.0
+theme_override_colors/font_color = Color(1, 0.85, 0.2, 1)
+theme_override_font_sizes/font_size = 32
+text = "☆☆☆"
+horizontal_alignment = 1
+
+[node name="LockArea" type="Control" parent="." unique_id=962176697]
+visible = false
+anchors_preset = 0
+offset_left = 260.0
+offset_top = 55.0
+offset_right = 310.0
+offset_bottom = 100.0
+mouse_filter = 2
+
+[node name="LockBtnBg" type="TextureRect" parent="LockArea" unique_id=835947827]
+layout_mode = 0
+offset_right = 50.0
+offset_bottom = 45.0
+mouse_filter = 2
+texture = ExtResource("tex_btn_sq")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="LockIcon" type="TextureRect" parent="LockArea/LockBtnBg" unique_id=1696388076]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 4.0
+offset_right = 42.0
+offset_bottom = 38.0
+mouse_filter = 2
+texture = ExtResource("tex_lock")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ChestRow" type="HBoxContainer" parent="." unique_id=376467037]
+layout_mode = 0
+offset_left = 134.0
+offset_top = 97.0
+offset_right = 234.0
+offset_bottom = 142.0
+mouse_filter = 2
+theme_override_constants/separation = 10
+
+[node name="NormalChest" type="TextureRect" parent="ChestRow" unique_id=887679863]
+custom_minimum_size = Vector2(45, 45)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("tex_green")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="NormalTick" type="TextureRect" parent="ChestRow/NormalChest" unique_id=1921635826]
+visible = false
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 36.0
+offset_bottom = 36.0
+mouse_filter = 2
+texture = ExtResource("tex_tick")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ChallengeChest" type="TextureRect" parent="ChestRow" unique_id=1788200154]
+custom_minimum_size = Vector2(45, 45)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("tex_red")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ChallengeTick" type="TextureRect" parent="ChestRow/ChallengeChest" unique_id=1458582405]
+visible = false
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 36.0
+offset_bottom = 36.0
+mouse_filter = 2
+texture = ExtResource("tex_tick")
+expand_mode = 1
+stretch_mode = 5

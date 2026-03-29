@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="GlobalUpgradeData" format=3]
+
+[ext_resource type="Script" uid="uid://bgu_data" path="res://data/global_upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+upgrade_id = "global_mark_o"
+display_name = "猎场法则"
+description = "标记增伤+18% 标记时间+2s"
+icon_emoji = "🏷"
+rarity = 2
+upgrade_type = 1
+stat_type = 7
+stat_bonus = 0.18

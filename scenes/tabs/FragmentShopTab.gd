@@ -3,32 +3,7 @@ extends Control
 ## 军火库 ── 三段刷新碎片商店
 ## 6h / 每日 / 每周，各 3 张卡，gold 购买，倒计时自动刷新
 
-# ── 炮台资源路径 ──────────────────────────────────────────────────────
-const TOWER_RESOURCE_PATHS: Array[String] = [
-	"res://data/towers/scarecrow_collection.tres",
-	"res://data/towers/water_pipe_collection.tres",
-	"res://data/towers/farmer_collection.tres",
-	"res://data/towers/bear_trap_collection.tres",
-	"res://data/towers/beehive_collection.tres",
-	"res://data/towers/farm_cannon_collection.tres",
-	"res://data/towers/barbed_wire_collection.tres",
-	"res://data/towers/windmill_collection.tres",
-	"res://data/towers/seed_shooter_collection.tres",
-	"res://data/towers/mushroom_bomb_collection.tres",
-	"res://data/towers/chili_flamer_collection.tres",
-	"res://data/towers/watchtower_collection.tres",
-	"res://data/towers/sunflower_collection.tres",
-	"res://data/towers/hero_farmer_collection.tres",
-]
-
-# ── 稀有度颜色（index = rarity：0白 1绿 2蓝 3紫 4橙）─────────────────
-const RARITY_COLORS: Array[Color] = [
-	Color(0.88, 0.88, 0.88),
-	Color(0.27, 0.68, 0.31),
-	Color(0.13, 0.59, 0.95),
-	Color(0.61, 0.15, 0.69),
-	Color(1.00, 0.43, 0.00),
-]
+# ── 炮台/稀有度常量（集中定义于 TowerResourceRegistry Autoload）──────
 
 # ── 金币单片价格（按 rarity 索引）────────────────────────────────────
 const FRAG_PRICE_GOLD: Array[int] = [50, 80, 200, 500, 1200]
@@ -96,7 +71,7 @@ func _process(delta: float) -> void:
 func _load_tower_resources() -> void:
 	if not _towers_by_rarity.is_empty():
 		return
-	for path in TOWER_RESOURCE_PATHS:
+	for path in TowerResourceRegistry.TOWER_RESOURCE_PATHS:
 		var res = load(path)
 		if res == null:
 			continue
@@ -187,7 +162,7 @@ func _make_frag_card(tower_res: Resource, qty: int, rarity: int, seed: int) -> P
 	# 顶部稀有度彩条
 	var bar := ColorRect.new()
 	bar.custom_minimum_size = Vector2(0, 8)
-	bar.color = RARITY_COLORS[rarity]
+	bar.color = TowerResourceRegistry.RARITY_COLORS[rarity]
 	vbox.add_child(bar)
 
 	# 炮台 emoji（撑满剩余空间，居中）

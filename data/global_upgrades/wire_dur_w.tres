@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="GlobalUpgradeData" format=3]
+
+[ext_resource type="Script" uid="uid://bgu_data" path="res://data/global_upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+upgrade_id = "wire_dur_w"
+display_name = "铁网强韧"
+description = "带刺铁网踩踏上限+3次"
+icon_emoji = "🪤"
+rarity = 0
+upgrade_type = 0
+target_tower_id = "barbed_wire"
+stat_type = 9
+stat_bonus = 3.0

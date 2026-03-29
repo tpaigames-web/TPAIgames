@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="GlobalUpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/global_upgrade_data.gd" id="1_s1"]
+
+[resource]
+script = ExtResource("1_s1")
+upgrade_id = "synergy_hive_farmer"
+display_name = "养蜂场"
+description = "需要：蜂巢\n农夫 攻速 +25%"
+icon_emoji = "🐝"
+rarity = 1
+upgrade_type = 2
+target_tower_id = "farmer"
+stat_type = 1
+stat_bonus = 0.25
+required_tower_ids = Array[String](["beehive"])
+target_tower_ids = Array[String]([])

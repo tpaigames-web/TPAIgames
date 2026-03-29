@@ -13,5 +13,8 @@ Thumbs.db
 # Build exports
 /export/
 
+# Large source files (PSD, etc.)
+*.psd
+
 # Secrets
 .env

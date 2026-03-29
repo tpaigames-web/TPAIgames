@@ -1,0 +1,218 @@
+[gd_scene format=3 uid="uid://cj6dba4pwiop8"]
+
+[ext_resource type="Script" uid="uid://p2lwtgjip7k8" path="res://scenes/tabs/PathMap.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://cooscbcliros4" path="res://assets/sprites/background/loop/Level_Loop_01.png" id="2_loop01"]
+[ext_resource type="Texture2D" uid="uid://bghx1p7rwleou" path="res://assets/sprites/background/loop/Level_Loop_02.png" id="3_loop02"]
+[ext_resource type="Texture2D" uid="uid://dnwvml0byf1pt" path="res://assets/sprites/background/loop/Level_Loop_03.png" id="4_loop03"]
+[ext_resource type="Texture2D" uid="uid://bkbtxsaw1c1g7" path="res://assets/sprites/background/loop/Level_Loop_04.png" id="5_loop04"]
+
+[node name="PathMap" type="Control" unique_id=180180172]
+custom_minimum_size = Vector2(1080, 9880)
+layout_mode = 2
+size_flags_horizontal = 3
+script = ExtResource("1_script")
+
+[node name="BgLoop01" type="TextureRect" parent="." unique_id=287989401]
+z_index = -1
+layout_mode = 0
+offset_right = 1080.0
+offset_bottom = 1920.0
+mouse_filter = 2
+texture = ExtResource("2_loop01")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="BgLoop02a" type="TextureRect" parent="." unique_id=1520031689]
+z_index = -1
+layout_mode = 0
+offset_left = 3.0
+offset_top = 1916.0
+offset_right = 1083.0
+offset_bottom = 3836.0
+mouse_filter = 2
+texture = ExtResource("3_loop02")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="BgLoop02b" type="TextureRect" parent="." unique_id=550824397]
+z_index = -1
+layout_mode = 0
+offset_left = 4.0
+offset_top = 3836.0
+offset_right = 1084.0
+offset_bottom = 5756.0
+mouse_filter = 2
+texture = ExtResource("3_loop02")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="BgLoop03" type="TextureRect" parent="." unique_id=596846931]
+z_index = -1
+layout_mode = 0
+offset_left = -15.0
+offset_top = 5309.0
+offset_right = 1099.0
+offset_bottom = 7253.0
+mouse_filter = 2
+texture = ExtResource("4_loop03")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="BgLoop04" type="TextureRect" parent="." unique_id=435154796]
+z_index = -1
+layout_mode = 0
+offset_left = -1.0
+offset_top = 7006.0
+offset_right = 1085.0
+offset_bottom = 9444.0
+mouse_filter = 2
+texture = ExtResource("5_loop04")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="BgLoop05" type="TextureRect" parent="." unique_id=2058299662]
+z_index = -1
+layout_mode = 0
+offset_left = -2.0
+offset_top = 8506.0
+offset_right = 1084.0
+offset_bottom = 10944.0
+mouse_filter = 2
+texture = ExtResource("5_loop04")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="BgLoop06" type="TextureRect" parent="." unique_id=1390922238]
+z_index = -1
+layout_mode = 0
+offset_left = -7.0
+offset_top = 10008.0
+offset_right = 1079.0
+offset_bottom = 12446.0
+mouse_filter = 2
+texture = ExtResource("5_loop04")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CardSlot_00" type="Marker2D" parent="." unique_id=1039196075]
+position = Vector2(331, 283)
+
+[node name="CardSlot_01" type="Marker2D" parent="." unique_id=248593261]
+position = Vector2(547, 572)
+
+[node name="CardSlot_02" type="Marker2D" parent="." unique_id=2079143907]
+position = Vector2(203, 812)
+
+[node name="CardSlot_03" type="Marker2D" parent="." unique_id=144616872]
+position = Vector2(474, 1066)
+
+[node name="CardSlot_04" type="Marker2D" parent="." unique_id=1336003063]
+position = Vector2(139, 1308)
+
+[node name="CardSlot_05" type="Marker2D" parent="." unique_id=200369513]
+position = Vector2(648, 1547)
+
+[node name="CardSlot_06" type="Marker2D" parent="." unique_id=1140550452]
+position = Vector2(255, 1791)
+
+[node name="CardSlot_07" type="Marker2D" parent="." unique_id=1984313923]
+position = Vector2(624, 2029)
+
+[node name="CardSlot_08" type="Marker2D" parent="." unique_id=816914606]
+position = Vector2(163, 2267)
+
+[node name="CardSlot_09" type="Marker2D" parent="." unique_id=1161888887]
+position = Vector2(547, 2509)
+
+[node name="CardSlot_10" type="Marker2D" parent="." unique_id=926274832]
+position = Vector2(113, 2751)
+
+[node name="CardSlot_11" type="Marker2D" parent="." unique_id=33054853]
+position = Vector2(493, 2971)
+
+[node name="CardSlot_12" type="Marker2D" parent="." unique_id=1498464765]
+position = Vector2(186, 3213)
+
+[node name="CardSlot_13" type="Marker2D" parent="." unique_id=418047574]
+position = Vector2(593, 3453)
+
+[node name="CardSlot_14" type="Marker2D" parent="." unique_id=1804993362]
+position = Vector2(240, 3707)
+
+[node name="CardSlot_15" type="Marker2D" parent="." unique_id=1705510372]
+position = Vector2(486, 3954)
+
+[node name="CardSlot_16" type="Marker2D" parent="." unique_id=1866040241]
+position = Vector2(187, 4180)
+
+[node name="CardSlot_17" type="Marker2D" parent="." unique_id=1610204821]
+position = Vector2(595, 4439)
+
+[node name="CardSlot_18" type="Marker2D" parent="." unique_id=2138089321]
+position = Vector2(259, 4672)
+
+[node name="CardSlot_19" type="Marker2D" parent="." unique_id=1611605728]
+position = Vector2(534, 4882)
+
+[node name="CardSlot_20" type="Marker2D" parent="." unique_id=1949901955]
+position = Vector2(182, 5128)
+
+[node name="CardSlot_21" type="Marker2D" parent="." unique_id=784348120]
+position = Vector2(628, 5366)
+
+[node name="CardSlot_22" type="Marker2D" parent="." unique_id=1449668326]
+position = Vector2(286, 5620)
+
+[node name="CardSlot_23" type="Marker2D" parent="." unique_id=536277099]
+position = Vector2(619, 5869)
+
+[node name="CardSlot_24" type="Marker2D" parent="." unique_id=778659500]
+position = Vector2(106, 6109)
+
+[node name="CardSlot_25" type="Marker2D" parent="." unique_id=243775915]
+position = Vector2(563, 6377)
+
+[node name="CardSlot_26" type="Marker2D" parent="." unique_id=165269348]
+position = Vector2(208, 6612)
+
+[node name="CardSlot_27" type="Marker2D" parent="." unique_id=185096125]
+position = Vector2(490, 6864)
+
+[node name="CardSlot_28" type="Marker2D" parent="." unique_id=921197294]
+position = Vector2(219, 7120)
+
+[node name="CardSlot_29" type="Marker2D" parent="." unique_id=897460483]
+position = Vector2(616, 7376)
+
+[node name="CardSlot_30" type="Marker2D" parent="." unique_id=928548731]
+position = Vector2(279, 7613)
+
+[node name="CardSlot_31" type="Marker2D" parent="." unique_id=668124552]
+position = Vector2(555, 7859)
+
+[node name="CardSlot_32" type="Marker2D" parent="." unique_id=1704475193]
+position = Vector2(216, 8103)
+
+[node name="CardSlot_33" type="Marker2D" parent="." unique_id=1561500831]
+position = Vector2(581, 8385)
+
+[node name="CardSlot_34" type="Marker2D" parent="." unique_id=1831420314]
+position = Vector2(235, 8606)
+
+[node name="CardSlot_35" type="Marker2D" parent="." unique_id=450432900]
+position = Vector2(521, 8870)
+
+[node name="CardSlot_36" type="Marker2D" parent="." unique_id=425770152]
+position = Vector2(209, 9109)
+
+[node name="CardSlot_37" type="Marker2D" parent="." unique_id=1313694977]
+position = Vector2(580, 9360)
+
+[node name="CardSlot_38" type="Marker2D" parent="." unique_id=2115116422]
+position = Vector2(169, 9599)
+
+[node name="CardSlot_39" type="Marker2D" parent="." unique_id=696532736]
+position = Vector2(554, 9805)
+
+[node name="CardSlot_40" type="Marker2D" parent="." unique_id=1473352579]
+position = Vector2(205, 9974)

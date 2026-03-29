@@ -2,49 +2,52 @@
 
 [ext_resource type="Script" uid="uid://dh7u72sh06tc3" path="res://data/tower_collection_data.gd" id="1_tcd"]
 [ext_resource type="Script" uid="uid://cs8acmmyvm8t5" path="res://data/tower_upgrade_path.gd" id="2_tup"]
+[ext_resource type="PackedScene" path="res://tower/BarbedWireTower.tscn" id="tower_scn"]
+[ext_resource type="Texture2D" path="res://assets/sprites/tower/Wire/Wire_256.png" id="tex_wire"]
 
 [sub_resource type="Resource" id="Path_0"]
 script = ExtResource("2_tup")
-path_name = "刺伤强化"
-tier_names = Array[String](["锋利铁刺", "穿透铁刺", "出血铁网", "深度出血", "终极铁刺"])
-tier_effects = Array[String](["铁刺更锋利，每次触碰伤害+15%", "锐刺穿透敌人护甲，无视10%护甲", "刺伤附加出血效果，每秒造成2点持续伤害", "出血伤害提升至每秒4点，可叠加2层", "终极铁刺：出血伤害极限，3层叠加持续灼伤"])
+path_name = "终极铁刺"
+tier_names = Array[String](["锋利铁刺", "穿透铁刺", "深度出血", "撕裂伤口", "终极铁刺"])
+tier_effects = Array[String](["伤害+25% 出血3dps/4s", "出血5dps/5s 忽视15%护甲", "出血叠2层 耐久+2(共7)", "出血3层各5dps 叠满移速-25%", "必定重创×2 精英眩晕1.5s 每次吃2耐久"])
 tier_costs = Array[int]([120, 240, 400, 600, 900])
-damage_bonus_per_tier = 0.12
 
 [sub_resource type="Resource" id="Path_1"]
 script = ExtResource("2_tup")
-path_name = "减速铁网"
-tier_names = Array[String](["缠绕减速", "强力缠绕", "持续拖拽", "重度减速", "极致缠绕"])
-tier_effects = Array[String](["铁网触碰减速敌人20%", "减速效果提升至30%", "减速持续时间+1秒，脱离后仍有残留", "被减速敌人受到的所有伤害+15%", "极致缠绕：减速达50%，敌人几乎无法移动"])
-tier_costs = Array[int]([100, 200, 350, 550, 800])
+path_name = "钢铁长城"
+tier_names = Array[String](["强化铁丝", "厚重铁网", "自动修补", "战地钢铁", "钢铁长城"])
+tier_effects = Array[String](["耐久+3(共8次)", "耐久+3(共11次) 维修缩短至6s", "每10s自动恢复1耐久", "耐久+4(共15次) 减速+15%", "耐久共20次 自动维修6s 维修中保留50%减速"])
+tier_costs = Array[int]([100, 200, 380, 550, 800])
 
 [sub_resource type="Resource" id="Path_2"]
 script = ExtResource("2_tup")
-path_name = "铺设范围"
-tier_names = Array[String](["扩展铁网", "大型铁网", "广域铺设", "超级铁网", "全场铁幕"])
-tier_effects = Array[String](["铁网铺设范围+15%", "铁网面积进一步扩大，覆盖更多通道", "广域铺设，覆盖范围大幅提升", "超级铁网，几乎封锁整条通道", "全场铁幕：射程极大提升，多路封堵"])
-tier_costs = Array[int]([90, 180, 300, 480, 700])
-range_bonus_per_tier = 0.15
+path_name = "磁化铁网"
+tier_names = Array[String](["带电铁丝", "爆炸铁网", "磁力感应", "双层铁网", "维修冲击"])
+tier_effects = Array[String](["每次踩踏25%眩晕0.6s", "损坏时自动爆炸80px 60伤", "主动将范围内敌人缓慢拉近", "同时固住2目标 各受全额伤害", "维修完成瞬间：150px电磁脉冲 120伤+眩晕1s"])
+tier_costs = Array[int]([150, 300, 500, 700, 1000])
 
 [sub_resource type="Resource" id="Path_3"]
 script = ExtResource("2_tup")
-path_name = "强化铁网"
-tier_names = Array[String](["自动修复", "爆炸铁网", "带电铁丝", "双层铁网", "磁化铁网"])
-tier_effects = Array[String](["铁网自动修复，被破坏后3秒内还原", "触发时炸开小范围伤害，波及周围敌人", "铁网带电，触碰有30%几率造成0.5秒麻痹", "双层铁网结构，伤害翻倍且减速效果增强", "磁化铁网：主动拉近附近敌人，集中打击"])
-tier_costs = Array[int]([150, 300, 500, 700, 1000])
+path_name = "极致缠绕"
+tier_names = Array[String](["缠绕减速", "强力缠绕", "持续拖拽", "重度缠绕", "极致缠绕"])
+tier_effects = Array[String](["减速25% 残留1.5s", "减速38% 残留2.5s", "减速50% 被减速目标全场+18%伤", "减速58% 耐久+2 强制取消冲锋", "减速65% 全场+28%伤 损坏后减速残留10s"])
+tier_costs = Array[int]([100, 200, 380, 580, 850])
 
 [resource]
 script = ExtResource("1_tcd")
+tower_scene = ExtResource("tower_scn")
+base_texture = ExtResource("tex_wire")
 tower_id = "barbed_wire"
 display_name = "带刺铁网"
 tower_emoji = "🪤"
 rarity = 1
-base_damage = 5.0
-attack_speed = 0.5
+base_damage = 15.0
+attack_speed = 0.0
 attack_range = 120.0
 placement_cost = 150
 attack_type = 0
-effect_description = "放置在路面阻碍敌人，持续造成伤害并减速，擅长封锁狭窄通道"
+place_on_path_only = true
+effect_description = "路面陷阱，敌人踩踏消耗耐久。损坏后需手动维修。可升级为高伤出血、超高耐久、磁化电击或极致减速。"
 upgrade_paths = Array[ExtResource("2_tup")]([SubResource("Path_0"), SubResource("Path_1"), SubResource("Path_2"), SubResource("Path_3")])
 level_required = 5
 unlock_fragments = 30

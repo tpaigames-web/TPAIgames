@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="GlobalUpgradeData" format=3]
+
+[ext_resource type="Script" uid="uid://bgu_data" path="res://data/global_upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+upgrade_id = "syn_water_wire"
+display_name = "冰封铁网"
+description = "水压+铁网：冻结踩网不消耗耐久"
+icon_emoji = "❄"
+rarity = 1
+upgrade_type = 2
+stat_type = 9
+stat_bonus = 1.0
+required_tower_ids = Array[String](["water_pipe", "barbed_wire"])
+target_tower_ids = Array[String](["barbed_wire"])

@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="GlobalUpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/global_upgrade_data.gd" id="1_s4"]
+
+[resource]
+script = ExtResource("1_s4")
+upgrade_id = "synergy_sun_farmer"
+display_name = "阳光增效"
+description = "需要：向日葵\n农夫 伤害 +30%"
+icon_emoji = "☀"
+rarity = 1
+upgrade_type = 2
+target_tower_id = "farmer"
+stat_type = 0
+stat_bonus = 0.3
+required_tower_ids = Array[String](["sunflower"])
+target_tower_ids = Array[String]([])

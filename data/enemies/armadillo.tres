@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" uid="uid://dapicbkaarem1" path="res://enemy/enemy_data.gd" id="1_arma"]
+
+[resource]
+script = ExtResource("1_arma")
+enemy_id = "armadillo"
+display_name = "钢背犰狳"
+display_emoji = "🦔"
+max_hp = 450
+move_speed = 85.0
+armor = 3
+sprite_display_size = 130.0
+damage_to_player = 5
+gold_reward = 38
+xp_reward = 38
+is_elite = true
+is_giant = true
+is_dot_immune = true
+shield_threshold = 0.5
+shield_grants_control_immune = true
+counter_strategy = "高爆发穿透护盾·弓弩穿甲"
+metadata/_custom_type_script = "uid://dapicbkaarem1"

@@ -10,16 +10,15 @@ anchor_bottom = 1.0
 script = ExtResource("1_script")
 
 [node name="Background" type="ColorRect" parent="."]
-layout_mode = 0
-offset_right = 1080.0
-offset_bottom = 1920.0
-color = Color(0.08, 0.1, 0.2, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.1, 0.14, 0.08, 1)
 
 [node name="TitleBar" type="HBoxContainer" parent="."]
-layout_mode = 0
-offset_left = 0.0
-offset_top = 0.0
-offset_right = 1080.0
+layout_mode = 1
+anchor_right = 1.0
 offset_bottom = 80.0
 theme_override_constants/separation = 0
 
@@ -27,13 +26,13 @@ theme_override_constants/separation = 0
 layout_mode = 2
 custom_minimum_size = Vector2(160, 80)
 text = "← 返回"
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 38
 
 [node name="TitleLabel" type="Label" parent="TitleBar"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "升级通行证"
-theme_override_font_sizes/font_size = 40
+theme_override_font_sizes/font_size = 56
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -42,11 +41,11 @@ layout_mode = 2
 custom_minimum_size = Vector2(160, 0)
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
-layout_mode = 0
-offset_left = 0.0
+layout_mode = 1
+anchor_right = 1.0
+anchor_bottom = 1.0
 offset_top = 80.0
-offset_right = 1080.0
-offset_bottom = 1800.0
+offset_bottom = -120.0
 
 [node name="LevelsVBox" type="VBoxContainer" parent="ScrollContainer"]
 layout_mode = 2
@@ -54,11 +53,11 @@ size_flags_horizontal = 3
 theme_override_constants/separation = 0
 
 [node name="BottomBar" type="PanelContainer" parent="."]
-layout_mode = 0
-offset_left = 0.0
-offset_top = 1800.0
-offset_right = 1080.0
-offset_bottom = 1920.0
+layout_mode = 1
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -120.0
 
 [node name="BottomBarContent" type="HBoxContainer" parent="BottomBar"]
 layout_mode = 1
@@ -66,13 +65,12 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 theme_override_constants/separation = 0
 
-[node name="FreeLbl" type="Label" parent="BottomBar/BottomBarContent"]
+[node name="ClaimAllBtn" type="Button" parent="BottomBar/BottomBarContent"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "免费"
-theme_override_font_sizes/font_size = 28
-horizontal_alignment = 1
-vertical_alignment = 1
+custom_minimum_size = Vector2(0, 80)
+text = "全部领取"
+theme_override_font_sizes/font_size = 38
 
 [node name="LevelColumnSpacer" type="Control" parent="BottomBar/BottomBarContent"]
 layout_mode = 2
@@ -82,12 +80,13 @@ custom_minimum_size = Vector2(140, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 text = "RM 8.88"
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 38
 
 [node name="ConfirmOverlay" type="ColorRect" parent="."]
-layout_mode = 0
-offset_right = 1080.0
-offset_bottom = 1920.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 color = Color(0, 0, 0, 0.65)
 mouse_filter = 0
 z_index = 20
@@ -114,7 +113,7 @@ theme_override_constants/separation = 24
 layout_mode = 2
 size_flags_vertical = 3
 text = ""
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 38
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
@@ -128,11 +127,11 @@ layout_mode = 2
 size_flags_horizontal = 3
 custom_minimum_size = Vector2(0, 80)
 text = "取消"
-theme_override_font_sizes/font_size = 30
+theme_override_font_sizes/font_size = 38
 
 [node name="ConfirmBtn" type="Button" parent="ConfirmOverlay/ConfirmCard/ContentVBox/BtnRow"]
 layout_mode = 2
 size_flags_horizontal = 3
 custom_minimum_size = Vector2(0, 80)
 text = "确认"
-theme_override_font_sizes/font_size = 30
+theme_override_font_sizes/font_size = 38

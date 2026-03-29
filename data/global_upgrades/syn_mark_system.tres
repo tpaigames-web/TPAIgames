@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="GlobalUpgradeData" format=3]
+
+[ext_resource type="Script" uid="uid://bgu_data" path="res://data/global_upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+upgrade_id = "syn_mark_system"
+display_name = "标记风暴"
+description = "弓弩+辣椒+稻草人：标记+30%"
+icon_emoji = "🏷"
+rarity = 2
+upgrade_type = 2
+stat_type = 7
+stat_bonus = 0.3
+required_tower_ids = Array[String](["watchtower", "chili_flamer", "scarecrow"])

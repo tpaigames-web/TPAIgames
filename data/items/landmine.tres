@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/item_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+item_id = "landmine"
+display_name = "地雷"
+emoji = "💣"
+description = "放置在路径上，敌人经过时引爆造成范围伤害"
+gem_cost = 50
+effect_type = "landmine"
+effect_value = 700.0
+blast_radius = 200.0
+place_on_path = true

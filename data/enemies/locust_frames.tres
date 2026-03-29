@@ -1,0 +1,18 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://locust_sprite_frames"]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/enemy/HuangChong/HC_01.png" id="l1"]
+[ext_resource type="Texture2D" path="res://assets/sprites/enemy/HuangChong/HC_02.png" id="l2"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("l1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("l2")
+}],
+"loop": true,
+"name": &"default",
+"speed": 8.0
+}]

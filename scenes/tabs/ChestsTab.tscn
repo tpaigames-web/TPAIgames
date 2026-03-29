@@ -1,151 +1,1020 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://d0mnmg8kc4bv6"]
 
-[ext_resource type="Script" path="res://scenes/tabs/ChestsTab.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://bwn27ku8n8uv2" path="res://scenes/tabs/ChestsTab.gd" id="1_script"]
+[ext_resource type="FontFile" uid="uid://b7ivta6i6dxs7" path="res://assets/sprites/Font/+¡¦¦+¦¦s 600W.ttf" id="font_600"]
+[ext_resource type="FontFile" uid="uid://bmi3oq701indj" path="res://assets/sprites/Font/+¡¦¦+¦¦s 700W.ttf" id="font_700"]
+[ext_resource type="Texture2D" uid="uid://be7eev52dnkh2" path="res://assets/sprites/ui/Level_Empty.png" id="tex_card_bg"]
+[ext_resource type="Texture2D" uid="uid://dea2qpblbaftk" path="res://assets/sprites/ui/Chest+.png" id="tex_chest_bg"]
+[ext_resource type="Texture2D" uid="uid://dsx0gmgpywlo" path="res://assets/sprites/ui/Chest_Gold.png" id="tex_chest_gold"]
+[ext_resource type="Texture2D" uid="uid://xmu0eg0tbi62" path="res://assets/sprites/ui/Chest_Silver.png" id="tex_chest_silver"]
+[ext_resource type="Texture2D" uid="uid://bngqt8a4ig85k" path="res://assets/sprites/ui/Chest_Wood.png" id="tex_chest_wood"]
+[ext_resource type="Texture2D" uid="uid://cavq3tb2wql72" path="res://assets/sprites/ui/Info.png" id="tex_info"]
+[ext_resource type="Texture2D" uid="uid://j18d77q67n4o" path="res://assets/sprites/ui/Lock.png" id="tex_lock"]
+[ext_resource type="Texture2D" uid="uid://dxw7k4nt6uvem" path="res://assets/sprites/ui/Wood_panel.png" id="tex_wood_panel"]
 
-[node name="ChestsTab" type="Control"]
+[node name="ChestsTab" type="Control" unique_id=482850323]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_script")
 
-[node name="Background" type="ColorRect" parent="."]
-layout_mode = 0
-offset_right = 1080.0
-offset_bottom = 1580.0
+[node name="Background" type="ColorRect" parent="." unique_id=528924298]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 color = Color(0.18, 0.14, 0.08, 1)
 
-[node name="TitleLabel" type="Label" parent="."]
+[node name="TitleLabel" type="Label" parent="." unique_id=1501561697]
 layout_mode = 0
 offset_left = 20.0
 offset_top = 20.0
 offset_right = 1060.0
 offset_bottom = 80.0
+theme_override_colors/font_color = Color(1, 0.95, 0.85, 1)
+theme_override_fonts/font = ExtResource("font_700")
+theme_override_font_sizes/font_size = 56
 text = "宝箱"
-theme_override_font_sizes/font_size = 44
 horizontal_alignment = 1
 
-[node name="SlotsLabel" type="Label" parent="."]
+[node name="ChestSlotsRow" type="HBoxContainer" parent="." unique_id=987346799]
 layout_mode = 0
 offset_left = 20.0
-offset_top = 90.0
-offset_right = 1060.0
-offset_bottom = 140.0
-text = "宝箱槽位"
-theme_override_font_sizes/font_size = 30
-
-[node name="ChestSlotsRow" type="HBoxContainer" parent="."]
-layout_mode = 0
-offset_left = 20.0
-offset_top = 145.0
+offset_top = 100.0
 offset_right = 1060.0
 offset_bottom = 340.0
 theme_override_constants/separation = 16
 
-[node name="ChestSlot0" type="PanelContainer" parent="ChestSlotsRow"]
+[node name="Slot0" type="Control" parent="ChestSlotsRow" unique_id=161813880]
+custom_minimum_size = Vector2(240, 230)
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="EmptyState0" type="Label" parent="ChestSlotsRow/ChestSlot0"]
-layout_mode = 2
-text = "空\n槽位"
-theme_override_font_sizes/font_size = 22
-horizontal_alignment = 1
-vertical_alignment = 1
+[node name="BgTexture" type="TextureRect" parent="ChestSlotsRow/Slot0" unique_id=1074996583]
+layout_mode = 0
+offset_right = 240.0
+offset_bottom = 230.0
+mouse_filter = 2
+texture = ExtResource("tex_chest_bg")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="ChestSlot1" type="PanelContainer" parent="ChestSlotsRow"]
+[node name="ChestTexture" type="TextureRect" parent="ChestSlotsRow/Slot0" unique_id=2126286886]
+visible = false
+layout_mode = 0
+offset_left = 50.0
+offset_top = 20.0
+offset_right = 190.0
+offset_bottom = 160.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="DimOverlay" type="ColorRect" parent="ChestSlotsRow/Slot0" unique_id=373403967]
+visible = false
+layout_mode = 0
+offset_left = 50.0
+offset_top = 20.0
+offset_right = 190.0
+offset_bottom = 160.0
+mouse_filter = 2
+color = Color(0, 0, 0, 0.45)
+
+[node name="LockIcon" type="TextureRect" parent="ChestSlotsRow/Slot0" unique_id=952905611]
+visible = false
+layout_mode = 0
+offset_left = 85.0
+offset_top = 50.0
+offset_right = 155.0
+offset_bottom = 120.0
+mouse_filter = 2
+texture = ExtResource("tex_lock")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TimeLabel" type="Label" parent="ChestSlotsRow/Slot0" unique_id=117877219]
+visible = false
+layout_mode = 0
+offset_left = 10.0
+offset_top = 170.0
+offset_right = 230.0
+offset_bottom = 210.0
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_fonts/font = ExtResource("font_600")
+theme_override_font_sizes/font_size = 32
+horizontal_alignment = 1
+
+[node name="HintLabel" type="Label" parent="ChestSlotsRow/Slot0" unique_id=440747175]
+visible = false
+layout_mode = 0
+offset_left = 10.0
+offset_top = 170.0
+offset_right = 230.0
+offset_bottom = 210.0
+theme_override_colors/font_color = Color(0.3, 1, 0.4, 1)
+theme_override_fonts/font = ExtResource("font_600")
+theme_override_font_sizes/font_size = 32
+horizontal_alignment = 1
+
+[node name="HitButton" type="Button" parent="ChestSlotsRow/Slot0" unique_id=389696024]
+layout_mode = 0
+offset_right = 240.0
+offset_bottom = 230.0
+flat = true
+
+[node name="Slot1" type="Control" parent="ChestSlotsRow" unique_id=1237199495]
+custom_minimum_size = Vector2(240, 230)
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="EmptyState1" type="Label" parent="ChestSlotsRow/ChestSlot1"]
-layout_mode = 2
-text = "空\n槽位"
-theme_override_font_sizes/font_size = 22
-horizontal_alignment = 1
-vertical_alignment = 1
+[node name="BgTexture" type="TextureRect" parent="ChestSlotsRow/Slot1" unique_id=800166838]
+layout_mode = 0
+offset_right = 240.0
+offset_bottom = 230.0
+mouse_filter = 2
+texture = ExtResource("tex_chest_bg")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="ChestSlot2" type="PanelContainer" parent="ChestSlotsRow"]
+[node name="ChestTexture" type="TextureRect" parent="ChestSlotsRow/Slot1" unique_id=87682455]
+visible = false
+layout_mode = 0
+offset_left = 50.0
+offset_top = 20.0
+offset_right = 190.0
+offset_bottom = 160.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="DimOverlay" type="ColorRect" parent="ChestSlotsRow/Slot1" unique_id=1880540357]
+visible = false
+layout_mode = 0
+offset_left = 50.0
+offset_top = 20.0
+offset_right = 190.0
+offset_bottom = 160.0
+mouse_filter = 2
+color = Color(0, 0, 0, 0.45)
+
+[node name="LockIcon" type="TextureRect" parent="ChestSlotsRow/Slot1" unique_id=1541473814]
+visible = false
+layout_mode = 0
+offset_left = 85.0
+offset_top = 50.0
+offset_right = 155.0
+offset_bottom = 120.0
+mouse_filter = 2
+texture = ExtResource("tex_lock")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TimeLabel" type="Label" parent="ChestSlotsRow/Slot1" unique_id=1124480324]
+visible = false
+layout_mode = 0
+offset_left = 10.0
+offset_top = 170.0
+offset_right = 230.0
+offset_bottom = 210.0
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_fonts/font = ExtResource("font_600")
+theme_override_font_sizes/font_size = 32
+horizontal_alignment = 1
+
+[node name="HintLabel" type="Label" parent="ChestSlotsRow/Slot1" unique_id=1539067585]
+visible = false
+layout_mode = 0
+offset_left = 10.0
+offset_top = 170.0
+offset_right = 230.0
+offset_bottom = 210.0
+theme_override_colors/font_color = Color(0.3, 1, 0.4, 1)
+theme_override_fonts/font = ExtResource("font_600")
+theme_override_font_sizes/font_size = 32
+horizontal_alignment = 1
+
+[node name="HitButton" type="Button" parent="ChestSlotsRow/Slot1" unique_id=400167991]
+layout_mode = 0
+offset_right = 240.0
+offset_bottom = 230.0
+flat = true
+
+[node name="Slot2" type="Control" parent="ChestSlotsRow" unique_id=1626595751]
+custom_minimum_size = Vector2(240, 230)
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="EmptyState2" type="Label" parent="ChestSlotsRow/ChestSlot2"]
-layout_mode = 2
-text = "空\n槽位"
-theme_override_font_sizes/font_size = 22
-horizontal_alignment = 1
-vertical_alignment = 1
+[node name="BgTexture" type="TextureRect" parent="ChestSlotsRow/Slot2" unique_id=216560717]
+layout_mode = 0
+offset_right = 240.0
+offset_bottom = 230.0
+mouse_filter = 2
+texture = ExtResource("tex_chest_bg")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="ChestSlot3" type="PanelContainer" parent="ChestSlotsRow"]
+[node name="ChestTexture" type="TextureRect" parent="ChestSlotsRow/Slot2" unique_id=802083862]
+visible = false
+layout_mode = 0
+offset_left = 50.0
+offset_top = 20.0
+offset_right = 190.0
+offset_bottom = 160.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="DimOverlay" type="ColorRect" parent="ChestSlotsRow/Slot2" unique_id=880838420]
+visible = false
+layout_mode = 0
+offset_left = 50.0
+offset_top = 20.0
+offset_right = 190.0
+offset_bottom = 160.0
+mouse_filter = 2
+color = Color(0, 0, 0, 0.45)
+
+[node name="LockIcon" type="TextureRect" parent="ChestSlotsRow/Slot2" unique_id=1343494303]
+visible = false
+layout_mode = 0
+offset_left = 85.0
+offset_top = 50.0
+offset_right = 155.0
+offset_bottom = 120.0
+mouse_filter = 2
+texture = ExtResource("tex_lock")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TimeLabel" type="Label" parent="ChestSlotsRow/Slot2" unique_id=852077443]
+visible = false
+layout_mode = 0
+offset_left = 10.0
+offset_top = 170.0
+offset_right = 230.0
+offset_bottom = 210.0
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_fonts/font = ExtResource("font_600")
+theme_override_font_sizes/font_size = 32
+horizontal_alignment = 1
+
+[node name="HintLabel" type="Label" parent="ChestSlotsRow/Slot2" unique_id=1730283313]
+visible = false
+layout_mode = 0
+offset_left = 10.0
+offset_top = 170.0
+offset_right = 230.0
+offset_bottom = 210.0
+theme_override_colors/font_color = Color(0.3, 1, 0.4, 1)
+theme_override_fonts/font = ExtResource("font_600")
+theme_override_font_sizes/font_size = 32
+horizontal_alignment = 1
+
+[node name="HitButton" type="Button" parent="ChestSlotsRow/Slot2" unique_id=2029487819]
+layout_mode = 0
+offset_right = 240.0
+offset_bottom = 230.0
+flat = true
+
+[node name="Slot3" type="Control" parent="ChestSlotsRow" unique_id=1465299670]
+custom_minimum_size = Vector2(240, 230)
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="EmptyState3" type="Label" parent="ChestSlotsRow/ChestSlot3"]
-layout_mode = 2
-text = "空\n槽位"
-theme_override_font_sizes/font_size = 22
-horizontal_alignment = 1
-vertical_alignment = 1
+[node name="BgTexture" type="TextureRect" parent="ChestSlotsRow/Slot3" unique_id=2020164909]
+layout_mode = 0
+offset_right = 240.0
+offset_bottom = 230.0
+mouse_filter = 2
+texture = ExtResource("tex_chest_bg")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="BuySectionLabel" type="Label" parent="."]
+[node name="ChestTexture" type="TextureRect" parent="ChestSlotsRow/Slot3" unique_id=1762985189]
+visible = false
+layout_mode = 0
+offset_left = 50.0
+offset_top = 20.0
+offset_right = 190.0
+offset_bottom = 160.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="DimOverlay" type="ColorRect" parent="ChestSlotsRow/Slot3" unique_id=433331846]
+visible = false
+layout_mode = 0
+offset_left = 50.0
+offset_top = 20.0
+offset_right = 190.0
+offset_bottom = 160.0
+mouse_filter = 2
+color = Color(0, 0, 0, 0.45)
+
+[node name="LockIcon" type="TextureRect" parent="ChestSlotsRow/Slot3" unique_id=246228320]
+visible = false
+layout_mode = 0
+offset_left = 85.0
+offset_top = 50.0
+offset_right = 155.0
+offset_bottom = 120.0
+mouse_filter = 2
+texture = ExtResource("tex_lock")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TimeLabel" type="Label" parent="ChestSlotsRow/Slot3" unique_id=1030571992]
+visible = false
+layout_mode = 0
+offset_left = 10.0
+offset_top = 170.0
+offset_right = 230.0
+offset_bottom = 210.0
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_fonts/font = ExtResource("font_600")
+theme_override_font_sizes/font_size = 32
+horizontal_alignment = 1
+
+[node name="HintLabel" type="Label" parent="ChestSlotsRow/Slot3" unique_id=869724489]
+visible = false
+layout_mode = 0
+offset_left = 10.0
+offset_top = 170.0
+offset_right = 230.0
+offset_bottom = 210.0
+theme_override_colors/font_color = Color(0.3, 1, 0.4, 1)
+theme_override_fonts/font = ExtResource("font_600")
+theme_override_font_sizes/font_size = 32
+horizontal_alignment = 1
+
+[node name="HitButton" type="Button" parent="ChestSlotsRow/Slot3" unique_id=1772123414]
+layout_mode = 0
+offset_right = 240.0
+offset_bottom = 230.0
+flat = true
+
+[node name="PendingChestRow" type="HBoxContainer" parent="." unique_id=648518999]
+visible = false
 layout_mode = 0
 offset_left = 20.0
-offset_top = 355.0
+offset_top = 345.0
 offset_right = 1060.0
-offset_bottom = 410.0
+offset_bottom = 420.0
+theme_override_constants/separation = 16
+
+[node name="PendingLabel" type="Label" parent="PendingChestRow" unique_id=2120252189]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("font_600")
+theme_override_font_sizes/font_size = 38
+text = "⏳ 待领取宝箱"
+
+[node name="ClaimPendingBtn" type="Button" parent="PendingChestRow" unique_id=1808409900]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 38
+text = "➕ 领取到槽位"
+
+[node name="BuySectionLabel" type="Label" parent="." unique_id=956453968]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 374.0
+offset_right = 1060.0
+offset_bottom = 429.0
+theme_override_colors/font_color = Color(1, 0.95, 0.85, 1)
+theme_override_fonts/font = ExtResource("font_700")
+theme_override_font_sizes/font_size = 48
 text = "购买宝箱"
-theme_override_font_sizes/font_size = 34
 
-[node name="BuyCardsRow" type="HBoxContainer" parent="."]
+[node name="BuyCardsRow" type="HBoxContainer" parent="." unique_id=1471201002]
 layout_mode = 0
 offset_left = 20.0
-offset_top = 420.0
+offset_top = 439.0
 offset_right = 1060.0
-offset_bottom = 870.0
-theme_override_constants/separation = 20
+offset_bottom = 960.0
+theme_override_constants/separation = 12
 
-[node name="InfoPanel" type="PanelContainer" parent="."]
+[node name="WoodCard" type="TextureButton" parent="BuyCardsRow" unique_id=206681652]
+custom_minimum_size = Vector2(320, 450)
+layout_mode = 2
+size_flags_horizontal = 3
+texture_normal = ExtResource("tex_card_bg")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="WoodPanel" type="TextureRect" parent="BuyCardsRow/WoodCard" unique_id=95952393]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 57.000004
+offset_right = 324.0
+offset_bottom = 277.0
+scale = Vector2(0.85308236, 0.85308236)
+mouse_filter = 2
+texture = ExtResource("tex_wood_panel")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ChestImage" type="TextureRect" parent="BuyCardsRow/WoodCard/WoodPanel" unique_id=499009407]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -83.73345
+offset_top = -98.89102
+offset_right = 56.26654
+offset_bottom = 41.10898
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.3751103, 1.3751103)
+mouse_filter = 2
+texture = ExtResource("tex_chest_wood")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="InfoBtn" type="TextureButton" parent="BuyCardsRow/WoodCard" unique_id=1924994335]
+layout_mode = 0
+offset_left = 272.0
+offset_top = 7.0
+offset_right = 322.0
+offset_bottom = 57.0
+texture_normal = ExtResource("tex_info")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="TitleLabel" type="Label" parent="BuyCardsRow/WoodCard" unique_id=776569021]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 245.0
+offset_right = 310.0
+offset_bottom = 295.0
+theme_override_colors/font_color = Color(1, 0.95, 0.85, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.4)
+theme_override_constants/shadow_offset_y = 2
+theme_override_fonts/font = ExtResource("font_700")
+theme_override_font_sizes/font_size = 48
+text = "木宝箱"
+horizontal_alignment = 1
+
+[node name="PriceLabel" type="Label" parent="BuyCardsRow/WoodCard" unique_id=1609045467]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 300.0
+offset_right = 310.0
+offset_bottom = 340.0
+theme_override_colors/font_color = Color(0.3, 1, 0.4, 1)
+theme_override_fonts/font = ExtResource("font_600")
+theme_override_font_sizes/font_size = 38
+text = "免费"
+horizontal_alignment = 1
+
+[node name="InfoLine1" type="Label" parent="BuyCardsRow/WoodCard" unique_id=1064998665]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 350.0
+offset_right = 310.0
+offset_bottom = 385.0
+theme_override_colors/font_color = Color(0.85, 0.8, 0.7, 1)
+theme_override_fonts/font = ExtResource("font_600")
+theme_override_font_sizes/font_size = 32
+text = "-3 张卡片"
+horizontal_alignment = 1
+
+[node name="InfoLine2" type="Label" parent="BuyCardsRow/WoodCard" unique_id=142656698]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 390.0
+offset_right = 310.0
+offset_bottom = 425.0
+theme_override_colors/font_color = Color(0.85, 0.8, 0.7, 1)
+theme_override_fonts/font = ExtResource("font_600")
+theme_override_font_sizes/font_size = 32
+text = "-含白/绿稀有"
+horizontal_alignment = 1
+
+[node name="IronCard" type="TextureButton" parent="BuyCardsRow" unique_id=890215519]
+custom_minimum_size = Vector2(320, 450)
+layout_mode = 2
+size_flags_horizontal = 3
+texture_normal = ExtResource("tex_card_bg")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="WoodPanel" type="TextureRect" parent="BuyCardsRow/IronCard" unique_id=1672977754]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 57.0
+offset_right = 324.0
+offset_bottom = 277.0
+scale = Vector2(0.85198146, 0.85198146)
+mouse_filter = 2
+texture = ExtResource("tex_wood_panel")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ChestImage" type="TextureRect" parent="BuyCardsRow/IronCard/WoodPanel" unique_id=946211745]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -83.7512
+offset_top = -98.92836
+offset_right = 56.24881
+offset_bottom = 41.07164
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.375595, 1.375595)
+mouse_filter = 2
+texture = ExtResource("tex_chest_silver")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="InfoBtn" type="TextureButton" parent="BuyCardsRow/IronCard" unique_id=284208012]
+layout_mode = 0
+offset_left = 272.0
+offset_top = 7.0
+offset_right = 322.0
+offset_bottom = 57.0
+texture_normal = ExtResource("tex_info")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="TitleLabel" type="Label" parent="BuyCardsRow/IronCard" unique_id=1101286645]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 245.0
+offset_right = 310.0
+offset_bottom = 295.0
+theme_override_colors/font_color = Color(1, 0.95, 0.85, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.4)
+theme_override_constants/shadow_offset_y = 2
+theme_override_fonts/font = ExtResource("font_700")
+theme_override_font_sizes/font_size = 48
+text = "铁宝箱"
+horizontal_alignment = 1
+
+[node name="PriceLabel" type="Label" parent="BuyCardsRow/IronCard" unique_id=1311309615]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 300.0
+offset_right = 310.0
+offset_bottom = 340.0
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_fonts/font = ExtResource("font_600")
+theme_override_font_sizes/font_size = 38
+text = "🎫 10"
+horizontal_alignment = 1
+
+[node name="InfoLine1" type="Label" parent="BuyCardsRow/IronCard" unique_id=1044965719]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 350.0
+offset_right = 310.0
+offset_bottom = 385.0
+theme_override_colors/font_color = Color(0.85, 0.8, 0.7, 1)
+theme_override_fonts/font = ExtResource("font_600")
+theme_override_font_sizes/font_size = 32
+text = "-5 张卡片"
+horizontal_alignment = 1
+
+[node name="InfoLine2" type="Label" parent="BuyCardsRow/IronCard" unique_id=1731616233]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 390.0
+offset_right = 310.0
+offset_bottom = 425.0
+theme_override_colors/font_color = Color(0.85, 0.8, 0.7, 1)
+theme_override_fonts/font = ExtResource("font_600")
+theme_override_font_sizes/font_size = 32
+text = "-含绿/蓝稀有"
+horizontal_alignment = 1
+
+[node name="GoldCard" type="TextureButton" parent="BuyCardsRow" unique_id=1983566500]
+custom_minimum_size = Vector2(320, 450)
+layout_mode = 2
+size_flags_horizontal = 3
+texture_normal = ExtResource("tex_card_bg")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="WoodPanel" type="TextureRect" parent="BuyCardsRow/GoldCard" unique_id=1729668205]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 57.0
+offset_right = 324.0
+offset_bottom = 277.0
+scale = Vector2(0.84116095, 0.84116095)
+mouse_filter = 2
+texture = ExtResource("tex_wood_panel")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ChestImage" type="TextureRect" parent="BuyCardsRow/GoldCard/WoodPanel" unique_id=1281999639]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -83.92809
+offset_top = -99.30049
+offset_right = 56.0719
+offset_bottom = 40.69951
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.3804266, 1.3804266)
+mouse_filter = 2
+texture = ExtResource("tex_chest_gold")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="InfoBtn" type="TextureButton" parent="BuyCardsRow/GoldCard" unique_id=764420441]
+layout_mode = 0
+offset_left = 272.0
+offset_top = 7.0
+offset_right = 322.0
+offset_bottom = 57.0
+texture_normal = ExtResource("tex_info")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="TitleLabel" type="Label" parent="BuyCardsRow/GoldCard" unique_id=2019550750]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 245.0
+offset_right = 310.0
+offset_bottom = 295.0
+theme_override_colors/font_color = Color(1, 0.95, 0.85, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.4)
+theme_override_constants/shadow_offset_y = 2
+theme_override_fonts/font = ExtResource("font_700")
+theme_override_font_sizes/font_size = 48
+text = "金宝箱"
+horizontal_alignment = 1
+
+[node name="PriceLabel" type="Label" parent="BuyCardsRow/GoldCard" unique_id=475993304]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 300.0
+offset_right = 310.0
+offset_bottom = 340.0
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_fonts/font = ExtResource("font_600")
+theme_override_font_sizes/font_size = 38
+text = "🎫 15"
+horizontal_alignment = 1
+
+[node name="InfoLine1" type="Label" parent="BuyCardsRow/GoldCard" unique_id=1113096467]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 350.0
+offset_right = 310.0
+offset_bottom = 385.0
+theme_override_colors/font_color = Color(0.85, 0.8, 0.7, 1)
+theme_override_fonts/font = ExtResource("font_600")
+theme_override_font_sizes/font_size = 32
+text = "-8 张卡片"
+horizontal_alignment = 1
+
+[node name="InfoLine2" type="Label" parent="BuyCardsRow/GoldCard" unique_id=1449041003]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 390.0
+offset_right = 310.0
+offset_bottom = 425.0
+theme_override_colors/font_color = Color(0.85, 0.8, 0.7, 1)
+theme_override_fonts/font = ExtResource("font_600")
+theme_override_font_sizes/font_size = 32
+text = "-含蓝/紫/橙稀有"
+horizontal_alignment = 1
+
+[node name="BulkSectionLabel" type="Label" parent="." unique_id=593648947]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 968.0
+offset_right = 1058.0
+offset_bottom = 1023.0
+theme_override_colors/font_color = Color(1, 0.95, 0.85, 1)
+theme_override_fonts/font = ExtResource("font_700")
+theme_override_font_sizes/font_size = 48
+text = "10连开箱"
+
+[node name="BulkBuyRow" type="HBoxContainer" parent="." unique_id=1455817724]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 1028.0
+offset_right = 1058.0
+offset_bottom = 1564.0
+theme_override_constants/separation = 12
+
+[node name="BulkWood" type="TextureButton" parent="BulkBuyRow" unique_id=897953829]
+custom_minimum_size = Vector2(320, 450)
+layout_mode = 2
+size_flags_horizontal = 3
+texture_normal = ExtResource("tex_card_bg")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="WoodPanel" type="TextureRect" parent="BulkBuyRow/BulkWood" unique_id=1359805485]
+layout_mode = 0
+offset_left = 45.0
+offset_top = 74.0
+offset_right = 325.0
+offset_bottom = 294.0
+scale = Vector2(0.88, 0.88)
+mouse_filter = 2
+texture = ExtResource("tex_wood_panel")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="LeftChest" type="TextureRect" parent="BulkBuyRow/BulkWood/WoodPanel" unique_id=1523809452]
+modulate = Color(0.8, 0.8, 0.8, 0.9)
+layout_mode = 0
+offset_left = 38.0
+offset_top = 57.0
+offset_right = 138.0
+offset_bottom = 157.0
+rotation = -0.1745
+scale = Vector2(0.8354883, 0.8354883)
+mouse_filter = 2
+texture = ExtResource("tex_chest_wood")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="RightChest" type="TextureRect" parent="BulkBuyRow/BulkWood/WoodPanel" unique_id=389949766]
+modulate = Color(0.8, 0.8, 0.8, 0.9)
+layout_mode = 0
+offset_left = 178.0
+offset_top = 57.0
+offset_right = 278.0
+offset_bottom = 157.0
+rotation = 0.1745
+scale = Vector2(0.83548343, 0.83548343)
+mouse_filter = 2
+texture = ExtResource("tex_chest_wood")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CenterChest" type="TextureRect" parent="BulkBuyRow/BulkWood/WoodPanel" unique_id=731448433]
+layout_mode = 0
+offset_left = 93.0
+offset_top = 37.0
+offset_right = 223.0
+offset_bottom = 167.0
+scale = Vector2(0.83548343, 0.83548343)
+mouse_filter = 2
+texture = ExtResource("tex_chest_wood")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TitleLabel" type="Label" parent="BulkBuyRow/BulkWood" unique_id=5871274]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 299.0
+offset_right = 310.0
+offset_bottom = 349.0
+theme_override_colors/font_color = Color(1, 0.95, 0.85, 1)
+theme_override_fonts/font = ExtResource("font_700")
+theme_override_font_sizes/font_size = 48
+text = "木宝箱 ×10"
+horizontal_alignment = 1
+
+[node name="PriceLabel" type="Label" parent="BulkBuyRow/BulkWood" unique_id=1682903328]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 388.0
+offset_right = 308.0
+offset_bottom = 430.0
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_fonts/font = ExtResource("font_600")
+theme_override_font_sizes/font_size = 38
+text = "🎫 50"
+horizontal_alignment = 1
+
+[node name="BulkIron" type="TextureButton" parent="BulkBuyRow" unique_id=697747761]
+custom_minimum_size = Vector2(320, 450)
+layout_mode = 2
+size_flags_horizontal = 3
+texture_normal = ExtResource("tex_card_bg")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="WoodPanel" type="TextureRect" parent="BulkBuyRow/BulkIron" unique_id=2127666933]
+layout_mode = 0
+offset_left = 45.0
+offset_top = 74.0
+offset_right = 325.0
+offset_bottom = 294.0
+scale = Vector2(0.88, 0.88)
+mouse_filter = 2
+texture = ExtResource("tex_wood_panel")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="LeftChest" type="TextureRect" parent="BulkBuyRow/BulkIron/WoodPanel" unique_id=1421751225]
+modulate = Color(0.8, 0.8, 0.8, 0.9)
+layout_mode = 0
+offset_left = 38.0
+offset_top = 57.0
+offset_right = 138.0
+offset_bottom = 157.0
+rotation = -0.1745
+scale = Vector2(0.8354883, 0.8354883)
+mouse_filter = 2
+texture = ExtResource("tex_chest_silver")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="RightChest" type="TextureRect" parent="BulkBuyRow/BulkIron/WoodPanel" unique_id=1027553230]
+modulate = Color(0.8, 0.8, 0.8, 0.9)
+layout_mode = 0
+offset_left = 178.0
+offset_top = 57.0
+offset_right = 278.0
+offset_bottom = 157.0
+rotation = 0.1745
+scale = Vector2(0.83548343, 0.83548343)
+mouse_filter = 2
+texture = ExtResource("tex_chest_silver")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CenterChest" type="TextureRect" parent="BulkBuyRow/BulkIron/WoodPanel" unique_id=1028048365]
+layout_mode = 0
+offset_left = 93.0
+offset_top = 37.0
+offset_right = 223.0
+offset_bottom = 167.0
+scale = Vector2(0.83548343, 0.83548343)
+mouse_filter = 2
+texture = ExtResource("tex_chest_silver")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TitleLabel" type="Label" parent="BulkBuyRow/BulkIron" unique_id=852706369]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 299.0
+offset_right = 310.0
+offset_bottom = 349.0
+theme_override_colors/font_color = Color(1, 0.95, 0.85, 1)
+theme_override_fonts/font = ExtResource("font_700")
+theme_override_font_sizes/font_size = 48
+text = "铁宝箱 ×10"
+horizontal_alignment = 1
+
+[node name="PriceLabel" type="Label" parent="BulkBuyRow/BulkIron" unique_id=1235532677]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 388.0
+offset_right = 308.0
+offset_bottom = 430.0
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_fonts/font = ExtResource("font_600")
+theme_override_font_sizes/font_size = 38
+text = "🎫 100"
+horizontal_alignment = 1
+
+[node name="BulkGold" type="TextureButton" parent="BulkBuyRow" unique_id=1528447871]
+custom_minimum_size = Vector2(320, 450)
+layout_mode = 2
+size_flags_horizontal = 3
+texture_normal = ExtResource("tex_card_bg")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="WoodPanel" type="TextureRect" parent="BulkBuyRow/BulkGold" unique_id=1890752738]
+layout_mode = 0
+offset_left = 45.0
+offset_top = 74.0
+offset_right = 325.0
+offset_bottom = 294.0
+scale = Vector2(0.88, 0.88)
+mouse_filter = 2
+texture = ExtResource("tex_wood_panel")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="LeftChest" type="TextureRect" parent="BulkBuyRow/BulkGold/WoodPanel" unique_id=1198361974]
+modulate = Color(0.8, 0.8, 0.8, 0.9)
+layout_mode = 0
+offset_left = 38.0
+offset_top = 57.0
+offset_right = 138.0
+offset_bottom = 157.0
+rotation = -0.1745
+scale = Vector2(0.8354883, 0.8354883)
+mouse_filter = 2
+texture = ExtResource("tex_chest_gold")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="RightChest" type="TextureRect" parent="BulkBuyRow/BulkGold/WoodPanel" unique_id=1596420510]
+modulate = Color(0.8, 0.8, 0.8, 0.9)
+layout_mode = 0
+offset_left = 178.0
+offset_top = 57.0
+offset_right = 278.0
+offset_bottom = 157.0
+rotation = 0.1745
+scale = Vector2(0.83548343, 0.83548343)
+mouse_filter = 2
+texture = ExtResource("tex_chest_gold")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CenterChest" type="TextureRect" parent="BulkBuyRow/BulkGold/WoodPanel" unique_id=1260790296]
+layout_mode = 0
+offset_left = 93.0
+offset_top = 37.0
+offset_right = 223.0
+offset_bottom = 167.0
+scale = Vector2(0.83548343, 0.83548343)
+mouse_filter = 2
+texture = ExtResource("tex_chest_gold")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TitleLabel" type="Label" parent="BulkBuyRow/BulkGold" unique_id=2032347792]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 299.0
+offset_right = 310.0
+offset_bottom = 349.0
+theme_override_colors/font_color = Color(1, 0.95, 0.85, 1)
+theme_override_fonts/font = ExtResource("font_700")
+theme_override_font_sizes/font_size = 48
+text = "金宝箱 ×10"
+horizontal_alignment = 1
+
+[node name="PriceLabel" type="Label" parent="BulkBuyRow/BulkGold" unique_id=820209593]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 388.0
+offset_right = 308.0
+offset_bottom = 430.0
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_fonts/font = ExtResource("font_600")
+theme_override_font_sizes/font_size = 38
+text = "🎫 150"
+horizontal_alignment = 1
+
+[node name="InfoPanel" type="PanelContainer" parent="." unique_id=1717813809]
+visible = false
 layout_mode = 0
 offset_left = 60.0
 offset_top = 300.0
 offset_right = 1020.0
 offset_bottom = 1100.0
-visible = false
 
-[node name="InfoVBox" type="VBoxContainer" parent="InfoPanel"]
+[node name="InfoVBox" type="VBoxContainer" parent="InfoPanel" unique_id=322338570]
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="InfoHeaderRow" type="HBoxContainer" parent="InfoPanel/InfoVBox"]
+[node name="InfoHeaderRow" type="HBoxContainer" parent="InfoPanel/InfoVBox" unique_id=1967206828]
 layout_mode = 2
 
-[node name="InfoTitle" type="Label" parent="InfoPanel/InfoVBox/InfoHeaderRow"]
+[node name="InfoTitle" type="Label" parent="InfoPanel/InfoVBox/InfoHeaderRow" unique_id=1669439577]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("font_700")
+theme_override_font_sizes/font_size = 48
 text = "宝箱内容"
-theme_override_font_sizes/font_size = 38
 
-[node name="CloseBtn" type="Button" parent="InfoPanel/InfoVBox/InfoHeaderRow"]
+[node name="CloseBtn" type="Button" parent="InfoPanel/InfoVBox/InfoHeaderRow" unique_id=974547689]
 custom_minimum_size = Vector2(70, 70)
+layout_mode = 2
+theme_override_font_sizes/font_size = 38
 text = "✕"
-theme_override_font_sizes/font_size = 32
 
-[node name="InfoCardCount" type="Label" parent="InfoPanel/InfoVBox"]
+[node name="InfoCardCount" type="Label" parent="InfoPanel/InfoVBox" unique_id=332617748]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("font_600")
+theme_override_font_sizes/font_size = 38
 text = "开箱张数：?"
-theme_override_font_sizes/font_size = 28
 
-[node name="RarityTitle" type="Label" parent="InfoPanel/InfoVBox"]
+[node name="RarityTitle" type="Label" parent="InfoPanel/InfoVBox" unique_id=1978861520]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("font_600")
+theme_override_font_sizes/font_size = 38
 text = "稀有度概率"
-theme_override_font_sizes/font_size = 28
 
-[node name="InfoRarityGrid" type="GridContainer" parent="InfoPanel/InfoVBox"]
+[node name="InfoRarityGrid" type="GridContainer" parent="InfoPanel/InfoVBox" unique_id=1217379691]
 layout_mode = 2
-columns = 2
 theme_override_constants/h_separation = 40
 theme_override_constants/v_separation = 12
+columns = 2
 
-[node name="PurchaseDialog" type="ConfirmationDialog" parent="."]
+[node name="PurchaseDialog" type="ConfirmationDialog" parent="." unique_id=1851698992]
 title = "确认购买"
+size = Vector2i(600, 250)
+min_size = Vector2i(600, 250)
 dialog_text = "确认购买？"
-min_size = Vector2(600, 250)

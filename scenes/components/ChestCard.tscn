@@ -1,67 +1,106 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://bkouku4svmoak"]
 
-[ext_resource type="Script" path="res://scenes/components/ChestCard.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://kms6cwa2ll0g" path="res://scenes/components/ChestCard.gd" id="1_script"]
+[ext_resource type="FontFile" uid="uid://b7ivta6i6dxs7" path="res://assets/sprites/Font/+¡¦¦+¦¦s 600W.ttf" id="font_600"]
+[ext_resource type="FontFile" uid="uid://bmi3oq701indj" path="res://assets/sprites/Font/+¡¦¦+¦¦s 700W.ttf" id="font_700"]
+[ext_resource type="Texture2D" uid="uid://be7eev52dnkh2" path="res://assets/sprites/ui/Level_Empty.png" id="tex_bg"]
+[ext_resource type="Texture2D" uid="uid://cavq3tb2wql72" path="res://assets/sprites/ui/Info.png" id="tex_info"]
+[ext_resource type="Texture2D" uid="uid://dxw7k4nt6uvem" path="res://assets/sprites/ui/Wood_panel.png" id="tex_wood_panel"]
 
-[node name="ChestCard" type="Panel"]
-custom_minimum_size = Vector2(300, 420)
+[node name="ChestCard" type="TextureButton" unique_id=1010589779]
+custom_minimum_size = Vector2(320, 450)
+offset_right = 357.81253
+offset_bottom = 503.17386
+scale = Vector2(1.2799999, 1.2799999)
+texture_normal = ExtResource("tex_bg")
+ignore_texture_size = true
+stretch_mode = 0
 script = ExtResource("1_script")
 
-[node name="CardVBox" type="VBoxContainer" parent="."]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-theme_override_constants/separation = 10
-
-[node name="TitleLabel" type="Label" parent="CardVBox"]
-layout_mode = 2
-custom_minimum_size = Vector2(0, 50)
-text = "宝箱名称"
-theme_override_font_sizes/font_size = 30
-horizontal_alignment = 1
-
-[node name="ChestImageRect" type="ColorRect" parent="CardVBox"]
-layout_mode = 2
-custom_minimum_size = Vector2(0, 200)
-size_flags_vertical = 3
-color = Color(0.35, 0.25, 0.1, 1)
-mouse_filter = 0
-
-[node name="ChestImageLabel" type="Label" parent="CardVBox/ChestImageRect"]
+[node name="WoodPanel" type="TextureRect" parent="." unique_id=1946278882]
 layout_mode = 0
-offset_right = 300.0
-offset_bottom = 200.0
-text = "🎁"
-theme_override_font_sizes/font_size = 72
-horizontal_alignment = 1
-vertical_alignment = 1
+offset_left = 73.43751
+offset_top = 73.43751
+offset_right = 283.4375
+offset_bottom = 238.4375
 mouse_filter = 2
+texture = ExtResource("tex_wood_panel")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="PriceLabel" type="Label" parent="CardVBox"]
-layout_mode = 2
-custom_minimum_size = Vector2(0, 40)
-text = "免费"
-theme_override_font_sizes/font_size = 28
-horizontal_alignment = 1
+[node name="ChestImage" type="TextureRect" parent="WoodPanel" unique_id=1598392016]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -70.0
+offset_top = -70.0
+offset_right = 70.0
+offset_bottom = 70.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
 
-[node name="InfoLine1" type="Label" parent="CardVBox"]
-layout_mode = 2
-text = "- ? 张卡片"
-theme_override_font_sizes/font_size = 22
-horizontal_alignment = 1
-
-[node name="InfoLine2" type="Label" parent="CardVBox"]
-layout_mode = 2
-text = "- ? 稀有"
-theme_override_font_sizes/font_size = 22
-horizontal_alignment = 1
-
-[node name="InfoBtn" type="Button" parent="."]
+[node name="InfoBtn" type="TextureButton" parent="." unique_id=730961344]
 layout_mode = 0
-offset_left = 242.0
-offset_top = 6.0
-offset_right = 294.0
-offset_bottom = 52.0
-text = "ⓘ"
-theme_override_font_sizes/font_size = 26
-flat = true
+offset_left = 288.28128
+offset_top = 10.156251
+offset_right = 338.28128
+offset_bottom = 60.15625
+texture_normal = ExtResource("tex_info")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="TitleLabel" type="Label" parent="." unique_id=848702365]
+layout_mode = 0
+offset_left = 24.218752
+offset_top = 239.06252
+offset_right = 324.21875
+offset_bottom = 289.0625
+theme_override_colors/font_color = Color(1, 0.95, 0.85, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.4)
+theme_override_constants/shadow_offset_y = 2
+theme_override_fonts/font = ExtResource("font_700")
+theme_override_font_sizes/font_size = 48
+text = "木宝箱"
+horizontal_alignment = 1
+
+[node name="PriceLabel" type="Label" parent="." unique_id=1340536559]
+layout_mode = 0
+offset_left = 27.343752
+offset_top = 292.18753
+offset_right = 327.34375
+offset_bottom = 332.18753
+theme_override_colors/font_color = Color(0.3, 1, 0.4, 1)
+theme_override_fonts/font = ExtResource("font_600")
+theme_override_font_sizes/font_size = 38
+text = "免费"
+horizontal_alignment = 1
+
+[node name="InfoLine1" type="Label" parent="." unique_id=1248898625]
+layout_mode = 0
+offset_left = 25.000002
+offset_top = 337.50006
+offset_right = 325.0
+offset_bottom = 372.50006
+theme_override_colors/font_color = Color(0.85, 0.8, 0.7, 1)
+theme_override_fonts/font = ExtResource("font_600")
+theme_override_font_sizes/font_size = 32
+text = "-3 张卡片"
+horizontal_alignment = 1
+
+[node name="InfoLine2" type="Label" parent="." unique_id=2031666116]
+layout_mode = 0
+offset_left = 30.468756
+offset_top = 377.3438
+offset_right = 330.46875
+offset_bottom = 412.3438
+theme_override_colors/font_color = Color(0.85, 0.8, 0.7, 1)
+theme_override_fonts/font = ExtResource("font_600")
+theme_override_font_sizes/font_size = 32
+text = "-含白/绿稀有"
+horizontal_alignment = 1

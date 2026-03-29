@@ -7,6 +7,9 @@ class_name TowerCollectionData extends Resource
 @export var display_name: String = ""
 @export var tower_emoji: String = "?"       # 无图片时的 emoji 占位符
 
+## 炮台专属场景（继承 Tower.tscn，含独立碰撞多边形）；null = 使用通用 Tower.tscn
+@export var tower_scene: PackedScene
+
 @export var icon_texture: Texture2D         # 兼容旧引用，保留不删
 
 # ─── 图片分层（局外 / 局内双层）──────────────────────────────────────
@@ -16,6 +19,12 @@ class_name TowerCollectionData extends Resource
 @export var base_texture: Texture2D
 ## 局内攻击旋转图层（炮管/武器，朝向目标实时旋转）
 @export var attack_texture: Texture2D
+## 局内攻击旋转图层 — 射击状态（开火瞬间切换，无则复用 attack_texture）
+@export var shoot_texture: Texture2D
+## 非旋转塔 — 敌人进入范围时的准备状态纹理（无则保持 base_texture）
+@export var ready_texture: Texture2D
+## 动画帧资源（循环播放，优先于静态贴图；用于风车等需要动画的炮台）
+@export var anim_frames: SpriteFrames
 
 ## 稀有度：0=白 1=绿 2=蓝 3=紫 4=橙（与宝箱稀有度体系一致）
 @export_enum("白", "绿", "蓝", "紫", "橙") var rarity: int = 0
@@ -34,8 +43,18 @@ class_name TowerCollectionData extends Resource
 ## 攻击目标类型：0=地面 1=空中 2=全部
 @export_enum("地面", "空中", "全部") var attack_type: int = 0
 
-## 放置碰撞圆半径（像素）；Tower.tscn 的 CollisionShape2D 会在放置时读取此值
+## 放置碰撞圆半径（像素）；collision_polygon 为空时使用此值作圆形碰撞
 @export var collision_radius: float = 50.0
+
+## 手绘放置碰撞多边形（在 Inspector 中编辑顶点坐标，原点=炮台中心）
+## 有顶点时优先使用多边形碰撞，为空则退回 collision_radius 圆形
+@export var collision_polygon: PackedVector2Array = PackedVector2Array()
+
+## 是否只能放在路面上（true = 草地/空地禁止放置；用于捕兽夹、带刺铁网等路面陷阱）
+@export var place_on_path_only: bool = false
+
+## 英雄炮台：每局限放 1 个，拥有独立等级系统（1–10）
+@export var is_hero: bool = false
 
 ## 效果简述
 @export_multiline var effect_description: String = ""
@@ -50,6 +69,9 @@ class_name TowerCollectionData extends Resource
 
 ## 子弹显示用的 emoji（无图片时展示）
 @export var bullet_emoji: String = "⚫"
+
+## 子弹场景（每个塔可指定自己的 .tscn；null = 使用默认 Bullet.tscn）
+@export var bullet_scene: PackedScene
 
 # ─── 升级方向（4个方向，每个5层）────────────────────────────
 

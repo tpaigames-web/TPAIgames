@@ -2,48 +2,58 @@
 
 [ext_resource type="Script" uid="uid://dh7u72sh06tc3" path="res://data/tower_collection_data.gd" id="1_tcd"]
 [ext_resource type="Script" uid="uid://cs8acmmyvm8t5" path="res://data/tower_upgrade_path.gd" id="2_tup"]
+[ext_resource type="PackedScene" path="res://tower/BearTrapTower.tscn" id="tower_scn"]
+[ext_resource type="Texture2D" path="res://assets/sprites/tower/Trap/Trap_Open.png" id="tex_open"]
+[ext_resource type="Texture2D" path="res://assets/sprites/tower/Trap/Trap_Half.png" id="tex_half"]
+[ext_resource type="Texture2D" path="res://assets/sprites/tower/Trap/Trap_close.png" id="tex_close"]
 
 [sub_resource type="Resource" id="Path_0"]
 script = ExtResource("2_tup")
-path_name = "高级捕兽夹"
-tier_names = Array[String](["高级捕兽夹", "钢铁陷阱", "爆炸夹", "毒液夹", "终极钢夹"])
-tier_effects = Array[String](["可对范围内所有敌人造成伤害", "范围扩大，伤害+25%", "触发时产生爆炸，伤害+50%", "造成中毒持续伤害", "极大范围，对所有单位造成毁灭性伤害"])
-tier_costs = Array[int]([200, 400, 650, 900, 1300])
+path_name = "永不停歇"
+tier_names = Array[String](["快速复位", "弹簧加速", "自动复位", "极速复位", "永不停歇"])
+tier_effects = Array[String](["冷却→7s", "冷却→5s", "冷却→4s", "冷却→3s 每次触发回复5金币", "冷却→2.5s 连续2次触发伤害+50%"])
+tier_costs = Array[int]([120, 250, 400, 600, 900])
 
 [sub_resource type="Resource" id="Path_1"]
 script = ExtResource("2_tup")
-path_name = "重置速度"
-tier_names = Array[String](["快速复位", "弹簧加速", "自动复位", "极速复位", "永不停歇"])
-tier_effects = Array[String](["重置时间缩短至12秒", "重置时间缩短至9秒", "重置时间缩短至6秒", "重置时间缩短至3秒", "重置时间缩短至1秒"])
-tier_costs = Array[int]([120, 250, 400, 600, 900])
+path_name = "终极钢咬"
+tier_names = Array[String](["锋利钢咬", "内置尖刺", "爆炸装置", "毒液涂层", "终极钢咬"])
+tier_effects = Array[String](["伤害+30%", "伤害+60% 出血5dps/5s", "伤害+60% 触发时爆炸80px", "伤害+90% 强效毒素30dps/6s", "伤害+90% 对大型×3 普通×2"])
+tier_costs = Array[int]([150, 300, 500, 700, 1000])
 
 [sub_resource type="Resource" id="Path_2"]
 script = ExtResource("2_tup")
-path_name = "伤害提升"
-tier_names = Array[String](["锋利钢齿", "内置尖刺", "爆炸装置", "毒液涂层", "终极钢齿"])
-tier_effects = Array[String](["伤害+25%", "伤害+50%，附加出血效果", "伤害+75%，触发小型爆炸", "伤害+100%，附加中毒效果", "伤害大幅提升，对大型单位必杀"])
-tier_costs = Array[int]([150, 300, 500, 700, 1000])
+path_name = "毒液炸弹"
+tier_names = Array[String](["毒刺附着", "强效毒素", "毒气扩散", "致命毒素", "毒液炸弹"])
+tier_effects = Array[String](["触发附带毒20dps/4s", "毒升至35dps/5s", "触发时毒气扩散100px", "毒层叠2层 中毒减速25%", "触发大范围毒爆150px+眩晕3s"])
+tier_costs = Array[int]([200, 400, 650, 900, 1300])
 
 [sub_resource type="Resource" id="Path_3"]
 script = ExtResource("2_tup")
-path_name = "特殊效果"
-tier_names = Array[String](["待定", "待定", "待定", "待定", "待定"])
-tier_effects = Array[String](["（后续添加效果）", "（后续添加效果）", "（后续添加效果）", "（后续添加效果）", "（后续添加效果）"])
+path_name = "范围钢夹"
+tier_names = Array[String](["高级捕兽夹", "钢铁陷阱", "爆炸夹", "群体捕猎", "终极钢夹"])
+tier_effects = Array[String](["伤害+30% AOE 60px", "AOE 90px 伤害+20%", "触发时爆炸150px 50%原始伤", "可同时固住3目标 各受全额伤害", "AOE200px 触发时附近全部减速40% 持续5s"])
 tier_costs = Array[int]([200, 400, 650, 900, 1300])
 
 [resource]
 script = ExtResource("1_tcd")
+tower_scene = ExtResource("tower_scn")
 tower_id = "bear_trap"
 display_name = "捕兽夹"
 tower_emoji = "🪤"
+base_texture = ExtResource("tex_open")
+shoot_texture = ExtResource("tex_close")
+ready_texture = ExtResource("tex_half")
 rarity = 1
-base_damage = 200.0
+base_damage = 350.0
 attack_speed = 0.0
-attack_range = 0.0
+attack_range = 90.0
 placement_cost = 200
-effect_description = "放置于路面，夹住单体地面敌人造成高额伤害和控制，15秒后重新启动"
+place_on_path_only = true
+effect_description = "路面陷阱，夹住地面敌人造成高额伤害+3秒眩晕，10秒冷却。可升级为高频复位、超高伤害、毒液炸弹或范围钢夹。"
 upgrade_paths = Array[ExtResource("2_tup")]([SubResource("Path_0"), SubResource("Path_1"), SubResource("Path_2"), SubResource("Path_3")])
 level_required = 5
+unlock_fragments = 30
 unlock_gold = 600
 upgrade_fragments = Array[int]([25, 50, 100, 200, 400])
 upgrade_gold = Array[int]([250, 500, 1000, 2000, 4000])

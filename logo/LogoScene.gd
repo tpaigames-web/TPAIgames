@@ -1,12 +1,31 @@
 extends Control
 
-@onready var video: VideoStreamPlayer = $VideoStreamPlayer
+const FRAME_COUNT: int = 150  # 5秒 × 30fps
+const FRAME_PATH := "res://assets/sprites/logo/logo_frames/frame_%04d.png"
 
-func _ready():
-	print("Logo ready")
-	video.finished.connect(_on_video_finished)
-	video.play()
+@onready var display: TextureRect = $Display
+@onready var timer: Timer = $Timer
 
-func _on_video_finished():
-	print("Logo video finished")
-	SceneManager.go_story()
+var _frame_idx: int = 1
+
+
+func _ready() -> void:
+	timer.timeout.connect(_next_frame)
+	display.texture = load(FRAME_PATH % _frame_idx)
+	timer.start()
+
+
+func _next_frame() -> void:
+	_frame_idx += 1
+	if _frame_idx > FRAME_COUNT:
+		timer.stop()
+		_on_finished()
+		return
+	display.texture = load(FRAME_PATH % _frame_idx)
+
+
+func _on_finished() -> void:
+	if UserManager.story_watched:
+		SceneManager.go_login()
+	else:
+		SceneManager.go_story()

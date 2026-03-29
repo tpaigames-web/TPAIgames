@@ -1,0 +1,13 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://map/InteractableDecor.gd" id="1_script"]
+
+[node name="DecorBarrel" type="Area2D"]
+script = ExtResource("1_script")
+display_emoji = "🪣"
+display_name = "木桶"
+remove_cost = 200
+emoji_size = 56
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(-35, -40, 35, -40, 35, 40, -35, 40)

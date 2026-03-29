@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="GlobalUpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/global_upgrade_data.gd" id="1_s7"]
+
+[resource]
+script = ExtResource("1_s7")
+upgrade_id = "synergy_hero_all"
+display_name = "英雄光环"
+description = "需要：老阿福\n所有炮台 伤害 +15%"
+icon_emoji = "👑"
+rarity = 2
+upgrade_type = 2
+target_tower_id = ""
+stat_type = 0
+stat_bonus = 0.15
+required_tower_ids = Array[String](["hero_farmer"])
+target_tower_ids = Array[String]([])

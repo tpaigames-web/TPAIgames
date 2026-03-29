@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="GlobalUpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/global_upgrade_data.gd" id="1_12"]
+
+[resource]
+script = ExtResource("1_12")
+upgrade_id = "chili_dmg_o"
+display_name = "辣椒特制·橙"
+description = "辣椒喷火器 伤害 +45%"
+icon_emoji = "🌶"
+rarity = 2
+upgrade_type = 0
+target_tower_id = "chili_flamer"
+stat_type = 0
+stat_bonus = 0.45
+required_tower_ids = Array[String]([])
+target_tower_ids = Array[String]([])

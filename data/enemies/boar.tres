@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="EnemyData" format=3 uid="uid://yrom7i8s4ac"]
 
 [ext_resource type="Script" uid="uid://dapicbkaarem1" path="res://enemy/enemy_data.gd" id="1_boar1"]
+[ext_resource type="SpriteFrames" path="res://data/enemies/boar_frames.tres" id="boar_frames"]
 
 [resource]
 script = ExtResource("1_boar1")
@@ -8,10 +9,16 @@ enemy_id = "boar"
 display_name = "野猪"
 display_emoji = "🐗"
 max_hp = 350
-move_speed = 85.0
-damage_to_player = 8
-gold_reward = 15
-xp_reward = 15
+move_speed = 110.0
+armor = 2
+sprite_frames = ExtResource("boar_frames")
+sprite_display_size = 120.0
+sprite_rotation_offset = -90.0
+damage_to_player = 3
+gold_reward = 16
+xp_reward = 16
+is_giant = true
 charge_duration = 3.0
-charge_speed_multiplier = 3.0
+charge_speed_multiplier = 2.5
+counter_strategy = "铁网T4打断冲锋·高爆发"
 metadata/_custom_type_script = "uid://dapicbkaarem1"

@@ -1,0 +1,22 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://sunflower_sprite_frames"]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/tower/Sunflower/Sunflower_01.png" id="s1"]
+[ext_resource type="Texture2D" path="res://assets/sprites/tower/Sunflower/Sunflower_02.png" id="s2"]
+[ext_resource type="Texture2D" path="res://assets/sprites/tower/Sunflower/Sunflower_03.png" id="s3"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("s1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("s2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("s3")
+}],
+"loop": true,
+"name": &"default",
+"speed": 6.0
+}]

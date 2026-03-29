@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="GlobalUpgradeData" format=3]
+
+[ext_resource type="Script" uid="uid://bgu_data" path="res://data/global_upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+upgrade_id = "water_spd_o"
+display_name = "高压泵组"
+description = "水压管道攻速+40%"
+icon_emoji = "🚿"
+rarity = 2
+upgrade_type = 0
+target_tower_id = "water_pipe"
+stat_type = 1
+stat_bonus = 0.4

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/item_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+item_id = "gold_bag"
+display_name = "金币袋"
+emoji = "💰"
+description = "立即获得 1500 战斗金币"
+gem_cost = 30
+effect_type = "gold_boost"
+effect_value = 1500.0
+blast_radius = 0.0
+place_on_path = false

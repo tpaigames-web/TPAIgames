@@ -2,50 +2,52 @@
 
 [ext_resource type="Script" uid="uid://dh7u72sh06tc3" path="res://data/tower_collection_data.gd" id="1_tcd"]
 [ext_resource type="Script" uid="uid://cs8acmmyvm8t5" path="res://data/tower_upgrade_path.gd" id="2_tup"]
+[ext_resource type="PackedScene" uid="uid://bullet_bee" path="res://bullet/BulletBee.tscn" id="3_blt"]
+[ext_resource type="PackedScene" path="res://tower/BeehiveTower.tscn" id="tower_scn"]
 
 [sub_resource type="Resource" id="Path_0"]
 script = ExtResource("2_tup")
-path_name = "蜂群强化"
+path_name = "蜂王领域"
 tier_names = Array[String](["大型蜂群", "双倍蜂巢", "毒针增强", "蜂王护卫", "蜂巢领域"])
-tier_effects = Array[String](["蜂群扩大，每次攻击蜜蜂数+1，伤害提升", "蜜蜂体型增大，每只造成伤害+15%", "蜂毒加强，附加中毒效果，每秒损失3点血量持续3秒", "召唤蜂王同行，伤害大幅提升", "蜂巢领域：全场持续释放蜂群，伤害与覆盖达极限"])
+tier_effects = Array[String](["伤害+15% 攻速+15% 蜜蜂+1", "伤害+30% 攻速+30% 毒针3dps/3s", "伤害+30% 攻速+30% 毒素5dps/4s 叠2层", "召唤蜂王 范围150px 8dps", "蜂王+蜂群同攻 毒叠3层"])
 tier_costs = Array[int]([100, 200, 350, 550, 800])
-damage_bonus_per_tier = 0.12
 
 [sub_resource type="Resource" id="Path_1"]
 script = ExtResource("2_tup")
-path_name = "攻击速度"
+path_name = "无尽蜂涌"
 tier_names = Array[String](["快速蜂群", "多路出击", "蜂群涌出", "蜂海战术", "无尽蜂涌"])
-tier_effects = Array[String](["蜂群出动加速，攻速+15%", "多路蜂群同时出击，攻速大幅提升", "蜂群持续涌出，攻速再次提升", "蜂海战术，敌人难以招架", "无尽蜂涌，攻速达极限"])
+tier_effects = Array[String](["攻速+20%", "攻速+40% 同时打2目标", "攻速+60% 同时打3目标", "攻速+80% 25%减速", "极限攻速 同时打4目标"])
 tier_costs = Array[int]([80, 160, 280, 450, 650])
-speed_bonus_per_tier = 0.12
 
 [sub_resource type="Resource" id="Path_2"]
 script = ExtResource("2_tup")
-path_name = "飞行射程"
-tier_names = Array[String](["飞行距离", "远程追踪", "蜂群领地", "广域蜂巢", "全场蜂群"])
-tier_effects = Array[String](["蜜蜂飞行范围+15%", "蜂群巡逻更远距离，射程累积提升", "蜂群领地扩展，追踪距离大幅提升", "广域蜂巢，全方位覆盖", "全场巡逻，射程极大提升"])
-tier_costs = Array[int]([90, 180, 300, 480, 700])
-range_bonus_per_tier = 0.15
+path_name = "致命毒巢"
+tier_names = Array[String](["毒针蜜蜂", "强效毒素", "叠加中毒", "神经毒素", "致命毒巢"])
+tier_effects = Array[String](["毒20dps/4s", "毒35dps/5s", "同目标叠2层毒", "毒3层 减速30%", "击杀时毒爆150px传染"])
+tier_costs = Array[int]([120, 250, 420, 650, 950])
 
 [sub_resource type="Resource" id="Path_3"]
 script = ExtResource("2_tup")
-path_name = "毒素增强"
-tier_names = Array[String](["毒针蜜蜂", "强效毒素", "叠加中毒", "神经毒素", "致命毒巢"])
-tier_effects = Array[String](["攻击附加蜂毒，每秒造成3点持续伤害持续4秒", "毒素浓度提升，持续伤害提升至每秒5点，持续5秒", "毒素叠加特性：同一目标中毒可叠加2层", "神经毒素：中毒目标同时减速20%", "致命毒巢：毒素叠加3层，5秒后引发毒爆造成大额伤害"])
-tier_costs = Array[int]([120, 250, 420, 650, 950])
+path_name = "蜜露光环"
+tier_names = Array[String](["蜜露滋养", "香甜蜂蜜", "活力蜂巢", "王浆精华", "女王庇护"])
+tier_effects = Array[String](["150px队友攻速+8%", "攻速+12% 范围180px", "范围230px 额外+5%伤", "攻速+18% 队友减速抵抗", "攻速+25% 暴击率+15%"])
+tier_costs = Array[int]([150, 300, 480, 680, 950])
 
 [resource]
 script = ExtResource("1_tcd")
+tower_scene = ExtResource("tower_scn")
 tower_id = "beehive"
 display_name = "蜂巢"
 tower_emoji = "🍯"
 rarity = 0
-base_damage = 8.0
-attack_speed = 1.5
+base_damage = 0.0
+attack_speed = 1.0
 attack_range = 200.0
 placement_cost = 120
 attack_type = 2
-effect_description = "释放蜜蜂群持续攻击，对地面和空中敌人造成伤害并附加中毒效果"
+effect_description = "召唤4只蜜蜂持续攻击，可打地面和空中。升级解锁蜂王、毒素、多目标、光环支援。"
+bullet_scene = ExtResource("3_blt")
+bullet_emoji = "🐝"
 upgrade_paths = Array[ExtResource("2_tup")]([SubResource("Path_0"), SubResource("Path_1"), SubResource("Path_2"), SubResource("Path_3")])
 level_required = 1
 unlock_fragments = 30

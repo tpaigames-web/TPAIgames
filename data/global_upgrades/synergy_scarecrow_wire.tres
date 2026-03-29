@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="GlobalUpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/global_upgrade_data.gd" id="1_s6"]
+
+[resource]
+script = ExtResource("1_s6")
+upgrade_id = "synergy_scarecrow_wire"
+display_name = "威慑协同"
+description = "需要：稻草人\n带刺铁网 伤害 +30%"
+icon_emoji = "👾"
+rarity = 1
+upgrade_type = 2
+target_tower_id = "barbed_wire"
+stat_type = 0
+stat_bonus = 0.3
+required_tower_ids = Array[String](["scarecrow"])
+target_tower_ids = Array[String]([])

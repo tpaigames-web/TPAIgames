@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="GlobalUpgradeData" format=3]
+
+[ext_resource type="Script" uid="uid://bgu_data" path="res://data/global_upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+upgrade_id = "global_spd_o"
+display_name = "农场加速"
+description = "所有炮台攻速+28%"
+icon_emoji = "⚡"
+rarity = 2
+upgrade_type = 1
+stat_type = 1
+stat_bonus = 0.28

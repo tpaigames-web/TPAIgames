@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="GlobalUpgradeData" format=3]
+
+[ext_resource type="Script" uid="uid://bgu_data" path="res://data/global_upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+upgrade_id = "syn_nature_storm"
+display_name = "自然风暴"
+description = "向日葵+风车+播种：减速+15%"
+icon_emoji = "🌪"
+rarity = 2
+upgrade_type = 2
+stat_type = 8
+stat_bonus = 0.15
+required_tower_ids = Array[String](["sunflower", "windmill", "seed_shooter"])

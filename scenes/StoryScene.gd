@@ -16,8 +16,14 @@ func _ready():
 		SceneManager.call_deferred("go_login")
 
 func _on_video_finished():
+	_mark_story_watched()
 	SceneManager.go_login()
 
 func _skip():
 	video.stop()
+	_mark_story_watched()
 	SceneManager.go_login()
+
+func _mark_story_watched():
+	UserManager.story_watched = true
+	SaveManager.save()

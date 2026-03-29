@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="GlobalUpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/global_upgrade_data.gd" id="1_s12"]
+
+[resource]
+script = ExtResource("1_s12")
+upgrade_id = "synergy_bloom"
+display_name = "百花齐放"
+description = "需要：向日葵 + 蜂巢\n农夫 攻速 +35%"
+icon_emoji = "🌸"
+rarity = 2
+upgrade_type = 2
+target_tower_id = "farmer"
+stat_type = 1
+stat_bonus = 0.35
+required_tower_ids = Array[String](["sunflower", "beehive"])
+target_tower_ids = Array[String]([])

@@ -1,5 +1,7 @@
 extends CanvasLayer
 
+const LEVEL_UP_PANEL = preload("res://scenes/profile/LevelUpPanel.tscn")
+
 const AVATAR_PATHS: Array[String] = [
 	"res://assets/sprites/tower/scarecrow.png",
 	"res://assets/sprites/enemy/rat_small.png",
@@ -165,7 +167,7 @@ func _on_rename_confirmed() -> void:
 # ── 升级界面 ─────────────────────────────────────────────
 func _on_level_row_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		var panel = load("res://scenes/profile/LevelUpPanel.tscn").instantiate()
+		var panel = LEVEL_UP_PANEL.instantiate()
 		get_tree().root.add_child(panel)
 
 # ── 关闭 ─────────────────────────────────────────────────

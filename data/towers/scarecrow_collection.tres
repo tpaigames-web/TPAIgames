@@ -2,45 +2,60 @@
 
 [ext_resource type="Script" uid="uid://dh7u72sh06tc3" path="res://data/tower_collection_data.gd" id="1_tcd"]
 [ext_resource type="Script" uid="uid://cs8acmmyvm8t5" path="res://data/tower_upgrade_path.gd" id="2_tup"]
+[ext_resource type="Texture2D" path="res://assets/sprites/tower/Scarecrow/Scarecrow_Idle.png" id="3_idle"]
+[ext_resource type="Texture2D" path="res://assets/sprites/tower/Scarecrow/Scarecrow_Ready.png" id="4_ready"]
+[ext_resource type="Texture2D" path="res://assets/sprites/tower/Scarecrow/Scarecrow_Shoot.png" id="5_shoot"]
+[ext_resource type="PackedScene" path="res://tower/ScarecrowTower.tscn" id="tower_scn"]
 
 [sub_resource type="Resource" id="Path_0"]
 script = ExtResource("2_tup")
-path_name = "攻击提升"
+path_name = "终极收割"
 tier_names = Array[String](["精准投掷", "双倍草束", "稳定摆臂", "锋利草刃", "终极收割"])
-tier_effects = Array[String](["攻击伤害提升12%", "攻击伤害累计提升+12%", "攻击伤害累计提升+12%", "攻击伤害累计提升+12%", "攻击伤害累计提升+12%"])
+tier_effects = Array[String](["伤害+15%", "伤害+30% 穿透1敌", "伤害+45% 穿透2敌", "伤害+45% 忽视20%护甲", "伤害+90% 必定出血3dps/4s 对大型+50%"])
 tier_costs = Array[int]([100, 200, 350, 550, 800])
-damage_bonus_per_tier = 0.12
 
 [sub_resource type="Resource" id="Path_1"]
 script = ExtResource("2_tup")
-path_name = "攻击速度"
-tier_names = Array[String](["快速摆动", "节奏加快", "稻草旋风", "极速摇摆", "永动稻草人"])
-tier_effects = Array[String](["攻击速度提升10%", "攻击速度累计提升+10%", "攻击速度累计提升+10%", "攻击速度累计提升+10%", "攻击速度累计提升+10%"])
-tier_costs = Array[int]([80, 160, 280, 450, 650])
-speed_bonus_per_tier = 0.1
+path_name = "稻草旋风"
+tier_names = Array[String](["快速摆动", "节奏加快", "稻草旋风", "极速摇摆", "永动草人"])
+tier_effects = Array[String](["攻速+15%", "攻速+30%", "攻速+60% 变为360°旋转", "攻速+80% 同时打4目标", "旋转范围+50% 4目标群体"])
+tier_costs = Array[int]([80, 160, 300, 500, 700])
 
 [sub_resource type="Resource" id="Path_2"]
 script = ExtResource("2_tup")
-path_name = "射程提升"
-tier_names = Array[String](["手臂延伸", "长臂草人", "远程覆盖", "广域守望", "全场守护"])
-tier_effects = Array[String](["射程提升15%", "射程累计提升+15%", "射程累计提升+15%", "射程累计提升+15%", "射程累计提升+15%"])
-tier_costs = Array[int]([90, 180, 300, 500, 750])
-range_bonus_per_tier = 0.15
+path_name = "缠绕领域"
+tier_names = Array[String](["缓步枯草", "强化缠绕", "防空稻草", "巨物捆绑", "全域减速"])
+tier_effects = Array[String](["攻击附带减速15%", "减速25% 对已减速目标+20%伤", "解锁攻击空中", "大型减速40% 射程+20%", "AOE 150px 减速50%"])
+tier_costs = Array[int]([120, 200, 350, 500, 800])
 
 [sub_resource type="Resource" id="Path_3"]
 script = ExtResource("2_tup")
-path_name = "增加效果"
-tier_names = Array[String](["缓步枯草", "强化缠绕", "巨物捆绑", "防空稻草", "全域减速"])
-tier_effects = Array[String](["伤害敌人时附加减速10%", "对已减速敌人攻击时减速提升至20%", "可对大型单位施加减速", "可攻击空中单位", "对所有类型单位均可造成减速"])
+path_name = "丰收诅咒"
+tier_names = Array[String](["枯萎标记", "腐化之息", "诅咒蔓延", "死亡收割", "农场诅咒"])
+tier_effects = Array[String](["攻击标记目标 全场+10%伤", "标记扩散至1邻敌", "标记变AOE 100px", "标记目标死亡时爆炸50溅射", "全场+35% 标记持续8s"])
 tier_costs = Array[int]([150, 300, 500, 700, 1000])
 
 [resource]
 script = ExtResource("1_tcd")
+tower_scene = ExtResource("tower_scn")
 tower_id = "scarecrow"
 display_name = "稻草人"
 tower_emoji = "🌾"
+icon_texture = ExtResource("3_idle")
+collection_texture = ExtResource("3_idle")
+base_texture = ExtResource("3_idle")
+shoot_texture = ExtResource("5_shoot")
+ready_texture = ExtResource("4_ready")
+rarity = 0
 base_damage = 15.0
 attack_speed = 0.8
 attack_range = 180.0
-effect_description = "在小射程内对地面敌人造成持续伤害"
+placement_cost = 100
+effect_description = "近程单体攻击，只打地面。可升级为穿透输出、旋风群攻、减速控制或标记诅咒。"
 upgrade_paths = Array[ExtResource("2_tup")]([SubResource("Path_0"), SubResource("Path_1"), SubResource("Path_2"), SubResource("Path_3")])
+level_required = 1
+unlock_fragments = 0
+unlock_gold = 0
+upgrade_fragments = Array[int]([20, 40, 80, 160, 320])
+upgrade_gold = Array[int]([200, 400, 800, 1600, 3200])
+fragment_shop_price = Array[int]([50, 100, 250])

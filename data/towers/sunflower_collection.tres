@@ -2,54 +2,55 @@
 
 [ext_resource type="Script" uid="uid://dh7u72sh06tc3" path="res://data/tower_collection_data.gd" id="1_tcd"]
 [ext_resource type="Script" uid="uid://cs8acmmyvm8t5" path="res://data/tower_upgrade_path.gd" id="2_tup"]
+[ext_resource type="PackedScene" path="res://tower/SunflowerTower.tscn" id="tower_scn"]
+[ext_resource type="SpriteFrames" path="res://data/towers/sunflower_frames.tres" id="sunflower_frames"]
 
 [sub_resource type="Resource" id="Path_0"]
 script = ExtResource("2_tup")
-path_name = "阳光照耀"
-tier_names = Array[String](["晨光增幅", "午后强光", "烈日灼烧", "黄金之光", "神圣太阳"])
-tier_effects = Array[String](["晨光增幅，攻击伤害+15%", "午后强光，伤害累积提升，标记增伤+5%", "烈日灼烧：光芒攻击附加燃烧效果3秒", "黄金之光：伤害极大提升，黄金光芒标记效果增强", "神圣太阳：光芒覆盖全场，伤害与标记效果达极限"])
-tier_costs = Array[int]([350, 700, 1100, 1500, 2200])
-damage_bonus_per_tier = 0.15
+path_name = "神圣庇护"
+tier_names = Array[String](["光芒标记", "增益光环", "阳光领域", "太阳之力", "神圣庇护"])
+tier_effects = Array[String](["攻击标记目标 全场+15%伤 持续4s", "标记+20% 200px内队友攻速+8%", "攻速光环+12% 标记持续8s", "标记+25% 攻速+18% 范围扩至全图", "全场标记+35% 攻速+25% 标记持续12s"])
+tier_costs = Array[int]([400, 800, 1250, 1750, 2500])
 
 [sub_resource type="Resource" id="Path_1"]
 script = ExtResource("2_tup")
-path_name = "光合速度"
-tier_names = Array[String](["快速光合", "高效日照", "强化光能", "极速日光", "永恒太阳"])
-tier_effects = Array[String](["光合效率提升，攻速+10%", "高效日照，攻速累积提升", "强化光能，攻速大幅提升", "极速日光，几乎连续照射", "永恒太阳：攻速极限，光芒永不熄灭"])
-tier_costs = Array[int]([300, 600, 950, 1350, 1950])
-speed_bonus_per_tier = 0.1
+path_name = "烈日灼烧"
+tier_names = Array[String](["晨光增幅", "午后强光", "烈日灼烧", "黄金之光", "神圣太阳"])
+tier_effects = Array[String](["攻击范围变AOE 80px 伤害+15%", "AOE+20px 命中燃烧2dps/3s", "燃烧提升至4dps/5s AOE+30px", "燃烧区停留敌人受伤+20%", "全场AOE 所有敌人持续燃烧 燃烧+30%伤"])
+tier_costs = Array[int]([350, 700, 1100, 1500, 2200])
 
 [sub_resource type="Resource" id="Path_2"]
 script = ExtResource("2_tup")
-path_name = "照耀范围"
-tier_names = Array[String](["延伸光芒", "广域日照", "大型太阳", "超级辐射", "星光普照"])
-tier_effects = Array[String](["光芒延伸，射程+15%", "广域日照，照耀范围累积提升", "大型太阳展现，覆盖范围极大扩大", "超级辐射：射程进一步提升", "星光普照：射程极大提升，覆盖全图每个角落"])
-tier_costs = Array[int]([320, 640, 1000, 1400, 2050])
-range_bonus_per_tier = 0.15
+path_name = "永恒太阳"
+tier_names = Array[String](["快速光合", "高效日照", "强化光能", "极速日光", "永恒太阳"])
+tier_effects = Array[String](["攻速+15% 同时照射2目标", "攻速+30% 照射3目标", "攻速+45% 照射4目标 每束+5%伤", "攻速+60% 照射5目标", "攻速极限 照射6目标 对BOSS双倍"])
+tier_costs = Array[int]([300, 600, 950, 1350, 1950])
 
 [sub_resource type="Resource" id="Path_3"]
 script = ExtResource("2_tup")
-path_name = "黄金光线"
-tier_names = Array[String](["光芒标记", "增益光环", "阳光领域", "太阳之力", "神圣庇护"])
-tier_effects = Array[String](["命中附加阳光标记，被标记敌人受伤害+20%，持续4秒", "标记增伤提升至30%，同时为周围炮台提供攻速+10%光环", "光环范围内所有友方炮台攻速+15%", "标记增伤达40%，炮台增益提升至20%攻速", "神圣庇护：全场敌人自动标记，所有友方炮台获得最大增速与增伤"])
-tier_costs = Array[int]([400, 800, 1250, 1750, 2500])
+path_name = "星光普照"
+tier_names = Array[String](["延伸光芒", "广域日照", "大型太阳", "超级辐射", "星光普照"])
+tier_effects = Array[String](["射程+20% 攻击附带减速10%", "射程+40% 减速15%", "射程+60% 减速20% 对空中目标优先", "射程+80% 减速25% 持续减速+1s", "全图射程 减速35% 持续3s 群体命中"])
+tier_costs = Array[int]([320, 640, 1000, 1400, 2050])
 
 [resource]
 script = ExtResource("1_tcd")
+tower_scene = ExtResource("tower_scn")
 tower_id = "sunflower"
 display_name = "向日葵"
 tower_emoji = "🌻"
+anim_frames = ExtResource("sunflower_frames")
 rarity = 4
 base_damage = 8.0
 attack_speed = 1.5
 attack_range = 350.0
-placement_cost = 800
+placement_cost = 650
 attack_type = 2
-effect_description = "阳光标记敌人增加全体炮台伤害，同时对周围我方炮台提供攻速与增伤光环"
+effect_description = "支援型炮台，标记敌人增伤，光环加速队友，可升级为AOE燃烧、多目标照射或全场减速。"
 upgrade_paths = Array[ExtResource("2_tup")]([SubResource("Path_0"), SubResource("Path_1"), SubResource("Path_2"), SubResource("Path_3")])
 level_required = 60
-unlock_fragments = 120
-unlock_gold = 2500
-upgrade_fragments = Array[int]([60, 120, 240, 480, 960])
-upgrade_gold = Array[int]([800, 1600, 3200, 6400, 12800])
-fragment_shop_price = Array[int]([300, 600, 1500])
+unlock_fragments = 50
+unlock_gold = 1500
+upgrade_fragments = Array[int]([40, 80, 160, 320, 640])
+upgrade_gold = Array[int]([500, 1000, 2000, 4000, 8000])
+fragment_shop_price = Array[int]([200, 400, 1000])

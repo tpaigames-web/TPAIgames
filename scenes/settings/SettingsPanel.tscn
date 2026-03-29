@@ -1,0 +1,185 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/settings/SettingsPanel.gd" id="1_script"]
+[ext_resource type="FontFile" path="res://assets/sprites/Font/+¡¦¦+¦¦s 700W.ttf" id="font_700"]
+[ext_resource type="FontFile" path="res://assets/sprites/Font/+¡¦¦+¦¦s 600W.ttf" id="font_600"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ui/Close.png" id="tex_close"]
+
+[node name="SettingsPanel" type="CanvasLayer"]
+layer = 15
+process_mode = 3
+script = ExtResource("1_script")
+
+[node name="DimBg" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.6)
+
+[node name="Panel" type="Panel" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -500.0
+offset_top = -750.0
+offset_right = 500.0
+offset_bottom = 950.0
+
+[node name="CloseBtn" type="TextureButton" parent="Panel"]
+layout_mode = 0
+offset_left = 900.0
+offset_top = 10.0
+offset_right = 990.0
+offset_bottom = 100.0
+texture_normal = ExtResource("tex_close")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="MainTabBar" type="HBoxContainer" parent="Panel"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 880.0
+offset_bottom = 90.0
+theme_override_constants/separation = 10
+
+[node name="SettingsTabBtn" type="Button" parent="Panel/MainTabBar"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("font_700")
+theme_override_font_sizes/font_size = 38
+text = "设置"
+
+[node name="GuideTabBtn" type="Button" parent="Panel/MainTabBar"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("font_700")
+theme_override_font_sizes/font_size = 38
+text = "指南"
+
+; ──────── 设置内容 ────────
+
+[node name="SettingsContent" type="ScrollContainer" parent="Panel"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 110.0
+offset_right = 980.0
+offset_bottom = 1680.0
+horizontal_scroll_mode = 0
+
+[node name="SettingsVBox" type="VBoxContainer" parent="Panel/SettingsContent"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 16
+
+; ──────── 指南内容 ────────
+
+[node name="GuideContent" type="Control" parent="Panel"]
+visible = false
+layout_mode = 0
+offset_left = 20.0
+offset_top = 110.0
+offset_right = 980.0
+offset_bottom = 1680.0
+
+[node name="CategoryBar" type="HBoxContainer" parent="Panel/GuideContent"]
+layout_mode = 0
+offset_right = 960.0
+offset_bottom = 70.0
+theme_override_constants/separation = 8
+
+[node name="EnemyBtn" type="Button" parent="Panel/GuideContent/CategoryBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("font_600")
+theme_override_font_sizes/font_size = 32
+text = "敌人详情"
+
+[node name="TowerBtn" type="Button" parent="Panel/GuideContent/CategoryBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("font_600")
+theme_override_font_sizes/font_size = 32
+text = "炮台详情"
+
+[node name="HeroBtn" type="Button" parent="Panel/GuideContent/CategoryBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("font_600")
+theme_override_font_sizes/font_size = 32
+text = "英雄详情"
+
+[node name="UpgradeBtn" type="Button" parent="Panel/GuideContent/CategoryBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("font_600")
+theme_override_font_sizes/font_size = 32
+text = "升级强化"
+
+[node name="EffectBtn" type="Button" parent="Panel/GuideContent/CategoryBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("font_600")
+theme_override_font_sizes/font_size = 32
+text = "效果"
+
+[node name="DetailArea" type="HBoxContainer" parent="Panel/GuideContent"]
+layout_mode = 0
+offset_top = 80.0
+offset_right = 960.0
+offset_bottom = 400.0
+theme_override_constants/separation = 20
+
+[node name="DetailImage" type="TextureRect" parent="Panel/GuideContent/DetailArea"]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="DetailInfo" type="VBoxContainer" parent="Panel/GuideContent/DetailArea"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="DetailName" type="Label" parent="Panel/GuideContent/DetailArea/DetailInfo"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("font_700")
+theme_override_font_sizes/font_size = 48
+text = "选择一个项目"
+
+[node name="DetailDesc" type="Label" parent="Panel/GuideContent/DetailArea/DetailInfo"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("font_600")
+theme_override_font_sizes/font_size = 32
+autowrap_mode = 2
+
+[node name="DetailStats" type="Label" parent="Panel/GuideContent/DetailArea/DetailInfo"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_fonts/font = ExtResource("font_600")
+theme_override_font_sizes/font_size = 32
+autowrap_mode = 2
+
+[node name="UpgradeArea" type="VBoxContainer" parent="Panel/GuideContent"]
+visible = false
+layout_mode = 0
+offset_top = 410.0
+offset_right = 960.0
+offset_bottom = 700.0
+theme_override_constants/separation = 10
+
+[node name="GridScroll" type="ScrollContainer" parent="Panel/GuideContent"]
+layout_mode = 0
+offset_top = 710.0
+offset_right = 960.0
+offset_bottom = 1570.0
+horizontal_scroll_mode = 0
+
+[node name="GridContainer" type="GridContainer" parent="Panel/GuideContent/GridScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+theme_override_constants/h_separation = 12
+theme_override_constants/v_separation = 12

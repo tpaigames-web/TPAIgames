@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="TowerCollectionData" format=3 uid="uid://farm_guardian_col"]
+
+[ext_resource type="Script" uid="uid://dh7u72sh06tc3" path="res://data/tower_collection_data.gd" id="1_tcd"]
+[ext_resource type="PackedScene" path="res://tower/FarmGuardianTower.tscn" id="tower_scn"]
+
+[resource]
+script = ExtResource("1_tcd")
+tower_scene = ExtResource("tower_scn")
+tower_id = "farm_guardian"
+display_name = "农场守卫者"
+tower_emoji = "🗿"
+rarity = 4
+is_hero = true
+base_damage = 0.0
+attack_speed = 0.0
+attack_range = 0.0
+placement_cost = 0
+attack_type = 0
+collision_radius = 50.0
+place_on_path_only = false
+effect_description = "被动地形英雄·放置后创建禁锢领域（紫色光环），领域内敌人移速-20%、嘲讽吸引敌人。每5波可选择升级方向，共4次升至Lv5。"
+bullet_speed = 0.0
+bullet_emoji = "🗿"
+upgrade_paths = Array[TowerUpgradePath]([])
+level_required = 10
+unlock_fragments = 120
+unlock_gold = 2500
+upgrade_fragments = Array[int]([60, 120, 240, 480, 960])
+upgrade_gold = Array[int]([800, 1600, 3200, 6400, 12800])
+max_level = 10
+fragment_shop_price = Array[int]([300, 600, 1500])

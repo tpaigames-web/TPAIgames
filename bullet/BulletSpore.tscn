@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://bullet_spore"]
+
+[ext_resource type="Script" path="res://bullet/Bullet.gd" id="1_bullet"]
+
+[node name="BulletSpore" type="Node2D"]
+script = ExtResource("1_bullet")
+
+[node name="BulletSprite" type="Sprite2D" parent="."]
+visible = false
+
+[node name="EmojiLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+theme_override_font_sizes/font_size = 24
+text = "🍄"
+horizontal_alignment = 1
+vertical_alignment = 1
+mouse_filter = 2

@@ -2,40 +2,40 @@
 
 [ext_resource type="Script" uid="uid://dh7u72sh06tc3" path="res://data/tower_collection_data.gd" id="1_tcd"]
 [ext_resource type="Script" uid="uid://cs8acmmyvm8t5" path="res://data/tower_upgrade_path.gd" id="2_tup"]
+[ext_resource type="PackedScene" uid="uid://bullet_seed" path="res://bullet/BulletSeed.tscn" id="3_blt"]
+[ext_resource type="PackedScene" path="res://tower/SeedShooterTower.tscn" id="tower_scn"]
 
 [sub_resource type="Resource" id="Path_0"]
 script = ExtResource("2_tup")
-path_name = "种子威力"
-tier_names = Array[String](["重型种子", "爆裂种子", "溅射扩大", "标记弹头", "终极炮射"])
-tier_effects = Array[String](["种子更大更重，伤害+15%", "种子命中时爆裂，产生小范围溅射伤害", "爆裂范围进一步扩大，波及更多敌人", "命中附加标记，被标记敌人受其他炮台伤害+15%", "终极炮射：种子爆裂极大范围，同时附加标记"])
-tier_costs = Array[int]([150, 300, 500, 700, 1000])
-damage_bonus_per_tier = 0.15
+path_name = "超级草丛"
+tier_names = Array[String](["生根发芽", "荆棘草丛", "减速藤蔓", "爆炸草丛", "超级草丛"])
+tier_effects = Array[String](["命中处生长草丛🌿 减速15% 持续3s", "草丛伤害3dps/5s", "草丛减速30% 持续8s", "草丛消失时爆炸50伤 80px范围", "草丛可叠加3层 叠满缠绕2s"])
+tier_costs = Array[int]([180, 360, 600, 850, 1200])
 
 [sub_resource type="Resource" id="Path_1"]
 script = ExtResource("2_tup")
-path_name = "播射速度"
-tier_names = Array[String](["快速播种", "高速输送", "连续播射", "全自动化", "超速播种机"])
-tier_effects = Array[String](["播种机提速，攻速+12%", "高速种子输送系统，攻速累积提升", "连续播射模式，几乎无间隔", "全自动化操作，攻速大幅提升", "超速播种机：攻速极限，种子如雨点般倾泤"])
-tier_costs = Array[int]([120, 240, 400, 600, 900])
-speed_bonus_per_tier = 0.12
+path_name = "终极炮射"
+tier_names = Array[String](["重型种子", "爆裂种子", "溅射扩大", "标记弹头", "终极炮射"])
+tier_effects = Array[String](["伤害+18%", "命中溅射60px=60%伤", "溅射扩大至100px", "命中标记4s 受伤+20%", "溅射150px+标记 已标记目标再+25%"])
+tier_costs = Array[int]([150, 300, 500, 700, 1000])
 
 [sub_resource type="Resource" id="Path_2"]
 script = ExtResource("2_tup")
-path_name = "射程提升"
-tier_names = Array[String](["加长枪管", "精准弹道", "远程播种", "超远程炮", "全图覆盖"])
-tier_effects = Array[String](["加长发射管，射程+15%", "精准弹道校准，射程累积提升", "远程播种，覆盖更大区域", "超远程炮射，射程大幅提升", "全图覆盖：射程极大提升，无死角播种"])
-tier_costs = Array[int]([100, 200, 350, 550, 800])
-range_bonus_per_tier = 0.15
+path_name = "超速播种"
+tier_names = Array[String](["快速播种", "高速输送", "连续播射", "全自动化", "超速播种"])
+tier_effects = Array[String](["攻速+15%", "攻速+30%", "攻速+60% 每第4发穿透1敌", "攻速+80% 穿透变每第3发", "攻速极限 每发15%概率双发"])
+tier_costs = Array[int]([120, 240, 400, 600, 900])
 
 [sub_resource type="Resource" id="Path_3"]
 script = ExtResource("2_tup")
-path_name = "发芽效果"
-tier_names = Array[String](["生根发芽", "荆棘草丛", "减速藤蔓", "爆炸草丛", "超级草丛"])
-tier_effects = Array[String](["命中地点长出草丛，持续阻碍经过的敌人", "草丛带有荆棘，经过时每秒造扐3点伤害", "草丛变为藤蔓，使经过敌人移动速度-30%", "草丛3秒后自动爆炸，造成范围伤害", "超级草丛：阻碍+持续伤害+减速+爆炸同时生效"])
-tier_costs = Array[int]([180, 360, 600, 850, 1200])
+path_name = "全图覆盖"
+tier_names = Array[String](["加长枪管", "精准弹道", "远程播种", "超远程炮", "全图覆盖"])
+tier_effects = Array[String](["射程+20%", "射程+40%", "射程+60% 优先攻击最远敌人", "射程+80%", "全图射程 命中附带减速20% 无死角"])
+tier_costs = Array[int]([100, 200, 350, 550, 800])
 
 [resource]
 script = ExtResource("1_tcd")
+tower_scene = ExtResource("tower_scn")
 tower_id = "seed_shooter"
 display_name = "播种机"
 tower_emoji = "🌱"
@@ -45,7 +45,9 @@ attack_speed = 0.9
 attack_range = 350.0
 placement_cost = 350
 attack_type = 0
-effect_description = "远程播射种子炮弹，射程极长，可爆裂溅射并在地面留下阻碍草丛"
+effect_description = "远程播射种子，只打地面。可升级为草丛地形控制、溅射标记、极速穿透或全图覆盖。"
+bullet_scene = ExtResource("3_blt")
+bullet_emoji = "🌱"
 upgrade_paths = Array[ExtResource("2_tup")]([SubResource("Path_0"), SubResource("Path_1"), SubResource("Path_2"), SubResource("Path_3")])
 level_required = 15
 unlock_fragments = 40

@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="EnemyData" format=3 uid="uid://youv4olxm34b"]
 
 [ext_resource type="Script" uid="uid://dapicbkaarem1" path="res://enemy/enemy_data.gd" id="1_fmuvw"]
+[ext_resource type="SpriteFrames" path="res://data/enemies/rat_fat_frames.tres" id="rat_fat_frames"]
 
 [resource]
 script = ExtResource("1_fmuvw")
@@ -8,8 +9,14 @@ enemy_id = "rat_fat"
 display_name = "肥老鼠"
 display_emoji = "🐁"
 max_hp = 200
-move_speed = 70.0
+move_speed = 80.0
+armor = 2
+sprite_frames = ExtResource("rat_fat_frames")
+sprite_display_size = 90.0
+sprite_rotation_offset = -90.0
 damage_to_player = 3
-gold_reward = 8
-xp_reward = 8
+gold_reward = 10
+xp_reward = 10
+is_giant = true
+counter_strategy = "穿甲路线"
 metadata/_custom_type_script = "uid://dapicbkaarem1"

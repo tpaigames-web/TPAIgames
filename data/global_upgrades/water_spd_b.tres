@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="GlobalUpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/global_upgrade_data.gd" id="1_27"]
+
+[resource]
+script = ExtResource("1_27")
+upgrade_id = "water_spd_b"
+display_name = "水压加速·蓝"
+description = "水压管道 攻速 +25%"
+icon_emoji = "🚿"
+rarity = 1
+upgrade_type = 0
+target_tower_id = "water_pipe"
+stat_type = 1
+stat_bonus = 0.25
+required_tower_ids = Array[String]([])
+target_tower_ids = Array[String]([])

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="GlobalUpgradeData" format=3]
+
+[ext_resource type="Script" uid="uid://bgu_data" path="res://data/global_upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+upgrade_id = "wind_aoe_o"
+display_name = "飓风领域"
+description = "永动风车AOE范围+50px"
+icon_emoji = "🌀"
+rarity = 2
+upgrade_type = 0
+target_tower_id = "windmill"
+stat_type = 9
+stat_bonus = 50.0

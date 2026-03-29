@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://od2qxfartn7q"]
+
+[ext_resource type="PackedScene" uid="uid://d1tu7y8b2raa5" path="res://tower/Tower.tscn" id="1_base"]
+[ext_resource type="Texture2D" uid="uid://cfeg18cehoy5k" path="res://assets/sprites/tower/Scarecrow/Scarecrow_Idle.png" id="2_idle"]
+
+[node name="Tower" unique_id=1685195203 instance=ExtResource("1_base")]
+
+[node name="BaseSprite" parent="." index="1" unique_id=555333444]
+visible = true
+texture = ExtResource("2_idle")
+
+[node name="EmojiLabel" parent="." index="3" unique_id=223344556]
+text = ""
+
+[node name="PlacementPolygon" parent="." index="4" unique_id=823270444]
+polygon = PackedVector2Array(-12, -8, 11, -8, 17, -6, 22, -8, 23, -2, 17, -3, 10, -1, 15, 2, 18, 6, 17, 12, 11, 16, 6, 15, 2.4654922, 16.472713, 0, 17, -4, 19, -8, 18, -11, 16, -12, 13, -11, 9, -6, 7, -5, 4, -10, 0, -17, -3, -22, -2, -24, -9, -17, -7)

@@ -10,17 +10,17 @@ script = ExtResource("1_script")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 1080.0
-offset_bottom = 1920.0
 color = Color(0, 0, 0, 0.65)
 mouse_filter = 0
 
 [node name="MainCard" type="Panel" parent="."]
-layout_mode = 0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 offset_left = 20.0
 offset_top = 40.0
-offset_right = 1060.0
-offset_bottom = 1880.0
+offset_right = -20.0
+offset_bottom = -40.0
 
 [node name="CloseBtn" type="Button" parent="MainCard"]
 layout_mode = 0
@@ -28,20 +28,21 @@ offset_left = 950.0
 offset_top = 10.0
 offset_right = 1030.0
 offset_bottom = 90.0
-theme_override_font_sizes/font_size = 36
+theme_override_font_sizes/font_size = 48
 text = "✕"
 
 [node name="ContentScroll" type="ScrollContainer" parent="MainCard"]
-layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
 offset_left = 10.0
 offset_top = 100.0
-offset_right = 1030.0
-offset_bottom = 1830.0
+offset_right = -10.0
+offset_bottom = -10.0
 
 [node name="ContentVBox" type="VBoxContainer" parent="MainCard/ContentScroll"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 16
+theme_override_constants/separation = 20
 
 [node name="TopRow" type="HBoxContainer" parent="MainCard/ContentScroll/ContentVBox"]
 layout_mode = 2
@@ -75,12 +76,12 @@ theme_override_constants/separation = 10
 
 [node name="TowerNameLabel" type="Label" parent="MainCard/ContentScroll/ContentVBox/TopRow/StatsVBox"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 38
+theme_override_font_sizes/font_size = 48
 text = "炮台名称"
 
 [node name="RarityLabel" type="Label" parent="MainCard/ContentScroll/ContentVBox/TopRow/StatsVBox"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 26
+theme_override_font_sizes/font_size = 38
 text = "稀有度：白"
 
 [node name="DmgRow" type="HBoxContainer" parent="MainCard/ContentScroll/ContentVBox/TopRow/StatsVBox"]
@@ -90,13 +91,13 @@ theme_override_constants/separation = 10
 [node name="DmgKey" type="Label" parent="MainCard/ContentScroll/ContentVBox/TopRow/StatsVBox/DmgRow"]
 modulate = Color(1, 1, 1, 0.6)
 layout_mode = 2
-custom_minimum_size = Vector2(80, 0)
-theme_override_font_sizes/font_size = 24
+custom_minimum_size = Vector2(100, 0)
+theme_override_font_sizes/font_size = 38
 text = "攻击"
 
 [node name="DmgVal" type="Label" parent="MainCard/ContentScroll/ContentVBox/TopRow/StatsVBox/DmgRow"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 38
 text = "—"
 
 [node name="SpdRow" type="HBoxContainer" parent="MainCard/ContentScroll/ContentVBox/TopRow/StatsVBox"]
@@ -106,13 +107,13 @@ theme_override_constants/separation = 10
 [node name="SpdKey" type="Label" parent="MainCard/ContentScroll/ContentVBox/TopRow/StatsVBox/SpdRow"]
 modulate = Color(1, 1, 1, 0.6)
 layout_mode = 2
-custom_minimum_size = Vector2(80, 0)
-theme_override_font_sizes/font_size = 24
+custom_minimum_size = Vector2(100, 0)
+theme_override_font_sizes/font_size = 38
 text = "射速"
 
 [node name="SpdVal" type="Label" parent="MainCard/ContentScroll/ContentVBox/TopRow/StatsVBox/SpdRow"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 38
 text = "—"
 
 [node name="RngRow" type="HBoxContainer" parent="MainCard/ContentScroll/ContentVBox/TopRow/StatsVBox"]
@@ -122,13 +123,13 @@ theme_override_constants/separation = 10
 [node name="RngKey" type="Label" parent="MainCard/ContentScroll/ContentVBox/TopRow/StatsVBox/RngRow"]
 modulate = Color(1, 1, 1, 0.6)
 layout_mode = 2
-custom_minimum_size = Vector2(80, 0)
-theme_override_font_sizes/font_size = 24
+custom_minimum_size = Vector2(100, 0)
+theme_override_font_sizes/font_size = 38
 text = "射程"
 
 [node name="RngVal" type="Label" parent="MainCard/ContentScroll/ContentVBox/TopRow/StatsVBox/RngRow"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 38
 text = "—"
 
 [node name="FragsRow" type="HBoxContainer" parent="MainCard/ContentScroll/ContentVBox/TopRow/StatsVBox"]
@@ -138,25 +139,25 @@ theme_override_constants/separation = 10
 [node name="FragsLabel" type="Label" parent="MainCard/ContentScroll/ContentVBox/TopRow/StatsVBox/FragsRow"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 38
 text = "碎片：0/30"
 
 [node name="UnlockBtn" type="Button" parent="MainCard/ContentScroll/ContentVBox/TopRow/StatsVBox/FragsRow"]
-custom_minimum_size = Vector2(180, 54)
+custom_minimum_size = Vector2(200, 60)
 layout_mode = 2
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 38
 text = "解锁"
 
 [node name="EffectLabel" type="Label" parent="MainCard/ContentScroll/ContentVBox"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 26
+theme_override_font_sizes/font_size = 38
 text = "效果：（待定）"
 autowrap_mode = 3
 
 [node name="DividerLabel" type="Label" parent="MainCard/ContentScroll/ContentVBox"]
 modulate = Color(1, 1, 1, 0.5)
 layout_mode = 2
-theme_override_font_sizes/font_size = 26
+theme_override_font_sizes/font_size = 38
 text = "── 升级方向 ──"
 horizontal_alignment = 1
 
@@ -168,7 +169,7 @@ theme_override_constants/separation = 20
 visible = false
 modulate = Color(1, 0.8, 0.3, 1)
 layout_mode = 2
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 32
 text = "解锁炮台后方可升级方向"
 horizontal_alignment = 1
 
@@ -200,7 +201,7 @@ offset_left = 20.0
 offset_top = 20.0
 offset_right = 680.0
 offset_bottom = 260.0
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 38
 text = "确认操作？"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -218,13 +219,13 @@ theme_override_constants/separation = 40
 [node name="ConfirmYesBtn" type="Button" parent="MainCard/ConfirmOverlay/ConfirmCard/BtnRow"]
 custom_minimum_size = Vector2(240, 70)
 layout_mode = 2
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 38
 text = "确认"
 
 [node name="ConfirmNoBtn" type="Button" parent="MainCard/ConfirmOverlay/ConfirmCard/BtnRow"]
 custom_minimum_size = Vector2(240, 70)
 layout_mode = 2
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 38
 text = "取消"
 
 [node name="TooltipPanel" type="Panel" parent="MainCard"]
@@ -243,7 +244,7 @@ offset_left = 14.0
 offset_top = 10.0
 offset_right = -14.0
 offset_bottom = -10.0
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 32
 text = "效果说明"
 autowrap_mode = 3
 horizontal_alignment = 0

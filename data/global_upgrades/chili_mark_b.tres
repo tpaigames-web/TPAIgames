@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="GlobalUpgradeData" format=3]
+
+[ext_resource type="Script" uid="uid://bgu_data" path="res://data/global_upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+upgrade_id = "chili_mark_b"
+display_name = "辣椒标记强化"
+description = "地狱魔辣路线：标记增伤+12%"
+icon_emoji = "🌶"
+rarity = 1
+upgrade_type = 0
+target_tower_id = "chili_flamer"
+stat_type = 7
+stat_bonus = 0.12

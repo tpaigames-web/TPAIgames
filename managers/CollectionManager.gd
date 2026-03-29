@@ -8,7 +8,12 @@ extends Node
 signal collection_changed
 
 ## 基础炮台（玩家初始解锁，无需碎片）
-const BASE_TOWERS: Array[String] = ["scarecrow", "water_pipe", "farmer"]
+## 白色(0)+绿色(1)+蓝色(2)品质炮台默认解锁
+const BASE_TOWERS: Array[String] = [
+	"scarecrow", "beehive",                                  # 白色(0)
+	"barbed_wire", "bear_trap", "farm_cannon", "water_pipe", # 绿色(1)
+	"mushroom_bomb", "seed_shooter", "windmill",             # 蓝色(2)
+]
 
 ## 炮台资源路径（用于延迟加载 level_required）
 const TOWER_RESOURCE_PATHS: Array[String] = [
@@ -26,6 +31,7 @@ const TOWER_RESOURCE_PATHS: Array[String] = [
 	"res://data/towers/watchtower_collection.tres",
 	"res://data/towers/sunflower_collection.tres",
 	"res://data/towers/hero_farmer_collection.tres",
+	"res://data/towers/farm_guardian_collection.tres",
 ]
 
 ## 拥有的碎片数量：tower_id → count
@@ -42,6 +48,9 @@ var path_levels: Dictionary = {}
 
 ## 延迟加载的等级要求缓存：tower_id → level_required
 var _tower_level_reqs: Dictionary = {}
+
+## 延迟加载的炮台数据缓存：tower_id → TowerCollectionData
+var _tower_data_cache: Dictionary = {}
 
 func _ready() -> void:
 	# 基础炮台默认解锁
@@ -61,6 +70,20 @@ func _ensure_reqs_loaded() -> void:
 		var req = res.get("level_required")
 		if tid != null:
 			_tower_level_reqs[str(tid)] = int(req) if req != null else 1
+
+## 根据 tower_id 获取 TowerCollectionData 资源（懒加载并缓存）
+func get_tower_data(tower_id: String) -> TowerCollectionData:
+	if _tower_data_cache.has(tower_id):
+		return _tower_data_cache[tower_id]
+	for path in TOWER_RESOURCE_PATHS:
+		var res = load(path)
+		if res == null:
+			continue
+		var tid = res.get("tower_id")
+		if tid != null:
+			_tower_data_cache[str(tid)] = res
+	return _tower_data_cache.get(tower_id, null)
+
 
 ## 获取炮台状态
 ## 返回值：0 = 等级不足无法解锁  1 = 未解锁（等级足够，可用碎片解锁）  2 = 已解锁
@@ -90,6 +113,15 @@ func add_fragments(tower_id: String, count: int) -> void:
 	owned_fragments[tower_id] = owned_fragments.get(tower_id, 0) + count
 	collection_changed.emit()
 
+## 消耗碎片（返回 true = 扣除成功，碎片不足时返回 false 且不修改）
+func spend_fragments(tower_id: String, count: int) -> bool:
+	var current: int = owned_fragments.get(tower_id, 0)
+	if current < count:
+		return false
+	owned_fragments[tower_id] = current - count
+	collection_changed.emit()
+	return true
+
 ## 消耗碎片解锁炮台（实际逻辑）。碎片可溢出，消耗固定 fragment_cost 数量。
 ## 返回 true = 解锁成功
 func unlock_tower_with_fragments(tower_id: String, fragment_cost: int) -> bool:
@@ -117,6 +149,9 @@ func get_path_level(tower_id: String, path_idx: int) -> int:
 ## 返回 true = 升级成功
 func unlock_path_tier(tower_id: String, path_idx: int) -> bool:
 	if tower_id not in unlocked_towers:
+		return false
+	if path_idx < 0 or path_idx >= 4:
+		push_error("CollectionManager.unlock_path_tier: 非法 path_idx=%d（应为 0-3）" % path_idx)
 		return false
 	if tower_id not in path_levels:
 		path_levels[tower_id] = [0, 0, 0, 0]
@@ -158,10 +193,19 @@ func load_save_data(dict: Dictionary) -> void:
 		if base_id not in unlocked_towers:
 			unlocked_towers.append(base_id)
 
-	# path_levels：key=tower_id (String), value=Array of int
+	# path_levels：key=tower_id (String), value=Array of int（逐项验证，过滤损坏数据）
 	var pl_ = dict.get("path_levels", {})
 	if pl_ is Dictionary:
-		path_levels = pl_
+		path_levels = {}
+		for tid in pl_.keys():
+			var val = pl_[tid]
+			if val is Array:
+				var int_arr: Array[int] = []
+				for v in val:
+					int_arr.append(int(v))
+				path_levels[str(tid)] = int_arr
+			else:
+				push_warning("CollectionManager: path_levels[%s] 不是 Array，已跳过" % tid)
 
 ## 游戏内判断：某条路径在当前 BTD 规则下是否还允许继续升级
 ## BTD 规则：若其他任意路径已到 3 层，本路径上限为 2 层；最多同时升级 2 条路径

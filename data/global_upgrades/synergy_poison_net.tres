@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="GlobalUpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/global_upgrade_data.gd" id="1_s11"]
+
+[resource]
+script = ExtResource("1_s11")
+upgrade_id = "synergy_poison_net"
+display_name = "毒刺陷阱"
+description = "需要：捕兽夹 + 带刺铁网\n两者 伤害各 +25%"
+icon_emoji = "☠"
+rarity = 1
+upgrade_type = 2
+target_tower_id = ""
+stat_type = 0
+stat_bonus = 0.25
+required_tower_ids = Array[String](["bear_trap", "barbed_wire"])
+target_tower_ids = Array[String](["bear_trap", "barbed_wire"])

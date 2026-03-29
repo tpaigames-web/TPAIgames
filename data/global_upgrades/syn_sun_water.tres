@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="GlobalUpgradeData" format=3]
+
+[ext_resource type="Script" uid="uid://bgu_data" path="res://data/global_upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+upgrade_id = "syn_sun_water"
+display_name = "阳光融冰"
+description = "向日葵+水压：冻结可同时燃烧"
+icon_emoji = "💦"
+rarity = 1
+upgrade_type = 2
+stat_type = 9
+stat_bonus = 1.0
+required_tower_ids = Array[String](["sunflower", "water_pipe"])
+target_tower_ids = Array[String](["water_pipe", "sunflower"])

@@ -7,14 +7,7 @@ const RARITY_BLUE   = 2
 const RARITY_PURPLE = 3
 const RARITY_ORANGE = 4
 
-const RARITY_COLORS: Array[Color] = [
-	Color(0.85, 0.85, 0.85),  # 白
-	Color(0.2,  0.75, 0.2 ),  # 绿
-	Color(0.2,  0.5,  0.95),  # 蓝
-	Color(0.7,  0.2,  0.9 ),  # 紫
-	Color(1.0,  0.55, 0.0 ),  # 橙
-]
-const RARITY_NAMES: Array[String] = ["白", "绿", "蓝", "紫", "橙"]
+# 稀有度常量引用（集中定义于 TowerResourceRegistry Autoload）
 
 ## 翻牌动画参数
 const FLIP_HALF_DURATION = 0.15   # 半程翻牌时间（秒）
@@ -26,28 +19,19 @@ const CARD_W := 180
 const CARD_H := 288               # 5:8 = 180×288
 const ROW_SEP := 20
 
-## 全部炮台资源路径（与 TowersTab.gd 保持同步）
-const TOWER_RESOURCE_PATHS: Array[String] = [
-	"res://data/towers/scarecrow_collection.tres",
-	"res://data/towers/water_pipe_collection.tres",
-	"res://data/towers/farmer_collection.tres",
-	"res://data/towers/bear_trap_collection.tres",
-	"res://data/towers/beehive_collection.tres",
-	"res://data/towers/farm_cannon_collection.tres",
-	"res://data/towers/barbed_wire_collection.tres",
-	"res://data/towers/windmill_collection.tres",
-	"res://data/towers/seed_shooter_collection.tres",
-	"res://data/towers/mushroom_bomb_collection.tres",
-	"res://data/towers/chili_flamer_collection.tres",
-	"res://data/towers/watchtower_collection.tres",
-	"res://data/towers/sunflower_collection.tres",
-	"res://data/towers/hero_farmer_collection.tres",
-]
+## 10 连开箱用缩小布局
+const BULK_CARDS_PER_ROW := 5
+const BULK_CARD_W := 140
+const BULK_CARD_H := 224           # 5:8 = 140×224
+const BULK_ROW_SEP := 12
+
+## 炮台资源路径（集中定义于 TowerResourceRegistry Autoload）
 
 ## 每个结果：{rarity:int, tower:TowerCollectionData, fragments:int}
 var _results: Array[Dictionary] = []
 var _reveal_cards: Array[Control] = []
 var _is_animating: bool = false
+var _active_tween: Tween = null
 
 ## 按稀有度分组的炮台资源：{rarity → [TowerCollectionData, ...]}
 var _towers_by_rarity: Dictionary = {}
@@ -59,11 +43,14 @@ var _towers_by_rarity: Dictionary = {}
 @onready var skip_button:      Button        = $SkipButton
 @onready var continue_button:  Button        = $ContinueButton
 
-func setup(data: ChestData) -> void:
+func setup(data: ChestData, count: int = 1) -> void:
 	# 先确保资源已加载（防止 setup 在 _ready 之前被调用时 _towers_by_rarity 为空）
 	_load_tower_resources()
 	# 结果在点击前就已决定，保证公平
-	_results = _roll_results(data)
+	# count > 1 时为 10 连开箱，重复 roll count 次合并结果
+	_results.clear()
+	for _i in count:
+		_results.append_array(_roll_results(data))
 
 func _ready() -> void:
 	# 加载炮台资源（若 setup 已经调用过则直接跳过）
@@ -72,22 +59,11 @@ func _ready() -> void:
 	skip_button.pressed.connect(_skip_all)
 	continue_button.pressed.connect(_on_continue)
 
-## 加载炮台资源并按稀有度分组（幂等：已加载则跳过）
+## 加载炮台资源并按稀有度分组（委托给 TowerResourceRegistry）
 func _load_tower_resources() -> void:
 	if not _towers_by_rarity.is_empty():
 		return
-	for path in TOWER_RESOURCE_PATHS:
-		var res = load(path)
-		if res == null:
-			continue
-		# 兼容性检查：只要有 rarity 字段即可（不依赖 is TowerCollectionData）
-		var rarity_val = res.get("rarity")
-		if rarity_val == null:
-			continue
-		var r: int = int(rarity_val)
-		if r not in _towers_by_rarity:
-			_towers_by_rarity[r] = []
-		_towers_by_rarity[r].append(res)
+	_towers_by_rarity = TowerResourceRegistry.get_towers_by_rarity()
 
 # ───── 结果计算 ─────
 
@@ -133,6 +109,7 @@ func _pick_tower(rarity: int) -> TowerCollectionData:
 	for key in _towers_by_rarity:
 		if _towers_by_rarity[key].size() > 0:
 			return _towers_by_rarity[key][0]
+	push_error("ChestOpening._pick_tower: 无可用炮台，奖励卡片将为空")
 	return null
 
 # ───── 阶段1：点击宝箱 ─────
@@ -161,17 +138,38 @@ func _spawn_cards() -> void:
 	if n == 0:
 		return
 
-	var per_row: int = mini(n, CARDS_PER_ROW)
+	# 10 连开箱用缩小卡片 + 更多每行
+	var is_bulk: bool = n > 10
+	var per_row: int = BULK_CARDS_PER_ROW if is_bulk else mini(n, CARDS_PER_ROW)
+	var card_w: int = BULK_CARD_W if is_bulk else CARD_W
+	var card_h: int = BULK_CARD_H if is_bulk else CARD_H
+	var sep: int = BULK_ROW_SEP if is_bulk else ROW_SEP
+
+	# 10 连时用 ScrollContainer 包裹，避免超出屏幕
+	var target_container: VBoxContainer = cards_container
+	if is_bulk:
+		var scroll := ScrollContainer.new()
+		scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+		scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+		cards_container.add_child(scroll)
+		var inner := VBoxContainer.new()
+		inner.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		inner.alignment = BoxContainer.ALIGNMENT_CENTER
+		inner.add_theme_constant_override("separation", sep)
+		scroll.add_child(inner)
+		target_container = inner
+
 	var idx := 0
 	while idx < n:
 		var row := HBoxContainer.new()
 		row.alignment = BoxContainer.ALIGNMENT_CENTER
-		row.add_theme_constant_override("separation", ROW_SEP)
-		cards_container.add_child(row)
+		row.add_theme_constant_override("separation", sep)
+		target_container.add_child(row)
 
 		var in_this_row := mini(per_row, n - idx)
 		for _c in in_this_row:
-			var card := _create_reveal_card(_results[idx], CARD_W, CARD_H)
+			var card := _create_reveal_card(_results[idx], card_w, card_h)
 			row.add_child(card)
 			_reveal_cards.append(card)
 			idx += 1
@@ -180,6 +178,7 @@ func _create_reveal_card(result: Dictionary, w: int, h: int) -> Control:
 	var tower: TowerCollectionData = result.get("tower")
 	var rarity: int = result.get("rarity", 0)
 	var frags: int  = result.get("fragments", 0)
+	var is_small: bool = w < CARD_W   # 10 连用缩小版
 
 	var card := Control.new()
 	card.custom_minimum_size = Vector2(w, h)
@@ -210,7 +209,7 @@ func _create_reveal_card(result: Dictionary, w: int, h: int) -> Control:
 	var back_q := Label.new()
 	back_q.text = "?"
 	back_q.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	back_q.add_theme_font_size_override("font_size", 80)
+	back_q.add_theme_font_size_override("font_size", 56 if is_small else 80)
 	back_q.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	back_q.vertical_alignment   = VERTICAL_ALIGNMENT_CENTER
 	back_q.modulate = Color(1, 1, 1, 0.12)
@@ -227,8 +226,8 @@ func _create_reveal_card(result: Dictionary, w: int, h: int) -> Control:
 	# 卡面背景（稀有度色，低透明）
 	var front_bg := ColorRect.new()
 	front_bg.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	front_bg.color = Color(RARITY_COLORS[rarity].r, RARITY_COLORS[rarity].g,
-						   RARITY_COLORS[rarity].b, 0.25)
+	front_bg.color = Color(TowerResourceRegistry.RARITY_COLORS[rarity].r, TowerResourceRegistry.RARITY_COLORS[rarity].g,
+						   TowerResourceRegistry.RARITY_COLORS[rarity].b, 0.25)
 	front_bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	front.add_child(front_bg)
 
@@ -245,7 +244,7 @@ func _create_reveal_card(result: Dictionary, w: int, h: int) -> Control:
 	var stripe := ColorRect.new()
 	stripe.set_anchors_preset(Control.PRESET_TOP_WIDE)
 	stripe.offset_bottom = 12.0
-	stripe.color = RARITY_COLORS[rarity]
+	stripe.color = TowerResourceRegistry.RARITY_COLORS[rarity]
 	stripe.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	front.add_child(stripe)
 
@@ -270,7 +269,7 @@ func _create_reveal_card(result: Dictionary, w: int, h: int) -> Control:
 		emoji_lbl.offset_top    = -60.0
 		emoji_lbl.offset_right  =  48.0
 		emoji_lbl.offset_bottom =  28.0
-		emoji_lbl.add_theme_font_size_override("font_size", 72)
+		emoji_lbl.add_theme_font_size_override("font_size", 56 if is_small else 80)
 		emoji_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		emoji_lbl.vertical_alignment   = VERTICAL_ALIGNMENT_CENTER
 		emoji_lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -280,9 +279,9 @@ func _create_reveal_card(result: Dictionary, w: int, h: int) -> Control:
 	var name_lbl := Label.new()
 	name_lbl.text = tower.display_name if tower else "—"
 	name_lbl.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
-	name_lbl.offset_top    = -96.0
-	name_lbl.offset_bottom = -44.0
-	name_lbl.add_theme_font_size_override("font_size", 24)
+	name_lbl.offset_top    = -76.0 if is_small else -96.0
+	name_lbl.offset_bottom = -34.0 if is_small else -44.0
+	name_lbl.add_theme_font_size_override("font_size", 32 if is_small else 32)
 	name_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	name_lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	front.add_child(name_lbl)
@@ -291,9 +290,9 @@ func _create_reveal_card(result: Dictionary, w: int, h: int) -> Control:
 	var frag_lbl := Label.new()
 	frag_lbl.text = "碎片 ×1"
 	frag_lbl.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
-	frag_lbl.offset_top    = -40.0
-	frag_lbl.offset_bottom =  -6.0
-	frag_lbl.add_theme_font_size_override("font_size", 20)
+	frag_lbl.offset_top    = -32.0 if is_small else -40.0
+	frag_lbl.offset_bottom =  -4.0 if is_small else -6.0
+	frag_lbl.add_theme_font_size_override("font_size", 32 if is_small else 32)
 	frag_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	frag_lbl.modulate = Color(1.0, 1.0, 1.0, 0.7)
 	frag_lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -313,9 +312,15 @@ func _flip_card_index(index: int) -> void:
 
 	var card = _reveal_cards[index]
 	var tween = create_tween()
+	_active_tween = tween
+
+	# 10连时加速翻卡（0.06s 半程，几乎无停顿）
+	var is_bulk: bool = _results.size() > 10
+	var half_dur: float = 0.06 if is_bulk else FLIP_HALF_DURATION
+	var pause: float = 0.02 if is_bulk else FLIP_PAUSE
 
 	# 上半程：scaleX 1 → 0
-	tween.tween_property(card, "scale:x", 0.0, FLIP_HALF_DURATION).set_ease(Tween.EASE_IN)
+	tween.tween_property(card, "scale:x", 0.0, half_dur).set_ease(Tween.EASE_IN)
 
 	# 翻转中点：切换正反面
 	tween.tween_callback(func():
@@ -324,10 +329,10 @@ func _flip_card_index(index: int) -> void:
 	)
 
 	# 下半程：scaleX 0 → 1
-	tween.tween_property(card, "scale:x", 1.0, FLIP_HALF_DURATION).set_ease(Tween.EASE_OUT)
+	tween.tween_property(card, "scale:x", 1.0, half_dur).set_ease(Tween.EASE_OUT)
 
 	# 停顿后翻下一张
-	tween.tween_interval(FLIP_PAUSE)
+	tween.tween_interval(pause)
 	tween.tween_callback(func():
 		_flip_card_index(index + 1)
 	)
@@ -336,6 +341,9 @@ func _flip_card_index(index: int) -> void:
 
 func _skip_all() -> void:
 	_is_animating = false
+	if _active_tween and _active_tween.is_valid():
+		_active_tween.kill()
+	_active_tween = null
 
 	if chest_stage.visible:
 		chest_stage.hide()
@@ -362,5 +370,9 @@ func _on_continue() -> void:
 		var tower: TowerCollectionData = result.get("tower")
 		if tower != null:
 			CollectionManager.add_fragments(tower.tower_id, 1)
+		else:
+			# 无可用炮台时以金币补偿，避免奖励静默丢失
+			UserManager.add_gold(5)
+			push_warning("ChestOpening: 空炮台卡片已转换为 5 金币补偿")
 	SaveManager.save()
 	queue_free()

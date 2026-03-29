@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="GlobalUpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/global_upgrade_data.gd" id="1_s0"]
+
+[resource]
+script = ExtResource("1_s0")
+upgrade_id = "synergy_trap_wire"
+display_name = "陷阱协同"
+description = "需要：捕兽夹\n带刺铁网 伤害 +40%"
+icon_emoji = "🪤"
+rarity = 1
+upgrade_type = 2
+target_tower_id = "barbed_wire"
+stat_type = 0
+stat_bonus = 0.4
+required_tower_ids = Array[String](["bear_trap"])
+target_tower_ids = Array[String]([])

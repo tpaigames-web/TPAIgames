@@ -10,8 +10,11 @@ class_name ChestData extends Resource
 @export var info_line1: String = "- ? 张卡片"
 @export var info_line2: String = "- ? 稀有"
 
-## 直接购买此宝箱的宝石费用（0 = 免费）
+## 直接购买此宝箱的宝石费用（0 = 免费）— 已废弃，改用 voucher_cost
 @export var gem_purchase_cost: int = 0
+
+## 购买此宝箱所需的券数量（0 = 免费）
+@export var voucher_cost: int = 0
 
 ## 槽位系统用：解锁等待时间（秒），直接购买开箱不需要
 @export var unlock_time_seconds: int = 10800

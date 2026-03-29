@@ -1,0 +1,22 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://windmill_sprite_frames"]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/tower/Windmill/Windmill_01.png" id="w1"]
+[ext_resource type="Texture2D" path="res://assets/sprites/tower/Windmill/Windmill_02.png" id="w2"]
+[ext_resource type="Texture2D" path="res://assets/sprites/tower/Windmill/Windmill_03.png" id="w3"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("w1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("w2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("w3")
+}],
+"loop": true,
+"name": &"default",
+"speed": 6.0
+}]

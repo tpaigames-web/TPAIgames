@@ -1,14 +1,7 @@
 extends CanvasLayer
 
 # ── 常量 ─────────────────────────────────────────────────────────────
-const RARITY_COLORS: Array[Color] = [
-	Color(0.85, 0.85, 0.85),  # 白
-	Color(0.2,  0.75, 0.2 ),  # 绿
-	Color(0.2,  0.5,  0.95),  # 蓝
-	Color(0.7,  0.2,  0.9 ),  # 紫
-	Color(1.0,  0.55, 0.0 ),  # 橙
-]
-const RARITY_NAMES: Array[String]      = ["白", "绿", "蓝", "紫", "橙"]
+# 稀有度常量引用（集中定义于 TowerResourceRegistry Autoload）
 const ATTACK_TYPE_NAMES: Array[String] = ["地面", "空中", "全部"]
 
 const COLOR_OWNED:     Color = Color(1.0,  0.75, 0.1,  1.0)   # 金色：已解锁
@@ -113,8 +106,8 @@ func _fill_header(status: int) -> void:
 	elif _data.icon_texture:
 		icon_tex.texture = _data.icon_texture
 	tower_name_lbl.text = _data.display_name
-	rarity_lbl.text     = "稀有度：" + RARITY_NAMES[_data.rarity]
-	rarity_lbl.modulate = RARITY_COLORS[_data.rarity]
+	rarity_lbl.text     = "稀有度：" + TowerResourceRegistry.RARITY_NAMES[_data.rarity]
+	rarity_lbl.modulate = TowerResourceRegistry.RARITY_COLORS[_data.rarity]
 	dmg_val.text = "%.0f" % _data.base_damage  if _data.base_damage  > 0.0 else "—"
 	spd_val.text = "%.1f" % _data.attack_speed if _data.attack_speed > 0.0 else "—"
 	rng_val.text = "%.0f" % _data.attack_range if _data.attack_range > 0.0 else "—"
@@ -145,7 +138,7 @@ func _build_paths(status: int) -> void:
 	if _data.upgrade_paths.is_empty():
 		var placeholder := Label.new()
 		placeholder.text = "（升级路径待定）"
-		placeholder.add_theme_font_size_override("font_size", 22)
+		placeholder.add_theme_font_size_override("font_size", 24)
 		placeholder.modulate = Color(1, 1, 1, 0.45)
 		paths_vbox.add_child(placeholder)
 		return
@@ -217,7 +210,7 @@ func _make_tier_btn(path_idx: int, tier_idx: int, path_data: TowerUpgradePath,
 	tier_num.set_anchors_preset(Control.PRESET_TOP_LEFT)
 	tier_num.offset_right  = 30.0
 	tier_num.offset_bottom = 30.0
-	tier_num.add_theme_font_size_override("font_size", 18)
+	tier_num.add_theme_font_size_override("font_size", 20)
 	tier_num.modulate = Color(1, 1, 1, 0.45)
 	tier_num.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	btn.add_child(tier_num)
@@ -250,7 +243,7 @@ func _make_tier_btn(path_idx: int, tier_idx: int, path_data: TowerUpgradePath,
 	var t_name: String = path_data.tier_names[tier_idx] if tier_idx < path_data.tier_names.size() else "—"
 	var name_lbl := Label.new()
 	name_lbl.text = t_name
-	name_lbl.add_theme_font_size_override("font_size", 18)
+	name_lbl.add_theme_font_size_override("font_size", 22)
 	name_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	name_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	if not is_owned and not is_next:
@@ -259,7 +252,7 @@ func _make_tier_btn(path_idx: int, tier_idx: int, path_data: TowerUpgradePath,
 
 	# ── 费用标签（仅下一层显示） ─────────────────────────────────────
 	var cost_lbl := Label.new()
-	cost_lbl.add_theme_font_size_override("font_size", 16)
+	cost_lbl.add_theme_font_size_override("font_size", 20)
 	cost_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	if is_owned:
 		cost_lbl.text = "✓"
@@ -287,25 +280,24 @@ func _make_tier_btn(path_idx: int, tier_idx: int, path_data: TowerUpgradePath,
 				return
 			# 任意状态都可以查看效果 tooltip
 			_show_tooltip(btn, captured_t_name, captured_effect)
-			# 只有资源充足时才弹升级确认弹窗
+			# 只有资源充足时直接执行升级（实时校验防止重复点击）
 			if captured_affordable:
-				_show_confirm(
-					"确认解锁升级方向？\n【%s】→【%s】\n\n消耗：%d 碎片  %d 金币" % [
-						captured_path_name, captured_t_name, captured_frag, captured_gold
-					],
-					func():
-						# 扣除碎片
-						CollectionManager.owned_fragments[_data.tower_id] = \
-							CollectionManager.get_fragments(_data.tower_id) - captured_frag
-						# 扣除金币
-						UserManager.spend_gold(captured_gold)
-						# 执行升级
-						if CollectionManager.unlock_path_tier(_data.tower_id, path_idx):
-							var s: int = CollectionManager.get_tower_status(_data.tower_id)
-							_build_paths(s)
-							_fill_header(s)
-							SaveManager.save()
-				)
+				# 实时校验资源是否仍足够（防止快速双击重复扣费）
+				if CollectionManager.get_fragments(_data.tower_id) < captured_frag:
+					return
+				if UserManager.gold < captured_gold:
+					return
+				# 通过 API 扣除碎片
+				if not CollectionManager.spend_fragments(_data.tower_id, captured_frag):
+					return
+				# 扣除金币
+				UserManager.spend_gold(captured_gold)
+				# 执行升级
+				if CollectionManager.unlock_path_tier(_data.tower_id, path_idx):
+					var s: int = CollectionManager.get_tower_status(_data.tower_id)
+					_build_paths(s)
+					_fill_header(s)
+					SaveManager.save()
 	)
 
 	return container
@@ -343,13 +335,10 @@ func _on_unlock_pressed() -> void:
 	var owned: int = CollectionManager.get_fragments(_data.tower_id)
 	if owned < cost:
 		return  # 碎片不足（按钮理应已禁用）
-	_show_confirm(
-		"消耗 %d 碎片解锁【%s】？\n（当前碎片：%d）" % [cost, _data.display_name, owned],
-		func():
-			if CollectionManager.unlock_tower_with_fragments(_data.tower_id, cost):
-				_populate()  # 刷新整个界面
-				SaveManager.save()
-	)
+	# 直接解锁，无需二次确认
+	if CollectionManager.unlock_tower_with_fragments(_data.tower_id, cost):
+		_populate()
+		SaveManager.save()
 
 # ── 关闭 ─────────────────────────────────────────────────────────────
 func _close() -> void:

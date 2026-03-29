@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="GlobalUpgradeData" format=3]
+
+[ext_resource type="Script" uid="uid://bgu_data" path="res://data/global_upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+upgrade_id = "watch_mark_o"
+display_name = "猎杀标记"
+description = "永久猎杀路线：标记+15%"
+icon_emoji = "🗼"
+rarity = 2
+upgrade_type = 0
+target_tower_id = "watchtower"
+stat_type = 7
+stat_bonus = 0.15

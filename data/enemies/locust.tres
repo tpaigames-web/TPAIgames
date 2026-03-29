@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="EnemyData" format=3 uid="uid://bb0sfn8j825ad"]
 
 [ext_resource type="Script" uid="uid://dapicbkaarem1" path="res://enemy/enemy_data.gd" id="1_locust"]
+[ext_resource type="SpriteFrames" path="res://data/enemies/locust_frames.tres" id="locust_frames"]
 
 [resource]
 script = ExtResource("1_locust")
@@ -8,9 +9,12 @@ enemy_id = "locust"
 display_name = "蝗虫"
 display_emoji = "🦗"
 max_hp = 40
-move_speed = 170.0
-damage_to_player = 1
-gold_reward = 3
-xp_reward = 3
+move_speed = 160.0
+sprite_frames = ExtResource("locust_frames")
+sprite_display_size = 50.0
+sprite_rotation_offset = -90.0
+gold_reward = 4
+xp_reward = 4
 is_flying = true
+counter_strategy = "空中AOE"
 metadata/_custom_type_script = "uid://dapicbkaarem1"

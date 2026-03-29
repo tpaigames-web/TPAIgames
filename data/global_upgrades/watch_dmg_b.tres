@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="GlobalUpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/global_upgrade_data.gd" id="1_20"]
+
+[resource]
+script = ExtResource("1_20")
+upgrade_id = "watch_dmg_b"
+display_name = "瞭望火力·蓝"
+description = "弓弩 伤害 +28%"
+icon_emoji = "🗼"
+rarity = 1
+upgrade_type = 0
+target_tower_id = "watchtower"
+stat_type = 0
+stat_bonus = 0.28
+required_tower_ids = Array[String]([])
+target_tower_ids = Array[String]([])

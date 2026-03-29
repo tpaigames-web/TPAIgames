@@ -1,22 +1,6 @@
 extends Control
 
-## ── 炮台资源路径（与 ChestOpening / TowersTab 保持同步）───────────────
-const TOWER_RESOURCE_PATHS: Array[String] = [
-	"res://data/towers/scarecrow_collection.tres",
-	"res://data/towers/water_pipe_collection.tres",
-	"res://data/towers/farmer_collection.tres",
-	"res://data/towers/bear_trap_collection.tres",
-	"res://data/towers/beehive_collection.tres",
-	"res://data/towers/farm_cannon_collection.tres",
-	"res://data/towers/barbed_wire_collection.tres",
-	"res://data/towers/windmill_collection.tres",
-	"res://data/towers/seed_shooter_collection.tres",
-	"res://data/towers/mushroom_bomb_collection.tres",
-	"res://data/towers/chili_flamer_collection.tres",
-	"res://data/towers/watchtower_collection.tres",
-	"res://data/towers/sunflower_collection.tres",
-	"res://data/towers/hero_farmer_collection.tres",
-]
+## ── 炮台资源路径（集中定义于 TowerResourceRegistry Autoload）──────────
 
 ## ── 礼包数据 ─────────────────────────────────────────────────────────
 ## price_type: "cash" | "gems"
@@ -78,6 +62,33 @@ const PACKAGES: Array = [
 		"purchase_limit": 0,
 		"rewards":        {"frags_random": {"rarity": 0, "count": 100}},
 		"badge":          "",
+	},
+	{
+		"id":             "ultimate_bundle",
+		"name":           "终极大礼包",
+		"emoji":          "👑",
+		"desc":           "直接满等级（Lv.100）\n全部炮台碎片 ×30",
+		"section":        "frags",
+		"price_type":     "cash",
+		"price_rm":       88.8,
+		"price_gems":     0,
+		"purchase_limit": 1,
+		"rewards":        {"max_level": true, "all_tower_frags": 30},
+		"badge":          "终极特惠",
+	},
+	{
+		"id":                     "hero_frag_farm_guardian",
+		"name":                   "英雄礼包 · 农场守卫者",
+		"emoji":                  "🗿",
+		"desc":                   "农场守卫者碎片 ×30",
+		"section":                "frags",
+		"price_type":             "gems",
+		"price_rm":               0.0,
+		"price_gems":             1000,
+		"purchase_limit":         0,
+		"rewards":                {"frags_fixed": {"farm_guardian": 30}},
+		"badge":          "英雄",
+		"require_level":  10,
 	},
 	# ─── 货币 ────────────────────────────────────────────────────────
 	{
@@ -171,6 +182,32 @@ const PACKAGES: Array = [
 		"rewards":        {"xp": 1000},
 		"badge":          "",
 	},
+	{
+		"id":             "voucher_small",
+		"name":           "少量券",
+		"emoji":          "🎫",
+		"desc":           "券 ×10",
+		"section":        "currency",
+		"price_type":     "gems",
+		"price_rm":       0.0,
+		"price_gems":     100,
+		"purchase_limit": 0,
+		"rewards":        {"vouchers": 10},
+		"badge":          "",
+	},
+	{
+		"id":             "voucher_large",
+		"name":           "大量券",
+		"emoji":          "🎫",
+		"desc":           "券 ×110（额外赠送 10）",
+		"section":        "currency",
+		"price_type":     "gems",
+		"price_rm":       0.0,
+		"price_gems":     1000,
+		"purchase_limit": 0,
+		"rewards":        {"vouchers": 110},
+		"badge":          "超值",
+	},
 ]
 
 ## ── 节点引用 ─────────────────────────────────────────────────────────
@@ -194,22 +231,22 @@ func _ready() -> void:
 	cancel_btn.pressed.connect(_on_confirm_no)
 	confirm_overlay.gui_input.connect(_on_overlay_input)
 	confirm_overlay.hide()
+	# 玩家升级时自动刷新商店，等级达标后显示英雄礼包
+	UserManager.level_changed.connect(func(_lv: int): _rebuild())
 
-# ── 炮台资源加载（幂等） ──────────────────────────────────────────────
+## 清空并重建商店内容（用于解锁英雄后动态刷新）
+func _rebuild() -> void:
+	_card_states.clear()
+	for child in main_vbox.get_children():
+		child.queue_free()
+	await get_tree().process_frame
+	_build_all_sections()
+
+# ── 炮台资源加载（委托给 TowerResourceRegistry）─────────────────────────
 func _load_tower_resources() -> void:
 	if not _towers_by_rarity.is_empty():
 		return
-	for path in TOWER_RESOURCE_PATHS:
-		var res = load(path)
-		if res == null:
-			continue
-		var rarity_val = res.get("rarity")
-		if rarity_val == null:
-			continue
-		var r: int = int(rarity_val)
-		if r not in _towers_by_rarity:
-			_towers_by_rarity[r] = []
-		_towers_by_rarity[r].append(res)
+	_towers_by_rarity = TowerResourceRegistry.get_towers_by_rarity()
 
 # ── 构建全部区块 ──────────────────────────────────────────────────────
 func _build_all_sections() -> void:
@@ -265,14 +302,20 @@ func _build_section(section: String, title: String) -> void:
 		return
 
 	for pkg in PACKAGES:
-		if pkg.get("section", "") == section:
-			var card_margin := MarginContainer.new()
-			card_margin.add_theme_constant_override("margin_left",   16)
-			card_margin.add_theme_constant_override("margin_right",  16)
-			card_margin.add_theme_constant_override("margin_top",    4)
-			card_margin.add_theme_constant_override("margin_bottom", 4)
-			card_margin.add_child(_make_package_card(pkg))
-			main_vbox.add_child(card_margin)
+		if pkg.get("section", "") != section:
+			continue
+		# ── 条件过滤：require_level 玩家等级必须达到指定值 ────────────────
+		var req_level: int = pkg.get("require_level", 0)
+		if req_level > 0 and UserManager.level < req_level:
+			continue
+		# ── 构建卡片 ─────────────────────────────────────────────────────
+		var card_margin := MarginContainer.new()
+		card_margin.add_theme_constant_override("margin_left",   16)
+		card_margin.add_theme_constant_override("margin_right",  16)
+		card_margin.add_theme_constant_override("margin_top",    4)
+		card_margin.add_theme_constant_override("margin_bottom", 4)
+		card_margin.add_child(_make_package_card(pkg))
+		main_vbox.add_child(card_margin)
 
 # ── 礼包卡片构建 ──────────────────────────────────────────────────────
 func _make_package_card(pkg: Dictionary) -> Control:
@@ -391,6 +434,8 @@ func _update_count_label(lbl: Label, bought: int, limit: int) -> void:
 
 # ── 购买响应 ──────────────────────────────────────────────────────────
 func _on_buy_pressed(pkg: Dictionary) -> void:
+	if confirm_overlay.visible:   # 确认弹窗已显示，防止重复触发
+		return
 	if pkg.get("price_type", "gems") == "cash":
 		_buy_cash(pkg)
 	else:
@@ -434,6 +479,12 @@ func _apply_rewards(pkg: Dictionary) -> void:
 		UserManager.add_gems(r["gems"])
 	if r.get("xp", 0) > 0:
 		UserManager.add_xp(r["xp"])
+	if r.get("vouchers", 0) > 0:
+		UserManager.add_vouchers(r["vouchers"])
+	if r.get("max_level", false):
+		_grant_max_level()
+	if r.get("all_tower_frags", 0) > 0:
+		_grant_all_tower_frags(r["all_tower_frags"])
 	for tid: String in r.get("frags_fixed", {}).keys():
 		CollectionManager.add_fragments(tid, r["frags_fixed"][tid])
 	var rand_info: Dictionary = r.get("frags_random", {})
@@ -446,6 +497,24 @@ func _apply_rewards(pkg: Dictionary) -> void:
 	# 随机礼包：展示获得的炮台卡片
 	if picked_tower != null:
 		_show_frag_reward(picked_tower, rand_info.get("count", 1))
+
+## 将玩家等级直接提升至满级（Lv.100）
+func _grant_max_level() -> void:
+	if UserManager.level >= UserManager.MAX_LEVEL:
+		return
+	UserManager.level             = UserManager.MAX_LEVEL
+	UserManager.xp                = 0
+	UserManager.xp_to_next_level  = 1000 + (UserManager.MAX_LEVEL - 1) * 500
+	UserManager.level_changed.emit(UserManager.MAX_LEVEL)
+	UserManager.currency_changed.emit()
+
+## 给予所有炮台各 count 份碎片
+func _grant_all_tower_frags(count: int) -> void:
+	for rarity_list: Array in _towers_by_rarity.values():
+		for tower_res: Resource in rarity_list:
+			var tid: String = tower_res.tower_id
+			if tid != "":
+				CollectionManager.add_fragments(tid, count)
 
 ## 随机发放碎片，返回被选中的炮台资源（失败时返回 null）
 func _add_random_frags(rarity: int, count: int) -> Resource:

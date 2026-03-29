@@ -1,0 +1,39 @@
+[gd_scene format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/ui/Flag_01.png" id="tex_flag"]
+
+[sub_resource type="StyleBoxEmpty" id="empty_style"]
+
+[node name="UpgradeButton" type="Control"]
+custom_minimum_size = Vector2(110, 120)
+
+[node name="FlagBg" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 110.0
+offset_bottom = 120.0
+mouse_filter = 2
+texture = ExtResource("tex_flag")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 15.0
+offset_right = 100.0
+offset_bottom = 95.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.3, 0.2, 0.1, 1)
+theme_override_font_sizes/font_size = 32
+text = "升级
+⭐"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HitButton" type="Button" parent="."]
+layout_mode = 0
+offset_right = 110.0
+offset_bottom = 120.0
+theme_override_styles/normal = SubResource("empty_style")
+theme_override_styles/hover = SubResource("empty_style")
+theme_override_styles/pressed = SubResource("empty_style")

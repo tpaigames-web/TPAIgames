@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="GlobalUpgradeData" format=3]
+
+[ext_resource type="Script" uid="uid://bgu_data" path="res://data/global_upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+upgrade_id = "wire_bleed_b"
+display_name = "锈刃渗透"
+description = "终极铁刺路线：出血+2dps"
+icon_emoji = "🪤"
+rarity = 1
+upgrade_type = 0
+target_tower_id = "barbed_wire"
+stat_type = 5
+stat_bonus = 2.0

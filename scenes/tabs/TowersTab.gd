@@ -1,31 +1,8 @@
 extends Control
 
-# ── 资源路径 ─────────────────────────────────────────────────────────
-const TOWER_RESOURCE_PATHS: Array[String] = [
-	"res://data/towers/scarecrow_collection.tres",
-	"res://data/towers/water_pipe_collection.tres",
-	"res://data/towers/farmer_collection.tres",
-	"res://data/towers/bear_trap_collection.tres",
-	"res://data/towers/beehive_collection.tres",
-	"res://data/towers/farm_cannon_collection.tres",
-	"res://data/towers/barbed_wire_collection.tres",
-	"res://data/towers/windmill_collection.tres",
-	"res://data/towers/seed_shooter_collection.tres",
-	"res://data/towers/mushroom_bomb_collection.tres",
-	"res://data/towers/chili_flamer_collection.tres",
-	"res://data/towers/watchtower_collection.tres",
-	"res://data/towers/sunflower_collection.tres",
-	"res://data/towers/hero_farmer_collection.tres",
-]
+const TOWER_DETAIL_PANEL = preload("res://scenes/tower_detail/TowerDetailPanel.tscn")
 
-const RARITY_COLORS: Array[Color] = [
-	Color(0.85, 0.85, 0.85),  # 0 白
-	Color(0.2,  0.75, 0.2 ),  # 1 绿
-	Color(0.2,  0.5,  0.95),  # 2 蓝
-	Color(0.7,  0.2,  0.9 ),  # 3 紫
-	Color(1.0,  0.55, 0.0 ),  # 4 橙
-]
-const RARITY_NAMES: Array[String] = ["白", "绿", "蓝", "紫", "橙"]
+# ── 常量引用（集中定义于 TowerResourceRegistry Autoload）──────────────
 
 # 卡片尺寸（5:7 图片区 + 60px 碎片信息条）
 const CARD_W: int = 316
@@ -40,25 +17,33 @@ const CARD_H: int = CARD_IMG_H + CARD_FRAG_H   # 502
 var _all_towers: Array = []
 var _card_nodes: Array = []
 var _active_filter: int = -1  # -1=全部
+var _active_type: int = 0     # 0=炮台  1=英雄  2=道具
 var _rebuild_pending: bool = false  # 防止同帧多次重建
 
 # ── 初始化 ────────────────────────────────────────────────────────────
 func _ready() -> void:
 	# 加载炮台资源
-	for path in TOWER_RESOURCE_PATHS:
-		var res = load(path)
-		if res:
-			_all_towers.append(res)
+	_all_towers = TowerResourceRegistry.get_all_resources().duplicate()
 
 	# 创建卡片
 	for data in _all_towers:
 		var card = _make_tower_card(data)
+		var status: int = CollectionManager.get_tower_status(data.tower_id)
+		card.set_meta("level_locked", status == 0)
 		tower_grid.add_child(card)
 		_card_nodes.append(card)
 
-	# 连接筛选按钮（顺序：全部/白/绿/蓝/紫/橙）
+	# 连接类型筛选按钮（炮台 / 英雄 / 道具）
+	var type_row: HBoxContainer = $TypeRow
+	var type_btns := type_row.get_children()
+	if type_btns.size() >= 3:
+		type_btns[0].pressed.connect(func(): _set_type(0))  # 炮台
+		type_btns[1].pressed.connect(func(): _set_type(1))  # 英雄
+		type_btns[2].pressed.connect(func(): _set_type(2))  # 道具
+
+	# 连接稀有度筛选按钮（顺序：全部/白/绿/蓝/紫/橙）
 	var filter_row: HBoxContainer = $FilterRow
-	var btns = filter_row.get_children()
+	var btns := filter_row.get_children()
 	if btns.size() >= 6:
 		btns[0].pressed.connect(func(): _set_filter(-1))
 		btns[1].pressed.connect(func(): _set_filter(0))
@@ -70,6 +55,9 @@ func _ready() -> void:
 	# 监听 CollectionManager 碎片变化 → 实时刷新卡片
 	CollectionManager.collection_changed.connect(_on_collection_changed)
 
+	# 默认显示「炮台」分类
+	_set_type(0)
+
 # ── 卡片创建 ──────────────────────────────────────────────────────────
 func _make_tower_card(data: TowerCollectionData) -> Control:
 	var status: int = CollectionManager.get_tower_status(data.tower_id)
@@ -77,6 +65,7 @@ func _make_tower_card(data: TowerCollectionData) -> Control:
 	var is_unlocked: bool     = (status == 2)
 
 	var card := Panel.new()
+	card.mouse_filter = Control.MOUSE_FILTER_PASS
 	card.custom_minimum_size = Vector2(CARD_W, CARD_H)
 	card.set_meta("tower_data", data)
 
@@ -89,7 +78,7 @@ func _make_tower_card(data: TowerCollectionData) -> Control:
 
 	# 顶部稀有度色条
 	var stripe := ColorRect.new()
-	stripe.color = RARITY_COLORS[data.rarity]
+	stripe.color = TowerResourceRegistry.RARITY_COLORS[data.rarity]
 	stripe.set_anchors_preset(Control.PRESET_TOP_WIDE)
 	stripe.offset_bottom = 14.0
 	stripe.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -122,8 +111,8 @@ func _make_tower_card(data: TowerCollectionData) -> Control:
 
 	# 稀有度角标（右上，着色）
 	var rarity_lbl := Label.new()
-	rarity_lbl.text = RARITY_NAMES[data.rarity]
-	rarity_lbl.modulate = RARITY_COLORS[data.rarity]
+	rarity_lbl.text = TowerResourceRegistry.RARITY_NAMES[data.rarity]
+	rarity_lbl.modulate = TowerResourceRegistry.RARITY_COLORS[data.rarity]
 	rarity_lbl.set_anchors_preset(Control.PRESET_TOP_RIGHT)
 	rarity_lbl.offset_left   = -56.0
 	rarity_lbl.offset_top    =  18.0
@@ -162,6 +151,7 @@ func _make_tower_card(data: TowerCollectionData) -> Control:
 
 		var owned: int = CollectionManager.get_fragments(data.tower_id)
 		var frag_lbl := Label.new()
+		frag_lbl.name = "FragLbl"   # 命名以供 _refresh_grid 就地更新
 		frag_lbl.text = "碎片: %d/%d" % [owned, data.unlock_fragments]
 		frag_lbl.offset_top    = CARD_IMG_H + 4.0
 		frag_lbl.offset_left   = 8.0
@@ -173,6 +163,7 @@ func _make_tower_card(data: TowerCollectionData) -> Control:
 		card.add_child(frag_lbl)
 
 		var status_lbl := Label.new()
+		status_lbl.name = "StatusLbl"   # 命名以供 _refresh_grid 就地更新
 		if is_unlocked:
 			status_lbl.text = "已解锁"
 			status_lbl.modulate = Color(0.4, 1.0, 0.4)
@@ -194,6 +185,15 @@ func _make_tower_card(data: TowerCollectionData) -> Control:
 	return card
 
 # ── 筛选 ─────────────────────────────────────────────────────────────
+func _set_type(type: int) -> void:
+	_active_type = type
+	# 稀有度行仅在「炮台」分类下显示
+	$FilterRow.visible = (type == 0)
+	# 切换英雄时重置稀有度为全部（英雄不走稀有度过滤）
+	if type == 1:
+		_active_filter = -1
+	_apply_filter()
+
 func _set_filter(rarity: int) -> void:
 	_active_filter = rarity
 	_apply_filter()
@@ -201,7 +201,17 @@ func _set_filter(rarity: int) -> void:
 func _apply_filter() -> void:
 	for card in _card_nodes:
 		var d: TowerCollectionData = card.get_meta("tower_data")
-		card.visible = (_active_filter == -1 or d.rarity == _active_filter)
+		var show := true
+		match _active_type:
+			0:  # 炮台 — 排除英雄，按稀有度过滤
+				show = not d.is_hero
+				if show and _active_filter != -1:
+					show = (d.rarity == _active_filter)
+			1:  # 英雄 — 仅英雄
+				show = d.is_hero
+			2:  # 道具 — 暂未开发
+				show = false
+		card.visible = show
 
 # ── 卡片点击 ─────────────────────────────────────────────────────────
 func _on_card_clicked(event: InputEvent, data: TowerCollectionData) -> void:
@@ -216,7 +226,7 @@ func _on_card_clicked(event: InputEvent, data: TowerCollectionData) -> void:
 			home.show_locked("🔒 需要达到 Lv.%d\n才能解锁此炮台" % req_lv)
 	else:
 		# 等级已达（无论是否解锁）→ 打开详情界面
-		var panel = load("res://scenes/tower_detail/TowerDetailPanel.tscn").instantiate()
+		var panel = TOWER_DETAIL_PANEL.instantiate()
 		get_tree().root.add_child(panel)
 		panel.setup(data)
 
@@ -247,12 +257,41 @@ func _deferred_rebuild() -> void:
 	_rebuild_pending = false
 	_rebuild_grid()
 
+## 优先就地刷新动态字段（碎片数/解锁状态），仅当 unlock 级别变化时才销毁重建
 func _rebuild_grid() -> void:
+	# 若卡片数量与炮台数匹配，尝试就地更新（避免销毁重建 ~15 个卡片节点树）
+	if _card_nodes.size() == _all_towers.size():
+		var needs_full_rebuild := false
+		for i in _all_towers.size():
+			var data: TowerCollectionData = _all_towers[i]
+			var card: Panel = _card_nodes[i]
+			var status: int = CollectionManager.get_tower_status(data.tower_id)
+			var is_level_locked: bool = (status == 0)
+			var was_level_locked: bool = card.get_meta("level_locked", true)
+			if is_level_locked != was_level_locked:
+				needs_full_rebuild = true
+				break
+			# 就地更新碎片数 / 解锁状态
+			var frag_lbl := card.get_node_or_null("FragLbl") as Label
+			var status_lbl := card.get_node_or_null("StatusLbl") as Label
+			if frag_lbl:
+				var owned: int = CollectionManager.get_fragments(data.tower_id)
+				frag_lbl.text = "碎片: %d/%d" % [owned, data.unlock_fragments]
+			if status_lbl:
+				var is_unlocked: bool = (status == 2)
+				status_lbl.text = "已解锁" if is_unlocked else "解锁"
+				status_lbl.modulate = Color(0.4, 1.0, 0.4) if is_unlocked else Color(1.0, 0.8, 0.2)
+		if not needs_full_rebuild:
+			_apply_filter()
+			return
+	# 全量重建（首次 or unlock 等级变化）
 	for child in tower_grid.get_children():
 		child.queue_free()
 	_card_nodes.clear()
 	for data in _all_towers:
 		var card = _make_tower_card(data)
+		var status: int = CollectionManager.get_tower_status(data.tower_id)
+		card.set_meta("level_locked", status == 0)
 		tower_grid.add_child(card)
 		_card_nodes.append(card)
 	_apply_filter()

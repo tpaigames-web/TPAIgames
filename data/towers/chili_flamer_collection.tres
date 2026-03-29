@@ -2,50 +2,55 @@
 
 [ext_resource type="Script" uid="uid://dh7u72sh06tc3" path="res://data/tower_collection_data.gd" id="1_tcd"]
 [ext_resource type="Script" uid="uid://cs8acmmyvm8t5" path="res://data/tower_upgrade_path.gd" id="2_tup"]
+[ext_resource type="PackedScene" path="res://tower/ChiliFlamerTower.tscn" id="tower_scn"]
+[ext_resource type="Texture2D" path="res://assets/sprites/tower/Chili/Chili_Base.png" id="tex_base"]
+[ext_resource type="Texture2D" path="res://assets/sprites/tower/Chili/Chili_Thrower.png" id="tex_attack"]
+[ext_resource type="Texture2D" path="res://assets/sprites/tower/Chili/Chili_Full.png" id="tex_full"]
 
 [sub_resource type="Resource" id="Path_0"]
 script = ExtResource("2_tup")
-path_name = "火焰强化"
-tier_names = Array[String](["浓缩辣素", "高纯度辣油", "极辣火焰", "地狱辣椒", "太阳炽热"])
-tier_effects = Array[String](["辣椒精华浓缩，喷火伤害+15%", "燃烧效果增强，持续时间+1秒", "极辣火焰：燃烧伤害翻倍", "超高温火焰，燃烧对大型单位双倍有效", "地狱辣椒：伤害与燃烧同时达极限，连续燃烧"])
-tier_costs = Array[int]([250, 500, 800, 1100, 1600])
-damage_bonus_per_tier = 0.15
+path_name = "太阳炙热"
+tier_names = Array[String](["浓缩辣素", "高纯度辣油", "极辣火焰", "地狱辣椒", "太阳炙热"])
+tier_effects = Array[String](["伤害+20% 燃烧2dps/3s", "伤害+20% 燃烧升至4dps/4s", "燃烧伤害翻倍 忽视10%护甲", "对大型目标伤害+50% 燃烧8s", "极限伤害+极限燃烧+对大型无视20%护甲"])
+tier_costs = Array[int]([200, 400, 640, 880, 1280])
 
 [sub_resource type="Resource" id="Path_1"]
 script = ExtResource("2_tup")
-path_name = "喷射速度"
-tier_names = Array[String](["增压泵", "高效喷射", "极速喷射", "自动喷火", "永恒火焰"])
-tier_effects = Array[String](["安装增压泵，攻速+12%", "高效喷射系统，攻速累积提升", "极速喷射，火焰几乎连续", "自动喷火装置，攻速大幅提升", "永恒火焰：攻速极限，火焰持续不断"])
-tier_costs = Array[int]([200, 400, 650, 900, 1300])
-speed_bonus_per_tier = 0.12
+path_name = "烈焰洪流"
+tier_names = Array[String](["延伸喷管", "锥形扩展", "宽幅火焰", "广域喷射", "烈焰洪流"])
+tier_effects = Array[String](["射程+15%", "攻击变为锥形60°覆盖", "锥形扩展至90° 范围内所有敌人", "锥形扩展至120° 伤害+20%", "150°超宽锥形 范围内持续燃烧地形5s"])
+tier_costs = Array[int]([180, 360, 580, 800, 1160])
 
 [sub_resource type="Resource" id="Path_2"]
 script = ExtResource("2_tup")
-path_name = "喷射范围"
-tier_names = Array[String](["延伸喷管", "锥形扩展", "宽幅火焰", "广域喷射", "烈焰洪流"])
-tier_effects = Array[String](["延伸喷管，射程+12%", "火焰从直线变为小锥形，覆盖宽度增加", "宽幅火焰，同时攻击多个并排敌人", "广域喷射：射程大幅提升", "烈焰洪流：大范围锥形覆盖，射程与宽度极限"])
-tier_costs = Array[int]([220, 440, 720, 1000, 1450])
-range_bonus_per_tier = 0.12
+path_name = "永恒火焰"
+tier_names = Array[String](["增压泵", "高效喷射", "极速喷射", "自动喷射", "永恒火焰"])
+tier_effects = Array[String](["攻速+18%", "攻速+36%", "攻速+54% 附带减速15%", "攻速+72% 减速提升至25%", "持续喷火 减速35% 无缝燃烧"])
+tier_costs = Array[int]([160, 320, 520, 720, 1040])
 
 [sub_resource type="Resource" id="Path_3"]
 script = ExtResource("2_tup")
-path_name = "辣椒标记"
+path_name = "地狱魔辣"
 tier_names = Array[String](["辣味标记", "火辣爆发", "灼烧标记", "终极辣椒", "地狱魔辣"])
-tier_effects = Array[String](["攻击附加辣椒标记，其他炮台对标记目标伤害+15%", "标记增伤提升至20%，燃烧时间再+2秒", "燃烧中的敌人受到的所有伤害+25%", "标记同时附加减速20%，火焰减速叠加", "地狱魔辣：标记达极致，被标记敌人受全部炮台额外+40%伤害"])
-tier_costs = Array[int]([280, 560, 900, 1250, 1800])
+tier_effects = Array[String](["攻击标记目标 全场+12%伤", "标记+18% 标记目标被燃烧时再+10%伤", "标记+25% 攻击标记目标敌人可扩散至相邻目标", "标记+30% 标记目标受击时减速20%", "范围内炮台攻击标记敌人伤害提升30%"])
+tier_costs = Array[int]([220, 440, 720, 1000, 1440])
 
 [resource]
 script = ExtResource("1_tcd")
+tower_scene = ExtResource("tower_scn")
 tower_id = "chili_flamer"
 display_name = "辣椒喷火器"
 tower_emoji = "🌶️"
+collection_texture = ExtResource("tex_full")
+base_texture = ExtResource("tex_base")
+attack_texture = ExtResource("tex_attack")
 rarity = 3
-base_damage = 22.0
-attack_speed = 2.2
-attack_range = 190.0
+base_damage = 32.0
+attack_speed = 1.0
+attack_range = 220.0
 placement_cost = 480
 attack_type = 0
-effect_description = "持续喷出辣椒火焰，对地面敌人造成快速连续燃烧伤害，并标记敌人增加全体炮台伤害"
+effect_description = "近程喷火，分段灼烧地面敌人。可升级为高伤燃烧、锥形覆盖、持续喷射或标记增伤。"
 upgrade_paths = Array[ExtResource("2_tup")]([SubResource("Path_0"), SubResource("Path_1"), SubResource("Path_2"), SubResource("Path_3")])
 level_required = 40
 unlock_fragments = 50

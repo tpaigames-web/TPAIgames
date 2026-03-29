@@ -1,0 +1,321 @@
+[gd_scene format=3 uid="uid://cmwwdu5gcqy0u"]
+
+[ext_resource type="PackedScene" uid="uid://map" path="res://map/Map01.tscn" id="1_tutmap"]
+[ext_resource type="Script" uid="uid://c5gmo1fq2scq6" path="res://managers/BuildManager.gd" id="2_build"]
+[ext_resource type="Script" uid="uid://sppjdq4mk2lj" path="res://managers/WaveManager.gd" id="3_wave"]
+[ext_resource type="PackedScene" uid="uid://d1tu7y8b2raa5" path="res://tower/Tower.tscn" id="4_tower"]
+[ext_resource type="Script" uid="uid://y2a0h1arm4iw" path="res://scenes/battle/BattleScene.gd" id="6_script"]
+[ext_resource type="FontFile" uid="uid://b7ivta6i6dxs7" path="res://assets/sprites/Font/+¡¦¦+¦¦s 600W.ttf" id="font_600"]
+[ext_resource type="FontFile" uid="uid://bmi3oq701indj" path="res://assets/sprites/Font/+¡¦¦+¦¦s 700W.ttf" id="font_700"]
+[ext_resource type="Texture2D" uid="uid://c1my8oieiknsu" path="res://assets/sprites/ui/Gem_bar.png" id="tex_gem"]
+[ext_resource type="Texture2D" uid="uid://c7cgchfyam4a4" path="res://assets/sprites/ui/Gold_bar.png" id="tex_gold"]
+[ext_resource type="Texture2D" uid="uid://ccx75xy1vid3c" path="res://assets/sprites/ui/Health_bar.png" id="tex_hp"]
+[ext_resource type="Texture2D" uid="uid://cpfgrw1gbu62y" path="res://assets/sprites/ui/Ingame_panel_hero.png" id="tex_panel_hero"]
+[ext_resource type="Texture2D" uid="uid://1bo8pma41sun" path="res://assets/sprites/ui/Ingame_panel_item.png" id="tex_panel_item"]
+[ext_resource type="Texture2D" uid="uid://6mfx5ss8g00l" path="res://assets/sprites/ui/Ingame_panel_tower.png" id="tex_panel_tower"]
+[ext_resource type="Texture2D" uid="uid://cug8p0h7c8yr2" path="res://assets/sprites/ui/Top.png" id="tex_top"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ui/Setting.png" id="tex_setting"]
+
+[node name="BattleScene" type="Node" unique_id=991539732]
+script = ExtResource("6_script")
+
+[node name="TutorialMap" parent="." unique_id=576418840 instance=ExtResource("1_tutmap")]
+
+[node name="BuildManager" type="Node" parent="." unique_id=1046999840]
+script = ExtResource("2_build")
+tower_scene = ExtResource("4_tower")
+
+[node name="WaveManager" type="Node" parent="." unique_id=1951689447]
+script = ExtResource("3_wave")
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=2138304324]
+layer = 5
+
+[node name="TopBg" type="TextureRect" parent="HUD" unique_id=1225826747]
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = -31.0
+offset_top = -71.0
+offset_right = 16.0
+offset_bottom = 126.0
+grow_horizontal = 2
+mouse_filter = 2
+texture = ExtResource("tex_top")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TopBar" type="Control" parent="HUD" unique_id=1672814306]
+layout_mode = 3
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 80.0
+mouse_filter = 2
+
+[node name="BackBtn" type="TextureButton" parent="HUD/TopBar" unique_id=561845765]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 80.0
+offset_bottom = 70.0
+texture_normal = ExtResource("tex_setting")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="WaveLabel" type="Label" parent="HUD/TopBar" unique_id=1028925951]
+layout_mode = 0
+offset_left = 300.0
+offset_top = 25.0
+offset_right = 780.0
+offset_bottom = 75.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5)
+theme_override_constants/shadow_offset_y = 2
+theme_override_fonts/font = ExtResource("font_700")
+theme_override_font_sizes/font_size = 38
+text = "波次 0/40"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PauseBtn" type="Button" parent="HUD/TopBar" unique_id=1396223374]
+layout_mode = 0
+offset_left = 919.0
+offset_top = 8.0
+offset_right = 1003.0
+offset_bottom = 68.0
+theme_override_fonts/font = ExtResource("font_700")
+theme_override_font_sizes/font_size = 38
+text = "⏸"
+flat = true
+
+[node name="SpeedBtn" type="Button" parent="HUD/TopBar" unique_id=2126799742]
+layout_mode = 0
+offset_left = 990.0
+offset_top = 4.0
+offset_right = 1070.0
+offset_bottom = 64.0
+theme_override_fonts/font = ExtResource("font_700")
+theme_override_font_sizes/font_size = 38
+text = "▶"
+flat = true
+
+[node name="StatusBars" type="Control" parent="HUD" unique_id=1716106330]
+layout_mode = 3
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -303.0
+offset_top = 98.0
+offset_right = 77.0
+offset_bottom = 398.0
+grow_horizontal = 0
+mouse_filter = 2
+
+[node name="HPBar" type="TextureRect" parent="HUD/StatusBars" unique_id=1672730349]
+layout_mode = 0
+offset_left = -37.000015
+offset_top = 11.999999
+offset_right = 323.0
+offset_bottom = 92.0
+scale = Vector2(1.1600003, 1.1600003)
+mouse_filter = 2
+texture = ExtResource("tex_hp")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="HPLabel" type="Label" parent="HUD/StatusBars/HPBar" unique_id=303133734]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 157.63892
+offset_top = 18.75
+offset_right = -90.55554
+offset_bottom = -18.194435
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.6)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_fonts/font = ExtResource("font_600")
+theme_override_font_sizes/font_size = 28
+text = "100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GoldBar" type="TextureRect" parent="HUD/StatusBars" unique_id=109985620]
+layout_mode = 0
+offset_left = -37.000015
+offset_top = 124.999985
+offset_right = 323.0
+offset_bottom = 205.0
+scale = Vector2(1.1600003, 1.1600003)
+mouse_filter = 2
+texture = ExtResource("tex_gold")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="GoldLabel" type="Label" parent="HUD/StatusBars/GoldBar" unique_id=690224620]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 161.11115
+offset_top = 23.500015
+offset_right = -96.111084
+offset_bottom = -17.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.6)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_fonts/font = ExtResource("font_600")
+theme_override_font_sizes/font_size = 28
+text = "500"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GemBar" type="TextureRect" parent="HUD/StatusBars" unique_id=529328561]
+layout_mode = 0
+offset_left = -37.000015
+offset_top = 240.99998
+offset_right = 323.0
+offset_bottom = 321.0
+scale = Vector2(1.1600003, 1.1600003)
+mouse_filter = 2
+texture = ExtResource("tex_gem")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="GemLabel" type="Label" parent="HUD/StatusBars/GemBar" unique_id=1343328438]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 157.63892
+offset_top = 15.972229
+offset_right = -89.861084
+offset_bottom = -20.277786
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.6)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_fonts/font = ExtResource("font_600")
+theme_override_font_sizes/font_size = 28
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BottomPanel" type="Control" parent="HUD" unique_id=50078523]
+layout_mode = 3
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -490.0
+
+[node name="PanelBgTower" type="TextureRect" parent="HUD/BottomPanel" unique_id=371529013]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource("tex_panel_tower")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="PanelBgHero" type="TextureRect" parent="HUD/BottomPanel" unique_id=896295809]
+visible = false
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("tex_panel_hero")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="PanelBgItem" type="TextureRect" parent="HUD/BottomPanel" unique_id=2113168087]
+visible = false
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("tex_panel_item")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TabBar" type="HBoxContainer" parent="HUD/BottomPanel" unique_id=1538764492]
+layout_mode = 0
+anchor_right = 1.0
+offset_bottom = 70.0
+theme_override_constants/separation = 0
+
+[node name="TowerTabBtn" type="Button" parent="HUD/BottomPanel/TabBar" unique_id=1919045828]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 0.95, 0.85, 1)
+theme_override_fonts/font = ExtResource("font_700")
+theme_override_font_sizes/font_size = 38
+text = "炮台"
+flat = true
+
+[node name="HeroTabBtn" type="Button" parent="HUD/BottomPanel/TabBar" unique_id=257038024]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 0.95, 0.85, 1)
+theme_override_fonts/font = ExtResource("font_700")
+theme_override_font_sizes/font_size = 38
+disabled = true
+text = "英雄"
+flat = true
+
+[node name="ItemTabBtn" type="Button" parent="HUD/BottomPanel/TabBar" unique_id=1794817119]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 0.95, 0.85, 1)
+theme_override_fonts/font = ExtResource("font_700")
+theme_override_font_sizes/font_size = 38
+text = "道具"
+flat = true
+
+[node name="TowerScroll" type="ScrollContainer" parent="HUD/BottomPanel" unique_id=524475819]
+layout_mode = 0
+anchor_right = 1.0
+offset_top = 70.0
+offset_bottom = 360.0
+
+[node name="TowerHBox" type="HBoxContainer" parent="HUD/BottomPanel/TowerScroll" unique_id=667331494]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="ItemScroll" type="ScrollContainer" parent="HUD/BottomPanel" unique_id=175883210]
+visible = false
+layout_mode = 0
+anchor_right = 1.0
+offset_top = 70.0
+offset_bottom = 360.0
+
+[node name="ItemHBox" type="HBoxContainer" parent="HUD/BottomPanel/ItemScroll" unique_id=2003219627]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="UpgradePanel" type="ScrollContainer" parent="HUD/BottomPanel" unique_id=1870404478]
+visible = false
+layout_mode = 0
+anchor_right = 1.0
+offset_top = 70.0
+offset_bottom = 360.0
+
+[node name="UpgradeVBox" type="VBoxContainer" parent="HUD/BottomPanel/UpgradePanel" unique_id=609737934]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6

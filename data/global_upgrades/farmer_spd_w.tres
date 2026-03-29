@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="GlobalUpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/global_upgrade_data.gd" id="1_1"]
+
+[resource]
+script = ExtResource("1_1")
+upgrade_id = "farmer_spd_w"
+display_name = "农夫神速·白"
+description = "农夫 攻速 +15%"
+icon_emoji = "🌾"
+rarity = 0
+upgrade_type = 0
+target_tower_id = "farmer"
+stat_type = 1
+stat_bonus = 0.15
+required_tower_ids = Array[String]([])
+target_tower_ids = Array[String]([])

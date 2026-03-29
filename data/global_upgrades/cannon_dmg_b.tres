@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="GlobalUpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/global_upgrade_data.gd" id="1_5"]
+
+[resource]
+script = ExtResource("1_5")
+upgrade_id = "cannon_dmg_b"
+display_name = "炮弹增重·蓝"
+description = "农场大炮 伤害 +28%"
+icon_emoji = "💣"
+rarity = 1
+upgrade_type = 0
+target_tower_id = "farm_cannon"
+stat_type = 0
+stat_bonus = 0.28
+required_tower_ids = Array[String]([])
+target_tower_ids = Array[String]([])

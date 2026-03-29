@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="GlobalUpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/global_upgrade_data.gd" id="1_22"]
+
+[resource]
+script = ExtResource("1_22")
+upgrade_id = "wind_spd_w"
+display_name = "风力加速·白"
+description = "风车 攻速 +15%"
+icon_emoji = "🌀"
+rarity = 0
+upgrade_type = 0
+target_tower_id = "windmill"
+stat_type = 1
+stat_bonus = 0.15
+required_tower_ids = Array[String]([])
+target_tower_ids = Array[String]([])

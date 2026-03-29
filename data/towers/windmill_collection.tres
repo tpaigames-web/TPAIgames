@@ -2,50 +2,51 @@
 
 [ext_resource type="Script" uid="uid://dh7u72sh06tc3" path="res://data/tower_collection_data.gd" id="1_tcd"]
 [ext_resource type="Script" uid="uid://cs8acmmyvm8t5" path="res://data/tower_upgrade_path.gd" id="2_tup"]
+[ext_resource type="PackedScene" path="res://tower/WindmillTower.tscn" id="tower_scn"]
+[ext_resource type="SpriteFrames" path="res://data/towers/windmill_frames.tres" id="windmill_frames"]
 
 [sub_resource type="Resource" id="Path_0"]
 script = ExtResource("2_tup")
-path_name = "旋风伤害"
-tier_names = Array[String](["锋利刀刃", "双层风刃", "穿透旋风", "狂风刀阵", "终极旋风"])
-tier_effects = Array[String](["风刃锋利化，旋风伤害+12%", "双层风刃同时旋转，伤害累积提升", "旋风可切割穿透多个排列敌人", "狂风刀阵，伤害大幅提升", "终极旋风：刀刃达极限锋利，伤害极大提升"])
-tier_costs = Array[int]([150, 300, 500, 700, 1000])
-damage_bonus_per_tier = 0.12
+path_name = "龙卷风"
+tier_names = Array[String](["吹退气流", "持续风压", "强风锁定", "吹飞轻型", "龙卷风"])
+tier_effects = Array[String](["攻击附带击退0.5s", "击退+移速-25%", "25%概率眩晕0.8s", "对轻型击退距离翻倍 大型-50%", "范围变AOE 120px 伤害×2 减速40%"])
+tier_costs = Array[int]([180, 360, 600, 850, 1200])
 
 [sub_resource type="Resource" id="Path_1"]
 script = ExtResource("2_tup")
-path_name = "旋转速度"
-tier_names = Array[String](["加速转动", "高速旋转", "极速风车", "飓风模式", "永动风车"])
-tier_effects = Array[String](["转速提升，攻速+15%", "高速旋转，攻速累积大幅提升", "极速风车，刀刃几乎连续割击", "飓风模式，连续攻击不间断", "永动风车：攻速达极限，永不停歇"])
-tier_costs = Array[int]([120, 240, 400, 600, 900])
-speed_bonus_per_tier = 0.15
+path_name = "终极旋风"
+tier_names = Array[String](["锋利刀刃", "双旋刀刃", "穿透旋风", "狂风刀阵", "终极旋风"])
+tier_effects = Array[String](["伤害+15% 穿透2敌", "伤害+30% 穿透3敌", "穿透所有敌人 伤害+45%", "攻速+20% 旋风伤害+20%", "范围变AOE 360° 空地通吃"])
+tier_costs = Array[int]([150, 300, 500, 700, 1000])
 
 [sub_resource type="Resource" id="Path_2"]
 script = ExtResource("2_tup")
-path_name = "风力范围"
-tier_names = Array[String](["扩展风场", "大型风车", "广域旋风", "超级风场", "全场飓风"])
-tier_effects = Array[String](["风场覆盖范围+15%", "大型风车叶片，覆盖范围累积提升", "广域旋风，攻击范围大幅扩大", "超级风场，几乎覆盖整个区域", "全场飓风：射程极大提升，无处遁形"])
-tier_costs = Array[int]([130, 260, 430, 650, 950])
-range_bonus_per_tier = 0.15
+path_name = "永动风车"
+tier_names = Array[String](["加速转动", "高速旋转", "极速风车", "飓风模式", "永动风车"])
+tier_effects = Array[String](["攻速+20%", "攻速+40%", "攻速+60% 每第4次攻击全场AOE", "攻速+80% 全场AOE变为每第3次", "攻速极限 全场AOE每第2次 AOE伤=50%"])
+tier_costs = Array[int]([120, 240, 400, 600, 900])
 
 [sub_resource type="Resource" id="Path_3"]
 script = ExtResource("2_tup")
-path_name = "气流效果"
-tier_names = Array[String](["吹退气流", "持续风压", "强风锁定", "吹飞轻型", "龙卷风"])
-tier_effects = Array[String](["风力将敌人吹退，造扐0.5秒位移中断", "持续风压让敌人移动速度降佂20%", "强风令近距离敌人陷入无法前进状态", "强力气流可将小型单位直接吹飞消除", "龙卷风：大范围吸引敌人聚集，旋转伤害极大提升"])
-tier_costs = Array[int]([180, 360, 600, 850, 1200])
+path_name = "全场飓风"
+tier_names = Array[String](["扩展风场", "大型风车", "广域旋风", "超级风场", "全场飓风"])
+tier_effects = Array[String](["范围+20%", "范围+40%", "范围+60% 所有命中目标减速15%", "减速提升至25%", "范围极大 减速35% 空地全覆盖"])
+tier_costs = Array[int]([130, 260, 430, 650, 950])
 
 [resource]
 script = ExtResource("1_tcd")
+tower_scene = ExtResource("tower_scn")
+anim_frames = ExtResource("windmill_frames")
 tower_id = "windmill"
 display_name = "风车"
 tower_emoji = "🌀"
 rarity = 2
 base_damage = 12.0
-attack_speed = 1.8
+attack_speed = 1.3
 attack_range = 250.0
 placement_cost = 350
 attack_type = 2
-effect_description = "高速旋转的风车刀刃，对范围内地面和空中敌人持续造成AoE伤害"
+effect_description = "单体近战攻击，打地面和空中。可升级为击退控制、穿透旋风、高频全场AOE或范围减速。"
 upgrade_paths = Array[ExtResource("2_tup")]([SubResource("Path_0"), SubResource("Path_1"), SubResource("Path_2"), SubResource("Path_3")])
 level_required = 20
 unlock_fragments = 40

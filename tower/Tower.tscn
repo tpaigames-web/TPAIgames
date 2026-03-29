@@ -1,263 +1,35 @@
 [gd_scene format=3 uid="uid://d1tu7y8b2raa5"]
 
+[ext_resource type="Script" uid="uid://1alxqjdovoeb" path="res://tower/Tower.gd" id="1_towergd"]
 [ext_resource type="Script" uid="uid://b8amxhmfdqi0n" path="res://tower/AttackRange.gd" id="3_cx4av"]
-
-[sub_resource type="GDScript" id="GDScript_fai3p"]
-script/source = "extends Area2D
-
-signal tower_tapped(tower: Area2D)
-
-const BULLET_SCENE: PackedScene = preload(\"res://bullet/Bullet.tscn\")
-
-@export var tower_data: Resource
-
-var can_place: bool = true
-var is_preview: bool = true
-var attack_timer: float = 0.0
-var attack_range: Area2D
-var _current_target: Area2D = null
-
-## 游戏内各升级路径当前层数（0=未升级；Arsenal 层数决定免费配额）
-var _in_game_path_levels: Array[int] = [0, 0, 0, 0]
-## 攻击目标模式：0=第一个 1=靠近 2=强力 3=最后一个
-var target_mode: int = 0
-
-@onready var placement_shape = $CollisionShape2D
-@onready var attack_shape = $AttackRange/CollisionShape2D
-@onready var _shadow_spr: Sprite2D = $ShadowSprite
-@onready var _base_spr:   Sprite2D = $BaseSprite
-@onready var _attack_spr: Sprite2D = $AttackSprite
-@onready var _emoji_lbl:  Label    = $EmojiLabel
-
-
-func _ready():
-
-	monitoring = true
-	monitorable = true
-
-	attack_range = $AttackRange
-
-	if tower_data:
-		apply_tower_data()
-
-	# 连接自身 input_event，放置后响应点击
-	input_event.connect(_on_tower_input)
-
-
-func apply_tower_data():
-
-	if not tower_data:
-		return
-
-	# ===== 攻击范围 =====
-	if attack_shape and attack_shape.shape and attack_shape.shape is CircleShape2D:
-		attack_shape.shape.radius = tower_data.attack_range
-
-	# ===== 放置碰撞圆 =====
-	if placement_shape and placement_shape is CollisionShape2D and placement_shape.shape and placement_shape.shape is CircleShape2D:
-		placement_shape.shape.radius = tower_data.collision_radius
-
-	# ===== 图片分层显示 =====
-	var td := tower_data as TowerCollectionData
-	if td and (td.base_texture or td.attack_texture):
-		# 底座层
-		_base_spr.texture = td.base_texture
-		_base_spr.visible = td.base_texture != null
-		_auto_scale(_base_spr)
-
-		# 影子层（与底座相同纹理，偏移 + 半透明黑色）
-		_shadow_spr.texture  = td.base_texture
-		_shadow_spr.modulate = Color(0, 0, 0, 0.35)
-		_shadow_spr.position = Vector2(6, 8)
-		_shadow_spr.visible  = td.base_texture != null
-		_auto_scale(_shadow_spr)
-
-		# 攻击层
-		_attack_spr.texture = td.attack_texture
-		_attack_spr.visible = td.attack_texture != null
-		_auto_scale(_attack_spr)
-
-		_emoji_lbl.visible = false
-
-	elif td and td.icon_texture:
-		# 兼容旧 icon_texture
-		_base_spr.texture  = td.icon_texture
-		_base_spr.visible  = true
-		_auto_scale(_base_spr)
-		_shadow_spr.visible = false
-		_attack_spr.visible = false
-		_emoji_lbl.visible  = false
-
-	else:
-		_shadow_spr.visible = false
-		_base_spr.visible   = false
-		_attack_spr.visible = false
-		_emoji_lbl.text     = td.tower_emoji if td else \"?\"
-		_emoji_lbl.visible  = true
-
-
-func _auto_scale(spr: Sprite2D) -> void:
-	if not spr.texture:
-		return
-	var sz: Vector2 = spr.texture.get_size()
-	var md: float = maxf(sz.x, sz.y)
-	if md > 0.0:
-		spr.scale = Vector2(100.0 / md, 100.0 / md)
-
-
-func _process(delta):
-
-	if is_preview:
-		_update_can_place()
-		return
-
-	if not tower_data:
-		return
-
-	# 攻击图层实时朝向当前目标
-	if _attack_spr.visible and is_instance_valid(_current_target):
-		_attack_spr.rotation = (_current_target.global_position - global_position).angle()
-
-	attack_timer += delta
-
-	if attack_timer >= _get_effective_attack_interval():
-		attack_timer = 0.0
-
-		var target = attack_range.get_target(target_mode)
-		if target and is_instance_valid(target):
-			_fire_at(target)
-
-
-## 根据升级层数计算实际伤害
-func _get_effective_damage() -> float:
-	var td := tower_data as TowerCollectionData
-	if not td: return 0.0
-	var bonus: float = 0.0
-	for i in td.upgrade_paths.size():
-		var p := td.upgrade_paths[i] as TowerUpgradePath
-		if p: bonus += p.damage_bonus_per_tier * _in_game_path_levels[i]
-	return td.base_damage * (1.0 + bonus)
-
-## 根据升级层数计算实际攻击间隔（秒）
-func _get_effective_attack_interval() -> float:
-	var td := tower_data as TowerCollectionData
-	if not td: return 1.0
-	var bonus: float = 0.0
-	for i in td.upgrade_paths.size():
-		var p := td.upgrade_paths[i] as TowerUpgradePath
-		if p: bonus += p.speed_bonus_per_tier * _in_game_path_levels[i]
-	return max(td.attack_speed / (1.0 + bonus), 0.05)
-
-## 根据升级层数计算实际攻击范围，并同步更新碰撞圆
-func apply_stat_upgrades() -> void:
-	var td := tower_data as TowerCollectionData
-	if not td: return
-	var bonus: float = 0.0
-	for i in td.upgrade_paths.size():
-		var p := td.upgrade_paths[i] as TowerUpgradePath
-		if p: bonus += p.range_bonus_per_tier * _in_game_path_levels[i]
-	var new_range: float = td.attack_range * (1.0 + bonus)
-	if attack_shape and attack_shape.shape and attack_shape.shape is CircleShape2D:
-		attack_shape.shape.radius = new_range
-
-
-func _fire_at(tgt: Area2D) -> void:
-	_current_target = tgt   # 记录当前目标供旋转用
-	var td := tower_data as TowerCollectionData
-	var dmg: float = _get_effective_damage()
-	if td == null:
-		if tgt.has_method(\"take_damage\"):
-			tgt.take_damage(dmg)
-		return
-
-	# bullet_speed == 0 → 瞬间命中，不生成子弹实体
-	if td.bullet_speed <= 0.0:
-		if tgt.has_method(\"take_damage_from_bullet\"):
-			tgt.take_damage_from_bullet(dmg, td.bullet_effects)
-		else:
-			tgt.take_damage(dmg)
-		return
-
-	# 生成并发射子弹
-	var bullet = BULLET_SCENE.instantiate()
-	bullet.global_position = global_position
-	bullet.target          = tgt
-	bullet.damage          = dmg
-	bullet.move_speed      = td.bullet_speed
-	bullet.effects         = td.bullet_effects
-	bullet.attack_type     = td.attack_type
-	bullet.bullet_emoji    = td.bullet_emoji
-	get_tree().current_scene.add_child(bullet)
-
-
-## 处理炮台点击（放置后）
-func _on_tower_input(_viewport, event, _shape_idx) -> void:
-	if is_preview:
-		return
-	if (event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed) or (event is InputEventScreenTouch and event.pressed):
-		tower_tapped.emit(self)
-
-
-func _update_can_place():
-
-	var overlapping = get_overlapping_areas()
-	can_place = true
-
-	for area in overlapping:
-		if area.is_in_group(\"block\") or area.is_in_group(\"path\") or area.is_in_group(\"tower\"):
-			can_place = false
-			break
-
-	queue_redraw()
-
-
-func _draw():
-
-	if not is_preview:
-		return
-
-	var color: Color
-
-	if can_place:
-		color = Color(0, 1, 0, 0.4)
-	else:
-		color = Color(1, 0, 0, 0.4)
-
-	var radius = 50.0
-	if tower_data:
-		radius = tower_data.attack_range
-
-	draw_circle(Vector2.ZERO, radius, color)
-"
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_cx4av"]
 radius = 250.0
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_place"]
-radius = 50.0
-
 [node name="Tower" type="Area2D" unique_id=1471474779 groups=["tower"]]
 collision_layer = 2
 collision_mask = 1282
-script = SubResource("GDScript_fai3p")
+script = ExtResource("1_towergd")
 
 [node name="ShadowSprite" type="Sprite2D" parent="." unique_id=555111222]
-position = Vector2(6, 8)
-modulate = Color(0, 0, 0, 0.35)
-scale = Vector2(0.2, 0.2)
 visible = false
+modulate = Color(0, 0, 0, 0.35)
+position = Vector2(6, 8)
+scale = Vector2(0.2, 0.2)
 
 [node name="BaseSprite" type="Sprite2D" parent="." unique_id=555333444]
-scale = Vector2(0.2, 0.2)
 visible = false
+scale = Vector2(0.2, 0.2)
 
 [node name="AttackSprite" type="Sprite2D" parent="." unique_id=555555666]
+visible = false
 scale = Vector2(0.2, 0.2)
+
+[node name="AnimSprite" type="AnimatedSprite2D" parent="."]
 visible = false
 
 [node name="EmojiLabel" type="Label" parent="." unique_id=223344556]
-anchor_left = 0.0
-anchor_top = 0.0
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -50.0
@@ -266,14 +38,13 @@ offset_right = 50.0
 offset_bottom = 50.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_font_sizes/font_size = 48
+theme_override_font_sizes/font_size = 56
 text = "?"
 horizontal_alignment = 1
 vertical_alignment = 1
-mouse_filter = 2
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=823270444]
-shape = SubResource("CircleShape2D_place")
+[node name="PlacementPolygon" type="CollisionPolygon2D" parent="." unique_id=823270444]
+polygon = PackedVector2Array(-30, -30, 30, -30, 30, 30, -30, 30)
 
 [node name="AttackRange" type="Area2D" parent="." unique_id=596469278]
 collision_layer = 128

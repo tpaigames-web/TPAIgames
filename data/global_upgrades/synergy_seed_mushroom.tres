@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="GlobalUpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/global_upgrade_data.gd" id="1_s3"]
+
+[resource]
+script = ExtResource("1_s3")
+upgrade_id = "synergy_seed_mushroom"
+display_name = "种植联动"
+description = "需要：播种机\n蘑菇炸弹 伤害 +35%"
+icon_emoji = "🌿"
+rarity = 1
+upgrade_type = 2
+target_tower_id = "mushroom_bomb"
+stat_type = 0
+stat_bonus = 0.35
+required_tower_ids = Array[String](["seed_shooter"])
+target_tower_ids = Array[String]([])

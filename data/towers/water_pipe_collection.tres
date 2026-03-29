@@ -2,40 +2,41 @@
 
 [ext_resource type="Script" path="res://data/tower_collection_data.gd" id="1_tcd"]
 [ext_resource type="Script" path="res://data/tower_upgrade_path.gd" id="2_tup"]
+[ext_resource type="PackedScene" path="res://tower/WaterPipeTower.tscn" id="tower_scn"]
+[ext_resource type="Texture2D" path="res://assets/sprites/tower/WaterPipeTower/Hose.png" id="tex_hose"]
 
 [sub_resource type="Resource" id="Path_0"]
 script = ExtResource("2_tup")
-path_name = "高压水枪"
-tier_names = ["高压水枪", "多向高压", "高压水炮", "液氮喷射", "超高压洪流"]
-tier_effects = ["可对单体敌人造成少量伤害", "可同时对3个目标造成伤害和减速", "对小范围敌人造成伤害、少量击退和减速", "伤害大幅提升，减速效果增强至40%", "大范围，造成大量伤害和强力击退"]
-tier_costs = [150, 300, 500, 700, 1000]
-damage_bonus_per_tier = 0.2
+path_name = "冰封淋流"
+tier_names = ["强化减速", "冰冷之水", "冰封之力", "群体蔓延", "永恒寒冰"]
+tier_effects = ["减速30% 单目标", "减速40% 持续3s", "减速50% 10%概率冻结2s", "冻结扩散100px 也减速30%", "冻结概率25% 扩散200px 减速60%"]
+tier_costs = [120, 250, 400, 600, 900]
 
 [sub_resource type="Resource" id="Path_1"]
 script = ExtResource("2_tup")
-path_name = "速度"
-tier_names = ["加压泵", "高效水泵", "涡轮增压", "极速喷射", "无限水流"]
-tier_effects = ["喷射频率+10%", "喷射频率累计+10%", "喷射频率累计+10%", "喷射频率累计+10%", "喷射频率累计+10%"]
-tier_costs = [100, 200, 350, 550, 800]
-speed_bonus_per_tier = 0.1
+path_name = "超级洪流"
+tier_names = ["高压水枪", "多向高压", "高压水炮", "液氮喷射", "超高压洪流"]
+tier_effects = ["单目标击退30px", "同时击退3目标", "击退范围变AOE 100px", "击退+减速40% 被击退受伤+20%", "大范围强力击退200px 被击退减速50%"]
+tier_costs = [150, 300, 500, 700, 1000]
 
 [sub_resource type="Resource" id="Path_2"]
 script = ExtResource("2_tup")
-path_name = "射程"
-tier_names = ["延长水管", "加压延伸", "远程水枪", "广域喷射", "全场覆盖"]
-tier_effects = ["射程+15%", "射程累计+15%", "射程累计+15%", "射程累计+15%", "射程累计+15%"]
-tier_costs = [90, 180, 300, 480, 700]
-range_bonus_per_tier = 0.15
+path_name = "无限水流"
+tier_names = ["加压泵", "高效水泵", "涡轮增压", "极速喷射", "无限水流"]
+tier_effects = ["攻速+15% 同时打2目标", "攻速+30% 打3目标", "攻速+50% 打5目标", "攻速+70% 打6目标 减速+1s", "攻速极限 打8目标 必定减速"]
+tier_costs = [100, 200, 350, 550, 800]
 
 [sub_resource type="Resource" id="Path_3"]
 script = ExtResource("2_tup")
-path_name = "效果增益"
-tier_names = ["强化减速", "冰冷之水", "冰封之力", "群体蔓延", "永恒寒冰"]
-tier_effects = ["减速效果提升至30%", "减速效果提升至40%，持续时间延长", "有几率完全冻结敌人1秒", "减速效果扩散至附近敌人", "大幅提升所有减速效果和持续时间"]
-tier_costs = [120, 250, 400, 600, 900]
+path_name = "腐蚀水雾"
+tier_names = ["腐蚀喷射", "强酸水雾", "溶解之水", "深度腐蚀", "全面腐蚀"]
+tier_effects = ["降低目标护甲10% 持续4s", "减甲18% 范围变AOE 50px", "减甲25% 持续6s 叠加2层", "减甲30% 叠加3层 对大型额外减甲10%", "范围100px 全场减甲35% 对BOSS生效"]
+tier_costs = [180, 350, 550, 750, 1000]
 
 [resource]
 script = ExtResource("1_tcd")
+tower_scene = ExtResource("tower_scn")
+attack_texture = ExtResource("tex_hose")
 tower_id = "water_pipe"
 display_name = "水压管道"
 tower_emoji = "🚿"
@@ -43,9 +44,9 @@ rarity = 1
 base_damage = 0.0
 attack_speed = 1.5
 attack_range = 200.0
-placement_cost = 220
+placement_cost = 150
 attack_type = 2
-effect_description = "对单体敌人造成强力减速（20%），初始无伤害"
+effect_description = "纯控制塔，0伤害。可升级为冻结控场、击退洪流、高频多目标或腐蚀减甲。"
 upgrade_paths = [SubResource("Path_0"), SubResource("Path_1"), SubResource("Path_2"), SubResource("Path_3")]
 level_required = 1
 unlock_fragments = 30

@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="GlobalUpgradeData" format=3]
+
+[ext_resource type="Script" uid="uid://bgu_data" path="res://data/global_upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+upgrade_id = "syn_bow_mark"
+display_name = "猎场标记"
+description = "弓弩+辣椒：弓弩目标自动标记"
+icon_emoji = "🏹"
+rarity = 2
+upgrade_type = 2
+stat_type = 7
+stat_bonus = 0.3
+required_tower_ids = Array[String](["watchtower", "chili_flamer"])
+target_tower_ids = Array[String](["watchtower"])

@@ -7,14 +7,7 @@ extends CanvasLayer
 const MAX_LEVEL: int            = 100
 const PAID_PASS_PRICE_RM: float = 8.88
 
-## 稀有度颜色（用于碎片奖励图标颜色）
-const RARITY_COLORS: Array[Color] = [
-	Color(0.88, 0.88, 0.88),  # 0 白
-	Color(0.27, 0.68, 0.31),  # 1 绿
-	Color(0.13, 0.59, 0.95),  # 2 蓝
-	Color(0.61, 0.15, 0.69),  # 3 紫
-	Color(1.00, 0.43, 0.00),  # 4 橙
-]
+## 稀有度颜色（集中定义于 TowerResourceRegistry Autoload）
 
 ## 进度条颜色
 const BAR_FILLED_COLOR:   Color = Color(0.20, 0.70, 0.30)   # 绿色（已完成）
@@ -26,23 +19,7 @@ const BADGE_SUPER_COLOR:  Color = Color(1.00, 0.43, 0.00)   # 橙（×25）
 const BADGE_MAJOR_COLOR:  Color = Color(0.61, 0.15, 0.69)   # 紫（×10）
 const BADGE_MINOR_COLOR:  Color = Color(0.13, 0.59, 0.95)   # 蓝（×5）
 
-# ── 炮台资源路径（用于随机碎片奖励）────────────────────────────────
-const TOWER_RESOURCE_PATHS: Array[String] = [
-	"res://data/towers/scarecrow_collection.tres",
-	"res://data/towers/water_pipe_collection.tres",
-	"res://data/towers/farmer_collection.tres",
-	"res://data/towers/bear_trap_collection.tres",
-	"res://data/towers/beehive_collection.tres",
-	"res://data/towers/farm_cannon_collection.tres",
-	"res://data/towers/barbed_wire_collection.tres",
-	"res://data/towers/windmill_collection.tres",
-	"res://data/towers/seed_shooter_collection.tres",
-	"res://data/towers/mushroom_bomb_collection.tres",
-	"res://data/towers/chili_flamer_collection.tres",
-	"res://data/towers/watchtower_collection.tres",
-	"res://data/towers/sunflower_collection.tres",
-	"res://data/towers/hero_farmer_collection.tres",
-]
+# ── 炮台资源（集中定义于 TowerResourceRegistry Autoload）──────────────
 
 # ── 节点引用（路径前缀 $Card/）────────────────────────────────────────
 @onready var close_btn:        Button          = $Card/CloseBtn
@@ -59,6 +36,8 @@ var _towers_by_rarity: Dictionary = {}
 var _pending_action:   Callable   = Callable()
 ## 每行的 claim 按钮引用：lv → {free_btn, paid_btn}
 var _row_btns: Dictionary = {}
+## 延迟构建：下一个待构建等级（从当前等级往下递减到 1）
+var _deferred_build_lv: int = 0
 
 # ── 初始化 ────────────────────────────────────────────────────────────
 func _ready() -> void:
@@ -75,27 +54,37 @@ func _ready() -> void:
 	UserManager.level_changed.connect(_on_level_changed)
 	# 等布局稳定后滚动到当前等级
 	call_deferred("_scroll_to_current")
+	# 浮动一键领取按钮
+	call_deferred("_add_claim_all_btn")
 
-# ── 炮台资源加载（幂等）──────────────────────────────────────────────
+# ── 炮台资源加载（委托给 TowerResourceRegistry）──────────────────────
 func _load_tower_resources() -> void:
 	if not _towers_by_rarity.is_empty():
 		return
-	for path in TOWER_RESOURCE_PATHS:
-		var res = load(path)
-		if res == null:
-			continue
-		var rval = res.get("rarity")
-		if rval == null:
-			continue
-		var r: int = int(rval)
-		if r not in _towers_by_rarity:
-			_towers_by_rarity[r] = []
-		_towers_by_rarity[r].append(res)
+	_towers_by_rarity = TowerResourceRegistry.get_towers_by_rarity()
 
 # ── 构建所有等级行（倒序：高级在上，低级在下，与 Battle Pass 惯例一致）──
+## 优先同步构建当前等级及以上的行（可见区域），其余行延迟分帧追加，避免首帧卡顿
+const _BUILD_CHUNK: int = 15
 func _build_rows() -> void:
-	for lv: int in range(MAX_LEVEL, 0, -1):
+	var cur: int = UserManager.level
+	# 同步构建：MAX_LEVEL 到 max(1, cur-5)，覆盖打开面板时的可见区域
+	var sync_end: int = maxi(1, cur - 5)
+	for lv: int in range(MAX_LEVEL, sync_end - 1, -1):
 		levels_vbox.add_child(_make_level_row(lv))
+	# 余下等级（cur-6 到 1）延迟分批添加
+	_deferred_build_lv = sync_end - 1
+	if _deferred_build_lv >= 1:
+		call_deferred("_build_rows_deferred")
+
+## 每帧追加 _BUILD_CHUNK 行，直到全部构建完成
+func _build_rows_deferred() -> void:
+	var chunk_end: int = maxi(1, _deferred_build_lv - _BUILD_CHUNK + 1)
+	for lv: int in range(_deferred_build_lv, chunk_end - 1, -1):
+		levels_vbox.add_child(_make_level_row(lv))
+	_deferred_build_lv = chunk_end - 1
+	if _deferred_build_lv >= 1:
+		call_deferred("_build_rows_deferred")
 
 # ── 构建单行 ──────────────────────────────────────────────────────────
 func _make_level_row(lv: int) -> HBoxContainer:
@@ -471,3 +460,83 @@ func _on_confirm_no() -> void:
 func _on_overlay_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		_on_confirm_no()
+
+# ── 浮动一键领取按钮 ──────────────────────────────────────────────────────
+var _claim_all_btn: Button = null
+
+func _get_unclaimed_count() -> int:
+	var cur_lv: int = UserManager.level
+	var count: int = 0
+	for lv: int in range(1, cur_lv + 1):
+		if lv not in UserManager.claimed_free_rewards:
+			count += 1
+		if UserManager.has_paid_pass and lv not in UserManager.claimed_paid_rewards:
+			count += 1
+	return count
+
+func _add_claim_all_btn() -> void:
+	var unclaimed: int = _get_unclaimed_count()
+	if unclaimed == 0:
+		return
+
+	var btn := Button.new()
+	btn.name = "ClaimAllFloatBtn"
+	btn.text = "🎁 一键领取 (%d)" % unclaimed
+	btn.custom_minimum_size = Vector2(260, 70)
+	btn.size = Vector2(260, 70)
+	btn.position = Vector2(20, 800)
+	btn.add_theme_font_size_override("font_size", 28)
+	btn.z_index = 10
+
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.85, 0.45, 0.1, 0.95)
+	style.corner_radius_top_left = 35
+	style.corner_radius_top_right = 35
+	style.corner_radius_bottom_left = 35
+	style.corner_radius_bottom_right = 35
+	style.border_width_left = 3
+	style.border_width_top = 3
+	style.border_width_right = 3
+	style.border_width_bottom = 3
+	style.border_color = Color(1.0, 0.85, 0.3, 1.0)
+	btn.add_theme_stylebox_override("normal", style)
+
+	var hover := style.duplicate()
+	hover.bg_color = style.bg_color.lightened(0.15)
+	btn.add_theme_stylebox_override("hover", hover)
+
+	var pressed := style.duplicate()
+	pressed.bg_color = style.bg_color.darkened(0.15)
+	btn.add_theme_stylebox_override("pressed", pressed)
+
+	btn.pressed.connect(_on_claim_all)
+	$Card.add_child(btn)
+	_claim_all_btn = btn
+
+	# 浮动动画
+	var tween := create_tween().set_loops()
+	tween.tween_property(btn, "position:y", 788.0, 0.8).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SINE)
+	tween.tween_property(btn, "position:y", 812.0, 0.8).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SINE)
+
+func _on_claim_all() -> void:
+	var cur_lv: int = UserManager.level
+	var claimed_count: int = 0
+	for lv: int in range(1, cur_lv + 1):
+		# 免费奖励
+		if lv not in UserManager.claimed_free_rewards:
+			var reward: Dictionary = _get_reward(lv, false)
+			_apply_reward(reward)
+			UserManager.claim_free_reward(lv)
+			claimed_count += 1
+		# 付费奖励
+		if UserManager.has_paid_pass and lv not in UserManager.claimed_paid_rewards:
+			var reward: Dictionary = _get_reward(lv, true)
+			_apply_reward(reward)
+			UserManager.claim_paid_reward(lv)
+			claimed_count += 1
+	# 刷新所有按钮状态
+	_refresh_all_claim_btns()
+	# 隐藏按钮
+	if _claim_all_btn:
+		_claim_all_btn.queue_free()
+		_claim_all_btn = null

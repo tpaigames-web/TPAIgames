@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="EnemyData" format=3 uid="uid://d02tpsv0djnlc"]
 
 [ext_resource type="Script" uid="uid://dapicbkaarem1" path="res://enemy/enemy_data.gd" id="1_4i87c"]
+[ext_resource type="SpriteFrames" path="res://data/enemies/rat_small_frames.tres" id="rat_frames"]
 
 [resource]
 script = ExtResource("1_4i87c")
@@ -9,5 +10,10 @@ display_name = "小老鼠"
 display_emoji = "🐀"
 max_hp = 60
 move_speed = 120.0
+sprite_frames = ExtResource("rat_frames")
+sprite_display_size = 70.0
+sprite_rotation_offset = -90.0
 gold_reward = 5
+xp_reward = 2
+counter_strategy = "普通炮台即可"
 metadata/_custom_type_script = "uid://dapicbkaarem1"

@@ -1,0 +1,22 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://boar_sprite_frames"]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/enemy/Hog/Hog_1.png" id="h1"]
+[ext_resource type="Texture2D" path="res://assets/sprites/enemy/Hog/Hog_2.png" id="h2"]
+[ext_resource type="Texture2D" path="res://assets/sprites/enemy/Hog/Hog_3.png" id="h3"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("h1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("h2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("h3")
+}],
+"loop": true,
+"name": &"default",
+"speed": 8.0
+}]

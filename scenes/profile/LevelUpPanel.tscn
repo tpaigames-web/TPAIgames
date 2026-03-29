@@ -7,18 +7,20 @@ layer = 16
 script = ExtResource("1_script")
 
 [node name="DimBg" type="ColorRect" parent="."]
-layout_mode = 0
-offset_right = 1080.0
-offset_bottom = 1920.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 color = Color(0, 0, 0, 0.7)
 mouse_filter = 0
 
 [node name="Card" type="Panel" parent="."]
-layout_mode = 0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 offset_left = 20.0
 offset_top = 60.0
-offset_right = 1060.0
-offset_bottom = 1860.0
+offset_right = -20.0
+offset_bottom = -60.0
 
 [node name="TitleLabel" type="Label" parent="Card"]
 layout_mode = 0
@@ -27,7 +29,7 @@ offset_top = 0.0
 offset_right = 880.0
 offset_bottom = 75.0
 text = "升级通行证"
-theme_override_font_sizes/font_size = 40
+theme_override_font_sizes/font_size = 56
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -38,14 +40,13 @@ offset_top = 5.0
 offset_right = 1040.0
 offset_bottom = 75.0
 text = "✕"
-theme_override_font_sizes/font_size = 40
+theme_override_font_sizes/font_size = 56
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Card"]
-layout_mode = 0
-offset_left = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
 offset_top = 75.0
-offset_right = 1040.0
-offset_bottom = 1680.0
+offset_bottom = -120.0
 
 [node name="LevelsVBox" type="VBoxContainer" parent="Card/ScrollContainer"]
 layout_mode = 2
@@ -54,11 +55,10 @@ size_flags_vertical = 0
 theme_override_constants/separation = 0
 
 [node name="BottomBar" type="PanelContainer" parent="Card"]
-layout_mode = 0
-offset_left = 0.0
-offset_top = 1680.0
-offset_right = 1040.0
-offset_bottom = 1800.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -120.0
 
 [node name="BottomBarContent" type="HBoxContainer" parent="Card/BottomBar"]
 layout_mode = 1
@@ -71,7 +71,7 @@ theme_override_constants/separation = 0
 layout_mode = 2
 size_flags_horizontal = 3
 text = "免费"
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 38
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -83,14 +83,12 @@ custom_minimum_size = Vector2(140, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 text = "RM 8.88"
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 38
 
 [node name="ConfirmOverlay" type="ColorRect" parent="Card"]
-layout_mode = 0
-offset_left = 0.0
-offset_top = 0.0
-offset_right = 1040.0
-offset_bottom = 1800.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 color = Color(0, 0, 0, 0.65)
 z_index = 20
 visible = false
@@ -118,7 +116,7 @@ theme_override_constants/separation = 20
 layout_mode = 2
 size_flags_vertical = 3
 text = ""
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 38
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
@@ -132,11 +130,11 @@ layout_mode = 2
 size_flags_horizontal = 3
 custom_minimum_size = Vector2(0, 80)
 text = "取消"
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 38
 
 [node name="ConfirmBtn" type="Button" parent="Card/ConfirmOverlay/ConfirmCard/ContentVBox/BtnRow"]
 layout_mode = 2
 size_flags_horizontal = 3
 custom_minimum_size = Vector2(0, 80)
 text = "确认"
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 38

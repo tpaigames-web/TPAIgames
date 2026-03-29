@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="GlobalUpgradeData" format=3]
+
+[ext_resource type="Script" uid="uid://bgu_data" path="res://data/global_upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+upgrade_id = "cost_upgrade_o"
+display_name = "升级补贴"
+description = "所有升级费用-20%"
+icon_emoji = "💰"
+rarity = 2
+upgrade_type = 3
+stat_type = 3
+stat_bonus = 0.2

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="GlobalUpgradeData" format=3]
+
+[ext_resource type="Script" uid="uid://bgu_data" path="res://data/global_upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+upgrade_id = "water_slow_b"
+display_name = "寒冰强化"
+description = "水压管道减速效果+15%"
+icon_emoji = "🚿"
+rarity = 1
+upgrade_type = 0
+target_tower_id = "water_pipe"
+stat_type = 8
+stat_bonus = 0.15

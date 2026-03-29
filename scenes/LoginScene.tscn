@@ -1,82 +1,80 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://c0d7v0x1ui5cr"]
 
-[ext_resource type="Script" path="res://scenes/LoginScene.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://binm5201o4ye7" path="res://scenes/LoginScene.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://blbnivr4aivpp" path="res://assets/sprites/ui/login_bg.png" id="2_texture"]
+[ext_resource type="Texture2D" uid="uid://cf0hvko0pongd" path="res://assets/sprites/ui/Start.png" id="3_start"]
 
-[node name="LoginScene" type="Control"]
+[sub_resource type="Shader" id="red_eye_shader"]
+code = "shader_type canvas_item;
+
+uniform float pulse_speed : hint_range(0.5, 5.0) = 1.5;
+uniform float pulse_intensity : hint_range(0.0, 2.0) = 0.8;
+uniform float red_threshold : hint_range(0.3, 1.0) = 0.5;
+
+void fragment() {
+	vec4 col = texture(TEXTURE, UV);
+	float is_red = step(red_threshold, col.r) * step(col.g, 0.3) * step(col.b, 0.3);
+	float pulse = (sin(TIME * pulse_speed * 3.14159) * 0.5 + 0.5) * pulse_intensity;
+	col.rgb += vec3(pulse * 0.8, pulse * 0.05, pulse * 0.02) * is_red;
+	COLOR = col;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="red_eye_mat"]
+shader = SubResource("red_eye_shader")
+shader_parameter/pulse_speed = 1.5
+shader_parameter/pulse_intensity = 0.8
+shader_parameter/red_threshold = 0.5
+
+[node name="LoginScene" type="Control" unique_id=205639143]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_script")
 
-[node name="Background" type="ColorRect" parent="."]
-layout_mode = 0
-offset_right = 1080.0
-offset_bottom = 1920.0
-color = Color(0.12, 0.18, 0.1, 1)
+[node name="Background" type="TextureRect" parent="." unique_id=394182692]
+material = SubResource("red_eye_mat")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_texture")
+expand_mode = 1
+stretch_mode = 6
 
-[node name="TitleLabel" type="Label" parent="."]
-layout_mode = 0
-offset_left = 240.0
-offset_top = 300.0
-offset_right = 840.0
-offset_bottom = 420.0
+[node name="StartButton" type="TextureButton" parent="." unique_id=457583582]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.78
+anchor_right = 0.5
+anchor_bottom = 0.78
+offset_left = -300.0
+offset_top = -86.599976
+offset_right = 300.0
+offset_bottom = 55.0
+grow_horizontal = 2
+grow_vertical = 2
+texture_normal = ExtResource("3_start")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="StartButton" unique_id=123694493]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.35, 0.25, 0.15, 1)
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 0.2)
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 56
+text = "开始游戏"
 horizontal_alignment = 1
-text = "阿福守农场"
-theme_override_font_sizes/font_size = 72
-
-[node name="SubtitleLabel" type="Label" parent="."]
-layout_mode = 0
-offset_left = 240.0
-offset_top = 440.0
-offset_right = 840.0
-offset_bottom = 510.0
-horizontal_alignment = 1
-text = "Harvest Defence"
-theme_override_font_sizes/font_size = 36
-
-[node name="CenterContainer" type="CenterContainer" parent="."]
-layout_mode = 0
-offset_left = 140.0
-offset_top = 900.0
-offset_right = 940.0
-offset_bottom = 1500.0
-
-[node name="VBox" type="VBoxContainer" parent="CenterContainer"]
-layout_mode = 2
-theme_override_constants/separation = 30
-
-[node name="GuestButton" type="Button" parent="CenterContainer/VBox"]
-custom_minimum_size = Vector2(800, 120)
-text = "以游客身份进入"
-theme_override_font_sizes/font_size = 40
-
-[node name="GoogleButton" type="Button" parent="CenterContainer/VBox"]
-custom_minimum_size = Vector2(800, 100)
-text = "Google 登入"
-theme_override_font_sizes/font_size = 36
-modulate = Color(1, 1, 1, 0.5)
-
-[node name="FacebookButton" type="Button" parent="CenterContainer/VBox"]
-custom_minimum_size = Vector2(800, 100)
-text = "Facebook 登入"
-theme_override_font_sizes/font_size = 36
-modulate = Color(1, 1, 1, 0.5)
-
-[node name="WechatButton" type="Button" parent="CenterContainer/VBox"]
-custom_minimum_size = Vector2(800, 100)
-text = "微信登入"
-theme_override_font_sizes/font_size = 36
-modulate = Color(1, 1, 1, 0.5)
-
-[node name="ComingSoonDialog" type="AcceptDialog" parent="."]
-title = "提示"
-dialog_text = "功能即将开放，敬请期待！"
-min_size = Vector2(600, 250)
-
-[node name="GuestWarningDialog" type="ConfirmationDialog" parent="."]
-title = "游客模式提醒"
-dialog_text = "游客模式数据不会保存在服务器。\n卸载游戏后，所有进度将会丢失。\n\n是否以游客身份继续？"
-min_size = Vector2(650, 300)
-ok_button_text = "继续"
-cancel_button_text = "取消"
+vertical_alignment = 1

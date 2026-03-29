@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="GlobalUpgradeData" format=3]
+
+[ext_resource type="Script" uid="uid://bgu_data" path="res://data/global_upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+upgrade_id = "mushroom_aoe_b"
+display_name = "爆炸扩域"
+description = "蘑菇炸弹溅射+30px"
+icon_emoji = "🍄"
+rarity = 1
+upgrade_type = 0
+target_tower_id = "mushroom_bomb"
+stat_type = 9
+stat_bonus = 30.0

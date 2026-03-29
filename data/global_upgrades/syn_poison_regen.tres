@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="GlobalUpgradeData" format=3]
+
+[ext_resource type="Script" uid="uid://bgu_data" path="res://data/global_upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+upgrade_id = "syn_poison_regen"
+display_name = "毒素崩溃"
+description = "蜂巢+捕兽夹：中毒踩夹x1.5"
+icon_emoji = "☠"
+rarity = 2
+upgrade_type = 2
+stat_type = 0
+stat_bonus = 0.5
+required_tower_ids = Array[String](["beehive", "bear_trap"])
+target_tower_ids = Array[String](["bear_trap"])

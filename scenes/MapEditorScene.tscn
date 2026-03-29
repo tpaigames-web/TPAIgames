@@ -1,0 +1,140 @@
+[gd_scene load_steps=4 format=3 uid="uid://map_editor_scene"]
+
+[ext_resource type="Script" path="res://scenes/MapEditorScene.gd" id="1_editor"]
+[ext_resource type="Script" path="res://map/editor/PlacedObject.gd" id="2_placed"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_toolbar"]
+bg_color = Color(0.12, 0.15, 0.10, 0.95)
+border_width_left = 2
+border_color = Color(0.4, 0.6, 0.3, 0.8)
+
+[node name="MapEditorScene" type="Node2D"]
+script = ExtResource("1_editor")
+
+[node name="Background" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.16, 0.22, 0.13, 1.0)
+z_index = -10
+mouse_filter = 2
+
+[node name="ObjectLayer" type="Node2D" parent="."]
+
+[node name="WaypointLayer" type="Node2D" parent="."]
+z_index = 5
+
+[node name="PathLine" type="Line2D" parent="WaypointLayer"]
+width = 4.0
+default_color = Color(1.0, 0.6, 0.1, 0.8)
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="TopBar" type="HBoxContainer" parent="HUD"]
+anchors_preset = 13
+anchor_right = 1.0
+offset_bottom = 100.0
+theme_override_constants/separation = 8
+
+[node name="BackBtn" type="Button" parent="HUD/TopBar"]
+layout_mode = 2
+custom_minimum_size = Vector2(130, 0)
+theme_override_font_sizes/font_size = 32
+text = "← 退出"
+
+[node name="MapNameEdit" type="LineEdit" parent="HUD/TopBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(200, 0)
+theme_override_font_sizes/font_size = 32
+placeholder_text = "地图名称..."
+text = "新地图"
+max_length = 20
+
+[node name="UndoBtn" type="Button" parent="HUD/TopBar"]
+layout_mode = 2
+custom_minimum_size = Vector2(110, 0)
+theme_override_font_sizes/font_size = 32
+text = "↩ 撤销"
+
+[node name="ClearBtn" type="Button" parent="HUD/TopBar"]
+layout_mode = 2
+custom_minimum_size = Vector2(100, 0)
+theme_override_font_sizes/font_size = 32
+text = "🧹 清空"
+
+[node name="WaypointToggle" type="Button" parent="HUD/TopBar"]
+layout_mode = 2
+custom_minimum_size = Vector2(130, 0)
+theme_override_font_sizes/font_size = 32
+toggle_mode = true
+text = "🗺 路线"
+
+[node name="LoadBtn" type="Button" parent="HUD/TopBar"]
+layout_mode = 2
+custom_minimum_size = Vector2(100, 0)
+theme_override_font_sizes/font_size = 32
+text = "📂 加载"
+
+[node name="SaveBtn" type="Button" parent="HUD/TopBar"]
+layout_mode = 2
+custom_minimum_size = Vector2(120, 0)
+theme_override_font_sizes/font_size = 32
+text = "💾 保存"
+
+[node name="Toolbar" type="PanelContainer" parent="HUD"]
+layout_mode = 0
+offset_left = 860.0
+offset_top = 100.0
+offset_right = 1080.0
+offset_bottom = 1920.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_toolbar")
+
+[node name="ToolbarScroll" type="ScrollContainer" parent="HUD/Toolbar"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ToolbarVBox" type="VBoxContainer" parent="HUD/Toolbar/ToolbarScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="SelectionOverlay" type="Control" parent="HUD"]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 120.0
+offset_bottom = 60.0
+visible = false
+
+[node name="DeleteBtn" type="Button" parent="HUD/SelectionOverlay"]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 55.0
+offset_bottom = 55.0
+theme_override_font_sizes/font_size = 32
+text = "🗑"
+tooltip_text = "删除"
+
+[node name="RotateBtn" type="Button" parent="HUD/SelectionOverlay"]
+layout_mode = 0
+offset_left = 60.0
+offset_top = 0.0
+offset_right = 115.0
+offset_bottom = 55.0
+theme_override_font_sizes/font_size = 32
+text = "↻"
+tooltip_text = "旋转90°"
+
+[node name="WaypointHint" type="Label" parent="HUD"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 105.0
+offset_right = 850.0
+offset_bottom = 155.0
+visible = false
+theme_override_font_sizes/font_size = 28
+text = "左键 添加航点 │ 右键 删除最近航点"
+horizontal_alignment = 1
