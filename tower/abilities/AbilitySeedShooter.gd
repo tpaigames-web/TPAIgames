@@ -63,8 +63,8 @@ func ability_process(_delta: float) -> void:
 	tower.ability_damage_bonus = P1_DMG[_lv(1)]
 	tower.ability_speed_bonus = P1_SPD[_lv(1)] + P2_SPD[_lv(2)]
 	tower.ability_range_bonus = P2_RNG[_lv(2)] + P3_RNG[_lv(3)]
-	# P2 T3+: 解锁空中攻击（attack_type=2 即全部）
-	if _lv(2) >= 3:
+	# P3 T3+: 解锁空中攻击 + 优先空中敌人
+	if _lv(3) >= 3:
 		tower.ability_attack_type = 2  # 地面+空中
 	else:
 		tower.ability_attack_type = -1  # 使用默认（地面）
@@ -72,10 +72,10 @@ func ability_process(_delta: float) -> void:
 	if _lv(3) >= 5:
 		tower.ability_range_bonus = 99.0
 	tower.apply_stat_upgrades()
-	# P3 T3: 优先最远（只设一次）
+	# P3 T3: 优先空中目标（只设一次）
 	var cur_p3: int = _lv(3)
 	if cur_p3 >= 3 and cur_p3 != _last_p3_lv:
-		tower.target_mode = 3
+		tower.target_mode = 3  # LAST = 优先最后（空中敌人通常在后面）
 	_last_p3_lv = cur_p3
 
 
