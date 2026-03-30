@@ -144,5 +144,5 @@ func show_dot_damage_number(target: Area2D, dmg: int, effect_type: int) -> void:
 		BulletEffect.Type.POISON:
 			color = Color(0.3, 0.85, 0.3)    # 绿色
 		BulletEffect.Type.BLEED:
-			color = Color(0.3, 0.85, 0.3)    # 绿色
+			color = Color(0.9, 0.15, 0.15)   # 红色
 	_show_damage_number(target, dmg, color, "", 20)
