@@ -10,6 +10,7 @@
 custom_minimum_size = Vector2(1080, 9880)
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 1
 script = ExtResource("1_script")
 
 [node name="BgLoop01" type="TextureRect" parent="." unique_id=287989401]

@@ -8,6 +8,7 @@
 custom_minimum_size = Vector2(320, 110)
 layout_mode = 3
 anchors_preset = 0
+mouse_filter = 1
 
 [node name="PanelBg" type="TextureRect" parent="." unique_id=1056071530]
 layout_mode = 0
@@ -24,6 +25,7 @@ offset_left = 62.0
 offset_top = 37.0
 offset_right = 352.0
 offset_bottom = 77.0
+mouse_filter = 2
 theme_override_colors/font_color = Color(1, 0.95, 0.85, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5)
 theme_override_constants/shadow_offset_x = 2
@@ -38,6 +40,7 @@ offset_left = 62.0
 offset_top = 77.0
 offset_right = 352.0
 offset_bottom = 117.0
+mouse_filter = 2
 theme_override_colors/font_color = Color(0.7, 1, 0.7, 1)
 theme_override_font_sizes/font_size = 32
 text = "UI_TUTORIAL_COMPLETED"
@@ -47,6 +50,7 @@ horizontal_alignment = 1
 layout_mode = 0
 offset_right = 395.63635
 offset_bottom = 136.0
+mouse_filter = 1
 theme_override_styles/normal = SubResource("btn_empty")
 theme_override_styles/pressed = SubResource("btn_empty")
 theme_override_styles/hover = SubResource("btn_empty")

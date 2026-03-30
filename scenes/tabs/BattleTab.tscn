@@ -58,5 +58,6 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("scroll_panel_empty")
 horizontal_scroll_mode = 0
+scroll_deadzone = 20
 
 [node name="PathMap" parent="ScrollContainer" instance=ExtResource("2_pathmap")]
