@@ -442,3 +442,31 @@ xp_to_next = 500 + (level - 1) × 200
 - [ ] 40+10 个 wave_name
 - [ ] 设置面板 .tscn 按钮文本（设置/指南/分类按钮）
 - [ ] 稀有度标签中文残留
+
+---
+
+## ═══ 补充待处理（截至最新会话）═══
+
+### 英雄详情面板更新（优先）
+- [ ] TowerDetailPanel 英雄显示改为新 Lv.8 局外升级模式
+- [ ] 显示 8 个升级方向（4方向×2选项）+ 解锁状态
+- [ ] 每个选项显示碎片+金币花费
+- [ ] 点击解锁按钮调 CollectionManager.unlock_hero_option()
+- [ ] 老阿福改为"英雄大礼包"购买入口（不显示等级解锁）
+- [ ] 农场守卫者描述更新（Lv.8 系统说明）
+
+### 签到面板 UI（待开发）
+- [ ] 新建 SignInPanel.tscn 签到弹窗
+- [ ] HomeScene 启动时检查 can_sign_in_today() 自动弹出
+- [ ] 7天奖励网格展示 + 当前进度高亮
+- [ ] 领取动画
+
+### 月卡每日领取 UI
+- [ ] HomeScene 启动时检查 monthly_card + claim_daily
+- [ ] 显示月卡剩余天数
+
+### 翻译最终补全
+- [ ] 100+ GlobalUpgradeData display_name/description
+- [ ] 60 TowerUpgradePath path_name
+- [ ] 300 tier_names/tier_effects
+- [ ] 设置面板 .tscn 按钮文本残留
