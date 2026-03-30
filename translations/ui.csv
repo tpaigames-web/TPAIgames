@@ -423,3 +423,10 @@ UI_DETAIL_PATHS_TBD,（升级路径待定）,(Upgrade paths TBD),(Laluan naik ta
 UI_HERO_UPGRADE_TITLE,%s %s 英雄升级 · 第 %d 波,%s %s Hero Upgrade · Wave %d,%s %s Naik Taraf Wira · Gelombang %d
 UI_LEVEL_PASS_TITLE,升级通行证,Level Pass,Pas Tahap
 UI_LEVEL_PASS_FREE,免费,Free,Percuma
+UI_TRIAL_SELECT_TITLE,🎟️ 选择试用炮台,🎟️ Select Trial Tower,🎟️ Pilih Menara Percubaan
+UI_TRIAL_BADGE,试用,Trial,Percubaan
+UI_TRIAL_FREE_PLACE,免费放置,Free Place,Letak Percuma
+UI_TRIAL_END_TITLE,🎟️ 试用结束,🎟️ Trial Ended,🎟️ Percubaan Tamat
+UI_TRIAL_END_MSG,试用炮台已在战斗结束后移除。\n想要永久拥有？前往商店解锁！,Trial towers removed after battle.\nWant to keep them? Unlock in the shop!,Menara percubaan dialih selepas pertempuran.\nMahu simpan? Buka kunci di kedai!
+UI_TRIAL_GO_SHOP,前往商店,Go to Shop,Pergi ke Kedai
+UI_TRIAL_LATER,稍后再说,Maybe Later,Nanti

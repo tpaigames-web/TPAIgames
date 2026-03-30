@@ -57,6 +57,9 @@ var _tower_upgrade_panel:   Node = null
 # ── 对象池 ────────────────────────────────────────────────────────────────
 var _bullet_pool: ObjectPool = null
 
+# ── 试用炮台追踪 ──────────────────────────────────────────────────────────
+var _trial_tower_ids: Array[String] = []  # 本局已试用的炮台 tower_id
+
 
 # ══════════════════════════════════════════════════════════════════════════
 # _ready：初始化全局状态 → 创建子系统 → 连接信号
@@ -168,7 +171,10 @@ func _create_subsystems() -> void:
 	_game_end_flow.set_script(gef_script)
 	add_child(_game_end_flow)
 	_game_end_flow.init(self, wave_manager, speed_btn, wave_label, _disconnect_signals)
-	_game_end_flow.game_ended_signal.connect(func(): _game_ended = true)
+	_game_end_flow.game_ended_signal.connect(func():
+		_game_ended = true
+		_show_trial_end_popup()
+	)
 	_game_end_flow.endless_entered.connect(_on_endless_entered)
 	_game_end_flow.request_reconnect_signals.connect(_reconnect_signals)
 
@@ -204,6 +210,7 @@ func _create_subsystems() -> void:
 	_item_panel.set_script(ip_script)
 	add_child(_item_panel)
 	_item_panel.init(item_hbox, self, bottom_panel)
+	_item_panel.trial_tower_selected.connect(_on_trial_tower_selected)
 
 	# ── TowerUpgradePanel ────────────────────────────────────────────
 	var tup_script = load("res://scenes/battle/TowerUpgradePanel.gd")
@@ -472,6 +479,151 @@ func _on_hero_panel_requested(tower: Area2D) -> void:
 
 func _on_hero_sell_requested(tower: Area2D, refund: int, is_hero: bool) -> void:
 	_tower_upgrade_panel._show_sell_confirm(tower, refund, is_hero)
+
+
+## ── 试用炮台 ────────────────────────────────────────────────────────
+
+func _on_trial_tower_selected(tower_data: Resource) -> void:
+	var td := tower_data as TowerCollectionData
+	if not td:
+		return
+	# 记录试用 ID
+	if td.tower_id not in _trial_tower_ids:
+		_trial_tower_ids.append(td.tower_id)
+	# 临时添加到炮台栏（放置费用为 0）
+	_add_trial_tower_card(td)
+
+
+func _add_trial_tower_card(td: TowerCollectionData) -> void:
+	# 在 tower_hbox 中添加一个带"试用"标记的炮台卡片
+	var card := VBoxContainer.new()
+	card.custom_minimum_size = Vector2(100, 0)
+	card.mouse_filter = Control.MOUSE_FILTER_PASS
+
+	# 图片
+	var img := Panel.new()
+	img.custom_minimum_size = Vector2(100, 140)
+	img.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	if td.collection_texture:
+		var tex := TextureRect.new()
+		tex.texture = td.collection_texture
+		tex.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
+		tex.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		tex.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		tex.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		img.add_child(tex)
+	else:
+		var emoji := Label.new()
+		emoji.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		emoji.text = td.tower_emoji
+		emoji.add_theme_font_size_override("font_size", 48)
+		emoji.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		emoji.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		emoji.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		img.add_child(emoji)
+	card.add_child(img)
+
+	# 名称
+	var name_lbl := Label.new()
+	name_lbl.text = TowerResourceRegistry.tr_tower_name(td)
+	name_lbl.add_theme_font_size_override("font_size", 20)
+	name_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	name_lbl.clip_text = true
+	name_lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	card.add_child(name_lbl)
+
+	# "试用" 标记
+	var badge := Label.new()
+	badge.text = "🎟️ " + tr("UI_TRIAL_BADGE")
+	badge.add_theme_font_size_override("font_size", 18)
+	badge.add_theme_color_override("font_color", Color(1.0, 0.85, 0.2))
+	badge.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	card.add_child(badge)
+
+	# 免费放置
+	var cost_lbl := Label.new()
+	cost_lbl.text = tr("UI_TRIAL_FREE_PLACE")
+	cost_lbl.name = "CostLbl"
+	cost_lbl.add_theme_font_size_override("font_size", 20)
+	cost_lbl.add_theme_color_override("font_color", Color(0.3, 1.0, 0.4))
+	cost_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	cost_lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	card.add_child(cost_lbl)
+
+	# 拖拽放置（免费，cost=0）
+	var cap := td
+	card.gui_input.connect(func(e: InputEvent) -> void:
+		if e is InputEventMouseButton and e.button_index == MOUSE_BUTTON_LEFT:
+			if e.pressed:
+				build_manager.select_tower(cap)
+				card.set_meta("press_pos", e.global_position)
+				card.set_meta("dragging", false)
+				card.set_meta("locked_cost", 0)
+			else:
+				if card.get_meta("dragging", false):
+					build_manager.release_drag()
+				else:
+					build_manager.cancel_selection()
+				card.set_meta("dragging", false)
+		elif e is InputEventMouseMotion and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+			var pp: Vector2 = card.get_meta("press_pos", e.global_position)
+			if not card.get_meta("dragging", false):
+				if e.global_position.distance_to(pp) >= 40.0:
+					card.set_meta("dragging", true)
+					build_manager.start_drag_at(e.global_position, 0)
+			else:
+				build_manager.move_preview_to(e.global_position)
+		elif e is InputEventScreenTouch:
+			if e.pressed:
+				build_manager.select_tower(cap)
+				card.set_meta("press_pos", e.position)
+				card.set_meta("dragging", false)
+				card.set_meta("locked_cost", 0)
+			else:
+				if card.get_meta("dragging", false):
+					build_manager.release_drag()
+				else:
+					build_manager.cancel_selection()
+				card.set_meta("dragging", false)
+		elif e is InputEventScreenDrag:
+			var pp: Vector2 = card.get_meta("press_pos", e.position)
+			if not card.get_meta("dragging", false):
+				if e.position.distance_to(pp) >= 40.0:
+					card.set_meta("dragging", true)
+					var vp_pos: Vector2 = get_viewport().get_mouse_position()
+					build_manager.start_drag_at(vp_pos, 0)
+			else:
+				var vp_pos: Vector2 = get_viewport().get_mouse_position()
+				build_manager.move_preview_to(vp_pos)
+	)
+
+	tower_hbox.add_child(card)
+
+
+func _show_trial_end_popup() -> void:
+	if _trial_tower_ids.is_empty():
+		return
+	# 延迟显示（等胜利/失败弹窗关闭后再弹）
+	await get_tree().create_timer(0.5).timeout
+	if not is_inside_tree():
+		return
+	var dlg := ConfirmationDialog.new()
+	dlg.title = tr("UI_TRIAL_END_TITLE")
+	dlg.dialog_text = tr("UI_TRIAL_END_MSG")
+	dlg.ok_button_text = tr("UI_TRIAL_GO_SHOP")
+	dlg.cancel_button_text = tr("UI_TRIAL_LATER")
+	dlg.confirmed.connect(func():
+		dlg.queue_free()
+		GameManager.challenge_mode = false
+		get_tree().change_scene_to_file("res://scenes/HomeScene.tscn")
+	)
+	dlg.canceled.connect(func(): dlg.queue_free())
+	add_child(dlg)
+	dlg.get_label().add_theme_font_size_override("font_size", 28)
+	dlg.get_ok_button().add_theme_font_size_override("font_size", 26)
+	dlg.get_cancel_button().add_theme_font_size_override("font_size", 26)
+	dlg.popup_centered()
 
 
 func _on_tower_sold(tower: Area2D) -> void:

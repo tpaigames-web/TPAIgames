@@ -5,7 +5,11 @@ extends Node
 const ITEM_PATHS: Array[String] = [
 	"res://data/items/gold_bag.tres",
 	"res://data/items/landmine.tres",
+	"res://data/items/trial_ticket.tres",
 ]
+
+## 试用炮台选择完成信号（BattleScene 连接后处理）
+signal trial_tower_selected(tower_data: Resource)
 
 var _item_card_entries: Array = []
 var _item_preview: Node2D = null
@@ -88,6 +92,11 @@ func refresh_cards() -> void:
 
 
 func _on_item_pressed(data: ItemData) -> void:
+	# 试用券特殊处理：不拖拽，弹出炮台选择
+	if data.effect_type == "trial_tower":
+		_handle_trial_ticket(data)
+		return
+
 	var count: int = UserManager.get_item_count(data.item_id)
 	if count > 0:
 		# 有库存 → 开始拖拽
@@ -106,6 +115,92 @@ func _on_item_pressed(data: ItemData) -> void:
 				refresh_cards(),
 			func(): pass
 		)
+
+
+## ── 试用券逻辑 ──────────────────────────────────────────────────────
+func _handle_trial_ticket(data: ItemData) -> void:
+	var count: int = UserManager.get_item_count(data.item_id)
+	if count <= 0:
+		if UserManager.gems >= data.gem_cost:
+			_show_item_purchase_confirm(data)
+		else:
+			AdManager.show_rewarded_ad(
+				func():
+					UserManager.add_item(data.item_id, 1)
+					SaveManager.save()
+					refresh_cards(),
+				func(): pass
+			)
+		return
+	# 有库存 → 弹出紫/橙炮台选择面板
+	_show_trial_tower_select()
+
+
+func _show_trial_tower_select() -> void:
+	# 收集所有紫（3）和橙（4）炮台
+	var options: Array = []
+	for res in TowerResourceRegistry.get_all_resources():
+		var td = res as TowerCollectionData
+		if td and td.rarity >= 3 and not td.is_hero:
+			options.append(td)
+
+	if options.is_empty():
+		return
+
+	# 创建选择弹窗
+	var overlay := ColorRect.new()
+	overlay.color = Color(0, 0, 0, 0.6)
+	overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
+	overlay.mouse_filter = Control.MOUSE_FILTER_STOP
+	_battle_scene.add_child(overlay)
+
+	var panel := PanelContainer.new()
+	panel.set_anchors_preset(Control.PRESET_CENTER)
+	panel.custom_minimum_size = Vector2(700, 500)
+	panel.position = Vector2(-350, -250)
+	overlay.add_child(panel)
+
+	var vbox := VBoxContainer.new()
+	vbox.add_theme_constant_override("separation", 12)
+	panel.add_child(vbox)
+
+	var title := Label.new()
+	title.text = tr("UI_TRIAL_SELECT_TITLE")
+	title.add_theme_font_size_override("font_size", 38)
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	vbox.add_child(title)
+
+	var grid := GridContainer.new()
+	grid.columns = 3
+	grid.add_theme_constant_override("h_separation", 12)
+	grid.add_theme_constant_override("v_separation", 12)
+	vbox.add_child(grid)
+
+	for td in options:
+		var btn := Button.new()
+		var tname: String = TowerResourceRegistry.get_tower_display_name(td.tower_id, td.display_name)
+		btn.text = "%s\n%s" % [td.tower_emoji, tname]
+		btn.custom_minimum_size = Vector2(200, 100)
+		btn.add_theme_font_size_override("font_size", 28)
+		var captured_td = td
+		btn.pressed.connect(func():
+			overlay.queue_free()
+			# 消耗试用券
+			UserManager.use_item("trial_ticket")
+			SaveManager.save()
+			refresh_cards()
+			# 通知 BattleScene 添加临时炮台
+			trial_tower_selected.emit(captured_td)
+		)
+		grid.add_child(btn)
+
+	# 取消按钮
+	var cancel := Button.new()
+	cancel.text = tr("UI_DIALOG_CANCEL")
+	cancel.add_theme_font_size_override("font_size", 32)
+	cancel.custom_minimum_size = Vector2(0, 60)
+	cancel.pressed.connect(func(): overlay.queue_free())
+	vbox.add_child(cancel)
 
 
 func _show_item_purchase_confirm(data: ItemData) -> void:
