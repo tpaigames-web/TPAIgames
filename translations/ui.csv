@@ -446,3 +446,9 @@ UI_SHOP_DESC_GEMS_2000,2000💎 + 试用券×5 + 紫碎片×50,2000💎 + Trial�
 UI_SHOP_SECTION_SPECIAL,⭐ 特别优惠,⭐ Special Offers,⭐ Tawaran Istimewa
 UI_SHOP_PKG_MONTHLY_V,📅 月卡（券）,📅 Monthly Card (Voucher),📅 Kad Bulanan (Baucar)
 UI_SHOP_DESC_MONTHLY_V,🎫100券 = 每日30💎×30天 + 100💎,🎫100 Vouchers = 30💎/day×30d + 100💎,🎫100 Baucar = 30💎/hari×30h + 100💎
+UI_SHOP_PKG_GEMS_SMALL_R,💎 小量钻石,💎 Small Gems,💎 Permata Kecil
+UI_SHOP_DESC_GEMS_220,220💎,220💎,220💎
+UI_SHOP_DESC_GEMS_680,680💎 + 试用券×2,680💎 + Trial×2,680💎 + Percubaan×2
+UI_SHOP_DESC_GEMS_1800,1800💎 + 试用券×5 + 紫碎片×50,1800💎 + Trial×5 + Purple frags×50,1800💎 + Percubaan×5 + Serpihan Ungu×50
+UI_SHOP_DESC_MONTHLY_300,每日30💎×30天 + 首日300💎,30💎/day×30d + 300💎 Day 1,30💎/hari×30h + 300💎 Hari 1
+UI_SHOP_DESC_MONTHLY_V_300,🎫100券 = 每日30💎×30天 + 300💎,🎫100 = 30💎/day×30d + 300💎,🎫100 = 30💎/hari×30h + 300💎
