@@ -435,6 +435,21 @@ func _setup_left_side_buttons() -> void:
 	sign_hit.pressed.connect(_show_sign_in_popup)
 	left_side_buttons.add_child(sign_flag)
 
+	# 月卡按钮（Flag 样式，仅激活时显示）
+	if UserManager.is_monthly_card_active():
+		var card_flag: Control = FLAG_SCENE.instantiate()
+		var card_label: Label = card_flag.get_node("Label")
+		var days_left: int = maxi(0, (UserManager.monthly_card_end_unix - int(Time.get_unix_time_from_system())) / 86400)
+		card_label.text = "📅 %dd" % days_left
+		card_label.add_theme_font_size_override("font_size", 26)
+		if UserManager.last_monthly_claim_date != Time.get_date_string_from_system():
+			card_flag.modulate = Color(1.0, 0.95, 0.7)  # 黄色高亮（可领取）
+		else:
+			card_flag.modulate = Color(0.4, 0.8, 0.4)  # 绿色（已领取）
+		var card_hit: Button = card_flag.get_node("HitButton")
+		card_hit.pressed.connect(_show_monthly_card_popup)
+		left_side_buttons.add_child(card_flag)
+
 	# 升级通行证按钮（Flag 样式）
 	var pass_flag: Control = FLAG_SCENE.instantiate()
 	var pass_label: Label = pass_flag.get_node("Label")
@@ -551,3 +566,79 @@ func _show_sign_in_popup() -> void:
 	close.add_theme_font_size_override("font_size", 28)
 	close.pressed.connect(func(): overlay.queue_free())
 	vbox.add_child(close)
+
+
+## ── 月卡 ────────────────────────────────────────────────────────────
+
+func _show_monthly_card_popup() -> void:
+	var days_left: int = maxi(0, (UserManager.monthly_card_end_unix - int(Time.get_unix_time_from_system())) / 86400)
+	var already_claimed: bool = UserManager.last_monthly_claim_date == Time.get_date_string_from_system()
+
+	var overlay := ColorRect.new()
+	overlay.color = Color(0, 0, 0, 0.6)
+	overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
+	overlay.mouse_filter = Control.MOUSE_FILTER_STOP
+	add_child(overlay)
+
+	var panel := PanelContainer.new()
+	panel.set_anchors_preset(Control.PRESET_CENTER)
+	panel.custom_minimum_size = Vector2(700, 400)
+	panel.position = Vector2(-350, -200)
+	overlay.add_child(panel)
+
+	var vbox := VBoxContainer.new()
+	vbox.add_theme_constant_override("separation", 16)
+	panel.add_child(vbox)
+
+	# 标题
+	var title := Label.new()
+	title.text = "📅 月卡"
+	title.add_theme_font_size_override("font_size", 40)
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title.add_theme_color_override("font_color", Color(1.0, 0.85, 0.2))
+	vbox.add_child(title)
+
+	# 剩余天数
+	var days_lbl := Label.new()
+	days_lbl.text = "剩余 %d 天" % days_left
+	days_lbl.add_theme_font_size_override("font_size", 32)
+	days_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	vbox.add_child(days_lbl)
+
+	# 每日奖励说明
+	var desc := Label.new()
+	desc.text = "每日领取 💎 30 钻石"
+	desc.add_theme_font_size_override("font_size", 28)
+	desc.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	desc.add_theme_color_override("font_color", Color(0.7, 0.85, 1.0))
+	vbox.add_child(desc)
+
+	vbox.add_child(HSeparator.new())
+
+	# 领取按钮
+	var claim_btn := Button.new()
+	claim_btn.add_theme_font_size_override("font_size", 36)
+	claim_btn.custom_minimum_size = Vector2(0, 70)
+	if already_claimed:
+		claim_btn.text = "✅ 今日已领取"
+		claim_btn.disabled = true
+		claim_btn.modulate = Color(0.6, 0.6, 0.6)
+	else:
+		claim_btn.text = "💎 领取 30 钻石"
+		claim_btn.modulate = Color(1.0, 0.9, 0.3)
+		claim_btn.pressed.connect(func():
+			if UserManager.claim_monthly_card_daily():
+				claim_btn.text = "✅ 已领取！"
+				claim_btn.disabled = true
+				claim_btn.modulate = Color(0.6, 0.6, 0.6)
+				_update_player_info()
+				SaveManager.save()
+		)
+	vbox.add_child(claim_btn)
+
+	# 关闭
+	var close_btn := Button.new()
+	close_btn.text = "关闭"
+	close_btn.add_theme_font_size_override("font_size", 28)
+	close_btn.pressed.connect(func(): overlay.queue_free())
+	vbox.add_child(close_btn)
