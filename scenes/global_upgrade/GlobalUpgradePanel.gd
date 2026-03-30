@@ -119,14 +119,16 @@ func _ready() -> void:
 
 
 func _update_center_from_viewport() -> void:
-	# 卡牌位置相对于 CardArea，不是 viewport
-	var area_size := _card_container.size
-	if area_size.x <= 0 or area_size.y <= 0:
-		# CardArea 还没布局完成，用默认值
-		area_size = Vector2(1080, 1100)
-	CARD_CENTER_X = area_size.x / 2.0
-	CARD_CENTER_Y = area_size.y / 2.0 - CARD_H * 0.1  # 稍微偏上
-	SIDE_OFFSET_X = area_size.x * 0.37
+	# 使用视口实际大小（适配所有屏幕比例）
+	var vp_size := Vector2(1080, 1920)
+	var vp := get_viewport()
+	if vp:
+		var rect := vp.get_visible_rect().size
+		if rect.x > 0 and rect.y > 0:
+			vp_size = rect
+	CARD_CENTER_X = vp_size.x / 2.0
+	CARD_CENTER_Y = vp_size.y * 0.35  # 屏幕 35% 高度处
+	SIDE_OFFSET_X = vp_size.x * 0.37
 
 
 func setup(pool: Array, active: Array, wave_num: int) -> void:
