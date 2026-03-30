@@ -36,10 +36,13 @@ func _ready() -> void:
 	TranslationServer.set_locale(language)
 
 
-## 设置语言并立即应用
+## 设置语言并立即应用（重载场景刷新所有 UI）
 func set_language(locale: String) -> void:
 	language = locale
 	TranslationServer.set_locale(locale)
+	save_settings()
+	# 延迟一帧后重载当前场景，确保设置已保存
+	get_tree().call_deferred("reload_current_scene")
 
 
 ## 保存设置到文件
