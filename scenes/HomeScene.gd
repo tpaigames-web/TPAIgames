@@ -416,30 +416,32 @@ func _setup_settings_button() -> void:
 
 
 func _setup_left_side_buttons() -> void:
+	const FLAG_SCENE = preload("res://scenes/components/UpgradeButton.tscn")
+
 	left_side_buttons = VBoxContainer.new()
-	left_side_buttons.position = Vector2(10, 350)
-	left_side_buttons.add_theme_constant_override("separation", 10)
+	left_side_buttons.position = Vector2(5, 250)
+	left_side_buttons.add_theme_constant_override("separation", 5)
 	add_child(left_side_buttons)
 
-	# 签到按钮
-	var sign_btn := Button.new()
-	sign_btn.text = "📅\n签到"
-	sign_btn.custom_minimum_size = Vector2(100, 90)
-	sign_btn.add_theme_font_size_override("font_size", 24)
+	# 签到按钮（Flag 样式）
+	var sign_flag: Control = FLAG_SCENE.instantiate()
+	var sign_label: Label = sign_flag.get_node("Label")
+	sign_label.text = "📅 签到"
 	if UserManager.can_sign_in_today():
-		sign_btn.modulate = Color(1.0, 0.9, 0.3)  # 黄色高亮（可签到）
+		sign_flag.modulate = Color(1.0, 0.95, 0.7)
 	else:
-		sign_btn.modulate = Color(0.6, 0.6, 0.6)
-	sign_btn.pressed.connect(_show_sign_in_popup)
-	left_side_buttons.add_child(sign_btn)
+		sign_flag.modulate = Color(0.5, 0.5, 0.5)
+	var sign_hit: Button = sign_flag.get_node("HitButton")
+	sign_hit.pressed.connect(_show_sign_in_popup)
+	left_side_buttons.add_child(sign_flag)
 
-	# 升级通行证按钮
-	level_pass_side_btn = Button.new()
-	level_pass_side_btn.text = "⭐\n升级"
-	level_pass_side_btn.custom_minimum_size = Vector2(100, 90)
-	level_pass_side_btn.add_theme_font_size_override("font_size", 24)
-	level_pass_side_btn.pressed.connect(_open_level_pass)
-	left_side_buttons.add_child(level_pass_side_btn)
+	# 升级通行证按钮（Flag 样式）
+	var pass_flag: Control = FLAG_SCENE.instantiate()
+	var pass_label: Label = pass_flag.get_node("Label")
+	pass_label.text = "⭐ 升级"
+	var pass_hit: Button = pass_flag.get_node("HitButton")
+	pass_hit.pressed.connect(_open_level_pass)
+	left_side_buttons.add_child(pass_flag)
 
 
 func _open_settings() -> void:

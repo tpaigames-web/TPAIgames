@@ -43,7 +43,7 @@ func _ready() -> void:
 	# 隐藏旧的独立教学卡片（已整合到路径地图中）
 	tutorial_card.visible = false
 	_build_path_map()
-	_add_upgrade_icon()
+	# 升级按钮已移至 HomeScene 左侧快捷栏，不再在 BattleTab 单独显示
 	_show_save_indicator()
 	# 检查是否有刚解锁的关卡需要播放动画
 	if UserManager.newly_unlocked_day > 0:
