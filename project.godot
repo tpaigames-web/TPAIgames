@@ -41,7 +41,7 @@ window/handheld/orientation=1
 
 [internationalization]
 
-locale/translations=PackedStringArray("res://translations/ui.csv", "res://translations/game_data.csv")
+locale/translations=PackedStringArray("res://translations/ui.en.translation", "res://translations/ui.zh.translation", "res://translations/ui.ms.translation", "res://translations/game_data.en.translation", "res://translations/game_data.zh.translation", "res://translations/game_data.ms.translation")
 locale/locale_filter_mode=0
 locale/fallback="zh"
 
