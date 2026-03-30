@@ -86,10 +86,10 @@ func _add_tutorial_button() -> void:
 	var status_lbl: Label = card.get_node_or_null("StatusLabel")
 	if status_lbl:
 		if UserManager.tutorial_completed:
-			status_lbl.text = "✅ 已通过"
+			status_lbl.text = tr("UI_TUTORIAL_COMPLETED")
 			status_lbl.add_theme_color_override("font_color", Color(0.7, 1, 0.7, 1))
 		else:
-			status_lbl.text = "点击开始"
+			status_lbl.text = tr("UI_TUTORIAL_TAP_START")
 			status_lbl.add_theme_color_override("font_color", Color(1, 0.9, 0.6, 1))
 
 	# 连接点击事件
@@ -156,8 +156,8 @@ func _show_mode_select(day_idx: int) -> void:
 		if save_day == day_idx:
 			has_save = true
 			var wave_num: int = saved.get("wave", 1)
-			var mode_str: String = "挑战" if saved.get("challenge_mode", false) else "普通"
-			save_info = "%s 第%d波" % [mode_str, wave_num]
+			var mode_str: String = tr("UI_MODE_CHALLENGE_LABEL") if saved.get("challenge_mode", false) else tr("UI_MODE_NORMAL_LABEL")
+			save_info = tr("UI_SAVE_FORMAT") % [mode_str, wave_num]
 
 	var dialog: ModeSelectDialog = MODE_SELECT_SCENE.instantiate()
 	dialog.setup(day_idx, n_claimed, c_claimed, has_save, save_info)

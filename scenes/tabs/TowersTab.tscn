@@ -25,7 +25,7 @@ offset_top = 20.0
 offset_right = 1060.0
 offset_bottom = 80.0
 theme_override_font_sizes/font_size = 56
-text = "兵工厂"
+text = "UI_FACTORY_TITLE"
 horizontal_alignment = 1
 
 [node name="TypeRow" type="HBoxContainer" parent="." unique_id=111222333]
@@ -41,21 +41,21 @@ custom_minimum_size = Vector2(0, 54)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 38
-text = "⚔️ 炮台"
+text = "UI_FACTORY_TOWERS"
 
 [node name="TypeHero" type="Button" parent="TypeRow" unique_id=111222335]
 custom_minimum_size = Vector2(0, 54)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 38
-text = "🗿 英雄"
+text = "UI_FACTORY_HEROES"
 
 [node name="TypeItem" type="Button" parent="TypeRow" unique_id=111222336]
 custom_minimum_size = Vector2(0, 54)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 38
-text = "📦 道具"
+text = "UI_FACTORY_ITEMS"
 
 [node name="FilterRow" type="HBoxContainer" parent="." unique_id=257067190]
 layout_mode = 0
@@ -70,7 +70,7 @@ custom_minimum_size = Vector2(0, 54)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 38
-text = "全部"
+text = "UI_FACTORY_FILTER_ALL"
 
 [node name="FilterWhite" type="Button" parent="FilterRow" unique_id=5106705]
 modulate = Color(0.85, 0.85, 0.85, 1)
@@ -78,7 +78,7 @@ custom_minimum_size = Vector2(0, 54)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 38
-text = "白"
+text = "UI_RARITY_WHITE"
 
 [node name="FilterGreen" type="Button" parent="FilterRow" unique_id=654229716]
 modulate = Color(0.4, 0.9, 0.4, 1)
@@ -86,7 +86,7 @@ custom_minimum_size = Vector2(0, 54)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 38
-text = "绿"
+text = "UI_RARITY_GREEN"
 
 [node name="FilterBlue" type="Button" parent="FilterRow" unique_id=703885597]
 modulate = Color(0.4, 0.7, 1, 1)
@@ -94,7 +94,7 @@ custom_minimum_size = Vector2(0, 54)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 38
-text = "蓝"
+text = "UI_RARITY_BLUE"
 
 [node name="FilterPurple" type="Button" parent="FilterRow" unique_id=400024618]
 modulate = Color(0.85, 0.4, 1, 1)
@@ -102,7 +102,7 @@ custom_minimum_size = Vector2(0, 54)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 38
-text = "紫"
+text = "UI_RARITY_PURPLE"
 
 [node name="FilterOrange" type="Button" parent="FilterRow" unique_id=1889186134]
 modulate = Color(1, 0.65, 0.2, 1)
@@ -110,7 +110,7 @@ custom_minimum_size = Vector2(0, 54)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 38
-text = "橙"
+text = "UI_RARITY_ORANGE"
 
 [node name="GridScrollContainer" type="ScrollContainer" parent="." unique_id=1266925438]
 layout_mode = 1

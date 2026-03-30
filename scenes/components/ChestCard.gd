@@ -31,17 +31,13 @@ func setup(data: ChestData) -> void:
 		price_label.text = "🎫 %d" % data.voucher_cost
 		price_label.add_theme_color_override("font_color", Color(1.0, 0.85, 0.3))
 	else:
-		price_label.text = "免费"
+		price_label.text = tr("UI_CHEST_FREE")
 		price_label.add_theme_color_override("font_color", Color(0.3, 1.0, 0.4))
 	info_line1.text = data.info_line1
 	info_line2.text = data.info_line2
 
 	# 设置宝箱图片
-	var chest_idx: int = 0  # 默认木
-	if data.chest_name.find("铁") >= 0 or data.chest_name.find("银") >= 0:
-		chest_idx = 1
-	elif data.chest_name.find("金") >= 0:
-		chest_idx = 2
+	var chest_idx: int = clampi(data.chest_type, 0, 2)
 	chest_image.texture = load(CHEST_TEXTURES[chest_idx])
 
 

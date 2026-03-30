@@ -33,4 +33,4 @@ offset_left = 900.0
 offset_top = 40.0
 offset_right = 1060.0
 offset_bottom = 100.0
-text = "跳过"
+text = "UI_STORY_SKIP"

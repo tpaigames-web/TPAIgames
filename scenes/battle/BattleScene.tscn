@@ -72,7 +72,7 @@ theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5)
 theme_override_constants/shadow_offset_y = 2
 theme_override_fonts/font = ExtResource("font_700")
 theme_override_font_sizes/font_size = 38
-text = "波次 0/40"
+text = "UI_BATTLE_WAVE_FORMAT"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -263,7 +263,7 @@ size_flags_horizontal = 3
 theme_override_colors/font_color = Color(1, 0.95, 0.85, 1)
 theme_override_fonts/font = ExtResource("font_700")
 theme_override_font_sizes/font_size = 38
-text = "炮台"
+text = "UI_BATTLE_TAB_TOWER"
 flat = true
 
 [node name="HeroTabBtn" type="Button" parent="HUD/BottomPanel/TabBar" unique_id=257038024]
@@ -273,7 +273,7 @@ theme_override_colors/font_color = Color(1, 0.95, 0.85, 1)
 theme_override_fonts/font = ExtResource("font_700")
 theme_override_font_sizes/font_size = 38
 disabled = true
-text = "英雄"
+text = "UI_BATTLE_TAB_HERO"
 flat = true
 
 [node name="ItemTabBtn" type="Button" parent="HUD/BottomPanel/TabBar" unique_id=1794817119]
@@ -282,7 +282,7 @@ size_flags_horizontal = 3
 theme_override_colors/font_color = Color(1, 0.95, 0.85, 1)
 theme_override_fonts/font = ExtResource("font_700")
 theme_override_font_sizes/font_size = 38
-text = "道具"
+text = "UI_BATTLE_TAB_ITEM"
 flat = true
 
 [node name="TowerScroll" type="ScrollContainer" parent="HUD/BottomPanel" unique_id=524475819]

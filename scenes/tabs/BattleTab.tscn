@@ -28,7 +28,7 @@ offset_top = 8.0
 offset_right = 720.0
 offset_bottom = 70.0
 theme_override_font_sizes/font_size = 38
-text = "🎓 新手教学"
+text = "UI_TUTORIAL_TITLE"
 
 [node name="SubLabel" type="Label" parent="TutorialCard" unique_id=2001000003]
 modulate = Color(1, 1, 1, 0.75)
@@ -38,7 +38,7 @@ offset_top = 72.0
 offset_right = 720.0
 offset_bottom = 118.0
 theme_override_font_sizes/font_size = 38
-text = "学习基础战斗玩法"
+text = "UI_TUTORIAL_SUBTITLE"
 
 [node name="PlayBtn" type="Button" parent="TutorialCard" unique_id=2001000004]
 layout_mode = 0
@@ -47,7 +47,7 @@ offset_top = 10.0
 offset_right = 1020.0
 offset_bottom = 110.0
 theme_override_font_sizes/font_size = 38
-text = "开始 ▶"
+text = "UI_TUTORIAL_START"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 layout_mode = 1

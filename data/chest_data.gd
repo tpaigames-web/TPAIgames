@@ -4,7 +4,7 @@ class_name ChestData extends Resource
 ## 稀有度体系（从低到高）：白 → 绿 → 蓝 → 紫 → 橙
 
 @export var chest_name: String = ""
-@export_enum("木宝箱", "铁宝箱", "金宝箱") var chest_type: int = 0
+@export_enum("Wooden", "Iron", "Golden") var chest_type: int = 0
 
 ## 购买卡片上的两行说明文字（可在 .tres 中自由修改）
 @export var info_line1: String = "- ? 张卡片"

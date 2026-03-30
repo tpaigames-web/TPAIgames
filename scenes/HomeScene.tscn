@@ -184,7 +184,7 @@ theme_override_constants/separation = 5
 layout_mode = 2
 theme_override_colors/font_color = Color(0.25, 0.18, 0.12, 1)
 theme_override_font_sizes/font_size = 32
-text = "游客"
+text = "UI_HOME_GUEST"
 
 [node name="LevelLabel" type="Label" parent="TopBar/ProfileArea/PlayerInfo" unique_id=1979285475]
 layout_mode = 2
@@ -329,11 +329,11 @@ stretch_mode = 5
 
 [node name="ComingSoonDialog" type="AcceptDialog" parent="." unique_id=1378511199]
 oversampling_override = 1.0
-title = "提示"
+title = "UI_DIALOG_HINT"
 position = Vector2i(0, 36)
 size = Vector2i(600, 250)
 min_size = Vector2i(600, 250)
-dialog_text = "功能开发中，敬请期待！"
+dialog_text = "UI_HOME_FEATURE_DEVELOPING"
 
 [node name="DevResetBtn" type="Button" parent="." unique_id=1105024783]
 modulate = Color(1, 1, 1, 0)
@@ -398,7 +398,7 @@ offset_right = 135.0
 offset_bottom = 120.0
 theme_override_colors/font_color = Color(1, 0.9, 0.6, 1)
 theme_override_font_sizes/font_size = 32
-text = "免费奖励"
+text = "UI_HOME_FREE_REWARD"
 horizontal_alignment = 1
 
 [node name="HitArea" type="Button" parent="AdOfferBtn" unique_id=1632875670]

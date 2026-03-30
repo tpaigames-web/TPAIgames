@@ -104,7 +104,7 @@ theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.4)
 theme_override_constants/shadow_offset_y = 2
 theme_override_fonts/font = ExtResource("font_700")
 theme_override_font_sizes/font_size = 56
-text = "普通模式"
+text = "UI_MODE_NORMAL"
 vertical_alignment = 1
 
 [node name="ChestIcon" type="TextureRect" parent="Panel/NormalMode" unique_id=2045790695]
@@ -152,7 +152,7 @@ theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.4)
 theme_override_constants/shadow_offset_y = 2
 theme_override_fonts/font = ExtResource("font_700")
 theme_override_font_sizes/font_size = 56
-text = "困难模式"
+text = "UI_MODE_HARD"
 vertical_alignment = 1
 
 [node name="ChestIcon" type="TextureRect" parent="Panel/HardMode" unique_id=276001315]
@@ -191,7 +191,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 0.8, 0.3, 1)
 theme_override_font_sizes/font_size = 32
-text = "即将推出"
+text = "UI_MODE_HARD_COMING"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -217,7 +217,7 @@ theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.4)
 theme_override_constants/shadow_offset_y = 2
 theme_override_fonts/font = ExtResource("font_700")
 theme_override_font_sizes/font_size = 56
-text = "挑战模式"
+text = "UI_MODE_CHALLENGE"
 vertical_alignment = 1
 
 [node name="ChestIcon" type="TextureRect" parent="Panel/ChallengeMode" unique_id=1584325150]
@@ -291,6 +291,6 @@ theme_override_colors/font_shadow_color = Color(1, 1, 1, 0.15)
 theme_override_constants/shadow_offset_y = 1
 theme_override_fonts/font = ExtResource("font_700")
 theme_override_font_sizes/font_size = 38
-text = "开始游戏"
+text = "UI_MODE_START"
 horizontal_alignment = 1
 vertical_alignment = 1

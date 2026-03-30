@@ -23,7 +23,7 @@ offset_left = 20.0
 offset_top = 10.0
 offset_right = -20.0
 offset_bottom = 70.0
-text = "军火库"
+text = "UI_FACTORY_TITLE"
 theme_override_font_sizes/font_size = 56
 horizontal_alignment = 1
 
@@ -58,7 +58,7 @@ layout_mode = 2
 [node name="Section6hTitle" type="Label" parent="ScrollContainer/MainVBox/Section6h/HeaderMargin6h/Section6hHeader"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "⏱ 6小时刷新"
+text = "UI_FRAG_REFRESH_6H"
 theme_override_font_sizes/font_size = 38
 
 [node name="Section6hTimer" type="Label" parent="ScrollContainer/MainVBox/Section6h/HeaderMargin6h/Section6hHeader"]
@@ -96,7 +96,7 @@ layout_mode = 2
 [node name="SectionDailyTitle" type="Label" parent="ScrollContainer/MainVBox/SectionDaily/HeaderMarginD/SectionDailyHeader"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "📅 每日刷新"
+text = "UI_FRAG_REFRESH_DAILY"
 theme_override_font_sizes/font_size = 38
 
 [node name="SectionDailyTimer" type="Label" parent="ScrollContainer/MainVBox/SectionDaily/HeaderMarginD/SectionDailyHeader"]
@@ -134,7 +134,7 @@ layout_mode = 2
 [node name="SectionWeeklyTitle" type="Label" parent="ScrollContainer/MainVBox/SectionWeekly/HeaderMarginW/SectionWeeklyHeader"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "📆 每周刷新"
+text = "UI_FRAG_REFRESH_WEEKLY"
 theme_override_font_sizes/font_size = 38
 
 [node name="SectionWeeklyTimer" type="Label" parent="ScrollContainer/MainVBox/SectionWeekly/HeaderMarginW/SectionWeeklyHeader"]
@@ -200,12 +200,12 @@ theme_override_constants/separation = 20
 layout_mode = 2
 size_flags_horizontal = 3
 custom_minimum_size = Vector2(0, 80)
-text = "取消"
+text = "UI_DIALOG_CANCEL"
 theme_override_font_sizes/font_size = 38
 
 [node name="ConfirmBtn" type="Button" parent="ConfirmOverlay/ConfirmCard/ContentVBox/BtnRow"]
 layout_mode = 2
 size_flags_horizontal = 3
 custom_minimum_size = Vector2(0, 80)
-text = "确认"
+text = "UI_DIALOG_CONFIRM"
 theme_override_font_sizes/font_size = 38

@@ -39,7 +39,7 @@ offset_bottom = 80.0
 theme_override_colors/font_color = Color(1, 0.95, 0.85, 1)
 theme_override_fonts/font = ExtResource("font_700")
 theme_override_font_sizes/font_size = 56
-text = "宝箱"
+text = "UI_CHEST_TITLE"
 horizontal_alignment = 1
 
 [node name="ChestSlotsRow" type="HBoxContainer" parent="." unique_id=987346799]
@@ -372,13 +372,13 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("font_600")
 theme_override_font_sizes/font_size = 38
-text = "⏳ 待领取宝箱"
+text = "UI_CHEST_PENDING"
 
 [node name="ClaimPendingBtn" type="Button" parent="PendingChestRow" unique_id=1808409900]
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 38
-text = "➕ 领取到槽位"
+text = "UI_CHEST_CLAIM"
 
 [node name="BuySectionLabel" type="Label" parent="." unique_id=956453968]
 layout_mode = 0
@@ -389,7 +389,7 @@ offset_bottom = 429.0
 theme_override_colors/font_color = Color(1, 0.95, 0.85, 1)
 theme_override_fonts/font = ExtResource("font_700")
 theme_override_font_sizes/font_size = 48
-text = "购买宝箱"
+text = "UI_CHEST_BUY_TITLE"
 
 [node name="BuyCardsRow" type="HBoxContainer" parent="." unique_id=1471201002]
 layout_mode = 0
@@ -459,7 +459,7 @@ theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.4)
 theme_override_constants/shadow_offset_y = 2
 theme_override_fonts/font = ExtResource("font_700")
 theme_override_font_sizes/font_size = 48
-text = "木宝箱"
+text = "UI_CHEST_WOODEN"
 horizontal_alignment = 1
 
 [node name="PriceLabel" type="Label" parent="BuyCardsRow/WoodCard" unique_id=1609045467]
@@ -471,7 +471,7 @@ offset_bottom = 340.0
 theme_override_colors/font_color = Color(0.3, 1, 0.4, 1)
 theme_override_fonts/font = ExtResource("font_600")
 theme_override_font_sizes/font_size = 38
-text = "免费"
+text = "UI_CHEST_FREE"
 horizontal_alignment = 1
 
 [node name="InfoLine1" type="Label" parent="BuyCardsRow/WoodCard" unique_id=1064998665]
@@ -483,7 +483,7 @@ offset_bottom = 385.0
 theme_override_colors/font_color = Color(0.85, 0.8, 0.7, 1)
 theme_override_fonts/font = ExtResource("font_600")
 theme_override_font_sizes/font_size = 32
-text = "-3 张卡片"
+text = "UI_CHEST_WOOD_CARDS"
 horizontal_alignment = 1
 
 [node name="InfoLine2" type="Label" parent="BuyCardsRow/WoodCard" unique_id=142656698]
@@ -495,7 +495,7 @@ offset_bottom = 425.0
 theme_override_colors/font_color = Color(0.85, 0.8, 0.7, 1)
 theme_override_fonts/font = ExtResource("font_600")
 theme_override_font_sizes/font_size = 32
-text = "-含白/绿稀有"
+text = "UI_CHEST_WOOD_RARITY"
 horizontal_alignment = 1
 
 [node name="IronCard" type="TextureButton" parent="BuyCardsRow" unique_id=890215519]
@@ -558,7 +558,7 @@ theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.4)
 theme_override_constants/shadow_offset_y = 2
 theme_override_fonts/font = ExtResource("font_700")
 theme_override_font_sizes/font_size = 48
-text = "铁宝箱"
+text = "UI_CHEST_IRON"
 horizontal_alignment = 1
 
 [node name="PriceLabel" type="Label" parent="BuyCardsRow/IronCard" unique_id=1311309615]
@@ -582,7 +582,7 @@ offset_bottom = 385.0
 theme_override_colors/font_color = Color(0.85, 0.8, 0.7, 1)
 theme_override_fonts/font = ExtResource("font_600")
 theme_override_font_sizes/font_size = 32
-text = "-5 张卡片"
+text = "UI_CHEST_IRON_CARDS"
 horizontal_alignment = 1
 
 [node name="InfoLine2" type="Label" parent="BuyCardsRow/IronCard" unique_id=1731616233]
@@ -594,7 +594,7 @@ offset_bottom = 425.0
 theme_override_colors/font_color = Color(0.85, 0.8, 0.7, 1)
 theme_override_fonts/font = ExtResource("font_600")
 theme_override_font_sizes/font_size = 32
-text = "-含绿/蓝稀有"
+text = "UI_CHEST_IRON_RARITY"
 horizontal_alignment = 1
 
 [node name="GoldCard" type="TextureButton" parent="BuyCardsRow" unique_id=1983566500]
@@ -657,7 +657,7 @@ theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.4)
 theme_override_constants/shadow_offset_y = 2
 theme_override_fonts/font = ExtResource("font_700")
 theme_override_font_sizes/font_size = 48
-text = "金宝箱"
+text = "UI_CHEST_GOLD"
 horizontal_alignment = 1
 
 [node name="PriceLabel" type="Label" parent="BuyCardsRow/GoldCard" unique_id=475993304]
@@ -681,7 +681,7 @@ offset_bottom = 385.0
 theme_override_colors/font_color = Color(0.85, 0.8, 0.7, 1)
 theme_override_fonts/font = ExtResource("font_600")
 theme_override_font_sizes/font_size = 32
-text = "-8 张卡片"
+text = "UI_CHEST_GOLD_CARDS"
 horizontal_alignment = 1
 
 [node name="InfoLine2" type="Label" parent="BuyCardsRow/GoldCard" unique_id=1449041003]
@@ -693,7 +693,7 @@ offset_bottom = 425.0
 theme_override_colors/font_color = Color(0.85, 0.8, 0.7, 1)
 theme_override_fonts/font = ExtResource("font_600")
 theme_override_font_sizes/font_size = 32
-text = "-含蓝/紫/橙稀有"
+text = "UI_CHEST_GOLD_RARITY"
 horizontal_alignment = 1
 
 [node name="BulkSectionLabel" type="Label" parent="." unique_id=593648947]
@@ -705,7 +705,7 @@ offset_bottom = 1023.0
 theme_override_colors/font_color = Color(1, 0.95, 0.85, 1)
 theme_override_fonts/font = ExtResource("font_700")
 theme_override_font_sizes/font_size = 48
-text = "10连开箱"
+text = "UI_CHEST_BULK_TITLE"
 
 [node name="BulkBuyRow" type="HBoxContainer" parent="." unique_id=1455817724]
 layout_mode = 0
@@ -784,7 +784,7 @@ offset_bottom = 349.0
 theme_override_colors/font_color = Color(1, 0.95, 0.85, 1)
 theme_override_fonts/font = ExtResource("font_700")
 theme_override_font_sizes/font_size = 48
-text = "木宝箱 ×10"
+text = "UI_CHEST_BULK_WOOD"
 horizontal_alignment = 1
 
 [node name="PriceLabel" type="Label" parent="BulkBuyRow/BulkWood" unique_id=1682903328]
@@ -868,7 +868,7 @@ offset_bottom = 349.0
 theme_override_colors/font_color = Color(1, 0.95, 0.85, 1)
 theme_override_fonts/font = ExtResource("font_700")
 theme_override_font_sizes/font_size = 48
-text = "铁宝箱 ×10"
+text = "UI_CHEST_BULK_IRON"
 horizontal_alignment = 1
 
 [node name="PriceLabel" type="Label" parent="BulkBuyRow/BulkIron" unique_id=1235532677]
@@ -952,7 +952,7 @@ offset_bottom = 349.0
 theme_override_colors/font_color = Color(1, 0.95, 0.85, 1)
 theme_override_fonts/font = ExtResource("font_700")
 theme_override_font_sizes/font_size = 48
-text = "金宝箱 ×10"
+text = "UI_CHEST_BULK_GOLD"
 horizontal_alignment = 1
 
 [node name="PriceLabel" type="Label" parent="BulkBuyRow/BulkGold" unique_id=820209593]
@@ -987,7 +987,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("font_700")
 theme_override_font_sizes/font_size = 48
-text = "宝箱内容"
+text = "UI_CHEST_INFO_CONTENTS"
 
 [node name="CloseBtn" type="Button" parent="InfoPanel/InfoVBox/InfoHeaderRow" unique_id=974547689]
 custom_minimum_size = Vector2(70, 70)
@@ -999,13 +999,13 @@ text = "✕"
 layout_mode = 2
 theme_override_fonts/font = ExtResource("font_600")
 theme_override_font_sizes/font_size = 38
-text = "开箱张数：?"
+text = "UI_CHEST_INFO_CARD_COUNT"
 
 [node name="RarityTitle" type="Label" parent="InfoPanel/InfoVBox" unique_id=1978861520]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("font_600")
 theme_override_font_sizes/font_size = 38
-text = "稀有度概率"
+text = "UI_CHEST_INFO_RARITY"
 
 [node name="InfoRarityGrid" type="GridContainer" parent="InfoPanel/InfoVBox" unique_id=1217379691]
 layout_mode = 2
@@ -1014,7 +1014,7 @@ theme_override_constants/v_separation = 12
 columns = 2
 
 [node name="PurchaseDialog" type="ConfirmationDialog" parent="." unique_id=1851698992]
-title = "确认购买"
+title = "UI_CHEST_CONFIRM_TITLE"
 size = Vector2i(600, 250)
 min_size = Vector2i(600, 250)
-dialog_text = "确认购买？"
+dialog_text = "UI_CHEST_CONFIRM_MSG"

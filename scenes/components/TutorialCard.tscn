@@ -29,7 +29,7 @@ theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5)
 theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2
 theme_override_font_sizes/font_size = 32
-text = "🎓 新手教学"
+text = "UI_TUTORIAL_TITLE"
 horizontal_alignment = 1
 
 [node name="StatusLabel" type="Label" parent="." unique_id=406233629]
@@ -40,7 +40,7 @@ offset_right = 352.0
 offset_bottom = 117.0
 theme_override_colors/font_color = Color(0.7, 1, 0.7, 1)
 theme_override_font_sizes/font_size = 32
-text = "✅ 已通过"
+text = "UI_TUTORIAL_COMPLETED"
 horizontal_alignment = 1
 
 [node name="HitButton" type="Button" parent="." unique_id=391423831]

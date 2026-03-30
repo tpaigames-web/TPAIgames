@@ -25,13 +25,13 @@ theme_override_constants/separation = 0
 [node name="BackBtn" type="Button" parent="TitleBar"]
 layout_mode = 2
 custom_minimum_size = Vector2(160, 80)
-text = "← 返回"
+text = "UI_LEVEL_BACK"
 theme_override_font_sizes/font_size = 38
 
 [node name="TitleLabel" type="Label" parent="TitleBar"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "升级通行证"
+text = "UI_LEVEL_PASS_TITLE"
 theme_override_font_sizes/font_size = 56
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -69,7 +69,7 @@ theme_override_constants/separation = 0
 layout_mode = 2
 size_flags_horizontal = 3
 custom_minimum_size = Vector2(0, 80)
-text = "全部领取"
+text = "UI_LEVEL_PASS_CLAIM_ALL"
 theme_override_font_sizes/font_size = 38
 
 [node name="LevelColumnSpacer" type="Control" parent="BottomBar/BottomBarContent"]
@@ -126,12 +126,12 @@ theme_override_constants/separation = 20
 layout_mode = 2
 size_flags_horizontal = 3
 custom_minimum_size = Vector2(0, 80)
-text = "取消"
+text = "UI_DIALOG_CANCEL"
 theme_override_font_sizes/font_size = 38
 
 [node name="ConfirmBtn" type="Button" parent="ConfirmOverlay/ConfirmCard/ContentVBox/BtnRow"]
 layout_mode = 2
 size_flags_horizontal = 3
 custom_minimum_size = Vector2(0, 80)
-text = "确认"
+text = "UI_DIALOG_CONFIRM"
 theme_override_font_sizes/font_size = 38

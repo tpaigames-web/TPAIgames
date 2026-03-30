@@ -66,7 +66,7 @@ theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.4)
 theme_override_constants/shadow_offset_y = 2
 theme_override_fonts/font = ExtResource("font_700")
 theme_override_font_sizes/font_size = 48
-text = "木宝箱"
+text = "UI_CHEST_WOODEN"
 horizontal_alignment = 1
 
 [node name="PriceLabel" type="Label" parent="." unique_id=1340536559]
@@ -78,7 +78,7 @@ offset_bottom = 332.18753
 theme_override_colors/font_color = Color(0.3, 1, 0.4, 1)
 theme_override_fonts/font = ExtResource("font_600")
 theme_override_font_sizes/font_size = 38
-text = "免费"
+text = "UI_CHEST_FREE"
 horizontal_alignment = 1
 
 [node name="InfoLine1" type="Label" parent="." unique_id=1248898625]
@@ -90,7 +90,7 @@ offset_bottom = 372.50006
 theme_override_colors/font_color = Color(0.85, 0.8, 0.7, 1)
 theme_override_fonts/font = ExtResource("font_600")
 theme_override_font_sizes/font_size = 32
-text = "-3 张卡片"
+text = "UI_CHEST_WOOD_CARDS"
 horizontal_alignment = 1
 
 [node name="InfoLine2" type="Label" parent="." unique_id=2031666116]
@@ -102,5 +102,5 @@ offset_bottom = 412.3438
 theme_override_colors/font_color = Color(0.85, 0.8, 0.7, 1)
 theme_override_fonts/font = ExtResource("font_600")
 theme_override_font_sizes/font_size = 32
-text = "-含白/绿稀有"
+text = "UI_CHEST_WOOD_RARITY"
 horizontal_alignment = 1

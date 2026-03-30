@@ -345,3 +345,57 @@ UI_LEVEL_BUY_PASS,购买升级通行证？\n\nRM %.2f 永久激活\n付费列所
 UI_LEVEL_BUY_FAILED,购买失败,Purchase Failed,Pembelian Gagal
 UI_LEVEL_PASS_ACTIVE,✓ 已激活,✓ Activated,✓ Diaktifkan
 UI_LEVEL_CLAIM_ALL,🎁 一键领取 (%d),🎁 Claim All (%d),🎁 Tuntut Semua (%d)
+UI_CHEST_CONTINUE,继续,Continue,Teruskan
+UI_HOME_GUEST,游客,Guest,Tetamu
+UI_DIALOG_HINT,提示,Notice,Notis
+UI_FRAG_REFRESH_6H,⏱ 6小时刷新,⏱ 6h Refresh,⏱ Segar Semula 6j
+UI_FRAG_REFRESH_DAILY,📅 每日刷新,📅 Daily Refresh,📅 Segar Semula Harian
+UI_FRAG_REFRESH_WEEKLY,📆 每周刷新,📆 Weekly Refresh,📆 Segar Semula Mingguan
+UI_SHOP_PKG_STARTER_BASIC,新手大礼包 · 基础,Starter Pack · Basic,Pek Pemula · Asas
+UI_SHOP_DESC_STARTER_BASIC,稻草人碎片 ×100\n金币 ×500  钻石 ×100,Scarecrow Frags ×100\nGold ×500  Gems ×100,Serpihan Orang-orangan ×100\nEmas ×500  Permata ×100
+UI_SHOP_PKG_STARTER_FARMER,新手大礼包 · 农夫,Starter Pack · Farmer,Pek Pemula · Petani
+UI_SHOP_DESC_STARTER_FARMER,农夫碎片 ×150\n金币 ×1000  钻石 ×500,Farmer Frags ×150\nGold ×1000  Gems ×500,Serpihan Petani ×150\nEmas ×1000  Permata ×500
+UI_SHOP_PKG_PURPLE_BUNDLE,新手紫色礼包,Purple Hero Bundle,Pek Wira Ungu
+UI_SHOP_DESC_PURPLE_BUNDLE,随机紫色英雄碎片 ×150\n金币 ×300,Random Purple Hero Frags ×150\nGold ×300,Serpihan Wira Ungu Rawak ×150\nEmas ×300
+UI_SHOP_PKG_WHITE_BUNDLE,新手白色礼包,White Tower Bundle,Pek Menara Putih
+UI_SHOP_DESC_WHITE_BUNDLE,随机白色炮台碎片 ×100,Random White Tower Frags ×100,Serpihan Menara Putih Rawak ×100
+UI_SHOP_PKG_ULTIMATE,终极大礼包,Ultimate Bundle,Pek Muktamad
+UI_SHOP_DESC_ULTIMATE,直接满等级（Lv.100）\n全部炮台碎片 ×30,Instant Max Level (Lv.100)\nAll Tower Frags ×30,Tahap Maks Segera (Lv.100)\nSemua Serpihan Menara ×30
+UI_SHOP_BADGE_ULTIMATE,终极特惠,Ultimate Deal,Tawaran Muktamad
+UI_SHOP_PKG_HERO_GUARDIAN,英雄礼包 · 农场守卫者,Hero Pack · Farm Guardian,Pek Wira · Pengawal Ladang
+UI_SHOP_DESC_HERO_GUARDIAN,农场守卫者碎片 ×30,Farm Guardian Frags ×30,Serpihan Pengawal Ladang ×30
+UI_SHOP_BADGE_HERO,英雄,Hero,Wira
+UI_SHOP_PKG_GOLD_SMALL,小量金币,Gold (Small),Emas (Kecil)
+UI_SHOP_DESC_GOLD_1500,金币 ×1500,Gold ×1500,Emas ×1500
+UI_SHOP_BADGE_FIRST_DEAL,首次特惠,First Deal,Tawaran Pertama
+UI_SHOP_PKG_GEMS_SMALL,小量钻石,Gems (Small),Permata (Kecil)
+UI_SHOP_DESC_GEMS_300,钻石 ×300,Gems ×300,Permata ×300
+UI_SHOP_PKG_XP_SMALL,小量经验,XP (Small),XP (Kecil)
+UI_SHOP_DESC_XP_200,经验 ×200,XP ×200,XP ×200
+UI_SHOP_PKG_XP_LARGE,大量经验,XP (Large),XP (Besar)
+UI_SHOP_DESC_XP_1000,经验 ×1000,XP ×1000,XP ×1000
+UI_SHOP_PKG_VOUCHER_SMALL,少量券,Vouchers (Small),Baucar (Kecil)
+UI_SHOP_DESC_VOUCHER_10,券 ×10,Vouchers ×10,Baucar ×10
+UI_SHOP_PKG_VOUCHER_LARGE,大量券,Vouchers (Large),Baucar (Besar)
+UI_SHOP_DESC_VOUCHER_110,券 ×110（额外赠送 10）,Vouchers ×110 (Bonus 10),Baucar ×110 (Bonus 10)
+UI_SHOP_BADGE_VALUE,超值,Great Value,Nilai Hebat
+UI_TUTORIAL_SUBTITLE,学习基础战斗玩法,Learn basic battle gameplay,Belajar permainan pertempuran asas
+UI_TUTORIAL_TAP_START,点击开始,Tap to Start,Ketik untuk Mula
+UI_LEVEL_BACK,← 返回,← Back,← Kembali
+UI_SAVE_PLACEHOLDER,普通 7/40 ▶,Normal 7/40 ▶,Biasa 7/40 ▶
+UI_CHEST_WOOD_CARDS,-3 张卡片,-3 Cards,-3 Kad
+UI_CHEST_WOOD_RARITY,-含白/绿稀有,-Common/Uncommon Rarity,-Biasa/Luar Biasa
+UI_CHEST_IRON_CARDS,-5 张卡片,-5 Cards,-5 Kad
+UI_CHEST_IRON_RARITY,-含绿/蓝稀有,-Uncommon/Rare Rarity,-Luar Biasa/Jarang
+UI_CHEST_GOLD_CARDS,-8 张卡片,-8 Cards,-8 Kad
+UI_CHEST_GOLD_RARITY,-含蓝/紫/橙稀有,-Rare/Epic/Legendary,-Jarang/Epik/Legenda
+UI_CHEST_BULK_WOOD,木宝箱 ×10,Wooden ×10,Kayu ×10
+UI_CHEST_BULK_IRON,铁宝箱 ×10,Iron ×10,Besi ×10
+UI_CHEST_BULK_GOLD,金宝箱 ×10,Golden ×10,Emas ×10
+UI_CHEST_INFO_CONTENTS,宝箱内容,Chest Contents,Kandungan Peti
+UI_CHEST_INFO_CARD_COUNT,开箱张数：?,Cards per open: ?,Kad setiap buka: ?
+UI_CHEST_INFO_RARITY,稀有度概率,Rarity Odds,Kebarangkalian Jarang
+UI_CHEST_CONFIRM_TITLE,确认购买,Confirm Purchase,Sahkan Pembelian
+UI_CHEST_CONFIRM_MSG,确认购买？,Confirm purchase?,Sahkan pembelian?
+UI_SAVE_FORMAT,%s 第%d波,%s Wave %d,%s Gelombang %d
+UI_LEVEL_ALL_CLAIMED,已全部领取,All Claimed,Semua Dituntut

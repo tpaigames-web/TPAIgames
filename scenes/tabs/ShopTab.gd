@@ -13,9 +13,9 @@ const PACKAGES: Array = [
 	# ─── 碎片礼包 ───────────────────────────────────────────────────
 	{
 		"id":             "starter_basic",
-		"name":           "新手大礼包 · 基础",
+		"name":           "UI_SHOP_PKG_STARTER_BASIC",
 		"emoji":          "🌾",
-		"desc":           "稻草人碎片 ×100\n金币 ×500  钻石 ×100",
+		"desc":           "UI_SHOP_DESC_STARTER_BASIC",
 		"section":        "frags",
 		"price_type":     "cash",
 		"price_rm":       6.0,
@@ -26,9 +26,9 @@ const PACKAGES: Array = [
 	},
 	{
 		"id":             "starter_farmer",
-		"name":           "新手大礼包 · 农夫",
+		"name":           "UI_SHOP_PKG_STARTER_FARMER",
 		"emoji":          "👨‍🌾",
-		"desc":           "农夫碎片 ×150\n金币 ×1000  钻石 ×500",
+		"desc":           "UI_SHOP_DESC_STARTER_FARMER",
 		"section":        "frags",
 		"price_type":     "cash",
 		"price_rm":       28.8,
@@ -39,9 +39,9 @@ const PACKAGES: Array = [
 	},
 	{
 		"id":             "purple_bundle",
-		"name":           "新手紫色礼包",
+		"name":           "UI_SHOP_PKG_PURPLE_BUNDLE",
 		"emoji":          "💜",
-		"desc":           "随机紫色英雄碎片 ×150\n金币 ×300",
+		"desc":           "UI_SHOP_DESC_PURPLE_BUNDLE",
 		"section":        "frags",
 		"price_type":     "gems",
 		"price_rm":       0.0,
@@ -52,9 +52,9 @@ const PACKAGES: Array = [
 	},
 	{
 		"id":             "white_bundle",
-		"name":           "新手白色礼包",
+		"name":           "UI_SHOP_PKG_WHITE_BUNDLE",
 		"emoji":          "🤍",
-		"desc":           "随机白色炮台碎片 ×100",
+		"desc":           "UI_SHOP_DESC_WHITE_BUNDLE",
 		"section":        "frags",
 		"price_type":     "gems",
 		"price_rm":       0.0,
@@ -65,76 +65,76 @@ const PACKAGES: Array = [
 	},
 	{
 		"id":             "ultimate_bundle",
-		"name":           "终极大礼包",
+		"name":           "UI_SHOP_PKG_ULTIMATE",
 		"emoji":          "👑",
-		"desc":           "直接满等级（Lv.100）\n全部炮台碎片 ×30",
+		"desc":           "UI_SHOP_DESC_ULTIMATE",
 		"section":        "frags",
 		"price_type":     "cash",
 		"price_rm":       88.8,
 		"price_gems":     0,
 		"purchase_limit": 1,
 		"rewards":        {"max_level": true, "all_tower_frags": 30},
-		"badge":          "终极特惠",
+		"badge":          "UI_SHOP_BADGE_ULTIMATE",
 	},
 	{
 		"id":                     "hero_frag_farm_guardian",
-		"name":                   "英雄礼包 · 农场守卫者",
+		"name":                   "UI_SHOP_PKG_HERO_GUARDIAN",
 		"emoji":                  "🗿",
-		"desc":                   "农场守卫者碎片 ×30",
+		"desc":                   "UI_SHOP_DESC_HERO_GUARDIAN",
 		"section":                "frags",
 		"price_type":             "gems",
 		"price_rm":               0.0,
 		"price_gems":             1000,
 		"purchase_limit":         0,
 		"rewards":                {"frags_fixed": {"farm_guardian": 30}},
-		"badge":          "英雄",
+		"badge":          "UI_SHOP_BADGE_HERO",
 		"require_level":  10,
 	},
 	# ─── 货币 ────────────────────────────────────────────────────────
 	{
 		"id":             "gold_cash_first",
-		"name":           "小量金币",
+		"name":           "UI_SHOP_PKG_GOLD_SMALL",
 		"emoji":          "💰",
-		"desc":           "金币 ×1500",
+		"desc":           "UI_SHOP_DESC_GOLD_1500",
 		"section":        "currency",
 		"price_type":     "cash",
 		"price_rm":       6.0,
 		"price_gems":     0,
 		"purchase_limit": 1,
 		"rewards":        {"gold": 1500},
-		"badge":          "首次特惠",
+		"badge":          "UI_SHOP_BADGE_FIRST_DEAL",
 	},
 	{
 		"id":             "gold_gems_first",
-		"name":           "小量金币",
+		"name":           "UI_SHOP_PKG_GOLD_SMALL",
 		"emoji":          "💰",
-		"desc":           "金币 ×1500",
+		"desc":           "UI_SHOP_DESC_GOLD_1500",
 		"section":        "currency",
 		"price_type":     "gems",
 		"price_rm":       0.0,
 		"price_gems":     100,
 		"purchase_limit": 1,
 		"rewards":        {"gold": 1500},
-		"badge":          "首次特惠",
+		"badge":          "UI_SHOP_BADGE_FIRST_DEAL",
 	},
 	{
 		"id":             "gems_cash_first",
-		"name":           "小量钻石",
+		"name":           "UI_SHOP_PKG_GEMS_SMALL",
 		"emoji":          "💎",
-		"desc":           "钻石 ×300",
+		"desc":           "UI_SHOP_DESC_GEMS_300",
 		"section":        "currency",
 		"price_type":     "cash",
 		"price_rm":       6.0,
 		"price_gems":     0,
 		"purchase_limit": 1,
 		"rewards":        {"gems": 300},
-		"badge":          "首次特惠",
+		"badge":          "UI_SHOP_BADGE_FIRST_DEAL",
 	},
 	{
 		"id":             "gold_cash_888",
-		"name":           "小量金币",
+		"name":           "UI_SHOP_PKG_GOLD_SMALL",
 		"emoji":          "💰",
-		"desc":           "金币 ×1500",
+		"desc":           "UI_SHOP_DESC_GOLD_1500",
 		"section":        "currency",
 		"price_type":     "cash",
 		"price_rm":       8.88,
@@ -145,9 +145,9 @@ const PACKAGES: Array = [
 	},
 	{
 		"id":             "gems_cash_888",
-		"name":           "小量钻石",
+		"name":           "UI_SHOP_PKG_GEMS_SMALL",
 		"emoji":          "💎",
-		"desc":           "钻石 ×300",
+		"desc":           "UI_SHOP_DESC_GEMS_300",
 		"section":        "currency",
 		"price_type":     "cash",
 		"price_rm":       8.88,
@@ -158,9 +158,9 @@ const PACKAGES: Array = [
 	},
 	{
 		"id":             "xp_small",
-		"name":           "小量经验",
+		"name":           "UI_SHOP_PKG_XP_SMALL",
 		"emoji":          "⭐",
-		"desc":           "经验 ×200",
+		"desc":           "UI_SHOP_DESC_XP_200",
 		"section":        "currency",
 		"price_type":     "cash",
 		"price_rm":       3.0,
@@ -171,9 +171,9 @@ const PACKAGES: Array = [
 	},
 	{
 		"id":             "xp_large",
-		"name":           "大量经验",
+		"name":           "UI_SHOP_PKG_XP_LARGE",
 		"emoji":          "🌟",
-		"desc":           "经验 ×1000",
+		"desc":           "UI_SHOP_DESC_XP_1000",
 		"section":        "currency",
 		"price_type":     "cash",
 		"price_rm":       8.88,
@@ -184,9 +184,9 @@ const PACKAGES: Array = [
 	},
 	{
 		"id":             "voucher_small",
-		"name":           "少量券",
+		"name":           "UI_SHOP_PKG_VOUCHER_SMALL",
 		"emoji":          "🎫",
-		"desc":           "券 ×10",
+		"desc":           "UI_SHOP_DESC_VOUCHER_10",
 		"section":        "currency",
 		"price_type":     "gems",
 		"price_rm":       0.0,
@@ -197,16 +197,16 @@ const PACKAGES: Array = [
 	},
 	{
 		"id":             "voucher_large",
-		"name":           "大量券",
+		"name":           "UI_SHOP_PKG_VOUCHER_LARGE",
 		"emoji":          "🎫",
-		"desc":           "券 ×110（额外赠送 10）",
+		"desc":           "UI_SHOP_DESC_VOUCHER_110",
 		"section":        "currency",
 		"price_type":     "gems",
 		"price_rm":       0.0,
 		"price_gems":     1000,
 		"purchase_limit": 0,
 		"rewards":        {"vouchers": 110},
-		"badge":          "超值",
+		"badge":          "UI_SHOP_BADGE_VALUE",
 	},
 ]
 
@@ -355,21 +355,21 @@ func _make_package_card(pkg: Dictionary) -> Control:
 	name_row.add_child(title_col)
 
 	var name_lbl := Label.new()
-	name_lbl.text = pkg.get("name", "礼包")
+	name_lbl.text = tr(pkg.get("name", ""))
 	name_lbl.add_theme_font_size_override("font_size", 30)
 	title_col.add_child(name_lbl)
 
 	var badge: String = pkg.get("badge", "")
 	if badge != "":
 		var badge_lbl := Label.new()
-		badge_lbl.text = badge
+		badge_lbl.text = tr(badge)
 		badge_lbl.add_theme_font_size_override("font_size", 20)
 		badge_lbl.modulate = Color(1.0, 0.3, 0.3)
 		title_col.add_child(badge_lbl)
 
 	# 内容描述
 	var desc_lbl := Label.new()
-	desc_lbl.text = pkg.get("desc", "")
+	desc_lbl.text = tr(pkg.get("desc", ""))
 	desc_lbl.add_theme_font_size_override("font_size", 24)
 	desc_lbl.modulate = Color(1, 1, 1, 0.65)
 	desc_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -538,7 +538,7 @@ func _add_random_frags(rarity: int, count: int) -> Resource:
 ## 随机碎片购买结果展示（带品质标签）
 func _show_frag_reward(tower_res: Resource, count: int) -> void:
 	var emoji: String  = str(tower_res.get("tower_emoji"))  if tower_res.get("tower_emoji")  else "🏆"
-	var dname: String  = str(tower_res.get("display_name")) if tower_res.get("display_name") else "炮台"
+	var dname: String  = str(tower_res.get("display_name")) if tower_res.get("display_name") else tr("UI_BATTLE_TAB_TOWER")
 	var rarity: int    = int(tower_res.get("rarity")) if tower_res.get("rarity") != null else 0
 	var rarity_labels: Array[String] = [tr("UI_RARITY_WHITE"), tr("UI_RARITY_GREEN"), tr("UI_RARITY_BLUE"), tr("UI_RARITY_PURPLE"), tr("UI_RARITY_ORANGE")]
 	var rarity_str: String = rarity_labels[clampi(rarity, 0, 4)]
