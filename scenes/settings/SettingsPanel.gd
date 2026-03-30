@@ -239,9 +239,10 @@ func _build_settings_ui() -> void:
 	if current_lang_idx < 0:
 		current_lang_idx = 0
 	_add_option_row(tr("UI_SETTINGS_LANGUAGE"), lang_options, current_lang_idx, func(idx: int):
+		if lang_locales[idx] == SettingsManager.language:
+			return  # 没变化
+		queue_free()  # 先关闭设置面板
 		SettingsManager.set_language(lang_locales[idx])
-		# 重建 UI 以应用新语言
-		_build_settings_ui()
 	)
 
 	# 版本
