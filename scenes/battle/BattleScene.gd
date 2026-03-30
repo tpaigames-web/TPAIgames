@@ -339,6 +339,7 @@ func _refresh_displays() -> void:
 	hp_label.text   = "%d" % GameManager.player_life
 	gold_label.text = "%d" % GameManager.gold
 	gem_label.text  = "%d" % UserManager.gems
+	wave_label.text = tr("UI_BATTLE_WAVE_FORMAT") % [0, wave_manager.get_total_waves()]
 
 
 # ══════════════════════════════════════════════════════════════════════════

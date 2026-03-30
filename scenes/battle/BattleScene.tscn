@@ -72,7 +72,7 @@ theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5)
 theme_override_constants/shadow_offset_y = 2
 theme_override_fonts/font = ExtResource("font_700")
 theme_override_font_sizes/font_size = 38
-text = "UI_BATTLE_WAVE_FORMAT"
+text = ""
 horizontal_alignment = 1
 vertical_alignment = 1
 
