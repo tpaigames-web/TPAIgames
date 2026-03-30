@@ -244,6 +244,9 @@ func _open_level_up_panel() -> void:
 	var panel = LEVEL_UP_PANEL.instantiate()
 	get_tree().root.add_child(panel)
 
+func _open_level_pass() -> void:
+	_open_level_up_panel()
+
 # ── 开发重置（发布前删除）────────────────────────────────────────────
 
 func _on_map_editor_btn_pressed() -> void:
