@@ -96,7 +96,10 @@ func _populate() -> void:
 	var status: int = CollectionManager.get_tower_status(_data.tower_id)
 	_fill_header(status)
 	effect_label.text = tr("UI_DETAIL_EFFECT") % (_data.effect_description if _data.effect_description != "" else tr("UI_DETAIL_EFFECT_TBD"))
-	_build_paths(status)
+	if _data.is_hero:
+		_build_hero_upgrade_grid(status)
+	else:
+		_build_paths(status)
 	_update_unlock_area(status)
 	tooltip_panel.hide()
 	confirm_overlay.hide()
@@ -117,18 +120,26 @@ func _fill_header(status: int) -> void:
 	frags_label.text = tr("UI_DETAIL_FRAGS") % [owned, _data.unlock_fragments]
 
 func _update_unlock_area(status: int) -> void:
+	# 老阿福（付费英雄）特殊处理
+	if _data.is_hero and _data.tower_id == "hero_farmer" and status != 2:
+		unlock_btn.text = "👴 " + tr("UI_SHOP_PKG_HERO_AFU")
+		unlock_btn.disabled = false
+		hint_label.text = "RM 18.88 / 500💎"
+		hint_label.show()
+		return
+
 	match status:
-		0:  # 等级不足（防御性处理，不应出现在此界面）
+		0:
 			unlock_btn.text     = tr("UI_DETAIL_LEVEL_INSUFFICIENT")
 			unlock_btn.disabled = true
 			hint_label.hide()
-		1:  # 等级已到，未用碎片解锁
+		1:
 			var owned: int = CollectionManager.get_fragments(_data.tower_id)
 			unlock_btn.text     = tr("UI_DETAIL_UNLOCK_BTN") % _data.unlock_fragments
 			unlock_btn.disabled = (owned < _data.unlock_fragments)
 			hint_label.text = tr("UI_DETAIL_UNLOCK_HINT")
 			hint_label.show()
-		2:  # 已解锁
+		2:
 			unlock_btn.text     = tr("UI_DETAIL_UNLOCKED")
 			unlock_btn.disabled = true
 			hint_label.hide()
@@ -146,6 +157,122 @@ func _build_paths(status: int) -> void:
 		return
 	for i: int in _data.upgrade_paths.size():
 		paths_vbox.add_child(_make_path_row(i, _data.upgrade_paths[i], status))
+
+
+## ── 英雄局外升级网格 ────────────────────────────────────────────────────
+func _build_hero_upgrade_grid(status: int) -> void:
+	for child in paths_vbox.get_children():
+		child.queue_free()
+
+	var hero_id: String = _data.tower_id
+	var hero_lv: int = CollectionManager.get_hero_level(hero_id)
+	var unlocked: Array = CollectionManager.get_hero_unlocked_options(hero_id)
+
+	# 标题：英雄等级
+	var title := Label.new()
+	title.text = "🏰 Lv.%d / 9" % hero_lv
+	title.add_theme_font_size_override("font_size", 32)
+	title.add_theme_color_override("font_color", Color(1.0, 0.85, 0.2))
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	paths_vbox.add_child(title)
+
+	paths_vbox.add_child(HSeparator.new())
+
+	# 获取升级数据（从 HeroSystem 的 HERO_TERRAIN_INFO）
+	var terrain_info: Dictionary = _get_hero_terrain_info(hero_id)
+	var upgrades_arr: Array = terrain_info.get("upgrades", [])
+
+	# 4 个方向，每个显示 A/B 两个选项
+	for dir_idx in range(mini(upgrades_arr.size(), 4)):
+		var dir_data: Dictionary = upgrades_arr[dir_idx]
+		var dir_num: int = dir_idx + 1
+
+		var dir_label := Label.new()
+		dir_label.text = "── 方向 %d ──" % dir_num
+		dir_label.add_theme_font_size_override("font_size", 24)
+		dir_label.add_theme_color_override("font_color", Color(0.7, 0.85, 1.0))
+		dir_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		paths_vbox.add_child(dir_label)
+
+		var row := HBoxContainer.new()
+		row.alignment = BoxContainer.ALIGNMENT_CENTER
+		row.add_theme_constant_override("separation", 16)
+
+		# 选项 A
+		var key_a: String = "%dA" % dir_num
+		row.add_child(_make_hero_option_btn(
+			hero_id, key_a, dir_data.get("a_icon", "🅰️"),
+			dir_data.get("a_name", "A"), dir_data.get("a_desc", ""),
+			key_a in unlocked, status == 2
+		))
+
+		# 选项 B
+		var key_b: String = "%dB" % dir_num
+		row.add_child(_make_hero_option_btn(
+			hero_id, key_b, dir_data.get("b_icon", "🅱️"),
+			dir_data.get("b_name", "B"), dir_data.get("b_desc", ""),
+			key_b in unlocked, status == 2
+		))
+
+		paths_vbox.add_child(row)
+
+	# 下一级费用
+	if hero_lv <= 8:
+		paths_vbox.add_child(HSeparator.new())
+		var cost: Dictionary = CollectionManager.get_hero_upgrade_cost(hero_id)
+		var cost_lbl := Label.new()
+		cost_lbl.text = "下一级：🧩 %d 碎片 + 🪙 %d 金" % [cost.get("frags", 0), cost.get("gold", 0)]
+		cost_lbl.add_theme_font_size_override("font_size", 24)
+		cost_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		cost_lbl.add_theme_color_override("font_color", Color(0.9, 0.8, 0.5))
+		paths_vbox.add_child(cost_lbl)
+
+
+func _make_hero_option_btn(hero_id: String, option_key: String, icon: String,
+		opt_name: String, opt_desc: String, is_unlocked: bool, hero_owned: bool) -> Control:
+	var btn := Button.new()
+	btn.custom_minimum_size = Vector2(320, 80)
+	btn.add_theme_font_size_override("font_size", 22)
+
+	if is_unlocked:
+		btn.text = "%s %s\n✅ 已解锁" % [icon, opt_name]
+		btn.disabled = true
+		btn.modulate = Color(0.4, 1.0, 0.5)
+	elif not hero_owned:
+		btn.text = "%s %s\n🔒 先解锁英雄" % [icon, opt_name]
+		btn.disabled = true
+		btn.modulate = Color(0.5, 0.5, 0.5)
+	else:
+		var cost: Dictionary = CollectionManager.get_hero_upgrade_cost(hero_id)
+		var frags: int = CollectionManager.get_fragments(hero_id)
+		var can_afford: bool = frags >= cost.get("frags", 999) and UserManager.gold >= cost.get("gold", 999)
+		btn.text = "%s %s\n🧩%d 🪙%d" % [icon, opt_name, cost.get("frags", 0), cost.get("gold", 0)]
+		btn.disabled = not can_afford
+		btn.modulate = Color(1.0, 0.85, 0.2) if can_afford else Color(0.6, 0.6, 0.6)
+		var captured_key: String = option_key
+		btn.pressed.connect(func():
+			if CollectionManager.unlock_hero_option(hero_id, captured_key):
+				_populate()  # 刷新面板
+		)
+
+	# 长按/点击显示描述
+	btn.tooltip_text = opt_desc
+	return btn
+
+
+func _get_hero_terrain_info(hero_id: String) -> Dictionary:
+	# 从 HeroSystem 的数据结构中获取（硬编码映射）
+	var terrain_file: String = "afu" if hero_id == "hero_farmer" else "guardian"
+	var terrain: HeroTerrainData = load("res://data/heroes/%s_terrain.tres" % terrain_file) as HeroTerrainData
+	if terrain == null:
+		return {}
+	var result: Dictionary = {"terrain_name": terrain.terrain_name, "upgrades": []}
+	for upg in terrain.upgrades:
+		result["upgrades"].append({
+			"a_icon": upg.option_a_icon, "a_name": upg.option_a_name, "a_desc": upg.option_a_desc,
+			"b_icon": upg.option_b_icon, "b_name": upg.option_b_name, "b_desc": upg.option_b_desc,
+		})
+	return result
 
 func _make_path_row(path_idx: int, path_data: TowerUpgradePath, status: int) -> Control:
 	var vbox := VBoxContainer.new()

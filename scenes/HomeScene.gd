@@ -92,6 +92,12 @@ func _ready() -> void:
 	$AdOfferBtn/HitArea.pressed.connect(_on_ad_offer_pressed)
 	_check_ad_reward()   # 启动时立即检查
 	_update_badges()     # 启动时立即检查通知
+	# 月卡每日领取
+	if UserManager.is_monthly_card_active():
+		if UserManager.claim_monthly_card_daily():
+			pass  # 静默领取（后续可加提示）
+	# 每日签到弹窗
+	call_deferred("_check_sign_in")
 
 
 func _process(delta: float) -> void:
@@ -408,3 +414,106 @@ func _open_settings() -> void:
 	var panel: SettingsPanel = SETTINGS_PANEL.instantiate()
 	get_tree().root.add_child(panel)
 	panel.open(false)
+
+
+## ── 每日签到 ────────────────────────────────────────────────────────
+
+func _check_sign_in() -> void:
+	if not UserManager.can_sign_in_today():
+		return
+	_show_sign_in_popup()
+
+
+func _show_sign_in_popup() -> void:
+	var overlay := ColorRect.new()
+	overlay.color = Color(0, 0, 0, 0.6)
+	overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
+	overlay.mouse_filter = Control.MOUSE_FILTER_STOP
+	add_child(overlay)
+
+	var panel := PanelContainer.new()
+	panel.set_anchors_preset(Control.PRESET_CENTER)
+	panel.custom_minimum_size = Vector2(800, 600)
+	panel.position = Vector2(-400, -300)
+	overlay.add_child(panel)
+
+	var vbox := VBoxContainer.new()
+	vbox.add_theme_constant_override("separation", 12)
+	panel.add_child(vbox)
+
+	# 标题
+	var title := Label.new()
+	title.text = "📅 每日签到"
+	title.add_theme_font_size_override("font_size", 40)
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title.add_theme_color_override("font_color", Color(1.0, 0.85, 0.2))
+	vbox.add_child(title)
+
+	# 连续签到天数
+	var streak := Label.new()
+	streak.text = "连续签到: %d 天" % UserManager.sign_in_streak
+	streak.add_theme_font_size_override("font_size", 28)
+	streak.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	vbox.add_child(streak)
+
+	vbox.add_child(HSeparator.new())
+
+	# 7天奖励网格
+	var grid := GridContainer.new()
+	grid.columns = 4
+	grid.add_theme_constant_override("h_separation", 10)
+	grid.add_theme_constant_override("v_separation", 10)
+	vbox.add_child(grid)
+
+	var reward_labels: Array[String] = [
+		"Day 1\n🪙 200", "Day 2\n💎 10", "Day 3\n🧩 ×5",
+		"Day 4\n🪙 300", "Day 5\n🎟️ ×1", "Day 6\n💎 20",
+		"Day 7\n📦 铁宝箱",
+	]
+
+	for i in range(7):
+		var card := PanelContainer.new()
+		card.custom_minimum_size = Vector2(170, 80)
+		var lbl := Label.new()
+		lbl.text = reward_labels[i]
+		lbl.add_theme_font_size_override("font_size", 22)
+		lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+
+		if i < UserManager.sign_in_day:
+			# 已领取
+			lbl.modulate = Color(0.5, 0.5, 0.5)
+			lbl.text += "\n✓"
+		elif i == UserManager.sign_in_day:
+			# 今日可领
+			lbl.add_theme_color_override("font_color", Color(1.0, 0.9, 0.3))
+		else:
+			lbl.modulate = Color(0.7, 0.7, 0.7)
+
+		card.add_child(lbl)
+		grid.add_child(card)
+
+	# 签到按钮
+	var sign_btn := Button.new()
+	sign_btn.text = "✅ 签到领取"
+	sign_btn.add_theme_font_size_override("font_size", 36)
+	sign_btn.custom_minimum_size = Vector2(0, 70)
+	sign_btn.pressed.connect(func():
+		var reward: Dictionary = UserManager.do_sign_in()
+		if not reward.is_empty():
+			sign_btn.text = "✅ 已签到！"
+			sign_btn.disabled = true
+			_update_player_info()
+			# 1.5 秒后关闭
+			await get_tree().create_timer(1.5).timeout
+			if is_instance_valid(overlay):
+				overlay.queue_free()
+	)
+	vbox.add_child(sign_btn)
+
+	# 关闭按钮
+	var close := Button.new()
+	close.text = "关闭"
+	close.add_theme_font_size_override("font_size", 28)
+	close.pressed.connect(func(): overlay.queue_free())
+	vbox.add_child(close)
