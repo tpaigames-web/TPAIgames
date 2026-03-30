@@ -363,11 +363,11 @@ func _load_enemies() -> void:
 		var res = load(path)
 		if res is EnemyData:
 			var data: EnemyData = res
-			_add_grid_item(data.display_emoji, data.display_name, func(): _show_enemy_detail(data))
+			_add_grid_item(data.display_emoji, TowerResourceRegistry.tr_enemy_name(data), func(): _show_enemy_detail(data))
 
 
 func _show_enemy_detail(data: EnemyData) -> void:
-	detail_name.text = "%s %s" % [data.display_emoji, data.display_name]
+	detail_name.text = "%s %s" % [data.display_emoji, TowerResourceRegistry.tr_enemy_name(data)]
 	var flags: Array[String] = []
 	if data.is_flying: flags.append(tr("UI_FLAG_FLYING"))
 	if data.is_elite: flags.append(tr("UI_FLAG_ELITE"))
@@ -396,11 +396,11 @@ func _load_towers() -> void:
 		if td.is_hero:
 			continue
 		var emoji := td.tower_emoji if td.tower_emoji != "" else "🏰"
-		_add_grid_item(emoji, td.display_name, func(): _show_tower_detail(td))
+		_add_grid_item(emoji, TowerResourceRegistry.tr_tower_name(td), func(): _show_tower_detail(td))
 
 
 func _show_tower_detail(td: TowerCollectionData) -> void:
-	detail_name.text = "%s %s" % [td.tower_emoji, td.display_name]
+	detail_name.text = "%s %s" % [td.tower_emoji, TowerResourceRegistry.tr_tower_name(td)]
 	var rarity_name: String = TowerResourceRegistry.RARITY_NAMES[td.rarity] if td.rarity < TowerResourceRegistry.RARITY_NAMES.size() else "?"
 	var atk_types: Array[String] = [tr("UI_ATK_GROUND"), tr("UI_ATK_AIR"), tr("UI_ATK_ALL")]
 	var atk_type: String = atk_types[td.attack_type] if td.attack_type < 3 else "?"
@@ -427,11 +427,11 @@ func _load_heroes() -> void:
 		if not td.is_hero:
 			continue
 		var emoji := td.tower_emoji if td.tower_emoji != "" else "🦸"
-		_add_grid_item(emoji, td.display_name, func(): _show_hero_detail(td))
+		_add_grid_item(emoji, TowerResourceRegistry.tr_tower_name(td), func(): _show_hero_detail(td))
 
 
 func _show_hero_detail(td: TowerCollectionData) -> void:
-	detail_name.text = "%s %s" % [td.tower_emoji, td.display_name]
+	detail_name.text = "%s %s" % [td.tower_emoji, TowerResourceRegistry.tr_tower_name(td)]
 	detail_desc.text = tr("UI_GUIDE_HERO_UNIT")
 	detail_stats.text = tr("UI_GUIDE_TOWER_STATS") % [
 		td.base_damage, td.attack_speed, td.attack_range, td.placement_cost

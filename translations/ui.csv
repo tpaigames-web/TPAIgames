@@ -399,3 +399,27 @@ UI_CHEST_CONFIRM_TITLE,确认购买,Confirm Purchase,Sahkan Pembelian
 UI_CHEST_CONFIRM_MSG,确认购买？,Confirm purchase?,Sahkan pembelian?
 UI_SAVE_FORMAT,%s 第%d波,%s Wave %d,%s Gelombang %d
 UI_LEVEL_ALL_CLAIMED,已全部领取,All Claimed,Semua Dituntut
+UI_GU_RARITY_COMMON,普通,Common,Biasa
+UI_GU_RARITY_RARE,稀有,Rare,Jarang
+UI_GU_RARITY_EPIC,史诗,Epic,Epik
+UI_GU_RARITY_LEGENDARY,传说,Legendary,Legenda
+UI_GU_EX_DMG,伤害：%.0f → %.0f,DMG: %.0f → %.0f,DMG: %.0f → %.0f
+UI_GU_EX_SPD,间隔：%.2fs → %.2fs,Interval: %.2fs → %.2fs,Selang: %.2fs → %.2fs
+UI_GU_EX_RNG,射程：%.0f → %.0f,Range: %.0f → %.0f,Jarak: %.0f → %.0f
+UI_GU_EX_COST,费用：%d → %d 🪙,Cost: %d → %d 🪙,Kos: %d → %d 🪙
+UI_GU_EX_SPD_PCT,攻速 +%.0f%%,ATK SPD +%.0f%%,Kelajuan +%.0f%%
+UI_GU_EX_COST_PCT,费用折扣 %.0f%%,Cost -%.0f%%,Diskaun Kos %.0f%%
+UI_GU_REQUIRES,⚠ 需要：%s,⚠ Requires: %s,⚠ Memerlukan: %s
+UI_GU_INSUFFICIENT,不足,Low,Rendah
+UI_DETAIL_RARITY,稀有度：%s,Rarity: %s,Jarang: %s
+UI_DETAIL_FRAGS,碎片：%d/%d,Fragments: %d/%d,Serpihan: %d/%d
+UI_DETAIL_EFFECT,效果：%s,Effect: %s,Kesan: %s
+UI_DETAIL_EFFECT_TBD,（效果待定）,(TBD),(TBD)
+UI_DETAIL_LEVEL_INSUFFICIENT,等级不足,Level Required,Tahap Tidak Mencukupi
+UI_DETAIL_UNLOCK_BTN,解锁（%d碎片）,Unlock (%d frags),Buka Kunci (%d serpihan)
+UI_DETAIL_UNLOCK_HINT,解锁炮台后方可升级方向,Unlock tower to access upgrade paths,Buka kunci menara untuk akses laluan naik taraf
+UI_DETAIL_UNLOCKED,✓ 已解锁,✓ Unlocked,✓ Dibuka
+UI_DETAIL_PATHS_TBD,（升级路径待定）,(Upgrade paths TBD),(Laluan naik taraf TBD)
+UI_HERO_UPGRADE_TITLE,%s %s 英雄升级 · 第 %d 波,%s %s Hero Upgrade · Wave %d,%s %s Naik Taraf Wira · Gelombang %d
+UI_LEVEL_PASS_TITLE,升级通行证,Level Pass,Pas Tahap
+UI_LEVEL_PASS_FREE,免费,Free,Percuma

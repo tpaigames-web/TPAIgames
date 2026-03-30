@@ -277,7 +277,7 @@ func _create_reveal_card(result: Dictionary, w: int, h: int) -> Control:
 
 	# 炮台名称（底部偏上）
 	var name_lbl := Label.new()
-	name_lbl.text = tower.display_name if tower else "—"
+	name_lbl.text = TowerResourceRegistry.tr_tower_name(tower) if tower else "—"
 	name_lbl.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
 	name_lbl.offset_top    = -76.0 if is_small else -96.0
 	name_lbl.offset_bottom = -34.0 if is_small else -44.0

@@ -127,7 +127,7 @@ func _show_sell_confirm(tower: Area2D, sell_val: int, is_hero: bool) -> void:
 
 	var msg := Label.new()
 	var td := tower.tower_data as TowerCollectionData
-	var name_str: String = td.display_name if td else tr("UI_BATTLE_TAB_TOWER")
+	var name_str: String = TowerResourceRegistry.tr_tower_name(td) if td else tr("UI_BATTLE_TAB_TOWER")
 	if is_hero:
 		msg.text = tr("UI_SELL_CONFIRM_HERO") % name_str
 	else:
@@ -192,7 +192,7 @@ func _populate_upgrade_panel(tower: Area2D) -> void:
 	back.pressed.connect(hide_upgrade_panel)
 	header.add_child(back)
 	var title := Label.new()
-	title.text = "%s %s" % [data.tower_emoji, data.display_name]
+	title.text = "%s %s" % [data.tower_emoji, TowerResourceRegistry.tr_tower_name(data)]
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	title.add_theme_font_size_override("font_size", 28)
 	header.add_child(title)
@@ -346,7 +346,7 @@ func _show_tower_info(tower: Area2D) -> void:
 	if is_instance_valid(_info_dialog):
 		_info_dialog.queue_free()
 	var dlg := AcceptDialog.new()
-	dlg.title = tr("UI_INFO_TITLE") % [data.tower_emoji, data.display_name]
+	dlg.title = tr("UI_INFO_TITLE") % [data.tower_emoji, TowerResourceRegistry.tr_tower_name(data)]
 	dlg.dialog_text = text
 	dlg.exclusive = false   # 不阻止其他 UI 交互
 	add_child(dlg)

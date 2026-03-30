@@ -176,7 +176,7 @@ func _make_frag_card(tower_res: Resource, qty: int, rarity: int, seed: int) -> P
 
 	# 炮台名称
 	var name_lbl := Label.new()
-	name_lbl.text = tower_res.display_name
+	name_lbl.text = TowerResourceRegistry.tr_tower_name(tower_res)
 	name_lbl.add_theme_font_size_override("font_size", 24)
 	name_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	vbox.add_child(name_lbl)
@@ -222,7 +222,7 @@ func _on_buy_pressed(tower_res: Resource, qty: int, price: int, btn: Button, key
 		return
 	_show_confirm(
 		tr("UI_FRAG_CONFIRM_BUY") % [
-			tower_res.tower_emoji, tower_res.display_name, qty, price
+			tower_res.tower_emoji, TowerResourceRegistry.tr_tower_name(tower_res), qty, price
 		],
 		func():
 			if UserManager.spend_gold(price):

@@ -176,7 +176,7 @@ func show_hero_panel(tower: Area2D, active_tower_ref: Area2D) -> Area2D:
 
 	var title := Label.new()
 	var _emoji: String = data.tower_emoji if data else "🗿"
-	var _dname: String = data.display_name if data else tr("UI_HERO_LABEL")
+	var _dname: String = TowerResourceRegistry.tr_tower_name(data) if data else tr("UI_HERO_LABEL")
 	title.text = "%s %s  %s" % [_emoji, _dname, tr("UI_HERO_LABEL")]
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	title.add_theme_font_size_override("font_size", 28)
@@ -316,7 +316,7 @@ func show_hero_upgrade_panel(wave_num: int, tier: int) -> void:
 	_hero_upgrade_panel = panel
 	_hud.add_child(panel)
 	panel.upgrade_chosen.connect(_on_hero_upgrade_chosen)
-	panel.setup(td.tower_id, tier, current_lv, upg_data, td.display_name, td.tower_emoji)
+	panel.setup(td.tower_id, tier, current_lv, upg_data, TowerResourceRegistry.tr_tower_name(td), td.tower_emoji)
 
 
 func _on_hero_upgrade_chosen(hero_id: String, tier: int, choice: String) -> void:

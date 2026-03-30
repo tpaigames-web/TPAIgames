@@ -538,7 +538,7 @@ func _add_random_frags(rarity: int, count: int) -> Resource:
 ## 随机碎片购买结果展示（带品质标签）
 func _show_frag_reward(tower_res: Resource, count: int) -> void:
 	var emoji: String  = str(tower_res.get("tower_emoji"))  if tower_res.get("tower_emoji")  else "🏆"
-	var dname: String  = str(tower_res.get("display_name")) if tower_res.get("display_name") else tr("UI_BATTLE_TAB_TOWER")
+	var dname: String  = TowerResourceRegistry.tr_tower_name(tower_res) if tower_res else tr("UI_BATTLE_TAB_TOWER")
 	var rarity: int    = int(tower_res.get("rarity")) if tower_res.get("rarity") != null else 0
 	var rarity_labels: Array[String] = [tr("UI_RARITY_WHITE"), tr("UI_RARITY_GREEN"), tr("UI_RARITY_BLUE"), tr("UI_RARITY_PURPLE"), tr("UI_RARITY_ORANGE")]
 	var rarity_str: String = rarity_labels[clampi(rarity, 0, 4)]

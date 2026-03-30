@@ -143,7 +143,7 @@ func instant_unlock_chest(slot_idx: int) -> void:
 
 func set_guest() -> void:
 	is_guest = true
-	player_name = "游客"
+	player_name = tr("UI_HOME_GUEST")
 
 func set_player_name(new_name: String) -> void:
 	var trimmed := new_name.strip_edges()

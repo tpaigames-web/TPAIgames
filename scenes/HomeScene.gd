@@ -309,7 +309,7 @@ func _on_ad_reward_complete() -> void:
 		if tower_pools.size() > 0:
 			var tower_id: String = tower_pools[randi() % tower_pools.size()]
 			var td = CollectionManager.get_tower_data(tower_id) if CollectionManager else null
-			var tower_name: String = td.display_name if td else tower_id
+			var tower_name: String = TowerResourceRegistry.tr_tower_name(td) if td else tower_id
 			CollectionManager.add_fragments(tower_id, frag_amount)
 			msg = tr("UI_REWARD_FRAGMENTS") % [tower_name, frag_amount]
 		else:

@@ -129,7 +129,7 @@ func _make_tower_card(data: TowerCollectionData) -> Control:
 		name_lbl.text = tr("UI_FACTORY_LV_UNLOCK") % data.level_required
 		name_lbl.modulate = Color(1, 1, 1, 0.45)
 	else:
-		name_lbl.text = data.display_name
+		name_lbl.text = TowerResourceRegistry.tr_tower_name(data)
 	name_lbl.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
 	name_lbl.offset_top    = -52.0
 	name_lbl.offset_bottom =  -4.0
@@ -279,7 +279,7 @@ func _rebuild_grid() -> void:
 				frag_lbl.text = tr("UI_FACTORY_FRAG_COUNT") % [owned, data.unlock_fragments]
 			if status_lbl:
 				var is_unlocked: bool = (status == 2)
-				status_lbl.text = tr("UI_FACTORY_UNLOCKED") if is_unlocked else "解锁"
+				status_lbl.text = tr("UI_FACTORY_UNLOCKED") if is_unlocked else tr("UI_FACTORY_UNLOCK")
 				status_lbl.modulate = Color(0.4, 1.0, 0.4) if is_unlocked else Color(1.0, 0.8, 0.2)
 		if not needs_full_rebuild:
 			_apply_filter()

@@ -34,7 +34,7 @@ func setup(hero_id: String, tier: int, current_level: int, upgrade_data: HeroUpg
 	_selected_choice = ""
 	_confirm_btn.disabled = true
 
-	_title_lbl.text = "%s %s 英雄升级 · 第 %d 波" % [hero_emoji, hero_name, upgrade_data.wave_trigger]
+	_title_lbl.text = tr("UI_HERO_UPGRADE_TITLE") % [hero_emoji, hero_name, upgrade_data.wave_trigger]
 	_sub_lbl.text   = "Lv.%d → Lv.%d" % [current_level, current_level + 1]
 
 	_build_cards(upgrade_data)

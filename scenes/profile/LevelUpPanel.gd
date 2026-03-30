@@ -41,6 +41,9 @@ var _deferred_build_lv: int = 0
 
 # ── 初始化 ────────────────────────────────────────────────────────────
 func _ready() -> void:
+	# Translate .tscn hardcoded text
+	$Card/TitleLabel.text = tr("UI_LEVEL_PASS_TITLE")
+	$Card/BottomBar/BottomBarContent/FreeLbl.text = tr("UI_LEVEL_PASS_FREE")
 	_load_tower_resources()
 	_build_rows()
 	_update_buy_pass_btn()

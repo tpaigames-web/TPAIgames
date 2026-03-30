@@ -106,7 +106,7 @@ func _make_tower_card(data: Resource) -> VBoxContainer:
 
 	# ── 炮台名称 ──
 	var name_lbl := Label.new()
-	name_lbl.text = data.display_name
+	name_lbl.text = TowerResourceRegistry.tr_tower_name(data)
 	name_lbl.add_theme_font_size_override("font_size", 22)
 	name_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	name_lbl.clip_text = true

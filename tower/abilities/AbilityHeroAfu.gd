@@ -144,7 +144,7 @@ func _refresh_terrain_buff() -> void:
 	# 施加新 buff
 	var hero_td := tower.tower_data as TowerCollectionData
 	var emoji: String = hero_td.tower_emoji if hero_td else "🧑‍🌾"
-	var hero_name: String = hero_td.display_name if hero_td else "老阿福"
+	var hero_name: String = TowerResourceRegistry.tr_tower_name(hero_td) if hero_td else tr("TOWER_HERO_FARMER")
 	for t in tower.get_nearby_towers(radius):
 		if not is_instance_valid(t):
 			continue

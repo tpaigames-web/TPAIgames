@@ -202,7 +202,7 @@ func _refresh_aura() -> void:
 	var my_id: int = tower.get_instance_id()
 	var td := tower.tower_data as TowerCollectionData
 	var emoji: String = td.tower_emoji if td else "🌻"
-	var tname: String = td.display_name if td else "向日葵"
+	var tname: String = TowerResourceRegistry.tr_tower_name(td) if td else tr("TOWER_SUNFLOWER")
 	for t in tower.get_nearby_towers(aura_rng):
 		if not is_instance_valid(t) or t == tower:
 			continue

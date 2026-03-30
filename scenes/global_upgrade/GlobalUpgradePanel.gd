@@ -28,7 +28,9 @@ const RARITY_TEXT_COLORS := [
 	Color(1.00, 0.72, 0.30),
 	Color(1.00, 0.30, 0.30),
 ]
-const RARITY_NAMES := ["普通", "稀有", "史诗", "传说"]
+## RARITY_NAMES built at runtime via _get_rarity_names() to support translation
+static func _get_rarity_names() -> Array[String]:
+	return [tr("UI_GU_RARITY_COMMON"), tr("UI_GU_RARITY_RARE"), tr("UI_GU_RARITY_EPIC"), tr("UI_GU_RARITY_LEGENDARY")]
 
 # ── 卡牌插图映射（upgrade_id → 图片路径）──
 const CARD_ART: Dictionary = {
@@ -49,23 +51,9 @@ var _no_epic_count: int = 0
 const PITY_THRESHOLD: int = 3
 var _wave_num: int = 0
 
-# ── 炮台 ID → 显示名称 ──
-const _TOWER_ID_NAMES := {
-	"farmer":        "农夫",
-	"farm_cannon":   "农场大炮",
-	"beehive":       "蜂巢",
-	"chili_flamer":  "辣椒喷火器",
-	"mushroom_bomb": "蘑菇炸弹",
-	"seed_shooter":  "播种机",
-	"watchtower":    "弓弩",
-	"windmill":      "风车",
-	"scarecrow":     "稻草人",
-	"water_pipe":    "水压管道",
-	"hero_farmer":   "老阿福",
-	"sunflower":     "向日葵",
-	"bear_trap":     "捕兽夹",
-	"barbed_wire":   "带刺铁网",
-}
+# ── 炮台 ID → 显示名称（通过翻译系统）──
+static func _get_tower_name(tid: String) -> String:
+	return TowerResourceRegistry.get_tower_display_name(tid, tid)
 
 const ICON_COL_W := 110
 
@@ -301,25 +289,25 @@ func _build_example_str(upg: GlobalUpgradeData) -> String:
 			match upg.stat_type:
 				GlobalUpgradeData.StatType.DAMAGE:
 					if td.base_damage > 0:
-						return "伤害：%.0f → %.0f" % [td.base_damage, td.base_damage * (1.0 + bonus)]
+						return tr("UI_GU_EX_DMG") % [td.base_damage, td.base_damage * (1.0 + bonus)]
 				GlobalUpgradeData.StatType.SPEED:
 					var ni := td.attack_speed / (1.0 + bonus)
-					return "间隔：%.2fs → %.2fs" % [td.attack_speed, ni]
+					return tr("UI_GU_EX_SPD") % [td.attack_speed, ni]
 				GlobalUpgradeData.StatType.RANGE:
-					return "射程：%.0f → %.0f" % [td.attack_range, td.attack_range * (1.0 + bonus)]
+					return tr("UI_GU_EX_RNG") % [td.attack_range, td.attack_range * (1.0 + bonus)]
 				GlobalUpgradeData.StatType.COST:
 					var nc := int(td.placement_cost * (1.0 - bonus))
-					return "费用：%d → %d 🪙" % [td.placement_cost, nc]
+					return tr("UI_GU_EX_COST") % [td.placement_cost, nc]
 
 	match upg.stat_type:
 		GlobalUpgradeData.StatType.DAMAGE:
-			return "伤害：100 → %.0f" % (100.0 * (1.0 + bonus))
+			return tr("UI_GU_EX_DMG") % [100, 100.0 * (1.0 + bonus)]
 		GlobalUpgradeData.StatType.SPEED:
-			return "攻速 +%.0f%%" % (bonus * 100.0)
+			return tr("UI_GU_EX_SPD_PCT") % (bonus * 100.0)
 		GlobalUpgradeData.StatType.RANGE:
-			return "射程：100 → %.0f" % (100.0 * (1.0 + bonus))
+			return tr("UI_GU_EX_RNG") % [100, 100.0 * (1.0 + bonus)]
 		GlobalUpgradeData.StatType.COST:
-			return "费用折扣 %.0f%%" % (bonus * 100.0)
+			return tr("UI_GU_EX_COST_PCT") % (bonus * 100.0)
 	return ""
 
 
@@ -410,7 +398,7 @@ func _create_card(upg: GlobalUpgradeData) -> Control:
 
 	# 稀有度（38px）
 	var rarity_lbl := Label.new()
-	rarity_lbl.text = "【%s】" % RARITY_NAMES[r]
+	rarity_lbl.text = "【%s】" % _get_rarity_names()[r]
 	rarity_lbl.position = Vector2(info_x, info_y + 68)
 	rarity_lbl.size = Vector2(info_w, 44)
 	rarity_lbl.add_theme_font_size_override("font_size", 38)
@@ -423,7 +411,7 @@ func _create_card(upg: GlobalUpgradeData) -> Control:
 	var desc_text := upg.description
 	if upg.upgrade_type == GlobalUpgradeData.UpgradeType.SYNERGY:
 		var nl := desc_text.find("\n")
-		if nl >= 0 and desc_text.begins_with("需要："):
+		if nl >= 0 and (desc_text.begins_with("需要：") or desc_text.begins_with("Requires:") or desc_text.begins_with("Memerlukan:")):
 			desc_text = desc_text.substr(nl + 1)
 
 	var desc_lbl := Label.new()
@@ -443,9 +431,9 @@ func _create_card(upg: GlobalUpgradeData) -> Control:
 	if upg.required_tower_ids.size() > 0:
 		var id_names: Array[String] = []
 		for tid in upg.required_tower_ids:
-			id_names.append(_TOWER_ID_NAMES.get(tid, tid))
+			id_names.append(_get_tower_name(tid))
 		var cond_lbl := Label.new()
-		cond_lbl.text = "⚠ 需要：" + "、".join(id_names)
+		cond_lbl.text = tr("UI_GU_REQUIRES") % ", ".join(id_names)
 		cond_lbl.position = Vector2(info_x, CARD_H + 10)
 		cond_lbl.size = Vector2(info_w, 80)
 		cond_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD
@@ -620,6 +608,6 @@ func _update_refresh_btn() -> void:
 		_refresh_btn.disabled = false
 	else:
 		_cost_icon.texture = coin_tex
-		_cost_label.text = "不足"
+		_cost_label.text = tr("UI_GU_INSUFFICIENT")
 		_refresh_btn.modulate = Color(0.5, 0.5, 0.5)
 		_refresh_btn.disabled = true

@@ -15,5 +15,5 @@ func _ready() -> void:
 func setup(save_day: int, save_wave: int, total_waves: int, is_challenge: bool) -> void:
 	if not is_inside_tree():
 		await ready
-	var mode_str: String = "挑战" if is_challenge else "普通"
+	var mode_str: String = tr("UI_MODE_CHALLENGE_LABEL") if is_challenge else tr("UI_MODE_NORMAL_LABEL")
 	info_label.text = "%s %d/%d ▶" % [mode_str, save_wave, total_waves]

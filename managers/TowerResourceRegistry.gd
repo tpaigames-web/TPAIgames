@@ -33,6 +33,55 @@ const RARITY_COLORS: Array[Color] = [
 ]
 const RARITY_NAMES: Array[String] = ["白", "绿", "蓝", "紫", "橙"]
 
+# ── 翻译辅助 ─────────────────────────────────────────────────────────
+## 通过 game_data.csv 的 TOWER_xxx 键获取炮台显示名称
+## 若翻译键不存在则回退到 data.display_name
+static func get_tower_display_name(tower_id: String, fallback: String = "") -> String:
+	var key := "TOWER_" + tower_id.to_upper()
+	var result := tr(key)
+	if result != key:
+		return result
+	return fallback
+
+## 通过 game_data.csv 的 ENEMY_xxx 键获取敌人显示名称
+## 若翻译键不存在则回退到 data.display_name
+static func get_enemy_display_name(enemy_id: String, fallback: String = "") -> String:
+	var key := "ENEMY_" + enemy_id.to_upper()
+	var result := tr(key)
+	if result != key:
+		return result
+	return fallback
+
+## 通过 game_data.csv 的 ITEM_xxx 键获取道具显示名称
+static func get_item_display_name(item_id: String, fallback: String = "") -> String:
+	var key := "ITEM_" + item_id.to_upper()
+	var result := tr(key)
+	if result != key:
+		return result
+	return fallback
+
+## 通用显示名称：优先用翻译键，否则用 data.display_name
+static func tr_tower_name(data: Resource) -> String:
+	var tid: String = data.get("tower_id") as String
+	var dname: String = data.get("display_name") as String
+	if tid == null or tid == "":
+		return dname if dname else ""
+	return get_tower_display_name(tid, dname if dname else tid)
+
+static func tr_item_name(data: Resource) -> String:
+	var iid: String = data.get("item_id") as String
+	var dname: String = data.get("display_name") as String
+	if iid == null or iid == "":
+		return dname if dname else ""
+	return get_item_display_name(iid, dname if dname else iid)
+
+static func tr_enemy_name(data: Resource) -> String:
+	var eid: String = data.get("enemy_id") as String
+	var dname: String = data.get("display_name") as String
+	if eid == null or eid == "":
+		return dname if dname else ""
+	return get_enemy_display_name(eid, dname if dname else eid)
+
 # ── 缓存 ──────────────────────────────────────────────────────────────
 var _all_resources: Array = []
 var _by_rarity: Dictionary = {}

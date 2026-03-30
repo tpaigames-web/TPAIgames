@@ -2,7 +2,9 @@ extends CanvasLayer
 
 # ── 常量 ─────────────────────────────────────────────────────────────
 # 稀有度常量引用（集中定义于 TowerResourceRegistry Autoload）
-const ATTACK_TYPE_NAMES: Array[String] = ["地面", "空中", "全部"]
+## Attack type names resolved at runtime via tr()
+static func _get_atk_type_names() -> Array[String]:
+	return [tr("UI_ATK_GROUND"), tr("UI_ATK_AIR"), tr("UI_ATK_ALL")]
 
 const COLOR_OWNED:     Color = Color(1.0,  0.75, 0.1,  1.0)   # 金色：已解锁
 const COLOR_AVAILABLE: Color = Color(0.2,  0.9,  0.3,  1.0)   # 绿色：可升级（资源充足）
@@ -93,7 +95,7 @@ func _on_confirm_no() -> void:
 func _populate() -> void:
 	var status: int = CollectionManager.get_tower_status(_data.tower_id)
 	_fill_header(status)
-	effect_label.text = "效果：" + (_data.effect_description if _data.effect_description != "" else "（效果待定）")
+	effect_label.text = tr("UI_DETAIL_EFFECT") % (_data.effect_description if _data.effect_description != "" else tr("UI_DETAIL_EFFECT_TBD"))
 	_build_paths(status)
 	_update_unlock_area(status)
 	tooltip_panel.hide()
@@ -105,29 +107,29 @@ func _fill_header(status: int) -> void:
 		icon_tex.texture = _data.collection_texture
 	elif _data.icon_texture:
 		icon_tex.texture = _data.icon_texture
-	tower_name_lbl.text = _data.display_name
-	rarity_lbl.text     = "稀有度：" + TowerResourceRegistry.RARITY_NAMES[_data.rarity]
+	tower_name_lbl.text = TowerResourceRegistry.tr_tower_name(_data)
+	rarity_lbl.text     = tr("UI_DETAIL_RARITY") % TowerResourceRegistry.RARITY_NAMES[_data.rarity]
 	rarity_lbl.modulate = TowerResourceRegistry.RARITY_COLORS[_data.rarity]
 	dmg_val.text = "%.0f" % _data.base_damage  if _data.base_damage  > 0.0 else "—"
 	spd_val.text = "%.1f" % _data.attack_speed if _data.attack_speed > 0.0 else "—"
 	rng_val.text = "%.0f" % _data.attack_range if _data.attack_range > 0.0 else "—"
 	var owned: int = CollectionManager.get_fragments(_data.tower_id)
-	frags_label.text = "碎片：%d/%d" % [owned, _data.unlock_fragments]
+	frags_label.text = tr("UI_DETAIL_FRAGS") % [owned, _data.unlock_fragments]
 
 func _update_unlock_area(status: int) -> void:
 	match status:
 		0:  # 等级不足（防御性处理，不应出现在此界面）
-			unlock_btn.text     = "等级不足"
+			unlock_btn.text     = tr("UI_DETAIL_LEVEL_INSUFFICIENT")
 			unlock_btn.disabled = true
 			hint_label.hide()
 		1:  # 等级已到，未用碎片解锁
 			var owned: int = CollectionManager.get_fragments(_data.tower_id)
-			unlock_btn.text     = "解锁（%d碎片）" % _data.unlock_fragments
+			unlock_btn.text     = tr("UI_DETAIL_UNLOCK_BTN") % _data.unlock_fragments
 			unlock_btn.disabled = (owned < _data.unlock_fragments)
-			hint_label.text = "解锁炮台后方可升级方向"
+			hint_label.text = tr("UI_DETAIL_UNLOCK_HINT")
 			hint_label.show()
 		2:  # 已解锁
-			unlock_btn.text     = "✓ 已解锁"
+			unlock_btn.text     = tr("UI_DETAIL_UNLOCKED")
 			unlock_btn.disabled = true
 			hint_label.hide()
 
@@ -137,7 +139,7 @@ func _build_paths(status: int) -> void:
 		child.queue_free()
 	if _data.upgrade_paths.is_empty():
 		var placeholder := Label.new()
-		placeholder.text = "（升级路径待定）"
+		placeholder.text = tr("UI_DETAIL_PATHS_TBD")
 		placeholder.add_theme_font_size_override("font_size", 24)
 		placeholder.modulate = Color(1, 1, 1, 0.45)
 		paths_vbox.add_child(placeholder)
@@ -265,7 +267,7 @@ func _make_tier_btn(path_idx: int, tier_idx: int, path_data: TowerUpgradePath,
 	container.add_child(cost_lbl)
 
 	# ── 点击回调 ──────────────────────────────────────────────────────
-	var effect_text: String = path_data.tier_effects[tier_idx] if tier_idx < path_data.tier_effects.size() else "（效果待定）"
+	var effect_text: String = path_data.tier_effects[tier_idx] if tier_idx < path_data.tier_effects.size() else tr("UI_DETAIL_EFFECT_TBD")
 	# 提前捕获本次循环的不可变值（避免闭包捕获可变引用）
 	var captured_t_name: String     = t_name
 	var captured_effect: String     = effect_text

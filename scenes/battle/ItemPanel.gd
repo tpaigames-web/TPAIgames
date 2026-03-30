@@ -42,7 +42,7 @@ func build_cards() -> void:
 
 		# 名称
 		var name_lbl := Label.new()
-		name_lbl.text = data.display_name
+		name_lbl.text = TowerResourceRegistry.tr_item_name(data)
 		name_lbl.add_theme_font_size_override("font_size", 22)
 		name_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		card.add_child(name_lbl)
@@ -112,7 +112,7 @@ func _show_item_purchase_confirm(data: ItemData) -> void:
 	var dlg := ConfirmationDialog.new()
 	dlg.title = tr("UI_ITEM_PURCHASE_TITLE")
 	dlg.dialog_text = tr("UI_ITEM_PURCHASE_MSG") % [
-		data.emoji, data.display_name, data.gem_cost, UserManager.gems]
+		data.emoji, TowerResourceRegistry.tr_item_name(data), data.gem_cost, UserManager.gems]
 	dlg.ok_button_text = tr("UI_ITEM_PURCHASE_CONFIRM")
 	dlg.cancel_button_text = tr("UI_DIALOG_CANCEL")
 	dlg.confirmed.connect(func():
