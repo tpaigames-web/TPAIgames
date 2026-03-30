@@ -38,6 +38,20 @@ const PACKAGES: Array = [
 		"badge":          "",
 	},
 	{
+		"id":             "monthly_card_voucher",
+		"name":           "UI_SHOP_PKG_MONTHLY_V",
+		"emoji":          "📅",
+		"desc":           "UI_SHOP_DESC_MONTHLY_V",
+		"section":        "special",
+		"price_type":     "voucher",
+		"price_rm":       0.0,
+		"price_gems":     0,
+		"price_vouchers": 100,
+		"purchase_limit": 0,
+		"rewards":        {"monthly_card": true, "gems": 100},
+		"badge":          "",
+	},
+	{
 		"id":             "ad_free",
 		"name":           "UI_SHOP_PKG_AD_FREE",
 		"emoji":          "🚫",
@@ -515,10 +529,17 @@ func _update_count_label(lbl: Label, bought: int, limit: int) -> void:
 
 # ── 购买响应 ──────────────────────────────────────────────────────────
 func _on_buy_pressed(pkg: Dictionary) -> void:
-	if confirm_overlay.visible:   # 确认弹窗已显示，防止重复触发
+	if confirm_overlay.visible:
 		return
-	if pkg.get("price_type", "gems") == "cash":
+	# 月卡激活中不允许重复购买
+	if pkg.get("rewards", {}).get("monthly_card", false) and UserManager.is_monthly_card_active():
+		_show_alert("月卡仍在有效期内，无需重复购买")
+		return
+	var price_type: String = pkg.get("price_type", "gems")
+	if price_type == "cash":
 		_buy_cash(pkg)
+	elif price_type == "voucher":
+		_buy_voucher(pkg)
 	else:
 		_buy_gems(pkg)
 
@@ -551,6 +572,20 @@ func _buy_gems(pkg: Dictionary) -> void:
 			_apply_rewards(pkg)
 	)
 
+## 券购买
+func _buy_voucher(pkg: Dictionary) -> void:
+	var cost: int = pkg.get("price_vouchers", 0)
+	if UserManager.vouchers < cost:
+		_show_alert("券不足！\n需要 🎫 %d（当前 🎫 %d）" % [cost, UserManager.vouchers])
+		return
+	_show_confirm(
+		"确认使用 🎫 %d 券购买？" % cost,
+		func():
+			UserManager.vouchers -= cost
+			UserManager.currency_changed.emit()
+			_apply_rewards(pkg)
+	)
+
 # ── 奖励发放 ──────────────────────────────────────────────────────────
 func _apply_rewards(pkg: Dictionary) -> void:
 	var r: Dictionary = pkg.get("rewards", {})
@@ -569,9 +604,16 @@ func _apply_rewards(pkg: Dictionary) -> void:
 	# 试用券
 	if r.get("trial_tickets", 0) > 0:
 		UserManager.add_item("trial_ticket", r["trial_tickets"])
-	# 月卡
+	# 月卡（购买后通知 HomeScene 刷新左侧按钮）
 	if r.get("monthly_card", false):
 		UserManager.activate_monthly_card()
+		# 通知 HomeScene 刷新（通过 scene tree 查找）
+		var home = get_tree().get_first_node_in_group("home_scene")
+		if home and home.has_method("_setup_left_side_buttons"):
+			# 清除旧按钮重建
+			if home.left_side_buttons and is_instance_valid(home.left_side_buttons):
+				home.left_side_buttons.queue_free()
+			home.call_deferred("_setup_left_side_buttons")
 	# 免广告
 	if r.get("ad_free", false):
 		UserManager.ad_free = true
