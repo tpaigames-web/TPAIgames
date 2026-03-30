@@ -13,6 +13,7 @@ const BASE_TOWERS: Array[String] = [
 	"scarecrow", "beehive",                                  # 白色(0)
 	"barbed_wire", "bear_trap", "farm_cannon", "water_pipe", # 绿色(1)
 	"mushroom_bomb", "seed_shooter", "windmill",             # 蓝色(2)
+	"farm_guardian",                                          # 橙色(4) 英雄·免费赠送
 ]
 
 ## 炮台资源路径（用于延迟加载 level_required）
@@ -46,6 +47,16 @@ var unlocked_towers: Array[String] = []
 ## 升级路径进度：tower_id → [tier0, tier1, tier2, tier3]（每条路径已解锁层数 0~5）
 var path_levels: Dictionary = {}
 
+## 英雄局外升级：hero_id → Array of unlocked option keys
+## 格式：["1A", "1B", "2A", "3B", ...] 表示已解锁的方向
+## 4方向×2选项 = 8个可能，1A=方向1选项A，2B=方向2选项B
+## 英雄等级 = 已解锁数量 + 1（最高 Lv.9 = 8个全解锁+初始）
+var hero_upgrades: Dictionary = {}
+
+## 英雄升级碎片花费表（Lv.2→Lv.8 共7级）
+const HERO_UPGRADE_FRAG_COSTS: Array[int] = [15, 25, 35, 45, 55, 70, 90]
+const HERO_UPGRADE_GOLD_COSTS: Array[int] = [500, 1000, 1500, 2000, 3000, 4000, 5000]
+
 ## 延迟加载的等级要求缓存：tower_id → level_required
 var _tower_level_reqs: Dictionary = {}
 
@@ -57,6 +68,11 @@ func _ready() -> void:
 	for tower_id in BASE_TOWERS:
 		if tower_id not in unlocked_towers:
 			unlocked_towers.append(tower_id)
+	# 农场守卫者免费送第一个升级方向（1A=铁壁嘲讽）
+	if "farm_guardian" not in hero_upgrades:
+		hero_upgrades["farm_guardian"] = ["1A"]
+	elif "1A" not in hero_upgrades["farm_guardian"]:
+		hero_upgrades["farm_guardian"].append("1A")
 
 ## 懒加载所有炮台的 level_required（首次调用时读取资源，之后幂等）
 func _ensure_reqs_loaded() -> void:
@@ -163,6 +179,64 @@ func unlock_path_tier(tower_id: String, path_idx: int) -> bool:
 	path_levels[tower_id] = levels
 	return true
 
+
+# ── 英雄局外升级 ──────────────────────────────────────────────────────────────
+
+## 获取英雄当前等级（1 + 已解锁选项数）
+func get_hero_level(hero_id: String) -> int:
+	var unlocked: Array = hero_upgrades.get(hero_id, [])
+	return unlocked.size() + 1
+
+## 获取英雄已解锁的选项列表
+func get_hero_unlocked_options(hero_id: String) -> Array:
+	return hero_upgrades.get(hero_id, [])
+
+## 检查某个选项是否已解锁（如 "1A", "2B"）
+func is_hero_option_unlocked(hero_id: String, option_key: String) -> bool:
+	return option_key in hero_upgrades.get(hero_id, [])
+
+## 解锁英雄升级选项（消耗碎片+金币）
+func unlock_hero_option(hero_id: String, option_key: String) -> bool:
+	if hero_id not in unlocked_towers:
+		return false
+	if is_hero_option_unlocked(hero_id, option_key):
+		return false
+	var current_lv: int = get_hero_level(hero_id)
+	if current_lv > 8:
+		return false  # 已满级
+	var cost_idx: int = current_lv - 1  # Lv.1→Lv.2 = index 0
+	if cost_idx < 0 or cost_idx >= HERO_UPGRADE_FRAG_COSTS.size():
+		return false
+	var frag_cost: int = HERO_UPGRADE_FRAG_COSTS[cost_idx]
+	var gold_cost: int = HERO_UPGRADE_GOLD_COSTS[cost_idx]
+	# 检查资源
+	if get_fragments(hero_id) < frag_cost:
+		return false
+	if UserManager.gold < gold_cost:
+		return false
+	# 扣除资源
+	spend_fragments(hero_id, frag_cost)
+	UserManager.spend_gold(gold_cost)
+	# 记录解锁
+	if hero_id not in hero_upgrades:
+		hero_upgrades[hero_id] = []
+	hero_upgrades[hero_id].append(option_key)
+	collection_changed.emit()
+	SaveManager.save()
+	return true
+
+## 获取下一级升级所需碎片和金币
+func get_hero_upgrade_cost(hero_id: String) -> Dictionary:
+	var current_lv: int = get_hero_level(hero_id)
+	var cost_idx: int = current_lv - 1
+	if cost_idx < 0 or cost_idx >= HERO_UPGRADE_FRAG_COSTS.size():
+		return {"frags": 0, "gold": 0}
+	return {
+		"frags": HERO_UPGRADE_FRAG_COSTS[cost_idx],
+		"gold": HERO_UPGRADE_GOLD_COSTS[cost_idx],
+	}
+
+
 # ── 存档序列化 ────────────────────────────────────────────────────────────────
 
 func get_save_data() -> Dictionary:
@@ -172,6 +246,7 @@ func get_save_data() -> Dictionary:
 		"tower_levels":    tower_levels,
 		"unlocked_towers": unlocked_towers,
 		"path_levels":     path_levels,
+		"hero_upgrades":   hero_upgrades,
 	}
 
 func load_save_data(dict: Dictionary) -> void:
@@ -211,6 +286,18 @@ func load_save_data(dict: Dictionary) -> void:
 				path_levels[str(tid)] = int_arr
 			else:
 				push_warning("CollectionManager: path_levels[%s] 不是 Array，已跳过" % tid)
+
+	# hero_upgrades：key=hero_id, value=Array of String（如 ["1A","2B"]）
+	var hu_ = dict.get("hero_upgrades", {})
+	if hu_ is Dictionary:
+		hero_upgrades = {}
+		for hid in hu_.keys():
+			var val = hu_[hid]
+			if val is Array:
+				var str_arr: Array = []
+				for v in val:
+					str_arr.append(str(v))
+				hero_upgrades[str(hid)] = str_arr
 
 ## 游戏内判断：某条路径在当前 BTD 规则下是否还允许继续升级
 ## BTD 规则：若其他任意路径已到 3 层，本路径上限为 2 层；最多同时升级 2 条路径

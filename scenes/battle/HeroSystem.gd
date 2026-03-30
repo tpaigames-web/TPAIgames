@@ -300,6 +300,26 @@ func show_hero_upgrade_panel(wave_num: int, tier: int) -> void:
 	var upg_dict: Dictionary = upgrades_arr[tier - 1]
 	var current_lv: int = _hero_tower.hero_chosen_upgrades.size() + 1
 
+	# 检查局外已解锁的选项
+	var key_a: String = "%dA" % tier
+	var key_b: String = "%dB" % tier
+	var a_unlocked: bool = CollectionManager.is_hero_option_unlocked(td.tower_id, key_a)
+	var b_unlocked: bool = CollectionManager.is_hero_option_unlocked(td.tower_id, key_b)
+
+	# 两个都没解锁 → 跳过此层级
+	if not a_unlocked and not b_unlocked:
+		get_tree().paused = false
+		return
+
+	# 只解锁了一个 → 自动应用（不弹窗）
+	if a_unlocked and not b_unlocked:
+		_on_hero_upgrade_chosen(td.tower_id, tier, "A")
+		return
+	if b_unlocked and not a_unlocked:
+		_on_hero_upgrade_chosen(td.tower_id, tier, "B")
+		return
+
+	# 两个都解锁 → 正常弹出 2 选 1
 	var upg_data := HeroUpgradeData.new()
 	upg_data.tier = tier
 	upg_data.wave_trigger = wave_num
