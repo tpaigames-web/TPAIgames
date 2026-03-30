@@ -248,28 +248,56 @@ func _update_claim_btn(btn: Button, lv: int, is_paid: bool) -> void:
 # ── 程序化奖励生成 ────────────────────────────────────────────────────
 func _get_reward(lv: int, is_paid: bool) -> Dictionary:
 	var r: Dictionary = {}
-	if lv % 25 == 0:        # 超级里程碑
-		r["gold"] = lv * 50
-		r["gems"] = lv * 10
-		if lv >= 50:
-			r["frags_rarity"] = 3
-			r["frags_count"]  = 3
-	elif lv % 10 == 0:      # 主要里程碑
-		r["gold"] = lv * 35
-		r["gems"] = lv * 7
-		if lv >= 40:
-			r["frags_rarity"] = 2
-			r["frags_count"]  = 2
-	elif lv % 5 == 0:       # 次里程碑
-		r["gold"] = lv * 20
-		r["gems"] = lv * 4
-	elif lv % 2 == 0:       # 偶数普通
-		r["gems"] = 20 + lv * 2
-	else:                   # 奇数普通
-		r["gold"] = 100 + lv * 8
 
+	# ── 特殊里程碑（按设计文档）──────────────────────────────────────
+	# 试用券里程碑：Lv.3, 8, 15, 25, 50
+	if lv in [3, 8]:
+		r["trial_tickets"] = 2 if is_paid else 1
+	elif lv == 15:
+		r["trial_tickets"] = 3 if is_paid else 2
+		r["frags_tower"] = "farmer"
+		r["frags_count"] = 50 if is_paid else 30
+	elif lv == 25:
+		r["trial_tickets"] = 3 if is_paid else 2
+		r["frags_rarity"] = 3
+		r["frags_count"] = 50 if is_paid else 30
+	elif lv == 50:
+		r["trial_tickets"] = 5 if is_paid else 3
+		r["frags_tower"] = "watchtower"
+		r["frags_count"] = 120 if is_paid else 60
+	elif lv == 75:
+		r["frags_tower"] = "hero_farmer"
+		r["frags_count"] = 120 if is_paid else 60
+	elif lv == 100:
+		r["gold"] = 8000 if is_paid else 5000
+		r["gems"] = 800 if is_paid else 500
+		r["frags_rarity"] = 3 if is_paid else 2
+		r["frags_count"] = 50
+
+	# ── 常规里程碑 ──────────────────────────────────────────────────
+	if r.is_empty():
+		if lv % 25 == 0:        # 超级里程碑
+			r["gold"] = lv * 50
+			r["gems"] = lv * 10
+			if lv >= 50:
+				r["frags_rarity"] = 3
+				r["frags_count"]  = 3
+		elif lv % 10 == 0:      # 主要里程碑
+			r["gold"] = lv * 35
+			r["gems"] = lv * 7
+			if lv >= 30:
+				r["frags_rarity"] = 2
+				r["frags_count"]  = 2
+		elif lv % 5 == 0:       # 次里程碑
+			r["gold"] = lv * 20
+			r["gems"] = lv * 4
+		elif lv % 2 == 0:       # 偶数普通
+			r["gems"] = 20 + lv * 2
+		else:                   # 奇数普通
+			r["gold"] = 100 + lv * 8
+
+	# ── 付费加成 ×1.8 ──────────────────────────────────────────────
 	if is_paid:
-		# 付费奖励数值 ×1.8
 		if "gold" in r:
 			r["gold"] = int(r["gold"] * 1.8)
 		if "gems" in r:
@@ -331,7 +359,16 @@ func _apply_reward(reward: Dictionary) -> void:
 		UserManager.add_gold(reward["gold"])
 	if reward.get("gems", 0) > 0:
 		UserManager.add_gems(reward["gems"])
-	if "frags_rarity" in reward:
+	# 试用券
+	if reward.get("trial_tickets", 0) > 0:
+		UserManager.add_item("trial_ticket", reward["trial_tickets"])
+	# 指定炮台碎片
+	if "frags_tower" in reward:
+		var tid: String = reward["frags_tower"]
+		var count: int = reward.get("frags_count", 1)
+		CollectionManager.add_fragments(tid, count)
+	# 随机稀有度碎片
+	elif "frags_rarity" in reward:
 		var rarity: int = reward["frags_rarity"]
 		var count: int  = reward.get("frags_count", 1)
 		_add_random_frags(rarity, count)

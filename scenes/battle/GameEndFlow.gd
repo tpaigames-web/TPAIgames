@@ -168,14 +168,11 @@ func _offer_double_reward() -> void:
 
 func _finish_victory(double_reward: bool) -> void:
 	var carry_gold := GameManager.get_carry_out_gold()
-	var xp_reward  := 200
 	if double_reward:
 		carry_gold = min(carry_gold * 2, GameManager.MAX_CARRY_OUT_GOLD * 2)
-		xp_reward  = 400
-	UserManager.add_xp(xp_reward)
 	UserManager.add_gold(carry_gold)
-	SaveManager.save()
 
+	# 星级评价
 	var hp := GameManager.player_life
 	var stars: String
 	var star_desc: String
@@ -186,6 +183,12 @@ func _finish_victory(double_reward: bool) -> void:
 		star_count = 2; stars = "★★☆"; star_desc = tr("UI_STAR_GOOD")
 	else:
 		star_count = 1; stars = "★☆☆"; star_desc = tr("UI_STAR_CLOSE")
+
+	# XP 奖励 = 星级×100 + Day×10（双倍广告则×2）
+	var xp_reward: int = star_count * 100 + GameManager.current_day * 10
+	if double_reward:
+		xp_reward *= 2
+	UserManager.add_xp(xp_reward)
 
 	var day_num: int = GameManager.current_day
 	var star_key := "day%d_challenge" % day_num if GameManager.challenge_mode else "day%d" % day_num

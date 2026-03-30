@@ -17,7 +17,7 @@ var vouchers: int = 0
 
 ## 经验值
 var xp: int = 0
-var xp_to_next_level: int = 1000   # 首级需 1000 XP；公式：1000 + (level-1)*500
+var xp_to_next_level: int = 500   # 首级需 500 XP；公式：500 + (level-1)*200
 
 ## 付费通行证（RM 8.88 永久激活）
 var has_paid_pass: bool = false
@@ -206,7 +206,7 @@ func add_xp(amount: int) -> void:
 ## 内部升级处理（每次只升一级，循环调用）
 func _level_up() -> void:
 	level += 1
-	xp_to_next_level = 1000 + (level - 1) * 500
+	xp_to_next_level = 500 + (level - 1) * 200
 	level_changed.emit(level)
 
 ## 记录已领取的免费奖励等级

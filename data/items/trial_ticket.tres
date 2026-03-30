@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/item_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+item_id = "trial_ticket"
+display_name = "试用券"
+emoji = "🎟️"
+description = "使用后在本局战斗中临时解锁一个紫/橙炮台"
+gem_cost = 50
+effect_type = "trial_tower"
+effect_value = 0.0
+blast_radius = 0.0
+place_on_path = false
