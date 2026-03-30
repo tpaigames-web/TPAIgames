@@ -39,12 +39,6 @@ window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 window/handheld/orientation=1
 
-[internationalization]
-
-locale/translations=PackedStringArray("res://translations/ui.en.translation", "res://translations/ui.zh.translation", "res://translations/ui.ms.translation", "res://translations/game_data.en.translation", "res://translations/game_data.zh.translation", "res://translations/game_data.ms.translation")
-locale/locale_filter_mode=0
-locale/fallback="zh"
-
 [editor]
 
 version_control/autoload_on_startup=true
@@ -74,6 +68,12 @@ animation_library={
 [input_devices]
 
 pointing/emulate_touch_from_mouse=true
+
+[internationalization]
+
+locale/translations=PackedStringArray("res://translations/ui.en.translation", "res://translations/ui.zh.translation", "res://translations/ui.ms.translation", "res://translations/game_data.en.translation", "res://translations/game_data.zh.translation", "res://translations/game_data.ms.translation")
+locale/fallback="zh"
+locale/locale_filter_mode=0
 
 [layer_names]
 

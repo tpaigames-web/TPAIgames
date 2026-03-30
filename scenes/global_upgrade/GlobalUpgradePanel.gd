@@ -29,7 +29,7 @@ const RARITY_TEXT_COLORS := [
 	Color(1.00, 0.30, 0.30),
 ]
 ## RARITY_NAMES built at runtime via _get_rarity_names() to support translation
-static func _get_rarity_names() -> Array[String]:
+func _get_rarity_names() -> Array[String]:
 	return [tr("UI_GU_RARITY_COMMON"), tr("UI_GU_RARITY_RARE"), tr("UI_GU_RARITY_EPIC"), tr("UI_GU_RARITY_LEGENDARY")]
 
 # ── 卡牌插图映射（upgrade_id → 图片路径）──
@@ -52,7 +52,7 @@ const PITY_THRESHOLD: int = 3
 var _wave_num: int = 0
 
 # ── 炮台 ID → 显示名称（通过翻译系统）──
-static func _get_tower_name(tid: String) -> String:
+func _get_tower_name(tid: String) -> String:
 	return TowerResourceRegistry.get_tower_display_name(tid, tid)
 
 const ICON_COL_W := 110

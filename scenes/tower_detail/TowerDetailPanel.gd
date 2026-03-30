@@ -3,7 +3,7 @@ extends CanvasLayer
 # ── 常量 ─────────────────────────────────────────────────────────────
 # 稀有度常量引用（集中定义于 TowerResourceRegistry Autoload）
 ## Attack type names resolved at runtime via tr()
-static func _get_atk_type_names() -> Array[String]:
+func _get_atk_type_names() -> Array[String]:
 	return [tr("UI_ATK_GROUND"), tr("UI_ATK_AIR"), tr("UI_ATK_ALL")]
 
 const COLOR_OWNED:     Color = Color(1.0,  0.75, 0.1,  1.0)   # 金色：已解锁
