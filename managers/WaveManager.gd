@@ -43,7 +43,7 @@ func apply_day_difficulty(day: int) -> void:
 		spawn_timer.wait_time = spawn_interval
 
 ## 波次完成奖励（按阶段：P1=+35, P2=+45, P3=+55, P4=+65）
-const WAVE_PHASE_BONUS: Array[int] = [35, 45, 55, 65]
+const WAVE_PHASE_BONUS: Array[int] = [40, 50, 60, 75]
 
 func _get_wave_bonus(wave_num: int) -> int:
 	if wave_num <= 10: return WAVE_PHASE_BONUS[0]

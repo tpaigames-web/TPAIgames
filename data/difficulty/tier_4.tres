@@ -4,8 +4,8 @@
 
 [resource]
 script = ExtResource("1")
-day_min = 10
-day_max = 12
-hp_multiplier = 2.0
-speed_multiplier = 1.15
-spawn_interval = 0.5
+day_min = 25
+day_max = 32
+hp_multiplier = 1.7
+speed_multiplier = 1.1
+spawn_interval = 0.50

@@ -73,14 +73,16 @@ func _ready() -> void:
 			wave_manager.use_tutorial_waves()
 		else:
 			wave_manager.apply_day_difficulty(GameManager.current_day)
-			if GameManager.current_day <= 3:
+			if GameManager.current_day <= 8:
+				GameManager.gold = 650
+			elif GameManager.current_day <= 16:
 				GameManager.gold = 600
-			elif GameManager.current_day <= 9:
+			elif GameManager.current_day <= 24:
+				GameManager.gold = 550
+			elif GameManager.current_day <= 32:
 				GameManager.gold = 500
-			elif GameManager.current_day <= 12:
-				GameManager.gold = 450
 			else:
-				GameManager.gold = 400
+				GameManager.gold = 450
 
 	# ── 创建并初始化 6 个子系统 ──────────────────────────────────────
 	_create_subsystems()
