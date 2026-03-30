@@ -276,18 +276,22 @@ func _generate_endless_wave(wave_num: int) -> Array:
 
 func _load_wave_configs(dir_path: String, target: Array[WaveConfig]) -> void:
 	target.clear()
-	var dir := DirAccess.open(dir_path)
-	if dir == null:
-		push_error("WaveManager: 无法打开波次目录 %s" % dir_path)
-		return
+	# 先尝试目录扫描（编辑器中有效），失败则用硬编码列表（导出后 res:// 不可枚举）
 	var files: Array[String] = []
-	dir.list_dir_begin()
-	var file_name := dir.get_next()
-	while file_name != "":
-		if file_name.ends_with(".tres"):
-			files.append(file_name)
-		file_name = dir.get_next()
-	dir.list_dir_end()
+	var dir := DirAccess.open(dir_path)
+	if dir:
+		dir.list_dir_begin()
+		var file_name := dir.get_next()
+		while file_name != "":
+			if file_name.ends_with(".tres"):
+				files.append(file_name)
+			file_name = dir.get_next()
+		dir.list_dir_end()
+	# DirAccess 失败时（导出后 res:// 打包），使用硬编码列表
+	if files.is_empty():
+		var count: int = 40 if dir_path == WAVE_DIR else 10
+		for i in range(1, count + 1):
+			files.append("wave_%02d.tres" % i)
 	files.sort()
 	for fname in files:
 		var res = load(dir_path + fname)
@@ -298,18 +302,20 @@ func _load_wave_configs(dir_path: String, target: Array[WaveConfig]) -> void:
 
 func _load_difficulty_tiers() -> void:
 	_difficulty_tiers.clear()
-	var dir := DirAccess.open(DIFFICULTY_DIR)
-	if dir == null:
-		push_warning("WaveManager: 无法打开难度目录，使用默认难度")
-		return
 	var files: Array[String] = []
-	dir.list_dir_begin()
-	var file_name := dir.get_next()
-	while file_name != "":
-		if file_name.ends_with(".tres"):
-			files.append(file_name)
-		file_name = dir.get_next()
-	dir.list_dir_end()
+	var dir := DirAccess.open(DIFFICULTY_DIR)
+	if dir:
+		dir.list_dir_begin()
+		var file_name := dir.get_next()
+		while file_name != "":
+			if file_name.ends_with(".tres"):
+				files.append(file_name)
+			file_name = dir.get_next()
+		dir.list_dir_end()
+	# DirAccess 失败时用硬编码列表
+	if files.is_empty():
+		for i in range(1, 6):
+			files.append("tier_%d.tres" % i)
 	files.sort()
 	for fname in files:
 		var res = load(DIFFICULTY_DIR + fname)

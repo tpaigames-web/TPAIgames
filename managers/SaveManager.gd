@@ -23,13 +23,28 @@ func save() -> void:
 		"user":       UserManager.get_save_data(),
 		"collection": CollectionManager.get_save_data(),
 	}
-	var file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
+	_atomic_write(SAVE_PATH, JSON.stringify(data, "\t"))
+
+
+## 原子写入：先写临时文件，再重命名覆盖，防止 crash 时存档损坏
+func _atomic_write(path: String, content: String) -> void:
+	var tmp_path: String = path + ".tmp"
+	var bak_path: String = path + ".bak"
+	# 1. 写入临时文件
+	var file := FileAccess.open(tmp_path, FileAccess.WRITE)
 	if file == null:
-		push_error("SaveManager: 无法写入存档 " + SAVE_PATH
+		push_error("SaveManager: 无法写入 " + tmp_path
 				   + "  error=" + str(FileAccess.get_open_error()))
 		return
-	file.store_string(JSON.stringify(data, "\t"))
+	file.store_string(content)
 	file.close()
+	# 2. 备份旧存档
+	var da := DirAccess.open("user://")
+	if da and FileAccess.file_exists(path):
+		da.rename(path, bak_path)
+	# 3. 临时文件重命名为正式存档
+	if da:
+		da.rename(tmp_path, path)
 
 # ── 读档 ────────────────────────────────────────────────────────────────────
 
@@ -83,12 +98,7 @@ func has_battle_save() -> bool:
 
 ## 保存战局状态到独立文件
 func save_battle(battle_data: Dictionary) -> void:
-	var f := FileAccess.open(BATTLE_SAVE_PATH, FileAccess.WRITE)
-	if f == null:
-		push_error("SaveManager: 无法写入战局存档 " + BATTLE_SAVE_PATH)
-		return
-	f.store_string(JSON.stringify(battle_data, "\t"))
-	f.close()
+	_atomic_write(BATTLE_SAVE_PATH, JSON.stringify(battle_data, "\t"))
 
 ## 读取战局存档，失败返回空字典
 func load_battle() -> Dictionary:

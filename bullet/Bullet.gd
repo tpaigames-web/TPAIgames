@@ -74,7 +74,7 @@ var _pool: ObjectPool = null
 
 ## 回收到池或直接销毁
 func _return_to_pool() -> void:
-	if _pool:
+	if _pool and is_instance_valid(_pool):
 		_pool.release(self)
 	else:
 		queue_free()

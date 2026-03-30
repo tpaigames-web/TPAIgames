@@ -348,40 +348,47 @@ func load_save_data(dict: Dictionary) -> void:
 	for v in dict.get("claimed_paid_rewards", []):
 		claimed_paid_rewards.append(int(v))
 
-	# Dictionary：JSON 保留 key/value 类型，直接赋值
+	# Dictionary：JSON round-trip 把 int 变 float，需显式转回
 	var sp = dict.get("shop_purchases", {})
 	if sp is Dictionary:
-		shop_purchases = sp
+		shop_purchases = {}
+		for k in sp: shop_purchases[str(k)] = int(sp[k])
 
 	var fsp = dict.get("fragment_shop_purchases", {})
 	if fsp is Dictionary:
-		fragment_shop_purchases = fsp
+		fragment_shop_purchases = {}
+		for k in fsp: fragment_shop_purchases[str(k)] = int(fsp[k])
 
 	var ii = dict.get("item_inventory", {})
 	if ii is Dictionary:
-		item_inventory = ii
+		item_inventory = {}
+		for k in ii: item_inventory[str(k)] = int(ii[k])
 
 	# UUID：兼容旧存档（字段缺失时自动生成）
 	player_uuid = str(dict.get("player_uuid", ""))
 	if player_uuid.is_empty():
 		player_uuid = _generate_uuid()
 
-	# 关卡星级（兼容旧存档，字段缺失时保持空字典）
+	# 关卡星级（int 值）
 	var ls = dict.get("level_stars", {})
 	if ls is Dictionary:
-		level_stars = ls
+		level_stars = {}
+		for k in ls: level_stars[str(k)] = int(ls[k])
 
-	# 关卡宝箱领取记录（兼容旧存档）
+	# 关卡宝箱领取记录（bool 值）
 	var lc = dict.get("level_chest_claimed", {})
 	if lc is Dictionary:
-		level_chest_claimed = lc
+		level_chest_claimed = {}
+		for k in lc: level_chest_claimed[str(k)] = (lc[k] == true)
 
-	# 最大解锁关卡（兼容旧存档，缺失时保持默认 1）
+	# 最大解锁关卡
 	max_unlocked_day = int(dict.get("max_unlocked_day", 1))
 
+	# 无限模式最高波数（int 值）
 	var bew = dict.get("best_endless_wave", {})
 	if bew is Dictionary:
-		best_endless_wave = bew
+		best_endless_wave = {}
+		for k in bew: best_endless_wave[str(k)] = int(bew[k])
 
 	# 宝箱槽位（兼容旧存档：字段缺失时保持默认空槽）
 	var cs = dict.get("chest_slots", null)

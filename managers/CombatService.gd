@@ -15,6 +15,9 @@ func deal_damage(source_info: Dictionary, target: Area2D,
 		base_damage: float, effects: Array) -> void:
 	if not is_instance_valid(target):
 		return
+	# 确保 target 有 hp 和 take_damage（防止非 Enemy 对象传入）
+	if not target.has_method("take_damage"):
+		return
 	var ed = target.get("enemy_data")
 
 	# 1. 闪避检查

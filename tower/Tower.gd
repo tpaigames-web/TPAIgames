@@ -606,6 +606,8 @@ func _fire_at(tgt: Area2D) -> void:
 	var bullet: Node
 	if bullet_pool and not td.bullet_scene:
 		bullet = bullet_pool.acquire()
+		if bullet == null:
+			bullet = BULLET_SCENE.instantiate()  # 池耗尽时 fallback
 	else:
 		var scene: PackedScene = td.bullet_scene if td.bullet_scene else BULLET_SCENE
 		bullet = scene.instantiate()
@@ -698,7 +700,10 @@ func spawn_bullet_at(tgt: Area2D, dmg: float, spd: float, effects: Array, emoji:
 	var bullet: Node
 	if bullet_pool and scene == null:
 		bullet = bullet_pool.acquire()
-		bullet._pool = bullet_pool
+		if bullet == null:
+			bullet = BULLET_SCENE.instantiate()
+		else:
+			bullet._pool = bullet_pool
 	else:
 		var s: PackedScene = scene if scene else BULLET_SCENE
 		bullet = s.instantiate()

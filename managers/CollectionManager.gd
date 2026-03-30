@@ -176,13 +176,18 @@ func get_save_data() -> Dictionary:
 
 func load_save_data(dict: Dictionary) -> void:
 	# owned_fragments / tower_levels：key=String, value=int
+	# JSON round-trip 会把 int 变 float，需显式转回 int
 	var of_ = dict.get("owned_fragments", {})
 	if of_ is Dictionary:
-		owned_fragments = of_
+		owned_fragments = {}
+		for k in of_:
+			owned_fragments[str(k)] = int(of_[k])
 
 	var tl_ = dict.get("tower_levels", {})
 	if tl_ is Dictionary:
-		tower_levels = tl_
+		tower_levels = {}
+		for k in tl_:
+			tower_levels[str(k)] = int(tl_[k])
 
 	# unlocked_towers：JSON 解析为普通 Array，转为 Array[String]
 	unlocked_towers.clear()
