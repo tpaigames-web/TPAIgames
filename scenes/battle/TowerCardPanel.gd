@@ -115,7 +115,7 @@ func _make_tower_card(data: Resource) -> VBoxContainer:
 
 	# ── 攻击类型 ──
 	var atk_lbl := Label.new()
-	var atk_names: Array[String] = ["地面", "空中", "全部"]
+	var atk_names: Array[String] = [tr("UI_ATK_GROUND"), tr("UI_ATK_AIR"), tr("UI_ATK_ALL")]
 	var atk_colors: Array[Color] = [Color(0.6, 0.4, 0.2), Color(0.3, 0.7, 1.0), Color(0.2, 1.0, 0.4)]
 	var atk_idx: int = clampi(data.attack_type, 0, 2)
 	atk_lbl.text = atk_names[atk_idx]

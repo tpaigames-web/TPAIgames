@@ -7,36 +7,41 @@ signal request_sell_confirm(tower: Area2D, refund: int, is_hero: bool)
 const HERO_UPGRADE_INTERVAL: int = 5
 const HERO_MAX_UPGRADES: int = 4
 
-const HERO_TERRAIN_INFO := {
-	"hero_farmer": {
-		"terrain_name": "丰收圣地",
-		"base_desc": "圣地内炮台伤害+12%，每次击杀+1金币",
-		"upgrades": [
-			{"a_icon": "🌾", "a_name": "圣地深耕", "a_desc": "圣地内伤害加成提升至+32%",
-			 "b_icon": "💰", "b_name": "金穗满田", "b_desc": "击杀+2金币，精英击杀+5金币"},
-			{"a_icon": "🏕️", "a_name": "广袤农场", "a_desc": "圣地半径扩展至260px",
-			 "b_icon": "⚡", "b_name": "丰收节奏", "b_desc": "圣地内每10次击杀触发爆发：伤害×2持续3秒"},
-			{"a_icon": "🛡️", "a_name": "农神庇护", "a_desc": "圣地内炮台受伤-20%",
-			 "b_icon": "💎", "b_name": "黄金地脉", "b_desc": "圣地内炮台升级费用-25%"},
-			{"a_icon": "☀️", "a_name": "永恒圣地", "a_desc": "半径扩展至350px，伤害加成叠加全部路线效果",
-			 "b_icon": "🌟", "b_name": "农场之神", "b_desc": "圣地内精英击杀10%概率获得免费强化刷新"},
-		],
-	},
-	"farm_guardian": {
-		"terrain_name": "禁锢领域",
-		"base_desc": "领域内敌人移速-20%，优先朝守卫者移动（嘲讽）",
-		"upgrades": [
-			{"a_icon": "🪨", "a_name": "铁壁嘲讽", "a_desc": "嘲讽范围200px，敌人停留+1.5秒",
-			 "b_icon": "🌀", "b_name": "重力领域", "b_desc": "领域内移速-35%，大型敌人同样生效"},
-			{"a_icon": "🗿", "a_name": "石刻地面", "a_desc": "领域每秒对敌人造成8点伤害",
-			 "b_icon": "⚔️", "b_name": "破甲领域", "b_desc": "领域内敌人护甲降低10%"},
-			{"a_icon": "💥", "a_name": "冲击余波", "a_desc": "每20秒地震100px范围，眩晕1.2秒",
-			 "b_icon": "🧲", "b_name": "磁力核心", "b_desc": "将范围外100px的敌人减速50%"},
-			{"a_icon": "⛓️", "a_name": "永恒禁锢", "a_desc": "半径扩展至280px，嘲讽期间全场+25%伤害",
-			 "b_icon": "🪦", "b_name": "石之迫近", "b_desc": "领域内死亡留下石化标记，后续敌人减速10秒"},
-		],
-	},
-}
+## NOTE: terrain_name/base_desc/upgrade names use tr() keys from ui.csv
+## The dictionary is built at runtime via _build_hero_terrain_info()
+var HERO_TERRAIN_INFO: Dictionary = {}
+
+func _build_hero_terrain_info() -> void:
+	HERO_TERRAIN_INFO = {
+		"hero_farmer": {
+			"terrain_name": tr("HERO_TERRAIN_HARVEST_NAME"),
+			"base_desc": tr("HERO_TERRAIN_HARVEST_DESC"),
+			"upgrades": [
+				{"a_icon": "🌾", "a_name": tr("HERO_UPG_HARVEST_1A_NAME"), "a_desc": tr("HERO_UPG_HARVEST_1A_DESC"),
+				 "b_icon": "💰", "b_name": tr("HERO_UPG_HARVEST_1B_NAME"), "b_desc": tr("HERO_UPG_HARVEST_1B_DESC")},
+				{"a_icon": "🏕️", "a_name": tr("HERO_UPG_HARVEST_2A_NAME"), "a_desc": tr("HERO_UPG_HARVEST_2A_DESC"),
+				 "b_icon": "⚡", "b_name": tr("HERO_UPG_HARVEST_2B_NAME"), "b_desc": tr("HERO_UPG_HARVEST_2B_DESC")},
+				{"a_icon": "🛡️", "a_name": tr("HERO_UPG_HARVEST_3A_NAME"), "a_desc": tr("HERO_UPG_HARVEST_3A_DESC"),
+				 "b_icon": "💎", "b_name": tr("HERO_UPG_HARVEST_3B_NAME"), "b_desc": tr("HERO_UPG_HARVEST_3B_DESC")},
+				{"a_icon": "☀️", "a_name": tr("HERO_UPG_HARVEST_4A_NAME"), "a_desc": tr("HERO_UPG_HARVEST_4A_DESC"),
+				 "b_icon": "🌟", "b_name": tr("HERO_UPG_HARVEST_4B_NAME"), "b_desc": tr("HERO_UPG_HARVEST_4B_DESC")},
+			],
+		},
+		"farm_guardian": {
+			"terrain_name": tr("HERO_TERRAIN_PRISON_NAME"),
+			"base_desc": tr("HERO_TERRAIN_PRISON_DESC"),
+			"upgrades": [
+				{"a_icon": "🪨", "a_name": tr("HERO_UPG_PRISON_1A_NAME"), "a_desc": tr("HERO_UPG_PRISON_1A_DESC"),
+				 "b_icon": "🌀", "b_name": tr("HERO_UPG_PRISON_1B_NAME"), "b_desc": tr("HERO_UPG_PRISON_1B_DESC")},
+				{"a_icon": "🗿", "a_name": tr("HERO_UPG_PRISON_2A_NAME"), "a_desc": tr("HERO_UPG_PRISON_2A_DESC"),
+				 "b_icon": "⚔️", "b_name": tr("HERO_UPG_PRISON_2B_NAME"), "b_desc": tr("HERO_UPG_PRISON_2B_DESC")},
+				{"a_icon": "💥", "a_name": tr("HERO_UPG_PRISON_3A_NAME"), "a_desc": tr("HERO_UPG_PRISON_3A_DESC"),
+				 "b_icon": "🧲", "b_name": tr("HERO_UPG_PRISON_3B_NAME"), "b_desc": tr("HERO_UPG_PRISON_3B_DESC")},
+				{"a_icon": "⛓️", "a_name": tr("HERO_UPG_PRISON_4A_NAME"), "a_desc": tr("HERO_UPG_PRISON_4A_DESC"),
+				 "b_icon": "🪦", "b_name": tr("HERO_UPG_PRISON_4B_NAME"), "b_desc": tr("HERO_UPG_PRISON_4B_DESC")},
+			],
+		},
+	}
 
 var _hero_tower: Area2D = null
 var _hero_place_wave: int = -1
@@ -61,6 +66,7 @@ var PANEL_UPGRADE_TOP: float = -870.0
 func init(hud: CanvasLayer, upgrade_panel: ScrollContainer, upgrade_vbox: VBoxContainer,
 		bottom_panel: Control, tower_scroll: ScrollContainer, item_scroll: ScrollContainer,
 		wave_mgr: Node, panel_expanded_top: float, panel_upgrade_top: float) -> void:
+	_build_hero_terrain_info()
 	_hud = hud
 	_upgrade_panel = upgrade_panel
 	_upgrade_vbox = upgrade_vbox
@@ -156,29 +162,29 @@ func show_hero_panel(tower: Area2D, active_tower_ref: Area2D) -> Area2D:
 	var tid: String = data.tower_id if data else ""
 	var info: Dictionary = HERO_TERRAIN_INFO.get(tid, {})
 	var lv: int = tower.hero_chosen_upgrades.size() + 1
-	var t_name: String = info.get("terrain_name", "地形") as String
+	var t_name: String = info.get("terrain_name", tr("UI_TERRAIN_DEFAULT")) as String
 	var base_effect: String = info.get("base_desc", "") as String
 	var upgrades_arr: Array = info.get("upgrades", []) as Array
 
 	# Header
 	var header := HBoxContainer.new()
 	var back_b := Button.new()
-	back_b.text = "← 返回"
+	back_b.text = "← " + tr("UI_BATTLE_BACK")
 	back_b.add_theme_font_size_override("font_size", 28)
 	back_b.pressed.connect(hide_hero_panel)
 	header.add_child(back_b)
 
 	var title := Label.new()
 	var _emoji: String = data.tower_emoji if data else "🗿"
-	var _dname: String = data.display_name if data else "英雄"
-	title.text = "%s %s  英雄" % [_emoji, _dname]
+	var _dname: String = data.display_name if data else tr("UI_HERO_LABEL")
+	title.text = "%s %s  %s" % [_emoji, _dname, tr("UI_HERO_LABEL")]
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	title.add_theme_font_size_override("font_size", 28)
 	title.add_theme_color_override("font_color", Color(1.0, 0.8, 0.2))
 	header.add_child(title)
 
 	var sell_b := Button.new()
-	sell_b.text = "🔥 售出"
+	sell_b.text = tr("UI_HERO_SELL")
 	sell_b.add_theme_font_size_override("font_size", 24)
 	sell_b.pressed.connect(func():
 		request_sell_confirm.emit(tower, 0, true)
@@ -190,14 +196,14 @@ func show_hero_panel(tower: Area2D, active_tower_ref: Area2D) -> Area2D:
 
 	# Terrain info
 	var terrain_lbl := Label.new()
-	terrain_lbl.text = "☀️ %s · 半径 %dpx" % [t_name, int(tower.terrain_radius)]
+	terrain_lbl.text = tr("UI_HERO_TERRAIN_FORMAT") % [t_name, int(tower.terrain_radius)]
 	terrain_lbl.add_theme_font_size_override("font_size", 30)
 	terrain_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	terrain_lbl.add_theme_color_override("font_color", Color(1.0, 0.9, 0.4))
 	vbox.add_child(terrain_lbl)
 
 	var lv_lbl := Label.new()
-	lv_lbl.text = "等级 Lv.%d / 5" % lv
+	lv_lbl.text = tr("UI_HERO_LV_FORMAT") % lv
 	lv_lbl.add_theme_font_size_override("font_size", 26)
 	lv_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	lv_lbl.add_theme_color_override("font_color", Color(0.8, 0.8, 0.8))
@@ -207,7 +213,7 @@ func show_hero_panel(tower: Area2D, active_tower_ref: Area2D) -> Area2D:
 
 	# Base skill
 	var base_title := Label.new()
-	base_title.text = "📋 初始技能"
+	base_title.text = tr("UI_HERO_BASE_SKILL")
 	base_title.add_theme_font_size_override("font_size", 26)
 	base_title.add_theme_color_override("font_color", Color(0.6, 0.85, 1.0))
 	vbox.add_child(base_title)
@@ -221,7 +227,7 @@ func show_hero_panel(tower: Area2D, active_tower_ref: Area2D) -> Area2D:
 
 	# Chosen upgrades
 	var upgrade_title := Label.new()
-	upgrade_title.text = "⚡ 已选升级" if tower.hero_chosen_upgrades.size() > 0 else "⚡ 暂无升级"
+	upgrade_title.text = tr("UI_HERO_UPGRADES_CHOSEN") if tower.hero_chosen_upgrades.size() > 0 else tr("UI_HERO_NO_UPGRADES")
 	upgrade_title.add_theme_font_size_override("font_size", 26)
 	upgrade_title.add_theme_color_override("font_color", Color(1.0, 0.75, 0.3))
 	vbox.add_child(upgrade_title)
@@ -238,7 +244,7 @@ func show_hero_panel(tower: Area2D, active_tower_ref: Area2D) -> Area2D:
 
 	var upgrade_list := Label.new()
 	var first_upg_wave: int = get_hero_upgrade_wave(0)
-	upgrade_list.text = "\n".join(lines) if lines.size() > 0 else "（第 %d 波解锁）" % first_upg_wave
+	upgrade_list.text = "\n".join(lines) if lines.size() > 0 else tr("UI_HERO_UNLOCK_WAVE") % first_upg_wave
 	upgrade_list.add_theme_font_size_override("font_size", 24)
 	upgrade_list.add_theme_color_override("font_color", Color(0.9, 0.9, 0.8))
 	upgrade_list.autowrap_mode = TextServer.AUTOWRAP_WORD
@@ -250,12 +256,12 @@ func show_hero_panel(tower: Area2D, active_tower_ref: Area2D) -> Area2D:
 	var next_lbl := Label.new()
 	var upgrades_done: int = tower.hero_chosen_upgrades.size()
 	if upgrades_done >= HERO_MAX_UPGRADES:
-		next_lbl.text = "✨ 满级"
+		next_lbl.text = tr("UI_HERO_MAX_LEVEL")
 	else:
 		var next_wave: int = get_hero_upgrade_wave(upgrades_done)
 		var current_wave: int = _wave_manager.current_wave if _wave_manager else 0
 		var waves_left: int = maxi(next_wave - current_wave, 0)
-		next_lbl.text = "⏳ 下次升级: 第 %d 波（还需 %d 波）" % [next_wave, waves_left]
+		next_lbl.text = tr("UI_HERO_NEXT_UPGRADE") % [next_wave, waves_left]
 	next_lbl.add_theme_font_size_override("font_size", 24)
 	next_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	next_lbl.add_theme_color_override("font_color", Color(0.6, 0.75, 1.0))

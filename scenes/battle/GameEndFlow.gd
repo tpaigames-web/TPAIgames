@@ -44,10 +44,10 @@ func offer_revive() -> void:
 	Engine.time_scale = 0.0
 	var dlg := ConfirmationDialog.new()
 	_revive_dlg = dlg
-	dlg.title = "💔 农场快撑不住了！"
-	dlg.dialog_text = "农场 HP 归零！\n观看广告可获得一次免费复活机会\n复活后恢复 50% 生命值"
-	dlg.ok_button_text = "📺 观看广告复活"
-	dlg.cancel_button_text = "放弃"
+	dlg.title = tr("UI_REVIVE_TITLE")
+	dlg.dialog_text = tr("UI_REVIVE_DIALOG_MSG")
+	dlg.ok_button_text = tr("UI_REVIVE_WATCH_AD")
+	dlg.cancel_button_text = tr("UI_REVIVE_GIVE_UP")
 	dlg.confirmed.connect(func():
 		_revive_dlg = null
 		dlg.queue_free()
@@ -101,14 +101,14 @@ func on_game_over() -> void:
 		var reached: int = _wave_manager.current_wave
 		if reached > best:
 			UserManager.best_endless_wave[day_key] = reached
-		endless_line = "\n🏆 无限模式到达: 第 %d 波（最高: %d）" % [reached, max(reached, best)]
+		endless_line = tr("UI_ENDLESS_REACHED") % [reached, max(reached, best)]
 
 	SaveManager.clear_battle_save()
 	SaveManager.save()
 	var carry_gold := GameManager.get_carry_out_gold()
 	var dlg := AcceptDialog.new()
-	dlg.title = "💀 游戏结束"
-	dlg.dialog_text = "农场被攻破了！\n带出金币: %d 🪙\n下次再接再厉～" % carry_gold + endless_line
+	dlg.title = tr("UI_DEFEAT_TITLE")
+	dlg.dialog_text = tr("UI_DEFEAT_MSG_FULL") % carry_gold + endless_line
 	dlg.confirmed.connect(func():
 		GameManager.challenge_mode = false
 		_battle_scene.get_tree().change_scene_to_file("res://scenes/HomeScene.tscn")
@@ -144,14 +144,10 @@ func on_victory() -> void:
 func _offer_double_reward() -> void:
 	var carry_gold := GameManager.get_carry_out_gold()
 	var dlg := ConfirmationDialog.new()
-	dlg.title = "🎉 教学完成！"
-	dlg.dialog_text = (
-		"恭喜守护农场成功！\n\n"
-		+ "普通奖励: %d 🪙 + 200 XP\n" % carry_gold
-		+ "双倍奖励: %d 🪙 + 400 XP（看广告获得）" % min(carry_gold * 2, GameManager.MAX_CARRY_OUT_GOLD * 2)
-	)
-	dlg.ok_button_text = "📺 双倍奖励"
-	dlg.cancel_button_text = "领取普通奖励"
+	dlg.title = tr("UI_TUTORIAL_COMPLETE_TITLE")
+	dlg.dialog_text = tr("UI_VICTORY_REWARD_DESC") % [carry_gold, min(carry_gold * 2, GameManager.MAX_CARRY_OUT_GOLD * 2)]
+	dlg.ok_button_text = tr("UI_DOUBLE_REWARD_WATCH")
+	dlg.cancel_button_text = tr("UI_DOUBLE_REWARD_NORMAL")
 	dlg.confirmed.connect(func():
 		dlg.queue_free()
 		AdManager.show_rewarded_ad(
@@ -185,11 +181,11 @@ func _finish_victory(double_reward: bool) -> void:
 	var star_desc: String
 	var star_count: int
 	if hp >= 99:
-		star_count = 3; stars = "★★★"; star_desc = "完美防守！"
+		star_count = 3; stars = "★★★"; star_desc = tr("UI_STAR_PERFECT")
 	elif hp >= 50:
-		star_count = 2; stars = "★★☆"; star_desc = "表现良好！"
+		star_count = 2; stars = "★★☆"; star_desc = tr("UI_STAR_GOOD")
 	else:
-		star_count = 1; stars = "★☆☆"; star_desc = "险险通关！"
+		star_count = 1; stars = "★☆☆"; star_desc = tr("UI_STAR_CLOSE")
 
 	var day_num: int = GameManager.current_day
 	var star_key := "day%d_challenge" % day_num if GameManager.challenge_mode else "day%d" % day_num
@@ -208,11 +204,11 @@ func _finish_victory(double_reward: bool) -> void:
 		var chest_type: int = 0
 		if rand >= 0.70:
 			chest_type = 1 if rand < 0.90 else 2
-		var chest_name: String = ["木宝箱", "铁宝箱", "金宝箱"][chest_type]
+		var chest_name: String = [tr("UI_CHEST_WOODEN"), tr("UI_CHEST_IRON"), tr("UI_CHEST_GOLD")][chest_type]
 		var added := UserManager.add_chest_to_slot(chest_type)
 		SaveManager.save()
 		if added:
-			chest_line = "\n🎁 获得 %s！前往宝箱标签解锁" % chest_name
+			chest_line = tr("UI_CHEST_OBTAINED") % chest_name
 			_show_result_dialog(stars, star_desc, carry_gold, xp_reward, double_reward, chest_line)
 		else:
 			_offer_full_slots_ad(stars, star_desc, carry_gold, xp_reward, double_reward)
@@ -223,14 +219,14 @@ func _finish_victory(double_reward: bool) -> void:
 func _show_result_dialog(stars: String, star_desc: String,
 		carry_gold: int, xp_reward: int,
 		double_reward: bool, chest_line: String) -> void:
-	var bonus_text := " 🎊×2" if double_reward else ""
+	var bonus_text := tr("UI_DOUBLE_BONUS") if double_reward else ""
 	var can_endless: bool = GameManager.current_day > 0 and not _wave_manager.is_endless
 
 	var dlg: AcceptDialog
 	if can_endless:
 		var cdlg := ConfirmationDialog.new()
-		cdlg.ok_button_text = "♾️ 继续无限模式"
-		cdlg.cancel_button_text = "返回主界面"
+		cdlg.ok_button_text = tr("UI_ENDLESS_ENTER")
+		cdlg.cancel_button_text = tr("UI_RETURN_HOME")
 		cdlg.confirmed.connect(func():
 			cdlg.queue_free()
 			_enter_endless_mode()
@@ -247,15 +243,12 @@ func _show_result_dialog(stars: String, star_desc: String,
 			_battle_scene.get_tree().change_scene_to_file("res://scenes/HomeScene.tscn")
 		)
 
-	dlg.title = "🎉 胜利！"
+	dlg.title = tr("UI_VICTORY_TITLE")
 	var endless_line := ""
 	if _wave_manager.is_endless:
-		endless_line = "\n🏆 无限模式最高波数: %d" % _wave_manager.current_wave
+		endless_line = tr("UI_ENDLESS_BEST") % _wave_manager.current_wave
 	dlg.dialog_text = (
-		"恭喜守护农场成功！\n"
-		+ "评分: %s %s\n" % [stars, star_desc]
-		+ "带出金币: %d 🪙%s\n" % [carry_gold, bonus_text]
-		+ "获得 %d XP 奖励%s" % [xp_reward, bonus_text]
+		tr("UI_VICTORY_RESULT") % [stars, star_desc, carry_gold, bonus_text, xp_reward, bonus_text]
 		+ chest_line
 		+ endless_line
 	)
@@ -273,17 +266,17 @@ func _enter_endless_mode() -> void:
 	request_reconnect_signals.emit()
 	_wave_manager.enter_endless()
 	if _wave_label:
-		_wave_label.text = "♾️ 波次 %d" % _wave_manager.current_wave
+		_wave_label.text = tr("UI_BATTLE_ENDLESS_WAVE") % _wave_manager.current_wave
 	endless_entered.emit()
 
 
 func _offer_full_slots_ad(stars: String, star_desc: String,
 		carry_gold: int, xp_reward: int, double_reward: bool) -> void:
 	var dlg := ConfirmationDialog.new()
-	dlg.title = "🎁 宝箱槽位已满"
-	dlg.dialog_text = "4 个槽位都占满了！\n看广告可以保留这个宝箱\n等有空槽位时再领取"
-	dlg.ok_button_text = "📺 看广告保留"
-	dlg.cancel_button_text = "放弃"
+	dlg.title = tr("UI_CHEST_SLOTS_FULL_TITLE")
+	dlg.dialog_text = tr("UI_CHEST_SLOTS_FULL_MSG")
+	dlg.ok_button_text = tr("UI_CHEST_SLOTS_WATCH")
+	dlg.cancel_button_text = tr("UI_REVIVE_GIVE_UP")
 	var on_ad_complete := func():
 		var r := randf()
 		var ct: int = 0
@@ -291,16 +284,16 @@ func _offer_full_slots_ad(stars: String, star_desc: String,
 			ct = 1 if r < 0.90 else 2
 		UserManager.pending_chest_type = ct
 		SaveManager.save()
-		_show_result_dialog(stars, star_desc, carry_gold, xp_reward, double_reward, "\n✅ 宝箱已保留！下次有空槽位时前往宝箱标签领取")
+		_show_result_dialog(stars, star_desc, carry_gold, xp_reward, double_reward, tr("UI_CHEST_KEPT"))
 	var on_ad_cancel := func():
-		_show_result_dialog(stars, star_desc, carry_gold, xp_reward, double_reward, "\n❌ 已丢失一个金宝箱！（清空槽位后可正常获得）")
+		_show_result_dialog(stars, star_desc, carry_gold, xp_reward, double_reward, tr("UI_CHEST_LOST"))
 	dlg.confirmed.connect(func():
 		dlg.queue_free()
 		AdManager.show_rewarded_ad(on_ad_complete, on_ad_cancel)
 	)
 	dlg.canceled.connect(func():
 		dlg.queue_free()
-		_show_result_dialog(stars, star_desc, carry_gold, xp_reward, double_reward, "\n❌ 已丢失一个金宝箱！（清空槽位后可正常获得）")
+		_show_result_dialog(stars, star_desc, carry_gold, xp_reward, double_reward, tr("UI_CHEST_LOST"))
 	)
 	_battle_scene.add_child(dlg)
 	dlg.get_label().add_theme_font_size_override("font_size", 28)

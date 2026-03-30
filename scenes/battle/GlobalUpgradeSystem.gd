@@ -220,7 +220,7 @@ func _build_upgrade_icons_hud() -> void:
 	vbox.add_child(cond_lbl)
 
 	var close_btn := Button.new()
-	close_btn.text = "关闭"
+	close_btn.text = tr("UI_UPGRADE_CLOSE")
 	close_btn.add_theme_font_size_override("font_size", 28)
 	close_btn.custom_minimum_size = Vector2(0, 54)
 	close_btn.pressed.connect(_hide_popup)
@@ -252,7 +252,7 @@ func _show_popup(upg: GlobalUpgradeData, anchor: Control) -> void:
 	(vbox.get_node("DescLbl")   as Label).text = upg.description
 
 	const COLORS := [Color(0.75,0.75,0.75), Color(0.20,0.45,0.90), Color(0.90,0.50,0.10), Color(0.85,0.15,0.15)]
-	const NAMES  := ["普通", "稀有", "史诗", "传说"]
+	var NAMES: Array[String] = [tr("UI_RARITY_POPUP_NORMAL"), tr("UI_RARITY_POPUP_RARE"), tr("UI_RARITY_POPUP_EPIC"), tr("UI_RARITY_POPUP_LEGEND")]
 	var r: int = clampi(upg.rarity, 0, 2)
 	var rarity_lbl := vbox.get_node("RarityLbl") as Label
 	rarity_lbl.text = "【%s】" % NAMES[r]
@@ -260,7 +260,7 @@ func _show_popup(upg: GlobalUpgradeData, anchor: Control) -> void:
 
 	var cond_lbl := vbox.get_node("CondLbl") as Label
 	if upg.required_tower_ids.size() > 0:
-		cond_lbl.text    = "⚠ 需要：" + "、".join(upg.required_tower_ids)
+		cond_lbl.text    = tr("UI_UPGRADE_REQUIRED") + "、".join(upg.required_tower_ids)
 		cond_lbl.visible = true
 	else:
 		cond_lbl.visible = false

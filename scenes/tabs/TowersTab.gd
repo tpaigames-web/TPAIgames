@@ -126,7 +126,7 @@ func _make_tower_card(data: TowerCollectionData) -> Control:
 	# 底部名称（等级不足显示 "Lv.X 解锁"，灰色）
 	var name_lbl := Label.new()
 	if is_level_locked:
-		name_lbl.text = "Lv.%d 解锁" % data.level_required
+		name_lbl.text = tr("UI_FACTORY_LV_UNLOCK") % data.level_required
 		name_lbl.modulate = Color(1, 1, 1, 0.45)
 	else:
 		name_lbl.text = data.display_name
@@ -152,7 +152,7 @@ func _make_tower_card(data: TowerCollectionData) -> Control:
 		var owned: int = CollectionManager.get_fragments(data.tower_id)
 		var frag_lbl := Label.new()
 		frag_lbl.name = "FragLbl"   # 命名以供 _refresh_grid 就地更新
-		frag_lbl.text = "碎片: %d/%d" % [owned, data.unlock_fragments]
+		frag_lbl.text = tr("UI_FACTORY_FRAG_COUNT") % [owned, data.unlock_fragments]
 		frag_lbl.offset_top    = CARD_IMG_H + 4.0
 		frag_lbl.offset_left   = 8.0
 		frag_lbl.offset_right  = float(CARD_W) - 80.0
@@ -165,10 +165,10 @@ func _make_tower_card(data: TowerCollectionData) -> Control:
 		var status_lbl := Label.new()
 		status_lbl.name = "StatusLbl"   # 命名以供 _refresh_grid 就地更新
 		if is_unlocked:
-			status_lbl.text = "已解锁"
+			status_lbl.text = tr("UI_FACTORY_UNLOCKED")
 			status_lbl.modulate = Color(0.4, 1.0, 0.4)
 		else:
-			status_lbl.text = "解锁"
+			status_lbl.text = tr("UI_FACTORY_UNLOCK")
 			status_lbl.modulate = Color(1.0, 0.8, 0.2)
 		status_lbl.offset_top    = CARD_IMG_H + 4.0
 		status_lbl.offset_left   = float(CARD_W) - 76.0
@@ -223,7 +223,7 @@ func _on_card_clicked(event: InputEvent, data: TowerCollectionData) -> void:
 		var req_lv: int = CollectionManager.get_level_required(data.tower_id)
 		var home = get_tree().get_first_node_in_group("home_scene")
 		if home:
-			home.show_locked("🔒 需要达到 Lv.%d\n才能解锁此炮台" % req_lv)
+			home.show_locked(tr("UI_FACTORY_LEVEL_REQ") % req_lv)
 	else:
 		# 等级已达（无论是否解锁）→ 打开详情界面
 		var panel = TOWER_DETAIL_PANEL.instantiate()
@@ -276,10 +276,10 @@ func _rebuild_grid() -> void:
 			var status_lbl := card.get_node_or_null("StatusLbl") as Label
 			if frag_lbl:
 				var owned: int = CollectionManager.get_fragments(data.tower_id)
-				frag_lbl.text = "碎片: %d/%d" % [owned, data.unlock_fragments]
+				frag_lbl.text = tr("UI_FACTORY_FRAG_COUNT") % [owned, data.unlock_fragments]
 			if status_lbl:
 				var is_unlocked: bool = (status == 2)
-				status_lbl.text = "已解锁" if is_unlocked else "解锁"
+				status_lbl.text = tr("UI_FACTORY_UNLOCKED") if is_unlocked else "解锁"
 				status_lbl.modulate = Color(0.4, 1.0, 0.4) if is_unlocked else Color(1.0, 0.8, 0.2)
 		if not needs_full_rebuild:
 			_apply_filter()

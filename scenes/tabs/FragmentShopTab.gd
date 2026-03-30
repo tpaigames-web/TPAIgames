@@ -183,7 +183,7 @@ func _make_frag_card(tower_res: Resource, qty: int, rarity: int, seed: int) -> P
 
 	# 碎片数量（金色）
 	var qty_lbl := Label.new()
-	qty_lbl.text = "×%d 碎片" % qty
+	qty_lbl.text = tr("UI_FRAG_QTY") % qty
 	qty_lbl.add_theme_font_size_override("font_size", 26)
 	qty_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	qty_lbl.modulate = Color(1.0, 0.85, 0.3)
@@ -199,7 +199,7 @@ func _make_frag_card(tower_res: Resource, qty: int, rarity: int, seed: int) -> P
 
 	# 已购买（跨会话持久化检查）
 	if UserManager.fragment_shop_purchases.has(key):
-		btn.text     = "✓ 已购买"
+		btn.text     = tr("UI_FRAG_BOUGHT")
 		btn.disabled = true
 		btn.modulate = Color(0.6, 0.6, 0.6)
 	else:
@@ -217,11 +217,11 @@ func _make_frag_card(tower_res: Resource, qty: int, rarity: int, seed: int) -> P
 func _on_buy_pressed(tower_res: Resource, qty: int, price: int, btn: Button, key: String) -> void:
 	if UserManager.gold < price:
 		_show_alert(
-			"金币不足\n\n需要 🪙%d\n当前 🪙%d" % [price, UserManager.gold]
+			tr("UI_FRAG_GOLD_LOW") % [price, UserManager.gold]
 		)
 		return
 	_show_confirm(
-		"确认购买？\n\n%s  %s\n×%d 碎片\n\n🪙 %d 金币" % [
+		tr("UI_FRAG_CONFIRM_BUY") % [
 			tower_res.tower_emoji, tower_res.display_name, qty, price
 		],
 		func():
@@ -230,7 +230,7 @@ func _on_buy_pressed(tower_res: Resource, qty: int, price: int, btn: Button, key
 				UserManager.fragment_shop_purchases[key] = true
 				SaveManager.save()
 				btn.disabled = true
-				btn.text     = "✓ 已购买"
+				btn.text     = tr("UI_FRAG_BOUGHT")
 				btn.modulate = Color(0.6, 0.6, 0.6)
 	)
 
@@ -256,20 +256,20 @@ func _show_confirm(message: String, on_confirm: Callable) -> void:
 	_pending_action  = on_confirm
 	confirm_msg.text = message
 	cancel_btn.show()
-	confirm_btn.text = "确认"
+	confirm_btn.text = tr("UI_DIALOG_CONFIRM")
 	confirm_overlay.show()
 
 func _show_alert(message: String) -> void:
 	_pending_action  = Callable()
 	confirm_msg.text = message
 	cancel_btn.hide()
-	confirm_btn.text = "确定"
+	confirm_btn.text = tr("UI_SHOP_OK")
 	confirm_overlay.show()
 
 func _on_confirm_yes() -> void:
 	confirm_overlay.hide()
 	cancel_btn.show()
-	confirm_btn.text = "确认"
+	confirm_btn.text = tr("UI_DIALOG_CONFIRM")
 	if _pending_action.is_valid():
 		_pending_action.call()
 	_pending_action = Callable()
@@ -277,7 +277,7 @@ func _on_confirm_yes() -> void:
 func _on_confirm_no() -> void:
 	confirm_overlay.hide()
 	cancel_btn.show()
-	confirm_btn.text = "确认"
+	confirm_btn.text = tr("UI_DIALOG_CONFIRM")
 	_pending_action = Callable()
 
 func _on_overlay_input(event: InputEvent) -> void:

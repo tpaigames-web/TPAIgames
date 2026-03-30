@@ -109,7 +109,7 @@ func _pick_tower(rarity: int) -> TowerCollectionData:
 	for key in _towers_by_rarity:
 		if _towers_by_rarity[key].size() > 0:
 			return _towers_by_rarity[key][0]
-	push_error("ChestOpening._pick_tower: 无可用炮台，奖励卡片将为空")
+	push_error("ChestOpening._pick_tower: no available tower, reward card will be empty")
 	return null
 
 # ───── 阶段1：点击宝箱 ─────
@@ -288,7 +288,7 @@ func _create_reveal_card(result: Dictionary, w: int, h: int) -> Control:
 
 	# "碎片 ×1"（最底部，小字）
 	var frag_lbl := Label.new()
-	frag_lbl.text = "碎片 ×1"
+	frag_lbl.text = tr("UI_CHEST_FRAG_X1")
 	frag_lbl.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
 	frag_lbl.offset_top    = -32.0 if is_small else -40.0
 	frag_lbl.offset_bottom =  -4.0 if is_small else -6.0

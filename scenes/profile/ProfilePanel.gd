@@ -81,9 +81,9 @@ func _populate_data() -> void:
 	id_label.text    = "ID: " + UserManager.player_uuid.substr(0, 8).to_upper()
 	_update_avatar_display()
 	_update_xp_bar()
-	games_played_label.text = "游戏场次：%d" % UserManager.games_played
-	games_won_label.text    = "胜场：%d"     % UserManager.games_won
-	enemies_label.text      = "击败敌人：%d" % UserManager.enemies_defeated
+	games_played_label.text = tr("UI_PROFILE_GAMES_PLAYED") + "：%d" % UserManager.games_played
+	games_won_label.text    = tr("UI_PROFILE_WINS") + "：%d" % UserManager.games_won
+	enemies_label.text      = tr("UI_PROFILE_ENEMIES_DEFEATED") + "：%d" % UserManager.enemies_defeated
 	_populate_achievements()
 
 # ── 成就区域 ─────────────────────────────────────────────
@@ -95,16 +95,16 @@ func _populate_achievements() -> void:
 
 	# 根据现有战绩数据判断解锁的成就
 	var unlocked: Array[String] = []
-	if UserManager.games_played  >= 1:    unlocked.append("🎮 初次出征")
-	if UserManager.games_won     >= 1:    unlocked.append("🏆 首次胜利")
-	if UserManager.games_played  >= 10:   unlocked.append("⚔️ 久经沙场（游玩10场）")
-	if UserManager.games_won     >= 10:   unlocked.append("🌟 常胜将军（赢得10场）")
-	if UserManager.enemies_defeated >= 100:  unlocked.append("💀 百战老将（击败100个敌人）")
-	if UserManager.enemies_defeated >= 1000: unlocked.append("🔥 千敌斩（击败1000个敌人）")
+	if UserManager.games_played  >= 1:    unlocked.append(tr("UI_ACHIEV_FIRST_BATTLE"))
+	if UserManager.games_won     >= 1:    unlocked.append(tr("UI_ACHIEV_FIRST_WIN"))
+	if UserManager.games_played  >= 10:   unlocked.append(tr("UI_ACHIEV_VETERAN"))
+	if UserManager.games_won     >= 10:   unlocked.append(tr("UI_ACHIEV_CHAMPION"))
+	if UserManager.enemies_defeated >= 100:  unlocked.append(tr("UI_ACHIEV_100_KILLS"))
+	if UserManager.enemies_defeated >= 1000: unlocked.append(tr("UI_ACHIEV_1000_KILLS"))
 
 	# 同步成就解锁计数
 	UserManager.achievements_unlocked = unlocked.size()
-	achiev_unlocked_label.text = "成就解锁：%d" % unlocked.size()
+	achiev_unlocked_label.text = tr("UI_PROFILE_ACHIEVEMENTS") + "：%d" % unlocked.size()
 
 	if unlocked.is_empty():
 		achiev_placeholder.show()

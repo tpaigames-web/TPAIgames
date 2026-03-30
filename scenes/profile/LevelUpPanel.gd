@@ -234,7 +234,7 @@ func _update_claim_btn(btn: Button, lv: int, is_paid: bool) -> void:
 		btn.disabled = true
 		btn.modulate = Color(0.6, 0.6, 0.6)
 	elif lv <= cur_lv:
-		btn.text     = "领取！"
+		btn.text     = tr("UI_LEVEL_CLAIM")
 		btn.disabled = false
 		btn.modulate = Color(0.4, 1.0, 0.5)  # 绿色高亮
 	else:
@@ -294,8 +294,8 @@ func _reward_desc(reward: Dictionary) -> String:
 	if "gems" in reward:
 		parts.append("💎%d" % reward["gems"])
 	if "frags_rarity" in reward:
-		var rarity_name: String = ["白", "绿", "蓝", "紫", "橙"][reward["frags_rarity"]]
-		parts.append("%s碎片×%d" % [rarity_name, reward.get("frags_count", 1)])
+		var rarity_name: String = [tr("UI_RARITY_WHITE"), tr("UI_RARITY_GREEN"), tr("UI_RARITY_BLUE"), tr("UI_RARITY_PURPLE"), tr("UI_RARITY_ORANGE")][reward["frags_rarity"]]
+		parts.append(tr("UI_LEVEL_FRAG_FORMAT") % [rarity_name, reward.get("frags_count", 1)])
 	return "\n".join(parts)
 
 # ── 领取奖励 ──────────────────────────────────────────────────────────
@@ -356,7 +356,7 @@ func _on_buy_pass() -> void:
 	if UserManager.has_paid_pass:
 		return
 	_show_confirm(
-		"购买升级通行证？\n\nRM %.2f 永久激活\n付费列所有等级奖励全部解锁" % PAID_PASS_PRICE_RM,
+		tr("UI_LEVEL_BUY_PASS") % PAID_PASS_PRICE_RM,
 		func():
 			PaymentManager.purchase(
 				"level_pass",
@@ -365,13 +365,13 @@ func _on_buy_pass() -> void:
 					UserManager.has_paid_pass = true
 					_update_buy_pass_btn()
 					_refresh_all_claim_btns(),
-				func(err: String): _show_alert("购买失败\n" + err)
+				func(err: String): _show_alert(tr("UI_LEVEL_BUY_FAILED") + "\n" + err)
 			)
 	)
 
 func _update_buy_pass_btn() -> void:
 	if UserManager.has_paid_pass:
-		buy_pass_btn.text     = "✓ 已激活"
+		buy_pass_btn.text     = tr("UI_LEVEL_PASS_ACTIVE")
 		buy_pass_btn.disabled = true
 		buy_pass_btn.modulate = Color(0.6, 0.6, 0.6)
 	else:
@@ -433,20 +433,20 @@ func _show_confirm(message: String, on_confirm: Callable) -> void:
 	_pending_action  = on_confirm
 	confirm_msg.text = message
 	cancel_btn.show()
-	confirm_btn.text = "确认"
+	confirm_btn.text = tr("UI_DIALOG_CONFIRM")
 	confirm_overlay.show()
 
 func _show_alert(message: String) -> void:
 	_pending_action  = Callable()
 	confirm_msg.text = message
 	cancel_btn.hide()
-	confirm_btn.text = "确定"
+	confirm_btn.text = tr("UI_SHOP_OK")
 	confirm_overlay.show()
 
 func _on_confirm_yes() -> void:
 	confirm_overlay.hide()
 	cancel_btn.show()
-	confirm_btn.text = "确认"
+	confirm_btn.text = tr("UI_DIALOG_CONFIRM")
 	if _pending_action.is_valid():
 		_pending_action.call()
 	_pending_action = Callable()
@@ -454,7 +454,7 @@ func _on_confirm_yes() -> void:
 func _on_confirm_no() -> void:
 	confirm_overlay.hide()
 	cancel_btn.show()
-	confirm_btn.text = "确认"
+	confirm_btn.text = tr("UI_DIALOG_CONFIRM")
 	_pending_action = Callable()
 
 func _on_overlay_input(event: InputEvent) -> void:
@@ -481,7 +481,7 @@ func _add_claim_all_btn() -> void:
 
 	var btn := Button.new()
 	btn.name = "ClaimAllFloatBtn"
-	btn.text = "🎁 一键领取 (%d)" % unclaimed
+	btn.text = tr("UI_LEVEL_CLAIM_ALL") % unclaimed
 	btn.custom_minimum_size = Vector2(260, 70)
 	btn.size = Vector2(260, 70)
 	btn.position = Vector2(20, 800)

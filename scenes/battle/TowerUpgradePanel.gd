@@ -127,11 +127,11 @@ func _show_sell_confirm(tower: Area2D, sell_val: int, is_hero: bool) -> void:
 
 	var msg := Label.new()
 	var td := tower.tower_data as TowerCollectionData
-	var name_str: String = td.display_name if td else "炮台"
+	var name_str: String = td.display_name if td else tr("UI_BATTLE_TAB_TOWER")
 	if is_hero:
-		msg.text = "确定售出 %s？\n\n⚠️ 售出后地形效果消失\n重新放置需从 Lv1 开始成长" % name_str
+		msg.text = tr("UI_SELL_CONFIRM_HERO") % name_str
 	else:
-		msg.text = "确定售出 %s？\n返还 %d 🪙" % [name_str, sell_val]
+		msg.text = tr("UI_SELL_CONFIRM_TOWER") % [name_str, sell_val]
 	msg.add_theme_font_size_override("font_size", 32)
 	msg.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	vb.add_child(msg)
@@ -142,14 +142,14 @@ func _show_sell_confirm(tower: Area2D, sell_val: int, is_hero: bool) -> void:
 	vb.add_child(btn_row)
 
 	var cancel_btn := Button.new()
-	cancel_btn.text = "取消"
+	cancel_btn.text = tr("UI_DIALOG_CANCEL")
 	cancel_btn.custom_minimum_size = Vector2(200, 70)
 	cancel_btn.add_theme_font_size_override("font_size", 32)
 	cancel_btn.pressed.connect(func(): overlay.queue_free())
 	btn_row.add_child(cancel_btn)
 
 	var confirm_btn := Button.new()
-	confirm_btn.text = "确认售出"
+	confirm_btn.text = tr("UI_CONFIRM_SELL")
 	confirm_btn.custom_minimum_size = Vector2(200, 70)
 	confirm_btn.add_theme_font_size_override("font_size", 32)
 	confirm_btn.modulate = Color(1.0, 0.4, 0.3)
@@ -187,7 +187,7 @@ func _populate_upgrade_panel(tower: Area2D) -> void:
 	# 顶部：返回按钮 + 炮台名称
 	var header := HBoxContainer.new()
 	var back   := Button.new()
-	back.text  = "← 返回"
+	back.text  = "← " + tr("UI_BATTLE_BACK")
 	back.add_theme_font_size_override("font_size", 28)
 	back.pressed.connect(hide_upgrade_panel)
 	header.add_child(back)
@@ -198,7 +198,7 @@ func _populate_upgrade_panel(tower: Area2D) -> void:
 	header.add_child(title)
 	var sell_val := int(tower.stat_total_spent * 0.65)
 	var sell_btn := Button.new()
-	sell_btn.text = "💰 售出\n%d🪙" % sell_val
+	sell_btn.text = tr("UI_SELL_BTN") % sell_val
 	sell_btn.add_theme_font_size_override("font_size", 24)
 	sell_btn.pressed.connect(func():
 		_show_sell_confirm(tower, sell_val, false)
@@ -223,7 +223,7 @@ func _populate_upgrade_panel(tower: Area2D) -> void:
 
 	# 攻击目标选择行
 	var target_row := HBoxContainer.new()
-	var _modes := [["第一个", 0], ["靠近", 1], ["强力", 2], ["最后", 3]]
+	var _modes := [[tr("UI_TARGET_FIRST"), 0], [tr("UI_TARGET_CLOSE"), 1], [tr("UI_TARGET_STRONG"), 2], [tr("UI_TARGET_LAST"), 3]]
 	for md in _modes:
 		var btn := Button.new()
 		btn.text = md[0]
@@ -271,57 +271,57 @@ func _show_tower_info(tower: Area2D) -> void:
 	# ── 伤害分解 ──
 	var dmg: Dictionary = tower.get_damage_breakdown()
 	if not dmg.is_empty():
-		text += "─── 伤害分解 ───\n"
-		text += "基础伤害:  %.1f\n" % dmg.get("base", 0)
+		text += tr("UI_INFO_DMG_SECTION") + "\n"
+		text += tr("UI_INFO_BASE_DMG") % dmg.get("base", 0) + "\n"
 		var pb: float = dmg.get("path_bonus", 0)
 		if pb > 0:
-			text += "路线升级:  +%d%% (+%.1f)\n" % [int(pb * 100), dmg.get("base", 0) * pb]
+			text += tr("UI_INFO_PATH_BONUS") % [int(pb * 100), dmg.get("base", 0) * pb] + "\n"
 		var gb: float = dmg.get("global_bonus", 0)
 		if gb > 0:
-			text += "波次强化:  +%d%%\n" % int(gb * 100)
+			text += tr("UI_INFO_GLOBAL_BONUS") % int(gb * 100) + "\n"
 		var hb: float = dmg.get("hero_bonus", 0)
 		if hb > 0:
-			text += "英雄加成:  +%d%%\n" % int(hb * 100)
+			text += tr("UI_INFO_HERO_BONUS") % int(hb * 100) + "\n"
 		var tb: float = dmg.get("terrain_bonus", 0)
 		if tb > 0:
-			text += "圣地加成:  +%d%%\n" % int(tb * 100)
+			text += tr("UI_INFO_TERRAIN_BONUS") % int(tb * 100) + "\n"
 		var bm: float = dmg.get("buff_mult", 1.0)
 		if not is_equal_approx(bm, 1.0):
-			text += "光环加成:  ×%.2f\n" % bm
+			text += tr("UI_INFO_AURA_MULT") % bm + "\n"
 		for ab in dmg.get("aura_buffs", []):
 			text += "%s %s:  +%d%%\n" % [ab.get("emoji", ""), ab.get("name", ""), int(ab.get("value", 0) * 100)]
-		text += "最终伤害:  %.1f\n\n" % dmg.get("final", 0)
+		text += tr("UI_INFO_FINAL_DMG") % dmg.get("final", 0) + "\n\n"
 
 	# ── 攻速分解 ──
 	var spd: Dictionary = tower.get_speed_breakdown()
 	if not spd.is_empty() and spd.get("base_interval", 0) > 0:
-		text += "─── 攻速分解 ───\n"
-		text += "基础间隔:  %.2fs\n" % spd.get("base_interval", 0)
+		text += tr("UI_INFO_SPD_SECTION") + "\n"
+		text += tr("UI_INFO_BASE_INTERVAL") % spd.get("base_interval", 0) + "\n"
 		var sp: float = spd.get("path_bonus", 0)
 		if sp > 0:
-			text += "路线升级:  +%d%%\n" % int(sp * 100)
+			text += tr("UI_INFO_PATH_BONUS") % [int(sp * 100), spd.get("base_interval", 0) * sp] + "\n"
 		var sg: float = spd.get("global_bonus", 0)
 		if sg > 0:
-			text += "波次强化:  +%d%%\n" % int(sg * 100)
+			text += tr("UI_INFO_GLOBAL_BONUS") % int(sg * 100) + "\n"
 		var sm: float = spd.get("buff_mult", 1.0)
 		if not is_equal_approx(sm, 1.0):
-			text += "光环加成:  ×%.2f\n" % sm
+			text += tr("UI_INFO_AURA_SPD_MULT") % sm + "\n"
 		for ab in spd.get("aura_buffs", []):
 			text += "%s %s:  ×%.2f\n" % [ab.get("emoji", ""), ab.get("name", ""), ab.get("value", 0)]
-		text += "最终间隔:  %.2fs (%.1f次/秒)\n\n" % [spd.get("final_interval", 0), spd.get("attacks_per_sec", 0)]
+		text += tr("UI_INFO_FINAL_INTERVAL") % [spd.get("final_interval", 0), spd.get("attacks_per_sec", 0)] + "\n\n"
 
 	# ── 射程分解 ──
 	var rng: Dictionary = tower.get_range_breakdown()
 	if not rng.is_empty():
-		text += "─── 射程分解 ───\n"
-		text += "基础射程:  %.0fpx\n" % rng.get("base", 0)
+		text += tr("UI_INFO_RNG_SECTION") + "\n"
+		text += tr("UI_INFO_BASE_RANGE") % rng.get("base", 0) + "\n"
 		var rp: float = rng.get("path_bonus", 0)
 		if rp > 0:
-			text += "路线升级:  +%d%%\n" % int(rp * 100)
+			text += tr("UI_INFO_PATH_BONUS") % [int(rp * 100), rng.get("base", 0) * rp] + "\n"
 		var rg: float = rng.get("global_bonus", 0)
 		if rg > 0:
-			text += "波次强化:  +%d%%\n" % int(rg * 100)
-		text += "最终射程:  %.0fpx\n\n" % rng.get("final", 0)
+			text += tr("UI_INFO_GLOBAL_BONUS") % int(rg * 100) + "\n"
+		text += tr("UI_INFO_FINAL_RANGE") % rng.get("final", 0) + "\n\n"
 
 	# ── 特殊加成 ──
 	var specials: Array[String] = tower.get_special_bonuses()
@@ -330,23 +330,23 @@ func _show_tower_info(tower: Area2D) -> void:
 		if bs.get("type") == "special":
 			specials.append("%s %s: %s" % [bs.get("emoji", ""), bs.get("name", ""), bs.get("desc", "")])
 	if not specials.is_empty():
-		text += "─── 特殊加成 ───\n"
+		text += tr("UI_INFO_SPECIAL_SECTION") + "\n"
 		for s in specials:
 			text += "• %s\n" % s
 		text += "\n"
 
 	# ── 统计 ──
-	text += "─── 战斗统计 ───\n"
-	text += "💰 总花费: %d\n" % tower.stat_total_spent
-	text += "⚔️ 造成伤害: %.0f\n" % tower.stat_damage_dealt
-	text += "💀 击杀数量: %d\n" % tower.stat_kills
-	text += "🌊 放置波次: 第 %d 波\n" % tower.stat_wave_placed
+	text += tr("UI_INFO_STATS_SECTION") + "\n"
+	text += tr("UI_INFO_TOTAL_COST") % tower.stat_total_spent + "\n"
+	text += tr("UI_INFO_DAMAGE_DEALT") % tower.stat_damage_dealt + "\n"
+	text += tr("UI_INFO_KILLS") % tower.stat_kills + "\n"
+	text += tr("UI_INFO_WAVE_PLACED") % tower.stat_wave_placed + "\n"
 
 	# 关闭旧的详情弹窗
 	if is_instance_valid(_info_dialog):
 		_info_dialog.queue_free()
 	var dlg := AcceptDialog.new()
-	dlg.title = "%s %s — 详细信息" % [data.tower_emoji, data.display_name]
+	dlg.title = tr("UI_INFO_TITLE") % [data.tower_emoji, data.display_name]
 	dlg.dialog_text = text
 	dlg.exclusive = false   # 不阻止其他 UI 交互
 	add_child(dlg)
@@ -390,16 +390,16 @@ func _make_upgrade_row(tower: Area2D, path_idx: int) -> VBoxContainer:
 	else:
 		var is_locked := not _can_upgrade_ingame(tower, path_idx)
 		if is_locked:
-			btn.text     = "🔒 锁定"
+			btn.text     = tr("UI_UPGRADE_LOCKED")
 			btn.disabled = true
 		else:
 			var is_free : bool = (cur_tier + 1) <= arsenal_tier \
 				and _is_free_available(data.tower_id, path_idx, tower)
 			if is_free:
-				btn.text = "升级 FREE"
+				btn.text = tr("UI_UPGRADE_FREE")
 			else:
 				var cost : int = path.tier_costs[cur_tier] if cur_tier < path.tier_costs.size() else 0
-				btn.text = "升级 🪙%d" % cost
+				btn.text = tr("UI_UPGRADE_BTN") % cost
 				btn.disabled = (GameManager.gold < cost)
 			var ci := path_idx
 			btn.pressed.connect(func() -> void: _do_upgrade(tower, ci))

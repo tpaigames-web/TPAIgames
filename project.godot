@@ -39,6 +39,12 @@ window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 window/handheld/orientation=1
 
+[internationalization]
+
+locale/translations=PackedStringArray("res://translations/ui.csv", "res://translations/game_data.csv")
+locale/locale_filter_mode=0
+locale/fallback="zh"
+
 [editor]
 
 version_control/autoload_on_startup=true

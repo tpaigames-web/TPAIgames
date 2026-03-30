@@ -74,16 +74,16 @@ func refresh_cards() -> void:
 		var use_btn: Button = entry.use_btn
 		var count: int = UserManager.get_item_count(data.item_id)
 		if count > 0:
-			count_lbl.text = "库存: %d" % count
-			use_btn.text = "使用"
+			count_lbl.text = tr("UI_ITEM_STOCK") % count
+			use_btn.text = tr("UI_ITEM_USE")
 			use_btn.disabled = false
 		elif UserManager.gems >= data.gem_cost:
-			count_lbl.text = "无库存"
-			use_btn.text = "💎 %d 购买" % data.gem_cost
+			count_lbl.text = tr("UI_ITEM_NO_STOCK")
+			use_btn.text = tr("UI_ITEM_BUY") % data.gem_cost
 			use_btn.disabled = false
 		else:
-			count_lbl.text = "无库存"
-			use_btn.text = "📺 看广告"
+			count_lbl.text = tr("UI_ITEM_NO_STOCK")
+			use_btn.text = tr("UI_ITEM_WATCH_AD")
 			use_btn.disabled = false
 
 
@@ -110,11 +110,11 @@ func _on_item_pressed(data: ItemData) -> void:
 
 func _show_item_purchase_confirm(data: ItemData) -> void:
 	var dlg := ConfirmationDialog.new()
-	dlg.title = "购买道具"
-	dlg.dialog_text = "购买 %s %s？\n花费 💎 %d（当前 💎 %d）" % [
+	dlg.title = tr("UI_ITEM_PURCHASE_TITLE")
+	dlg.dialog_text = tr("UI_ITEM_PURCHASE_MSG") % [
 		data.emoji, data.display_name, data.gem_cost, UserManager.gems]
-	dlg.ok_button_text = "确认购买"
-	dlg.cancel_button_text = "取消"
+	dlg.ok_button_text = tr("UI_ITEM_PURCHASE_CONFIRM")
+	dlg.cancel_button_text = tr("UI_DIALOG_CANCEL")
 	dlg.confirmed.connect(func():
 		dlg.queue_free()
 		if UserManager.spend_gems(data.gem_cost):

@@ -1,0 +1,347 @@
+keys,zh,en,ms
+UI_HOME_BATTLE,战斗,Battle,Pertempuran
+UI_HOME_SHOP,商城,Shop,Kedai
+UI_HOME_ARSENAL,军火库,Arsenal,Gudang Senjata
+UI_HOME_FACTORY,兵工厂,Factory,Kilang
+UI_HOME_CHESTS,宝箱,Chests,Peti Harta
+UI_HOME_UPGRADE,升级,Upgrade,Naik Taraf
+UI_HOME_FREE_REWARD,免费奖励,Free Reward,Ganjaran Percuma
+UI_HOME_FEATURE_DEVELOPING,功能开发中，敬请期待！,Feature coming soon!,Ciri akan datang!
+UI_BATTLE_WAVE_FORMAT,波次 %d/%d,Wave %d/%d,Gelombang %d/%d
+UI_BATTLE_ENDLESS_WAVE,♾️ 波次 %d,♾️ Wave %d,♾️ Gelombang %d
+UI_BATTLE_TAB_TOWER,炮台,Towers,Menara
+UI_BATTLE_TAB_HERO,英雄,Heroes,Wira
+UI_BATTLE_TAB_ITEM,道具,Items,Item
+UI_BATTLE_BACK,返回,Back,Kembali
+UI_SETTINGS_TITLE,设置,Settings,Tetapan
+UI_SETTINGS_GUIDE,指南,Guide,Panduan
+UI_SETTINGS_AUDIO,🔊 音频,🔊 Audio,🔊 Audio
+UI_SETTINGS_MUSIC_VOL,音乐音量,Music Volume,Kelantangan Muzik
+UI_SETTINGS_SFX_VOL,音效音量,SFX Volume,Kelantangan SFX
+UI_SETTINGS_DISPLAY,🖥 画面,🖥 Display,🖥 Paparan
+UI_SETTINGS_QUALITY,画质,Quality,Kualiti
+UI_SETTINGS_QUALITY_LOW,流畅,Smooth,Lancar
+UI_SETTINGS_QUALITY_MED,均衡,Balanced,Seimbang
+UI_SETTINGS_QUALITY_HIGH,高画质,High Quality,Kualiti Tinggi
+UI_SETTINGS_PARTICLES,粒子效果,Particles,Kesan Zarah
+UI_SETTINGS_GAMEPLAY,🎮 游戏辅助,🎮 Gameplay,🎮 Permainan
+UI_SETTINGS_DMG_NUMBERS,显示伤害数字,Damage Numbers,Nombor Kerosakan
+UI_SETTINGS_RANGE_DISPLAY,攻击范围圆,Range Display,Paparan Jarak
+UI_SETTINGS_RANGE_OFF,关闭,Off,Tutup
+UI_SETTINGS_RANGE_SELECTED,仅选中,Selected Only,Terpilih Sahaja
+UI_SETTINGS_RANGE_ALWAYS,常驻,Always,Sentiasa
+UI_SETTINGS_DEFAULT_SPEED,默认游戏速度,Default Speed,Kelajuan Asal
+UI_SETTINGS_OTHER,ℹ 其他,ℹ Other,ℹ Lain-lain
+UI_SETTINGS_VERSION,版本,Version,Versi
+UI_GUIDE_ENEMIES,敌人详情,Enemies,Musuh
+UI_GUIDE_TOWERS,炮台详情,Towers,Menara
+UI_GUIDE_HEROES,英雄详情,Heroes,Wira
+UI_GUIDE_UPGRADES,升级强化,Upgrades,Naik Taraf
+UI_GUIDE_EFFECTS,效果,Effects,Kesan
+UI_GUIDE_SELECT_ITEM,选择一个项目,Select an item,Pilih satu item
+UI_MODE_NORMAL,普通模式,Normal Mode,Mod Biasa
+UI_MODE_HARD,困难模式,Hard Mode,Mod Sukar
+UI_MODE_HARD_COMING,即将推出,Coming Soon,Akan Datang
+UI_MODE_CHALLENGE,挑战模式,Challenge Mode,Mod Cabaran
+UI_MODE_DESC_NORMAL,体验纯粹的塔防，能够使用兵工厂力量,Pure tower defense with Arsenal power,Pertahanan menara tulen dengan kuasa Gudang Senjata
+UI_MODE_DESC_HARD,提供80波敌人，新敌人、新机制，即将推出,80 waves with new enemies and mechanics. Coming soon!,80 gelombang dengan musuh dan mekanik baru. Akan datang!
+UI_MODE_DESC_CHALLENGE,1HP挑战40波敌人，不可以使用兵工厂力量,1HP challenge with 40 waves. No Arsenal power,Cabaran 1HP dengan 40 gelombang. Tiada kuasa Gudang Senjata
+UI_MODE_START,开始游戏,Start Game,Mula Permainan
+UI_LOGIN_START,开始游戏,Start Game,Mula Permainan
+UI_LOADING,加载中...,Loading...,Memuatkan...
+UI_STORY_SKIP,跳过,Skip,Langkau
+UI_UPGRADE_TITLE,选择强化,Choose Upgrade,Pilih Peningkatan
+UI_UPGRADE_CONFIRM,确认选择,Confirm,Sahkan
+UI_UPGRADE_REFRESH,刷新,Refresh,Segar Semula
+UI_DIALOG_CONFIRM,确认,Confirm,Sahkan
+UI_DIALOG_CANCEL,取消,Cancel,Batal
+UI_SELL,售出,Sell,Jual
+UI_SELL_CONFIRM,确定售出 %s？,Sell %s?,Jual %s?
+UI_SELL_REFUND,返还 %s 🪙,Refund %s 🪙,Pulangan %s 🪙
+UI_CHEST_TITLE,宝箱,Chests,Peti Harta
+UI_CHEST_BUY_TITLE,购买宝箱,Buy Chests,Beli Peti Harta
+UI_CHEST_BULK_TITLE,10连开箱,10x Open,10x Buka
+UI_CHEST_CLICK_OPEN,点击宝箱打开,Tap chest to open,Ketik peti untuk buka
+UI_CHEST_SKIP,跳过 »,Skip »,Langkau »
+UI_CHEST_WOODEN,木宝箱,Wooden Chest,Peti Kayu
+UI_CHEST_IRON,铁宝箱,Iron Chest,Peti Besi
+UI_CHEST_GOLD,金宝箱,Golden Chest,Peti Emas
+UI_CHEST_FREE,免费,Free,Percuma
+UI_CHEST_CARDS,%d 张卡片,%d Cards,%d Kad
+UI_CHEST_PENDING,⏳ 待领取宝箱,⏳ Pending Chest,⏳ Peti Menunggu
+UI_CHEST_CLAIM,➕ 领取到槽位,➕ Claim to Slot,➕ Tuntut ke Slot
+UI_RARITY_WHITE,白,Common,Biasa
+UI_RARITY_GREEN,绿,Uncommon,Luar Biasa
+UI_RARITY_BLUE,蓝,Rare,Jarang
+UI_RARITY_PURPLE,紫,Epic,Epik
+UI_RARITY_ORANGE,橙,Legendary,Legenda
+UI_RARITY_NORMAL,普通,Normal,Biasa
+UI_RARITY_RARE,稀有,Rare,Jarang
+UI_RARITY_EPIC,史诗,Epic,Epik
+UI_RARITY_LEGEND,传说,Legendary,Legenda
+UI_HERO_UPGRADE_TITLE,🏰 英雄升级,🏰 Hero Upgrade,🏰 Naik Taraf Wira
+UI_HERO_CONFIRM,✅ 确认选择,✅ Confirm,✅ Sahkan
+UI_PROFILE_TITLE,农场主,Farmer,Pemilik Ladang
+UI_PROFILE_EDIT_NAME,修改名字,Edit Name,Tukar Nama
+UI_PROFILE_STATS,战绩,Stats,Statistik
+UI_PROFILE_GAMES_PLAYED,游戏场次,Games Played,Permainan Dimainkan
+UI_PROFILE_WINS,胜场,Wins,Kemenangan
+UI_PROFILE_ACHIEVEMENTS,🏆 成就,🏆 Achievements,🏆 Pencapaian
+UI_PROFILE_NO_ACHIEVEMENTS,暂无成就，完成挑战即可解锁,No achievements yet,Tiada pencapaian lagi
+UI_VICTORY_TITLE,🎉 胜利！,🎉 Victory!,🎉 Kemenangan!
+UI_DEFEAT_TITLE,💀 游戏结束,💀 Game Over,💀 Tamat Permainan
+UI_DEFEAT_MSG,农场被攻破了！,The farm has fallen!,Ladang telah jatuh!
+UI_REVIVE_TITLE,💔 农场快撑不住了！,💔 Farm is falling!,💔 Ladang akan jatuh!
+UI_REVIVE_MSG,观看广告可获得一次免费复活机会,Watch an ad for a free revive,Tonton iklan untuk kebangkitan percuma
+UI_REVIVE_WATCH_AD,📺 观看广告复活,📺 Watch Ad to Revive,📺 Tonton Iklan untuk Bangkit
+UI_REVIVE_GIVE_UP,放弃,Give Up,Menyerah
+UI_DOUBLE_REWARD_TITLE,🎉 恭喜守护成功！,🎉 Farm Defended!,🎉 Ladang Dipertahankan!
+UI_DOUBLE_REWARD_WATCH,📺 双倍奖励,📺 Double Reward,📺 Ganjaran Berganda
+UI_DOUBLE_REWARD_NORMAL,领取普通奖励,Claim Normal Reward,Tuntut Ganjaran Biasa
+UI_ENDLESS_ENTER,♾️ 继续无限模式,♾️ Continue Endless,♾️ Teruskan Tanpa Had
+UI_RETURN_HOME,返回主界面,Return to Menu,Kembali ke Menu
+UI_TUTORIAL_TITLE,🎓 新手教学,🎓 Tutorial,🎓 Tutorial
+UI_TUTORIAL_COMPLETED,✅ 已通过,✅ Completed,✅ Selesai
+UI_TUTORIAL_START,开始 ▶,Start ▶,Mula ▶
+UI_FACTORY_TITLE,兵工厂,Factory,Kilang
+UI_FACTORY_TOWERS,⚔️ 炮台,⚔️ Towers,⚔️ Menara
+UI_FACTORY_HEROES,🗿 英雄,🗿 Heroes,🗿 Wira
+UI_FACTORY_ITEMS,📦 道具,📦 Items,📦 Item
+UI_FACTORY_FILTER_ALL,全部,All,Semua
+UI_LEVEL_PASS_TITLE,升级通行证,Battle Pass,Pas Pertempuran
+UI_LEVEL_PASS_FREE,免费,Free,Percuma
+UI_LEVEL_PASS_CLAIM_ALL,全部领取,Claim All,Tuntut Semua
+UI_COMING_SOON,功能开发中，敬请期待 🚧,Feature coming soon 🚧,Ciri akan datang 🚧
+UI_FREE_REWARD_TITLE,🎁 免费奖励,🎁 Free Reward,🎁 Ganjaran Percuma
+UI_FREE_REWARD_DESC,观看广告获得以下奖励之一：\n\n💎 30-50 钻石\n🧩 随机炮台碎片（蓝/紫/橙）\n\n是否观看广告？,Watch an ad for one of these rewards:\n\n💎 30-50 Gems\n🧩 Random tower fragments (Rare/Epic/Legendary)\n\nWatch ad?,Tonton iklan untuk salah satu ganjaran:\n\n💎 30-50 Permata\n🧩 Serpihan menara rawak (Jarang/Epik/Legenda)\n\nTonton iklan?
+UI_FREE_REWARD_WATCH,📺 看广告领取,📺 Watch Ad to Claim,📺 Tonton Iklan untuk Tuntut
+UI_REWARD_TITLE,🎉 奖励,🎉 Reward,🎉 Ganjaran
+UI_REWARD_GEMS,💎 获得 %d 钻石！,💎 Got %d gems!,💎 Dapat %d permata!
+UI_REWARD_FRAGMENTS,🧩 获得 %s 碎片 ×%d！,🧩 Got %s fragments ×%d!,🧩 Dapat serpihan %s ×%d!
+UI_REVIVE_DIALOG_MSG,农场 HP 归零！\n观看广告可获得一次免费复活机会\n复活后恢复 50% 生命值,Farm HP is zero!\nWatch an ad for a free revive\nRevive restores 50% HP,HP Ladang sifar!\nTonton iklan untuk kebangkitan percuma\nKebangkitan pulihkan 50% HP
+UI_DEFEAT_MSG_FULL,农场被攻破了！\n带出金币: %d 🪙\n下次再接再厉～,The farm has fallen!\nGold carried: %d 🪙\nBetter luck next time~,Ladang telah jatuh!\nEmas dibawa: %d 🪙\nCuba lagi~
+UI_ENDLESS_REACHED,\n🏆 无限模式到达: 第 %d 波（最高: %d）,\n🏆 Endless reached: Wave %d (Best: %d),\n🏆 Tanpa Had: Gelombang %d (Terbaik: %d)
+UI_TUTORIAL_COMPLETE_TITLE,🎉 教学完成！,🎉 Tutorial Complete!,🎉 Tutorial Selesai!
+UI_VICTORY_REWARD_DESC,恭喜守护农场成功！\n\n普通奖励: %d 🪙 + 200 XP\n双倍奖励: %d 🪙 + 400 XP（看广告获得）,Farm defended!\n\nNormal reward: %d 🪙 + 200 XP\nDouble reward: %d 🪙 + 400 XP (watch ad),Ladang dipertahankan!\n\nGanjaran biasa: %d 🪙 + 200 XP\nGanjaran berganda: %d 🪙 + 400 XP (tonton iklan)
+UI_VICTORY_RESULT,恭喜守护农场成功！\n评分: %s %s\n带出金币: %d 🪙%s\n获得 %d XP 奖励%s,Farm defended!\nRating: %s %s\nGold carried: %d 🪙%s\nEarned %d XP%s,Ladang dipertahankan!\nPenilaian: %s %s\nEmas dibawa: %d 🪙%s\nDapat %d XP%s
+UI_ENDLESS_BEST,\n🏆 无限模式最高波数: %d,\n🏆 Endless best wave: %d,\n🏆 Gelombang terbaik Tanpa Had: %d
+UI_CHEST_SLOTS_FULL_TITLE,🎁 宝箱槽位已满,🎁 Chest Slots Full,🎁 Slot Peti Penuh
+UI_CHEST_SLOTS_FULL_MSG,4 个槽位都占满了！\n看广告可以保留这个宝箱\n等有空槽位时再领取,All 4 slots are full!\nWatch an ad to keep this chest\nClaim when a slot opens,Semua 4 slot penuh!\nTonton iklan untuk simpan peti\nTuntut apabila slot kosong
+UI_CHEST_SLOTS_WATCH,📺 看广告保留,📺 Watch Ad to Keep,📺 Tonton Iklan untuk Simpan
+UI_CHEST_KEPT,\n✅ 宝箱已保留！下次有空槽位时前往宝箱标签领取,\n✅ Chest saved! Claim from Chests tab when a slot opens,\n✅ Peti disimpan! Tuntut dari tab Peti apabila slot kosong
+UI_CHEST_LOST,\n❌ 已丢失一个金宝箱！（清空槽位后可正常获得）,\n❌ Lost a golden chest! (Clear slots to receive chests normally),\n❌ Hilang peti emas! (Kosongkan slot untuk terima peti)
+UI_STAR_PERFECT,完美防守！,Perfect defense!,Pertahanan sempurna!
+UI_STAR_GOOD,表现良好！,Good performance!,Prestasi baik!
+UI_STAR_CLOSE,险险通关！,Close call!,Hampir-hampir!
+UI_DOUBLE_BONUS, 🎊×2, 🎊×2, 🎊×2
+UI_CHEST_OBTAINED,\n🎁 获得 %s！前往宝箱标签解锁,\n🎁 Got %s! Go to Chests tab to unlock,\n🎁 Dapat %s! Pergi ke tab Peti untuk buka
+UI_RARITY_POPUP_NORMAL,普通,Normal,Biasa
+UI_RARITY_POPUP_RARE,稀有,Rare,Jarang
+UI_RARITY_POPUP_EPIC,史诗,Epic,Epik
+UI_RARITY_POPUP_LEGEND,传说,Legendary,Legenda
+UI_UPGRADE_CLOSE,关闭,Close,Tutup
+UI_UPGRADE_REQUIRED,⚠ 需要：,⚠ Requires: ,⚠ Memerlukan:
+UI_SELL_CONFIRM_HERO,确定售出 %s？\n\n⚠️ 售出后地形效果消失\n重新放置需从 Lv1 开始成长,Sell %s?\n\n⚠️ Terrain effect will disappear\nRe-placing starts from Lv1,Jual %s?\n\n⚠️ Kesan medan akan hilang\nLetakkan semula bermula Lv1
+UI_SELL_CONFIRM_TOWER,确定售出 %s？\n返还 %d 🪙,Sell %s?\nRefund %d 🪙,Jual %s?\nPulangan %d 🪙
+UI_SELL_BTN,💰 售出\n%d🪙,💰 Sell\n%d🪙,💰 Jual\n%d🪙
+UI_CONFIRM_SELL,确认售出,Confirm Sell,Sahkan Jualan
+UI_UPGRADE_BTN,升级 🪙%d,Upgrade 🪙%d,Naik Taraf 🪙%d
+UI_UPGRADE_FREE,升级 FREE,Upgrade FREE,Naik Taraf PERCUMA
+UI_UPGRADE_LOCKED,🔒 锁定,🔒 Locked,🔒 Dikunci
+UI_TARGET_FIRST,第一个,First,Pertama
+UI_TARGET_CLOSE,靠近,Closest,Terdekat
+UI_TARGET_STRONG,强力,Strongest,Terkuat
+UI_TARGET_LAST,最后,Last,Terakhir
+UI_ATK_GROUND,地面,Ground,Darat
+UI_ATK_AIR,空中,Air,Udara
+UI_ATK_ALL,全部,All,Semua
+UI_ITEM_STOCK,库存: %d,Stock: %d,Stok: %d
+UI_ITEM_NO_STOCK,无库存,No stock,Tiada stok
+UI_ITEM_USE,使用,Use,Guna
+UI_ITEM_BUY,💎 %d 购买,💎 %d Buy,💎 %d Beli
+UI_ITEM_WATCH_AD,📺 看广告,📺 Watch Ad,📺 Tonton Iklan
+UI_ITEM_PURCHASE_TITLE,购买道具,Buy Item,Beli Item
+UI_ITEM_PURCHASE_MSG,购买 %s %s？\n花费 💎 %d（当前 💎 %d）,Buy %s %s?\nCost 💎 %d (Current 💎 %d),Beli %s %s?\nKos 💎 %d (Semasa 💎 %d)
+UI_ITEM_PURCHASE_CONFIRM,确认购买,Confirm Purchase,Sahkan Pembelian
+UI_HERO_LABEL,英雄,Hero,Wira
+UI_HERO_LOCKED,英雄 🔒,Heroes 🔒,Wira 🔒
+UI_HERO_LV_FORMAT,等级 Lv.%d / 5,Level Lv.%d / 5,Tahap Lv.%d / 5
+UI_HERO_BASE_SKILL,📋 初始技能,📋 Base Skill,📋 Kemahiran Asas
+UI_HERO_UPGRADES_CHOSEN,⚡ 已选升级,⚡ Upgrades Chosen,⚡ Peningkatan Dipilih
+UI_HERO_NO_UPGRADES,⚡ 暂无升级,⚡ No Upgrades Yet,⚡ Tiada Peningkatan Lagi
+UI_HERO_UNLOCK_WAVE,（第 %d 波解锁）,(Unlocks at wave %d),(Dibuka pada gelombang %d)
+UI_HERO_MAX_LEVEL,✨ 满级,✨ Max Level,✨ Tahap Maks
+UI_HERO_NEXT_UPGRADE,⏳ 下次升级: 第 %d 波（还需 %d 波）,⏳ Next upgrade: Wave %d (%d waves left),⏳ Peningkatan seterusnya: Gelombang %d (%d gelombang lagi)
+UI_HERO_SELL,🔥 售出,🔥 Sell,🔥 Jual
+UI_HERO_TERRAIN_FORMAT,☀️ %s · 半径 %dpx,☀️ %s · Radius %dpx,☀️ %s · Jejari %dpx
+UI_WAVE_BANNER,⚔ 第 %d 波 ⚔\n%s,⚔ Wave %d ⚔\n%s,⚔ Gelombang %d ⚔\n%s
+UI_WAVE_BANNER_SIMPLE,⚔ 第 %d 波 ⚔,⚔ Wave %d ⚔,⚔ Gelombang %d ⚔
+UI_DECOR_REMOVE_TITLE,拆除装饰,Remove Decoration,Alih Hiasan
+UI_DECOR_REMOVE_MSG,拆除 %s？\n花费 %d 🪙,Remove %s?\nCost %d 🪙,Alih %s?\nKos %d 🪙
+UI_DECOR_REMOVE_CONFIRM,确认拆除,Confirm Remove,Sahkan Alih
+UI_DECOR_REMOVE_GENERIC,花费 500 🪙 拆除此装饰物？,Remove this decoration for 500 🪙?,Alih hiasan ini untuk 500 🪙?
+UI_SAVE_OVERWRITE,将覆盖 Day%d %s 的保存记录，确定？,Overwrite Day%d %s save?,Tulis ganti simpanan Day%d %s?
+UI_SAVE_CONFIRM,确定,Confirm,Sahkan
+UI_EXIT_NO_SAVE_MSG,退出当前游戏？\n当前游戏进度不会被保留,Quit current game?\nProgress will not be saved,Keluar permainan semasa?\nKemajuan tidak akan disimpan
+UI_MODE_NORMAL_LABEL,普通模式,Normal Mode,Mod Biasa
+UI_MODE_CHALLENGE_LABEL,挑战模式,Challenge Mode,Mod Cabaran
+UI_HERO_UPGRADE_FLOAT,🏰 英雄升级 Lv.%d！,🏰 Hero Upgrade Lv.%d!,🏰 Naik Taraf Wira Lv.%d!
+UI_SETTINGS_LANGUAGE,🌐 语言,🌐 Language,🌐 Bahasa
+UI_LANG_CHINESE,中文,中文,中文
+UI_LANG_ENGLISH,English,English,English
+UI_LANG_MALAY,Bahasa Melayu,Bahasa Melayu,Bahasa Melayu
+UI_INFO_DMG_SECTION,─── 伤害分解 ───,─── Damage Breakdown ───,─── Pecahan Kerosakan ───
+UI_INFO_BASE_DMG,基础伤害:  %.1f,Base Damage:  %.1f,Kerosakan Asas:  %.1f
+UI_INFO_PATH_BONUS,路线升级:  +%d%% (+%.1f),Path Upgrade:  +%d%% (+%.1f),Naik Taraf Laluan:  +%d%% (+%.1f)
+UI_INFO_GLOBAL_BONUS,波次强化:  +%d%%,Wave Buff:  +%d%%,Penambahan Gelombang:  +%d%%
+UI_INFO_HERO_BONUS,英雄加成:  +%d%%,Hero Bonus:  +%d%%,Bonus Wira:  +%d%%
+UI_INFO_TERRAIN_BONUS,圣地加成:  +%d%%,Terrain Bonus:  +%d%%,Bonus Medan:  +%d%%
+UI_INFO_AURA_MULT,光环加成:  ×%.2f,Aura Bonus:  ×%.2f,Bonus Aura:  ×%.2f
+UI_INFO_FINAL_DMG,最终伤害:  %.1f,Final Damage:  %.1f,Kerosakan Akhir:  %.1f
+UI_INFO_SPD_SECTION,─── 攻速分解 ───,─── Speed Breakdown ───,─── Pecahan Kelajuan ───
+UI_INFO_BASE_INTERVAL,基础间隔:  %.2fs,Base Interval:  %.2fs,Selang Asas:  %.2fs
+UI_INFO_AURA_SPD_MULT,光环加成:  ×%.2f,Aura Bonus:  ×%.2f,Bonus Aura:  ×%.2f
+UI_INFO_FINAL_INTERVAL,最终间隔:  %.2fs (%.1f次/秒),Final Interval:  %.2fs (%.1f/sec),Selang Akhir:  %.2fs (%.1f/saat)
+UI_INFO_RNG_SECTION,─── 射程分解 ───,─── Range Breakdown ───,─── Pecahan Jarak ───
+UI_INFO_BASE_RANGE,基础射程:  %.0fpx,Base Range:  %.0fpx,Jarak Asas:  %.0fpx
+UI_INFO_FINAL_RANGE,最终射程:  %.0fpx,Final Range:  %.0fpx,Jarak Akhir:  %.0fpx
+UI_INFO_SPECIAL_SECTION,─── 特殊加成 ───,─── Special Bonuses ───,─── Bonus Khas ───
+UI_INFO_STATS_SECTION,─── 战斗统计 ───,─── Battle Stats ───,─── Statistik Pertempuran ───
+UI_INFO_TOTAL_COST,💰 总花费: %d,💰 Total Cost: %d,💰 Jumlah Kos: %d
+UI_INFO_DAMAGE_DEALT,⚔️ 造成伤害: %.0f,⚔️ Damage Dealt: %.0f,⚔️ Kerosakan: %.0f
+UI_INFO_KILLS,💀 击杀数量: %d,💀 Kills: %d,💀 Bunuhan: %d
+UI_INFO_WAVE_PLACED,🌊 放置波次: 第 %d 波,🌊 Placed at Wave: %d,🌊 Diletakkan pada Gelombang: %d
+UI_INFO_TITLE,%s %s — 详细信息,%s %s — Details,%s %s — Butiran
+UI_TERRAIN_DEFAULT,地形,Terrain,Medan
+HERO_TERRAIN_HARVEST_NAME,丰收圣地,Harvest Shrine,Tempat Suci Tuaian
+HERO_TERRAIN_HARVEST_DESC,圣地内炮台伤害+12%，每次击杀+1金币,Towers in shrine +12% damage. +1 gold per kill,Menara dalam tempat suci +12% kerosakan. +1 emas setiap bunuhan
+HERO_TERRAIN_PRISON_NAME,禁锢领域,Binding Domain,Domain Pengikatan
+HERO_TERRAIN_PRISON_DESC,领域内敌人移速-20%，优先朝守卫者移动（嘲讽）,Enemies in domain -20% speed. Taunt towards guardian,Musuh dalam domain -20% kelajuan. Ejekan ke arah pengawal
+HERO_UPG_HARVEST_1A_NAME,圣地深耕,Deep Cultivation,Penanaman Mendalam
+HERO_UPG_HARVEST_1A_DESC,圣地内伤害加成提升至+32%,Shrine damage bonus increased to +32%,Bonus kerosakan tempat suci meningkat ke +32%
+HERO_UPG_HARVEST_1B_NAME,金穗满田,Golden Fields,Ladang Emas
+HERO_UPG_HARVEST_1B_DESC,击杀+2金币，精英击杀+5金币,+2 gold per kill. +5 for elites,+2 emas setiap bunuhan. +5 untuk elit
+HERO_UPG_HARVEST_2A_NAME,广袤农场,Vast Farm,Ladang Luas
+HERO_UPG_HARVEST_2A_DESC,圣地半径扩展至260px,Shrine radius expanded to 260px,Jejari tempat suci diperluas ke 260px
+HERO_UPG_HARVEST_2B_NAME,丰收节奏,Harvest Rhythm,Irama Tuaian
+HERO_UPG_HARVEST_2B_DESC,圣地内每10次击杀触发爆发：伤害×2持续3秒,Every 10 kills in shrine: 2x damage for 3s,Setiap 10 bunuhan dalam tempat suci: 2x kerosakan selama 3s
+HERO_UPG_HARVEST_3A_NAME,农神庇护,Divine Protection,Perlindungan Ilahi
+HERO_UPG_HARVEST_3A_DESC,圣地内炮台受伤-20%,Towers in shrine take -20% damage,Menara dalam tempat suci -20% kerosakan diterima
+HERO_UPG_HARVEST_3B_NAME,黄金地脉,Golden Veins,Urat Emas
+HERO_UPG_HARVEST_3B_DESC,圣地内炮台升级费用-25%,Tower upgrade cost -25% in shrine,Kos naik taraf menara -25% dalam tempat suci
+HERO_UPG_HARVEST_4A_NAME,永恒圣地,Eternal Shrine,Tempat Suci Abadi
+HERO_UPG_HARVEST_4A_DESC,半径扩展至350px，伤害加成叠加全部路线效果,Radius 350px. Damage bonus stacks all path effects,Jejari 350px. Bonus kerosakan merangkum semua kesan laluan
+HERO_UPG_HARVEST_4B_NAME,农场之神,Farm God,Tuhan Ladang
+HERO_UPG_HARVEST_4B_DESC,圣地内精英击杀10%概率获得免费强化刷新,10% chance free upgrade refresh on elite kill in shrine,10% peluang muat semula peningkatan percuma apabila bunuh elit dalam tempat suci
+HERO_UPG_PRISON_1A_NAME,铁壁嘲讽,Iron Wall Taunt,Ejekan Tembok Besi
+HERO_UPG_PRISON_1A_DESC,嘲讽范围200px，敌人停留+1.5秒,Taunt range 200px. Enemies stay +1.5s,Jarak ejekan 200px. Musuh tinggal +1.5s
+HERO_UPG_PRISON_1B_NAME,重力领域,Gravity Domain,Domain Graviti
+HERO_UPG_PRISON_1B_DESC,领域内移速-35%，大型敌人同样生效,Domain -35% speed. Affects large enemies too,Domain -35% kelajuan. Kesan kepada musuh besar juga
+HERO_UPG_PRISON_2A_NAME,石刻地面,Stone Carved Ground,Lantai Terukir Batu
+HERO_UPG_PRISON_2A_DESC,领域每秒对敌人造成8点伤害,Domain deals 8 damage/sec to enemies,Domain menyebabkan 8 kerosakan/saat kepada musuh
+HERO_UPG_PRISON_2B_NAME,破甲领域,Armor Break Domain,Domain Pemecah Perisai
+HERO_UPG_PRISON_2B_DESC,领域内敌人护甲降低10%,Enemies in domain -10% armor,Musuh dalam domain -10% perisai
+HERO_UPG_PRISON_3A_NAME,冲击余波,Impact Aftershock,Gegaran Selepas Impak
+HERO_UPG_PRISON_3A_DESC,每20秒地震100px范围，眩晕1.2秒,Earthquake every 20s in 100px. Stun 1.2s,Gempa setiap 20s dalam 100px. Pengsan 1.2s
+HERO_UPG_PRISON_3B_NAME,磁力核心,Magnetic Core,Teras Magnet
+HERO_UPG_PRISON_3B_DESC,将范围外100px的敌人减速50%,Slow enemies 100px outside domain by 50%,Perlahan musuh 100px di luar domain sebanyak 50%
+HERO_UPG_PRISON_4A_NAME,永恒禁锢,Eternal Binding,Pengikatan Abadi
+HERO_UPG_PRISON_4A_DESC,半径扩展至280px，嘲讽期间全场+25%伤害,Radius 280px. +25% global damage during taunt,Jejari 280px. +25% kerosakan global semasa ejekan
+HERO_UPG_PRISON_4B_NAME,石之迫近,Stone Approach,Pendekatan Batu
+HERO_UPG_PRISON_4B_DESC,领域内死亡留下石化标记，后续敌人减速10秒,Deaths leave petrify marks. Slow future enemies 10s,Kematian meninggalkan tanda batu. Perlahan musuh seterusnya 10s
+UI_SETTINGS_BATTLE,📋 游戏,📋 Battle,📋 Pertempuran
+UI_SETTINGS_SAVE_EXIT,💾 保存并退出,💾 Save & Exit,💾 Simpan & Keluar
+UI_SETTINGS_EXIT_NOSAVE,🚪 退出（不保存）,🚪 Exit (No Save),🚪 Keluar (Tanpa Simpan)
+UI_EFFECT_SLOW,减速,Slow,Perlahan
+UI_EFFECT_SLOW_DESC,降低敌人移动速度，持续一段时间。多次减速不叠加，取最强效果。,Reduces enemy speed for a duration. Multiple slows don't stack; strongest takes effect.,Kurangkan kelajuan musuh untuk tempoh tertentu. Pelbagai perlahan tidak bertindih; terkuat berkuat kuasa.
+UI_EFFECT_BURN,灼烧,Burn,Bakar
+UI_EFFECT_BURN_DESC,每秒造成持续伤害（DOT），可叠加。免疫DOT的敌人不受影响。,Deals damage over time (DOT) per second. Stackable. DOT-immune enemies unaffected.,Menyebabkan kerosakan berterusan (DOT) sesaat. Boleh bertindih. Musuh kebal DOT tidak terjejas.
+UI_EFFECT_POISON,中毒,Poison,Racun
+UI_EFFECT_POISON_DESC,每秒造成持续伤害（DOT），可叠加。免疫DOT的敌人不受影响。,Deals poison damage over time. Stackable. DOT-immune enemies unaffected.,Menyebabkan kerosakan racun berterusan. Boleh bertindih. Musuh kebal DOT tidak terjejas.
+UI_EFFECT_STUN,定身,Stun,Pengsan
+UI_EFFECT_STUN_DESC,使敌人完全停止移动，持续短暂时间。免疫控制的敌人不受影响。,Completely stops enemy movement briefly. Control-immune enemies unaffected.,Hentikan pergerakan musuh sepenuhnya untuk seketika. Musuh kebal kawalan tidak terjejas.
+UI_EFFECT_MARK,标记,Mark,Tanda
+UI_EFFECT_MARK_DESC,被标记的敌人受到额外伤害。标记可被特定炮台触发。,Marked enemies take bonus damage. Triggered by specific towers.,Musuh bertanda menerima kerosakan tambahan. Dicetuskan oleh menara tertentu.
+UI_EFFECT_PIERCE,穿甲,Armor Pierce,Penembusan Perisai
+UI_EFFECT_PIERCE_DESC,无视敌人护甲值，直接造成全额伤害。,Ignores enemy armor and deals full damage.,Mengabaikan perisai musuh dan menyebabkan kerosakan penuh.
+UI_EFFECT_KNOCKBACK,击退,Knockback,Tolakan
+UI_EFFECT_KNOCKBACK_DESC,将敌人沿路径推回一段距离。巨型单位不受影响。,Pushes enemy back along path. Giant units unaffected.,Tolak musuh ke belakang sepanjang laluan. Unit gergasi tidak terjejas.
+UI_EFFECT_SPLASH,溅射,Splash,Percikan
+UI_EFFECT_SPLASH_DESC,攻击命中时对周围敌人造成范围伤害。,Deals area damage to nearby enemies on hit.,Menyebabkan kerosakan kawasan kepada musuh berhampiran apabila terkena.
+UI_FLAG_FLYING,飞行,Flying,Terbang
+UI_FLAG_ELITE,精英,Elite,Elit
+UI_FLAG_GIANT,巨型,Giant,Gergasi
+UI_FLAG_FAST,快速,Fast,Pantas
+UI_FLAG_CONTROL_IMMUNE,免疫控制,Control Immune,Kebal Kawalan
+UI_FLAG_DOT_IMMUNE,免疫DOT,DOT Immune,Kebal DOT
+UI_FLAG_BERSERK,狂暴,Berserk,Mengamuk
+UI_FLAG_NORMAL,普通,Normal,Biasa
+UI_GUIDE_TYPE_FORMAT,类型：%s,Type: %s,Jenis: %s
+UI_GUIDE_NONE,无,None,Tiada
+UI_GUIDE_ENEMY_STATS,❤ HP: %d\n⚡ 速度: %.0f\n⚔ 伤害: %d\n💰 金币: %d\n🛡 护甲: %d\n🎯 克制: %s,❤ HP: %d\n⚡ Speed: %.0f\n⚔ Damage: %d\n💰 Gold: %d\n🛡 Armor: %d\n🎯 Counter: %s,❤ HP: %d\n⚡ Kelajuan: %.0f\n⚔ Kerosakan: %d\n💰 Emas: %d\n🛡 Perisai: %d\n🎯 Lawan: %s
+UI_GUIDE_RARITY_FORMAT,稀有度：%s\n攻击类型：%s,Rarity: %s\nAttack Type: %s,Jarang: %s\nJenis Serangan: %s
+UI_GUIDE_TOWER_STATS,⚔ 伤害: %.0f\n⚡ 攻速: %.1f/s\n📏 射程: %.0f\n💰 费用: %d,⚔ Damage: %.0f\n⚡ Speed: %.1f/s\n📏 Range: %.0f\n💰 Cost: %d,⚔ Kerosakan: %.0f\n⚡ Kelajuan: %.1f/s\n📏 Jarak: %.0f\n💰 Kos: %d
+UI_GUIDE_HERO_UNIT,英雄单位,Hero Unit,Unit Wira
+UI_UPGRADE_TYPE_TOWER,炮台属性,Tower Stat,Atribut Menara
+UI_UPGRADE_TYPE_GLOBAL,全局属性,Global Stat,Atribut Global
+UI_UPGRADE_TYPE_SYNERGY,羁绊,Synergy,Sinergi
+UI_UPGRADE_TYPE_COST,费用减免,Cost Reduction,Pengurangan Kos
+UI_GUIDE_UPGRADE_PATHS,升级路线,Upgrade Paths,Laluan Naik Taraf
+UI_GUIDE_COST_FORMAT,💰 费用: %d,💰 Cost: %d,💰 Kos: %d
+UI_CHEST_TAP_UNLOCK,点击解锁,Tap to Unlock,Ketik untuk Buka Kunci
+UI_CHEST_TAP_OPEN,点击开箱,Tap to Open,Ketik untuk Buka
+UI_CHEST_UNLOCKING,解锁中,Unlocking,Membuka Kunci
+UI_CHEST_UNLOCKING_MSG,已有宝箱正在解锁！\n请等待当前宝箱解锁完成,A chest is already unlocking!\nPlease wait for it to finish,Peti sedang dibuka kunci!\nSila tunggu sehingga selesai
+UI_CHEST_UNLOCK_TITLE,%s 解锁中,%s Unlocking,%s Membuka Kunci
+UI_CHEST_TIME_REMAINING,⏳ 剩余 %02d:%02d:%02d,⏳ Remaining %02d:%02d:%02d,⏳ Baki %02d:%02d:%02d
+UI_CHEST_INSTANT_UNLOCK,💎 立即解锁\n花费 %d 宝石（当前 %d）,💎 Instant Unlock\nCost %d gems (Have %d),💎 Buka Segera\nKos %d permata (Ada %d)
+UI_CHEST_AD_SPEED_UP,📺 看广告加速\n减少 30 分钟,📺 Watch Ad to Speed Up\n-30 minutes,📺 Tonton Iklan Percepatkan\n-30 minit
+UI_CHEST_CLOSE,关闭,Close,Tutup
+UI_CHEST_SLOTS_FULL,宝箱槽位已满,Chest Slots Full,Slot Peti Penuh
+UI_CHEST_SLOTS_FULL_MSG,所有槽位已满！\n请先解锁或清空一个槽位,All slots are full!\nUnlock or clear a slot first,Semua slot penuh!\nBuka kunci atau kosongkan slot terlebih dahulu
+UI_CHEST_CONFIRM_FREE_WOODEN,确认免费领取 木宝箱？,Confirm free Wooden Chest?,Sahkan Peti Kayu percuma?
+UI_CHEST_FREE_CLAIM,✅ 免费领取,✅ Free Claim,✅ Tuntutan Percuma
+UI_CHEST_INFO_TITLE,%s 内容,%s Contents,Kandungan %s
+UI_CHEST_CARD_COUNT,开箱张数：%d 张,Cards per open: %d,Kad setiap buka: %d
+UI_CHEST_CONFIRM_FREE,确认获取 %s（免费）？,Confirm free %s?,Sahkan %s percuma?
+UI_CHEST_CONFIRM_BUY,确认购买 %s？\n花费 🎫 %d 券（当前 🎫 %d）,Buy %s?\nCost 🎫 %d vouchers (Have 🎫 %d),Beli %s?\nKos 🎫 %d baucar (Ada 🎫 %d)
+UI_CHEST_VOUCHER_LOW,券不足,Not Enough Vouchers,Baucar Tidak Mencukupi
+UI_CHEST_VOUCHER_LOW_MSG,需要 🎫 %d 券（当前 🎫 %d）,Need 🎫 %d vouchers (Have 🎫 %d),Perlu 🎫 %d baucar (Ada 🎫 %d)
+UI_CHEST_BULK_CONFIRM,确认 10 连开箱？\n\n%s ×%d\n花费 🎫 %d 券（当前 🎫 %d）,Confirm 10x open?\n\n%s ×%d\nCost 🎫 %d vouchers (Have 🎫 %d),Sahkan 10x buka?\n\n%s ×%d\nKos 🎫 %d baucar (Ada 🎫 %d)
+UI_CHEST_FRAG_X1,碎片 ×1,Fragment ×1,Serpihan ×1
+UI_SHOP_SECTION_FRAGS,🧩 碎片商店,🧩 Fragment Shop,🧩 Kedai Serpihan
+UI_SHOP_SECTION_ITEMS,🎒 道具商店,🎒 Item Shop,🎒 Kedai Item
+UI_SHOP_SECTION_CURRENCY,💎 钻石商店,💎 Gem Shop,💎 Kedai Permata
+UI_SHOP_NO_ITEMS,暂无道具，敬请期待,No items yet. Stay tuned!,Tiada item lagi. Nantikan!
+UI_SHOP_PURCHASED,✓ 已购买,✓ Purchased,✓ Dibeli
+UI_SHOP_SOLD_OUT,已售罄,Sold Out,Habis Dijual
+UI_SHOP_LIMIT_ONE,限购1次,Limit 1,Had 1
+UI_SHOP_BOUGHT_COUNT,已购 %d/%d,Bought %d/%d,Dibeli %d/%d
+UI_SHOP_CONFIRM_BUY,确认购买 %s？\n花费 🪙 %d（当前 🪙 %d）,Buy %s?\nCost 🪙 %d (Have 🪙 %d),Beli %s?\nKos 🪙 %d (Ada 🪙 %d)
+UI_SHOP_CONFIRM_GEMS,确认购买 %s？\n花费 💎 %d（当前 💎 %d）,Buy %s?\nCost 💎 %d (Have 💎 %d),Beli %s?\nKos 💎 %d (Ada 💎 %d)
+UI_SHOP_PAYMENT_FAILED,购买失败,Purchase Failed,Pembelian Gagal
+UI_SHOP_GEMS_LOW,钻石不足！\n需要 💎 %d（当前 💎 %d）,Not enough gems!\nNeed 💎 %d (Have 💎 %d),Permata tidak mencukupi!\nPerlu 💎 %d (Ada 💎 %d)
+UI_SHOP_FRAG_REWARD,获得 %s 碎片 ×%d！,Got %s fragments ×%d!,Dapat serpihan %s ×%d!
+UI_SHOP_OK,确定,OK,OK
+UI_FRAG_QTY,×%d 碎片,×%d Fragments,×%d Serpihan
+UI_FRAG_BOUGHT,✓ 已购买,✓ Purchased,✓ Dibeli
+UI_FRAG_GOLD_LOW,金币不足\n\n需要 🪙%d\n当前 🪙%d,Not enough gold\n\nNeed 🪙%d\nHave 🪙%d,Emas tidak mencukupi\n\nPerlu 🪙%d\nAda 🪙%d
+UI_FRAG_CONFIRM_BUY,确认购买？\n\n%s  %s\n×%d 碎片\n\n🪙 %d 金币,Confirm purchase?\n\n%s  %s\n×%d fragments\n\n🪙 %d gold,Sahkan pembelian?\n\n%s  %s\n×%d serpihan\n\n🪙 %d emas
+UI_FACTORY_LV_UNLOCK,Lv.%d 解锁,Lv.%d Unlock,Lv.%d Buka Kunci
+UI_FACTORY_FRAG_COUNT,碎片: %d/%d,Frags: %d/%d,Serpihan: %d/%d
+UI_FACTORY_UNLOCKED,已解锁,Unlocked,Dibuka Kunci
+UI_FACTORY_UNLOCK,解锁,Unlock,Buka Kunci
+UI_FACTORY_LEVEL_REQ,🔒 需要达到 Lv.%d\n才能解锁此炮台,🔒 Requires Lv.%d\nto unlock this tower,🔒 Memerlukan Lv.%d\nuntuk buka kunci menara ini
+UI_PROFILE_ENEMIES_DEFEATED,击败敌人,Enemies Defeated,Musuh Dikalahkan
+UI_ACHIEV_FIRST_BATTLE,初次战斗,First Battle,Pertempuran Pertama
+UI_ACHIEV_FIRST_WIN,首次胜利,First Victory,Kemenangan Pertama
+UI_ACHIEV_VETERAN,百战老兵,Veteran,Veteran
+UI_ACHIEV_CHAMPION,农场冠军,Farm Champion,Juara Ladang
+UI_ACHIEV_100_KILLS,百杀勇士,100 Kills,100 Bunuhan
+UI_ACHIEV_1000_KILLS,千杀传说,1000 Kills,1000 Bunuhan
+UI_LEVEL_FRAG_FORMAT,%s碎片×%d,%s Frag ×%d,%s Serpihan ×%d
+UI_LEVEL_CLAIM,领取！,Claim!,Tuntut!
+UI_LEVEL_BUY_PASS,购买升级通行证？\n\nRM %.2f 永久激活\n付费列所有等级奖励全部解锁,Buy Battle Pass?\n\nRM %.2f permanent\nAll paid tier rewards unlocked,Beli Pas Pertempuran?\n\nRM %.2f kekal\nSemua ganjaran tahap berbayar dibuka
+UI_LEVEL_BUY_FAILED,购买失败,Purchase Failed,Pembelian Gagal
+UI_LEVEL_PASS_ACTIVE,✓ 已激活,✓ Activated,✓ Diaktifkan
+UI_LEVEL_CLAIM_ALL,🎁 一键领取 (%d),🎁 Claim All (%d),🎁 Tuntut Semua (%d)

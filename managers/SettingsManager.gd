@@ -33,6 +33,13 @@ func _ready() -> void:
 	load_settings()
 	_apply_audio()
 	apply_quality()
+	TranslationServer.set_locale(language)
+
+
+## 设置语言并立即应用
+func set_language(locale: String) -> void:
+	language = locale
+	TranslationServer.set_locale(locale)
 
 
 ## 保存设置到文件

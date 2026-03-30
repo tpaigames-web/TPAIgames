@@ -11,11 +11,8 @@ const MODE_NORMAL: int = 0
 const MODE_HARD: int = 1
 const MODE_CHALLENGE: int = 2
 
-const MODE_DESCRIPTIONS: Array[String] = [
-	"体验纯粹的塔防，能够使用兵工厂力量",
-	"提供80波敌人，新敌人、新机制，即将推出",
-	"1HP挑战40波敌人，不可以使用兵工厂力量",
-]
+var MODE_DESCRIPTIONS: Array[String]:
+	get: return [tr("UI_MODE_DESC_NORMAL"), tr("UI_MODE_DESC_HARD"), tr("UI_MODE_DESC_CHALLENGE")]
 
 const CHEST_CLOSED: Array[String] = [
 	"res://assets/sprites/ui/Chest_Wood.png",

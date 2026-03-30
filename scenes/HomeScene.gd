@@ -200,7 +200,7 @@ func _update_nav_highlight() -> void:
 
 ## 供各 Tab 子场景向上调用，弹出"功能开发中"对话框
 func show_coming_soon() -> void:
-	coming_soon_dialog.dialog_text = "功能开发中，敬请期待 🚧"
+	coming_soon_dialog.dialog_text = tr("UI_COMING_SOON")
 	coming_soon_dialog.popup_centered()
 
 ## 显示指定解锁条件文字（BattleTab 关卡锁、TowersTab 等级锁等）
@@ -273,10 +273,10 @@ func _show_ad_offer() -> void:
 func _on_ad_offer_pressed() -> void:
 	# 弹出奖励选择
 	var dlg := ConfirmationDialog.new()
-	dlg.title = "🎁 免费奖励"
-	dlg.dialog_text = "观看广告获得以下奖励之一：\n\n💎 30-50 钻石\n🧩 随机炮台碎片（蓝/紫/橙）\n\n是否观看广告？"
-	dlg.ok_button_text = "📺 看广告领取"
-	dlg.cancel_button_text = "取消"
+	dlg.title = tr("UI_FREE_REWARD_TITLE")
+	dlg.dialog_text = tr("UI_FREE_REWARD_DESC")
+	dlg.ok_button_text = tr("UI_FREE_REWARD_WATCH")
+	dlg.cancel_button_text = tr("UI_DIALOG_CANCEL")
 	dlg.get_label().add_theme_font_size_override("font_size", 26)
 	dlg.get_ok_button().add_theme_font_size_override("font_size", 24)
 	dlg.get_cancel_button().add_theme_font_size_override("font_size", 24)
@@ -301,7 +301,7 @@ func _on_ad_reward_complete() -> void:
 		# 30-50 钻石
 		var amount: int = randi_range(30, 50)
 		UserManager.gems += amount
-		msg = "💎 获得 %d 钻石！" % amount
+		msg = tr("UI_REWARD_GEMS") % amount
 	else:
 		# 随机蓝/紫/橙品质炮台碎片
 		var frag_amount: int = randi_range(3, 8)
@@ -311,19 +311,19 @@ func _on_ad_reward_complete() -> void:
 			var td = CollectionManager.get_tower_data(tower_id) if CollectionManager else null
 			var tower_name: String = td.display_name if td else tower_id
 			CollectionManager.add_fragments(tower_id, frag_amount)
-			msg = "🧩 获得 %s 碎片 ×%d！" % [tower_name, frag_amount]
+			msg = tr("UI_REWARD_FRAGMENTS") % [tower_name, frag_amount]
 		else:
 			# fallback 给钻石
 			var amount: int = randi_range(30, 50)
 			UserManager.gems += amount
-			msg = "💎 获得 %d 钻石！" % amount
+			msg = tr("UI_REWARD_GEMS") % amount
 
 	SaveManager.save()
 	_update_player_info()
 
 	# 显示奖励结果
 	var result_dlg := AcceptDialog.new()
-	result_dlg.title = "🎉 奖励"
+	result_dlg.title = tr("UI_REWARD_TITLE")
 	result_dlg.dialog_text = msg
 	result_dlg.get_label().add_theme_font_size_override("font_size", 28)
 	result_dlg.get_ok_button().add_theme_font_size_override("font_size", 26)

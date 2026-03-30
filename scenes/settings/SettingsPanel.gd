@@ -129,14 +129,14 @@ func _ready() -> void:
 		category_btns[i].pressed.connect(func(): _switch_guide_category(idx))
 
 	_effect_entries = [
-		{"name": "减速", "desc": "降低敌人移动速度，持续一段时间。多次减速不叠加，取最强效果。", "color": Color(0.4, 0.7, 1.0)},
-		{"name": "灼烧", "desc": "每秒造成持续伤害（DOT），可叠加。免疫DOT的敌人不受影响。", "color": Color(1.0, 0.4, 0.2)},
-		{"name": "中毒", "desc": "每秒造成持续伤害（DOT），可叠加。免疫DOT的敌人不受影响。", "color": Color(0.3, 0.8, 0.3)},
-		{"name": "定身", "desc": "使敌人完全停止移动，持续短暂时间。免疫控制的敌人不受影响。", "color": Color(0.8, 0.8, 0.2)},
-		{"name": "标记", "desc": "被标记的敌人受到额外伤害。标记可被特定炮台触发。", "color": Color(1.0, 0.5, 0.8)},
-		{"name": "穿甲", "desc": "无视敌人护甲值，直接造成全额伤害。", "color": Color(0.9, 0.6, 0.2)},
-		{"name": "击退", "desc": "将敌人沿路径推回一段距离。巨型单位不受影响。", "color": Color(0.6, 0.6, 0.9)},
-		{"name": "溅射", "desc": "攻击命中时对周围敌人造成范围伤害。", "color": Color(1.0, 0.7, 0.3)},
+		{"name": tr("UI_EFFECT_SLOW"), "desc": tr("UI_EFFECT_SLOW_DESC"), "color": Color(0.4, 0.7, 1.0)},
+		{"name": tr("UI_EFFECT_BURN"), "desc": tr("UI_EFFECT_BURN_DESC"), "color": Color(1.0, 0.4, 0.2)},
+		{"name": tr("UI_EFFECT_POISON"), "desc": tr("UI_EFFECT_POISON_DESC"), "color": Color(0.3, 0.8, 0.3)},
+		{"name": tr("UI_EFFECT_STUN"), "desc": tr("UI_EFFECT_STUN_DESC"), "color": Color(0.8, 0.8, 0.2)},
+		{"name": tr("UI_EFFECT_MARK"), "desc": tr("UI_EFFECT_MARK_DESC"), "color": Color(1.0, 0.5, 0.8)},
+		{"name": tr("UI_EFFECT_PIERCE"), "desc": tr("UI_EFFECT_PIERCE_DESC"), "color": Color(0.9, 0.6, 0.2)},
+		{"name": tr("UI_EFFECT_KNOCKBACK"), "desc": tr("UI_EFFECT_KNOCKBACK_DESC"), "color": Color(0.6, 0.6, 0.9)},
+		{"name": tr("UI_EFFECT_SPLASH"), "desc": tr("UI_EFFECT_SPLASH_DESC"), "color": Color(1.0, 0.7, 0.3)},
 	]
 
 
@@ -179,40 +179,40 @@ func _build_settings_ui() -> void:
 		c.queue_free()
 
 	# 音频
-	_add_section_label("🔊 音频")
-	_add_slider_row("音乐音量", SettingsManager.music_volume, func(val: float):
+	_add_section_label(tr("UI_SETTINGS_AUDIO"))
+	_add_slider_row(tr("UI_SETTINGS_MUSIC_VOL"), SettingsManager.music_volume, func(val: float):
 		SettingsManager.set_music_volume(int(val))
 	)
-	_add_slider_row("音效音量", SettingsManager.sfx_volume, func(val: float):
+	_add_slider_row(tr("UI_SETTINGS_SFX_VOL"), SettingsManager.sfx_volume, func(val: float):
 		SettingsManager.set_sfx_volume(int(val))
 	)
 
 	# 画面
-	_add_section_label("🖥 画面")
-	_add_option_row("画质", ["流畅", "均衡", "高画质"], SettingsManager.quality, func(idx: int):
+	_add_section_label(tr("UI_SETTINGS_DISPLAY"))
+	_add_option_row(tr("UI_SETTINGS_QUALITY"), [tr("UI_SETTINGS_QUALITY_LOW"), tr("UI_SETTINGS_QUALITY_MED"), tr("UI_SETTINGS_QUALITY_HIGH")], SettingsManager.quality, func(idx: int):
 		SettingsManager.set_quality(idx)
 	)
-	_add_toggle_row("粒子效果", SettingsManager.particles_enabled, func(toggled: bool):
+	_add_toggle_row(tr("UI_SETTINGS_PARTICLES"), SettingsManager.particles_enabled, func(toggled: bool):
 		SettingsManager.particles_enabled = toggled
 	)
 
 	# 游戏辅助
-	_add_section_label("🎮 游戏辅助")
-	_add_toggle_row("显示伤害数字", SettingsManager.damage_numbers, func(toggled: bool):
+	_add_section_label(tr("UI_SETTINGS_GAMEPLAY"))
+	_add_toggle_row(tr("UI_SETTINGS_DMG_NUMBERS"), SettingsManager.damage_numbers, func(toggled: bool):
 		SettingsManager.damage_numbers = toggled
 	)
-	_add_option_row("攻击范围圆", ["关闭", "仅选中", "常驻"], SettingsManager.range_display, func(idx: int):
+	_add_option_row(tr("UI_SETTINGS_RANGE_DISPLAY"), [tr("UI_SETTINGS_RANGE_OFF"), tr("UI_SETTINGS_RANGE_SELECTED"), tr("UI_SETTINGS_RANGE_ALWAYS")], SettingsManager.range_display, func(idx: int):
 		SettingsManager.range_display = idx
 	)
-	_add_option_row("默认游戏速度", ["1x", "2x", "3x"], SettingsManager.default_speed - 1, func(idx: int):
+	_add_option_row(tr("UI_SETTINGS_DEFAULT_SPEED"), ["1x", "2x", "3x"], SettingsManager.default_speed - 1, func(idx: int):
 		SettingsManager.default_speed = idx + 1
 	)
 
 	# 游戏内专用
 	if _in_battle:
-		_add_section_label("📋 游戏")
+		_add_section_label(tr("UI_SETTINGS_BATTLE"))
 		var save_btn := Button.new()
-		save_btn.text = "💾 保存并退出"
+		save_btn.text = tr("UI_SETTINGS_SAVE_EXIT")
 		save_btn.custom_minimum_size = Vector2(0, 80)
 		save_btn.add_theme_font_size_override("font_size", 38)
 		save_btn.pressed.connect(func():
@@ -222,7 +222,7 @@ func _build_settings_ui() -> void:
 		settings_vbox.add_child(save_btn)
 
 		var exit_btn := Button.new()
-		exit_btn.text = "🚪 退出（不保存）"
+		exit_btn.text = tr("UI_SETTINGS_EXIT_NOSAVE")
 		exit_btn.custom_minimum_size = Vector2(0, 80)
 		exit_btn.add_theme_font_size_override("font_size", 38)
 		exit_btn.pressed.connect(func():
@@ -231,10 +231,23 @@ func _build_settings_ui() -> void:
 		)
 		settings_vbox.add_child(exit_btn)
 
+	# 语言
+	_add_section_label(tr("UI_SETTINGS_LANGUAGE"))
+	var lang_options: Array = [tr("UI_LANG_CHINESE"), tr("UI_LANG_ENGLISH"), tr("UI_LANG_MALAY")]
+	var lang_locales: Array[String] = ["zh", "en", "ms"]
+	var current_lang_idx: int = lang_locales.find(SettingsManager.language)
+	if current_lang_idx < 0:
+		current_lang_idx = 0
+	_add_option_row(tr("UI_SETTINGS_LANGUAGE"), lang_options, current_lang_idx, func(idx: int):
+		SettingsManager.set_language(lang_locales[idx])
+		# 重建 UI 以应用新语言
+		_build_settings_ui()
+	)
+
 	# 版本
-	_add_section_label("ℹ 其他")
+	_add_section_label(tr("UI_SETTINGS_OTHER"))
 	var ver_lbl := Label.new()
-	ver_lbl.text = "版本 0.1.0"
+	ver_lbl.text = tr("UI_SETTINGS_VERSION") + " 0.1.0"
 	ver_lbl.add_theme_font_size_override("font_size", 32)
 	ver_lbl.add_theme_color_override("font_color", Color(0.6, 0.6, 0.6))
 	ver_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -323,7 +336,7 @@ func _switch_guide_category(cat: int) -> void:
 		category_btns[i].modulate = Color(1, 1, 1) if i == cat else Color(0.6, 0.6, 0.6)
 
 	# 清空详情
-	detail_name.text = "选择一个项目"
+	detail_name.text = tr("UI_GUIDE_SELECT_ITEM")
 	detail_desc.text = ""
 	detail_stats.text = ""
 	detail_image.texture = null
@@ -356,17 +369,17 @@ func _load_enemies() -> void:
 func _show_enemy_detail(data: EnemyData) -> void:
 	detail_name.text = "%s %s" % [data.display_emoji, data.display_name]
 	var flags: Array[String] = []
-	if data.is_flying: flags.append("飞行")
-	if data.is_elite: flags.append("精英")
-	if data.is_giant: flags.append("巨型")
-	if data.is_fast: flags.append("快速")
-	if data.is_control_immune: flags.append("免疫控制")
-	if data.is_dot_immune: flags.append("免疫DOT")
-	if data.is_berserk: flags.append("狂暴")
-	var type_str: String = "、".join(flags) if flags.size() > 0 else "普通"
-	detail_desc.text = "类型：%s" % type_str
-	var counter: String = data.counter_strategy if data.counter_strategy != "" else "无"
-	detail_stats.text = "❤ HP: %d\n⚡ 速度: %.0f\n⚔ 伤害: %d\n💰 金币: %d\n🛡 护甲: %d\n🎯 克制: %s" % [
+	if data.is_flying: flags.append(tr("UI_FLAG_FLYING"))
+	if data.is_elite: flags.append(tr("UI_FLAG_ELITE"))
+	if data.is_giant: flags.append(tr("UI_FLAG_GIANT"))
+	if data.is_fast: flags.append(tr("UI_FLAG_FAST"))
+	if data.is_control_immune: flags.append(tr("UI_FLAG_CONTROL_IMMUNE"))
+	if data.is_dot_immune: flags.append(tr("UI_FLAG_DOT_IMMUNE"))
+	if data.is_berserk: flags.append(tr("UI_FLAG_BERSERK"))
+	var type_str: String = "、".join(flags) if flags.size() > 0 else tr("UI_FLAG_NORMAL")
+	detail_desc.text = tr("UI_GUIDE_TYPE_FORMAT") % type_str
+	var counter: String = data.counter_strategy if data.counter_strategy != "" else tr("UI_GUIDE_NONE")
+	detail_stats.text = tr("UI_GUIDE_ENEMY_STATS") % [
 		data.max_hp, data.move_speed, data.damage_to_player, data.gold_reward, data.armor, counter
 	]
 	if data.sprite_texture:
@@ -389,10 +402,10 @@ func _load_towers() -> void:
 func _show_tower_detail(td: TowerCollectionData) -> void:
 	detail_name.text = "%s %s" % [td.tower_emoji, td.display_name]
 	var rarity_name: String = TowerResourceRegistry.RARITY_NAMES[td.rarity] if td.rarity < TowerResourceRegistry.RARITY_NAMES.size() else "?"
-	var atk_types: Array[String] = ["地面", "空中", "全部"]
+	var atk_types: Array[String] = [tr("UI_ATK_GROUND"), tr("UI_ATK_AIR"), tr("UI_ATK_ALL")]
 	var atk_type: String = atk_types[td.attack_type] if td.attack_type < 3 else "?"
-	detail_desc.text = "稀有度：%s\n攻击类型：%s" % [rarity_name, atk_type]
-	detail_stats.text = "⚔ 伤害: %.0f\n⚡ 攻速: %.1f/s\n📏 射程: %.0f\n💰 费用: %d" % [
+	detail_desc.text = tr("UI_GUIDE_RARITY_FORMAT") % [rarity_name, atk_type]
+	detail_stats.text = tr("UI_GUIDE_TOWER_STATS") % [
 		td.base_damage, td.attack_speed, td.attack_range, td.placement_cost
 	]
 	if td.collection_texture:
@@ -419,8 +432,8 @@ func _load_heroes() -> void:
 
 func _show_hero_detail(td: TowerCollectionData) -> void:
 	detail_name.text = "%s %s" % [td.tower_emoji, td.display_name]
-	detail_desc.text = "英雄单位"
-	detail_stats.text = "⚔ 伤害: %.0f\n⚡ 攻速: %.1f/s\n📏 射程: %.0f\n💰 费用: %d" % [
+	detail_desc.text = tr("UI_GUIDE_HERO_UNIT")
+	detail_stats.text = tr("UI_GUIDE_TOWER_STATS") % [
 		td.base_damage, td.attack_speed, td.attack_range, td.placement_cost
 	]
 	if td.collection_texture:
@@ -446,13 +459,13 @@ func _load_upgrades() -> void:
 
 func _show_upgrade_detail(data: GlobalUpgradeData) -> void:
 	detail_name.text = data.display_name
-	var rarity_names := ["白", "绿", "蓝", "紫", "橙"]
-	var type_names := ["炮台属性", "全局属性", "羁绊", "费用减免"]
+	var rarity_names := [tr("UI_RARITY_WHITE"), tr("UI_RARITY_GREEN"), tr("UI_RARITY_BLUE"), tr("UI_RARITY_PURPLE"), tr("UI_RARITY_ORANGE")]
+	var type_names := [tr("UI_UPGRADE_TYPE_TOWER"), tr("UI_UPGRADE_TYPE_GLOBAL"), tr("UI_UPGRADE_TYPE_SYNERGY"), tr("UI_UPGRADE_TYPE_COST")]
 	var rarity_str: String = rarity_names[data.rarity] if data.rarity < rarity_names.size() else "?"
 	var type_str: String = type_names[data.upgrade_type] if data.upgrade_type < type_names.size() else "?"
 	detail_desc.text = "【%s】 %s\n%s" % [rarity_str, type_str, data.description]
 	if data.required_tower_ids.size() > 0:
-		detail_stats.text = "⚠ 需要：%s" % "、".join(data.required_tower_ids)
+		detail_stats.text = tr("UI_UPGRADE_REQUIRES") % "、".join(data.required_tower_ids)
 	else:
 		detail_stats.text = ""
 	detail_image.texture = null
@@ -509,7 +522,7 @@ func _show_upgrade_paths(td: TowerCollectionData) -> void:
 
 	# 标题
 	var title_lbl := Label.new()
-	title_lbl.text = "升级路线"
+	title_lbl.text = tr("UI_GUIDE_UPGRADE_PATHS")
 	title_lbl.add_theme_font_size_override("font_size", 38)
 	title_lbl.add_theme_color_override("font_color", Color(1, 0.85, 0.3))
 	upgrade_area.add_child(title_lbl)
@@ -585,7 +598,7 @@ func _show_tier_detail(path: TowerUpgradePath, tier_idx: int) -> void:
 	# 费用
 	var cost_lbl := Label.new()
 	var cost: int = path.tier_costs[tier_idx] if tier_idx < path.tier_costs.size() else 0
-	cost_lbl.text = "💰 费用: %d" % cost
+	cost_lbl.text = tr("UI_GUIDE_COST_FORMAT") % cost
 	cost_lbl.add_theme_font_size_override("font_size", 32)
 	cost_lbl.add_theme_color_override("font_color", Color(1, 0.85, 0.3))
 	info_box.add_child(cost_lbl)

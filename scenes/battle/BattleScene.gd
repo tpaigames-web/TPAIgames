@@ -304,7 +304,7 @@ func _refresh_tab_state() -> void:
 			has_hero = true
 			break
 	_hero_tab_btn.disabled = not has_hero
-	_hero_tab_btn.text = "英雄" if has_hero else "英雄 🔒"
+	_hero_tab_btn.text = tr("UI_HERO_LABEL") if has_hero else tr("UI_HERO_LOCKED")
 	_apply_tab_filter()
 
 
@@ -337,9 +337,9 @@ func _refresh_displays() -> void:
 func _on_wave_started(wave_num: int) -> void:
 	var wave_name: String = wave_manager.get_wave_name(wave_num)
 	if wave_manager.is_endless:
-		wave_label.text = "♾️ 波次 %d" % wave_num
+		wave_label.text = tr("UI_BATTLE_ENDLESS_WAVE") % wave_num
 	else:
-		wave_label.text = "波次 %d/%d" % [wave_num, wave_manager.get_total_waves()]
+		wave_label.text = tr("UI_BATTLE_WAVE_FORMAT") % [wave_num, wave_manager.get_total_waves()]
 	_show_wave_banner(wave_num)
 	# 通知教学引导
 	if is_instance_valid(_tutorial_guide):
@@ -369,9 +369,9 @@ func _show_wave_banner(wave_num: int) -> void:
 	var total: int = wave_manager.get_total_waves() if wave_manager else 40
 	var w_name: String = wave_manager.get_wave_name(wave_num)
 	if w_name != "":
-		banner.text = "⚔ 第 %d 波 ⚔\n%s" % [wave_num, w_name]
+		banner.text = tr("UI_WAVE_BANNER") % [wave_num, w_name]
 	else:
-		banner.text = "⚔ 第 %d 波 ⚔" % wave_num
+		banner.text = tr("UI_WAVE_BANNER_SIMPLE") % wave_num
 	banner.add_theme_font_size_override("font_size", 48)
 	banner.add_theme_color_override("font_color", Color(1.0, 0.9, 0.3, 1.0))
 	banner.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.8))
@@ -428,7 +428,7 @@ func _on_hero_upgrade_done() -> void:
 	var ht = _hero_system.get_hero_tower()
 	if is_instance_valid(ht):
 		_tower_upgrade_panel.show_float_text(
-			"🏰 英雄升级 Lv.%d！" % ht.hero_level,
+			tr("UI_HERO_UPGRADE_FLOAT") % ht.hero_level,
 			ht.global_position
 		)
 
@@ -528,12 +528,12 @@ func _on_save_and_exit() -> void:
 	if SaveManager.has_battle_save():
 		var info: Dictionary = SaveManager.load_battle()
 		var day_num: int = info.get("day", GameManager.current_day)
-		var mode_str: String = "挑战模式" if info.get("challenge_mode", false) else "普通模式"
+		var mode_str: String = tr("UI_MODE_CHALLENGE_LABEL") if info.get("challenge_mode", false) else tr("UI_MODE_NORMAL_LABEL")
 		var confirm := AcceptDialog.new()
 		confirm.process_mode = Node.PROCESS_MODE_ALWAYS
-		confirm.dialog_text = "将覆盖 Day%d %s 的保存记录，确定？" % [day_num, mode_str]
-		confirm.ok_button_text = "确定"
-		confirm.add_cancel_button("取消")
+		confirm.dialog_text = tr("UI_SAVE_OVERWRITE") % [day_num, mode_str]
+		confirm.ok_button_text = tr("UI_SAVE_CONFIRM")
+		confirm.add_cancel_button(tr("UI_DIALOG_CANCEL"))
 		confirm.confirmed.connect(func(): confirm.queue_free(); _do_exit(true))
 		confirm.canceled.connect(func(): confirm.queue_free())
 		$HUD.add_child(confirm)
@@ -545,9 +545,9 @@ func _on_save_and_exit() -> void:
 func _on_exit_no_save() -> void:
 	var confirm := AcceptDialog.new()
 	confirm.process_mode = Node.PROCESS_MODE_ALWAYS
-	confirm.dialog_text = "退出当前游戏？\n当前游戏进度不会被保留"
-	confirm.ok_button_text = "确定"
-	confirm.add_cancel_button("取消")
+	confirm.dialog_text = tr("UI_EXIT_NO_SAVE_MSG")
+	confirm.ok_button_text = tr("UI_SAVE_CONFIRM")
+	confirm.add_cancel_button(tr("UI_DIALOG_CANCEL"))
 	confirm.confirmed.connect(func(): confirm.queue_free(); _do_exit_keep_save())
 	confirm.canceled.connect(func(): confirm.queue_free())
 	$HUD.add_child(confirm)
@@ -789,10 +789,10 @@ func _on_decor_clicked(decor: InteractableDecor) -> void:
 	var cost: int = decor.remove_cost
 	var dname: String = decor.display_name
 	var dlg := ConfirmationDialog.new()
-	dlg.title              = "拆除装饰"
-	dlg.dialog_text        = "拆除 %s？\n花费 %d 🪙" % [dname, cost]
-	dlg.ok_button_text     = "确认拆除"
-	dlg.cancel_button_text = "取消"
+	dlg.title              = tr("UI_DECOR_REMOVE_TITLE")
+	dlg.dialog_text        = tr("UI_DECOR_REMOVE_MSG") % [dname, cost]
+	dlg.ok_button_text     = tr("UI_DECOR_REMOVE_CONFIRM")
+	dlg.cancel_button_text = tr("UI_DIALOG_CANCEL")
 	dlg.confirmed.connect(func():
 		dlg.queue_free()
 		if GameManager.spend_gold(cost):
@@ -811,10 +811,10 @@ func _on_interactable_clicked(area: Area2D) -> void:
 	if not is_instance_valid(area):
 		return
 	var dlg := ConfirmationDialog.new()
-	dlg.title              = "拆除装饰"
-	dlg.dialog_text        = "花费 500 🪙 拆除此装饰物？"
-	dlg.ok_button_text     = "确认拆除"
-	dlg.cancel_button_text = "取消"
+	dlg.title              = tr("UI_DECOR_REMOVE_TITLE")
+	dlg.dialog_text        = tr("UI_DECOR_REMOVE_GENERIC")
+	dlg.ok_button_text     = tr("UI_DECOR_REMOVE_CONFIRM")
+	dlg.cancel_button_text = tr("UI_DIALOG_CANCEL")
 	dlg.confirmed.connect(func():
 		dlg.queue_free()
 		if GameManager.spend_gold(500):

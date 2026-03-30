@@ -35,7 +35,7 @@ func _process(delta: float) -> void:
 
 	# 加载中动画（省略号循环）
 	var dots: int = int(_elapsed * 2.0) % 4
-	loading_label.text = "加载中" + ".".repeat(dots)
+	loading_label.text = tr("UI_LOADING").trim_suffix("...") + ".".repeat(dots)
 
 	# 检查加载状态
 	if not _load_done and _target_path != "":

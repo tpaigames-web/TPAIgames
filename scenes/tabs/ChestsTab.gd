@@ -8,7 +8,8 @@ const CHEST_PATHS: Array[String] = [
 	"res://data/chests/golden_chest.tres",
 ]
 
-const CHEST_NAMES: Array[String] = ["木宝箱", "铁宝箱", "金宝箱"]
+var CHEST_NAMES: Array[String]:
+	get: return [tr("UI_CHEST_WOODEN"), tr("UI_CHEST_IRON"), tr("UI_CHEST_GOLD")]
 const CHEST_ICONS: Array[String] = ["🪵", "⚙️", "🏆"]
 
 const CHEST_TEXTURES: Array[String] = [
@@ -139,7 +140,7 @@ func _update_chest_slots() -> void:
 			dim.visible = true
 			lock.visible = true
 			time_lbl.visible = false
-			hint_lbl.text = "点击解锁"
+			hint_lbl.text = tr("UI_CHEST_TAP_UNLOCK")
 			hint_lbl.add_theme_color_override("font_color", Color(1, 0.9, 0.6))
 			hint_lbl.visible = true
 		elif UserManager.is_chest_ready(i):
@@ -148,7 +149,7 @@ func _update_chest_slots() -> void:
 			dim.visible = false
 			lock.visible = false
 			time_lbl.visible = false
-			hint_lbl.text = "点击开箱"
+			hint_lbl.text = tr("UI_CHEST_TAP_OPEN")
 			hint_lbl.add_theme_color_override("font_color", Color(0.3, 1.0, 0.4))
 			hint_lbl.visible = true
 			_play_shake(chest_tex)
@@ -187,7 +188,7 @@ func _on_slot_pressed(idx: int) -> void:
 	var unlock_start: int = slot.get("unlock_start_unix", -1)
 	if unlock_start == -1:
 		if not UserManager.start_chest_unlock(idx):
-			_show_simple_dialog("解锁中", "已有宝箱正在解锁！\n请等待当前宝箱解锁完成")
+			_show_simple_dialog(tr("UI_CHEST_UNLOCKING"), tr("UI_CHEST_UNLOCKING_MSG"))
 			return
 		SaveManager.save()
 		_update_chest_slots()
@@ -238,32 +239,32 @@ func _show_unlock_options(idx: int) -> void:
 	card.add_child(vbox)
 
 	var title := Label.new()
-	title.text = CHEST_NAMES[chest_type] + " 解锁中"
+	title.text = tr("UI_CHEST_UNLOCK_TITLE") % CHEST_NAMES[chest_type]
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.add_theme_font_size_override("font_size", 38)
 	vbox.add_child(title)
 
 	var time_label := Label.new()
-	time_label.text = "⏳ 剩余 %02d:%02d:%02d" % [h, m, s]
+	time_label.text = tr("UI_CHEST_TIME_REMAINING") % [h, m, s]
 	time_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	time_label.add_theme_font_size_override("font_size", 32)
 	vbox.add_child(time_label)
 
 	var gem_btn := Button.new()
-	gem_btn.text = "💎 立即解锁\n花费 %d 宝石（当前 %d）" % [gem_cost, UserManager.gems]
+	gem_btn.text = tr("UI_CHEST_INSTANT_UNLOCK") % [gem_cost, UserManager.gems]
 	gem_btn.custom_minimum_size = Vector2(0, 110)
 	gem_btn.add_theme_font_size_override("font_size", 28)
 	gem_btn.disabled = UserManager.gems < gem_cost
 	vbox.add_child(gem_btn)
 
 	var ad_btn := Button.new()
-	ad_btn.text = "📺 看广告加速\n减少 30 分钟"
+	ad_btn.text = tr("UI_CHEST_AD_SPEED_UP")
 	ad_btn.custom_minimum_size = Vector2(0, 110)
 	ad_btn.add_theme_font_size_override("font_size", 28)
 	vbox.add_child(ad_btn)
 
 	var close := Button.new()
-	close.text = "关闭"
+	close.text = tr("UI_CHEST_CLOSE")
 	close.custom_minimum_size = Vector2(0, 70)
 	close.add_theme_font_size_override("font_size", 28)
 	vbox.add_child(close)
@@ -297,7 +298,7 @@ func _update_pending_chest_ui() -> void:
 		pending_chest_row.hide()
 		return
 	pending_chest_row.show()
-	pending_label.text = "⏳ 待领取：%s %s" % [CHEST_ICONS[ptype], CHEST_NAMES[ptype]]
+	pending_label.text = tr("UI_CHEST_PENDING") + "：%s %s" % [CHEST_ICONS[ptype], CHEST_NAMES[ptype]]
 	var has_free := false
 	for slot in UserManager.chest_slots:
 		if slot["chest_type"] == -1:
@@ -316,7 +317,7 @@ func _on_claim_pending_pressed() -> void:
 		_update_chest_slots()
 		_update_pending_chest_ui()
 	else:
-		_show_simple_dialog("槽位已满", "4 个槽位都占用中\n请先领取一个宝箱来腾出空间")
+		_show_simple_dialog(tr("UI_CHEST_SLOTS_FULL"), tr("UI_CHEST_SLOTS_FULL_MSG"))
 
 
 func _show_simple_dialog(title_text: String, body_text: String) -> void:
@@ -338,14 +339,14 @@ func _on_wooden_chest_requested(_data: ChestData) -> void:
 	_pending_chest = _chest_datas[0]
 	_pending_bulk_cost = 0
 	_pending_bulk_count = 0
-	purchase_dialog.dialog_text = "确认免费领取 木宝箱？"
+	purchase_dialog.dialog_text = tr("UI_CHEST_CONFIRM_FREE_WOODEN")
 	purchase_dialog.popup_centered()
 
 
 func _update_wooden_chest_ui() -> void:
 	var price_lbl: Label = _buy_cards[0].get_node("PriceLabel")
 	if UserManager.is_free_wooden_chest_ready():
-		price_lbl.text = "✅ 免费领取"
+		price_lbl.text = tr("UI_CHEST_FREE_CLAIM")
 		price_lbl.add_theme_color_override("font_color", Color(0.2, 1.0, 0.35))
 	else:
 		var secs: int = UserManager.get_free_wooden_chest_cooldown_remaining()
@@ -372,8 +373,8 @@ func _notification(what: int) -> void:
 # ── 购买流程 ─────────────────────────────────────────────────────────
 
 func _show_info_panel(data: ChestData) -> void:
-	info_title.text = data.chest_name + " 内容"
-	info_card_count.text = "开箱张数：%d 张" % data.card_count
+	info_title.text = tr("UI_CHEST_INFO_TITLE") % data.chest_name
+	info_card_count.text = tr("UI_CHEST_CARD_COUNT") % data.card_count
 
 	for child in info_rarity_grid.get_children():
 		child.queue_free()
@@ -411,9 +412,9 @@ func _show_purchase_dialog(data: ChestData) -> void:
 	_pending_bulk_cost = 0
 	_pending_bulk_count = 0
 	if data.voucher_cost == 0:
-		purchase_dialog.dialog_text = "确认获取 %s（免费）？" % data.chest_name
+		purchase_dialog.dialog_text = tr("UI_CHEST_CONFIRM_FREE") % data.chest_name
 	else:
-		purchase_dialog.dialog_text = "确认购买 %s？\n花费 🎫 %d 券（当前 🎫 %d）" % [
+		purchase_dialog.dialog_text = tr("UI_CHEST_CONFIRM_BUY") % [
 			data.chest_name, data.voucher_cost, UserManager.vouchers]
 	purchase_dialog.popup_centered()
 
@@ -424,8 +425,8 @@ func _on_purchase_confirmed() -> void:
 
 	if _pending_bulk_count > 0:
 		if not UserManager.spend_vouchers(_pending_bulk_cost):
-			_show_simple_dialog("券不足",
-				"需要 🎫 %d 券\n当前仅有 🎫 %d\n\n请前往商店购买" % [
+			_show_simple_dialog(tr("UI_CHEST_VOUCHER_LOW"),
+				tr("UI_CHEST_VOUCHER_LOW_MSG") % [
 					_pending_bulk_cost, UserManager.vouchers])
 			_pending_chest = null
 			_pending_bulk_cost = 0
@@ -448,8 +449,8 @@ func _on_purchase_confirmed() -> void:
 
 	if _pending_chest.voucher_cost > 0:
 		if not UserManager.spend_vouchers(_pending_chest.voucher_cost):
-			_show_simple_dialog("券不足",
-				"需要 🎫 %d 券\n当前仅有 🎫 %d\n\n请前往商店购买" % [
+			_show_simple_dialog(tr("UI_CHEST_VOUCHER_LOW"),
+				tr("UI_CHEST_VOUCHER_LOW_MSG") % [
 					_pending_chest.voucher_cost, UserManager.vouchers])
 			_pending_chest = null
 			return
@@ -471,6 +472,6 @@ func _on_bulk_buy_pressed(chest_idx: int, data: ChestData) -> void:
 	_pending_chest = data
 	_pending_bulk_cost = cost
 	_pending_bulk_count = BULK_COUNT
-	purchase_dialog.dialog_text = "确认 10 连开箱？\n\n%s ×%d\n花费 🎫 %d 券（当前 🎫 %d）" % [
+	purchase_dialog.dialog_text = tr("UI_CHEST_BULK_CONFIRM") % [
 		CHEST_NAMES[chest_idx], BULK_COUNT, cost, UserManager.vouchers]
 	purchase_dialog.popup_centered()

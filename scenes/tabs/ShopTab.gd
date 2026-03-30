@@ -254,11 +254,11 @@ func _build_all_sections() -> void:
 	top_pad.custom_minimum_size = Vector2(0, 12)
 	main_vbox.add_child(top_pad)
 
-	_build_section("frags",    "◆ 碎片礼包")
+	_build_section("frags",    tr("UI_SHOP_SECTION_FRAGS"))
 	_add_section_gap()
-	_build_section("items",    "◆ 道具")
+	_build_section("items",    tr("UI_SHOP_SECTION_ITEMS"))
 	_add_section_gap()
-	_build_section("currency", "◆ 货币")
+	_build_section("currency", tr("UI_SHOP_SECTION_CURRENCY"))
 
 	var bot_pad := Control.new()
 	bot_pad.custom_minimum_size = Vector2(0, 60)
@@ -295,7 +295,7 @@ func _build_section(section: String, title: String) -> void:
 		empty_margin.add_theme_constant_override("margin_bottom", 10)
 		main_vbox.add_child(empty_margin)
 		var empty_lbl := Label.new()
-		empty_lbl.text = "暂无道具，敬请期待"
+		empty_lbl.text = tr("UI_SHOP_NO_ITEMS")
 		empty_lbl.add_theme_font_size_override("font_size", 26)
 		empty_lbl.modulate = Color(1, 1, 1, 0.35)
 		empty_margin.add_child(empty_lbl)
@@ -398,7 +398,7 @@ func _make_package_card(pkg: Dictionary) -> Control:
 	var sold_out: bool     = (limit > 0 and buy_count >= limit)
 
 	if sold_out:
-		buy_btn.text     = "已购买" if limit == 1 else "已达上限"
+		buy_btn.text     = tr("UI_SHOP_PURCHASED") if limit == 1 else tr("UI_SHOP_SOLD_OUT")
 		buy_btn.disabled = true
 	elif price_type == "cash":
 		buy_btn.text     = "RM %.2f" % pkg.get("price_rm", 0.0)
@@ -428,9 +428,9 @@ func _update_count_label(lbl: Label, bought: int, limit: int) -> void:
 	if limit == 0:
 		lbl.text = ""
 	elif limit == 1:
-		lbl.text = "已购" if bought >= 1 else "限购 1 次"
+		lbl.text = tr("UI_SHOP_PURCHASED") if bought >= 1 else tr("UI_SHOP_LIMIT_ONE")
 	else:
-		lbl.text = "已购 %d/%d 次" % [bought, limit]
+		lbl.text = tr("UI_SHOP_BOUGHT_COUNT") % [bought, limit]
 
 # ── 购买响应 ──────────────────────────────────────────────────────────
 func _on_buy_pressed(pkg: Dictionary) -> void:
@@ -447,13 +447,13 @@ func _on_buy_pressed(pkg: Dictionary) -> void:
 func _buy_cash(pkg: Dictionary) -> void:
 	var price_label: String = "RM %.2f" % pkg.get("price_rm", 0.0)
 	_show_confirm(
-		"确认购买？\n\n%s\n\n%s" % [pkg.get("desc", ""), price_label],
+		tr("UI_SHOP_CONFIRM_BUY") % [pkg.get("desc", ""), price_label],
 		func():
 			PaymentManager.purchase(
 				pkg["id"],
 				pkg.get("price_rm", 0.0),
 				func(): _apply_rewards(pkg),
-				func(err: String): _show_alert("支付失败\n" + err)
+				func(err: String): _show_alert(tr("UI_SHOP_PAYMENT_FAILED") + "\n" + err)
 			)
 	)
 
@@ -461,10 +461,10 @@ func _buy_cash(pkg: Dictionary) -> void:
 func _buy_gems(pkg: Dictionary) -> void:
 	var cost: int = pkg.get("price_gems", 0)
 	if UserManager.gems < cost:
-		_show_alert("钻石不足\n需要 💎%d（当前 💎%d）" % [cost, UserManager.gems])
+		_show_alert(tr("UI_SHOP_GEMS_LOW") % [cost, UserManager.gems])
 		return
 	_show_confirm(
-		"确认购买？\n\n%s\n\n消耗 💎%d" % [pkg.get("desc", ""), cost],
+		tr("UI_SHOP_CONFIRM_GEMS") % [pkg.get("desc", ""), cost],
 		func():
 			UserManager.spend_gems(cost)
 			_apply_rewards(pkg)
@@ -540,9 +540,9 @@ func _show_frag_reward(tower_res: Resource, count: int) -> void:
 	var emoji: String  = str(tower_res.get("tower_emoji"))  if tower_res.get("tower_emoji")  else "🏆"
 	var dname: String  = str(tower_res.get("display_name")) if tower_res.get("display_name") else "炮台"
 	var rarity: int    = int(tower_res.get("rarity")) if tower_res.get("rarity") != null else 0
-	var rarity_labels: Array[String] = ["白", "绿", "蓝", "紫", "橙"]
+	var rarity_labels: Array[String] = [tr("UI_RARITY_WHITE"), tr("UI_RARITY_GREEN"), tr("UI_RARITY_BLUE"), tr("UI_RARITY_PURPLE"), tr("UI_RARITY_ORANGE")]
 	var rarity_str: String = rarity_labels[clampi(rarity, 0, 4)]
-	_show_alert("🎉  获得碎片！\n\n%s  %s\n【%s 品质】\n\n碎片 ×%d" % [emoji, dname, rarity_str, count])
+	_show_alert(tr("UI_SHOP_FRAG_REWARD") % [emoji, dname, rarity_str, count])
 
 # ── 刷新所有卡片状态 ──────────────────────────────────────────────────
 func _refresh_all_cards() -> void:
@@ -554,7 +554,7 @@ func _refresh_all_cards() -> void:
 		var limit: int       = pkg.get("purchase_limit", 0)
 		var sold_out: bool   = (limit > 0 and buy_count >= limit)
 		if sold_out:
-			buy_btn.text     = "已购买" if limit == 1 else "已达上限"
+			buy_btn.text     = tr("UI_SHOP_PURCHASED") if limit == 1 else tr("UI_SHOP_SOLD_OUT")
 			buy_btn.disabled = true
 			buy_btn.modulate = Color(1, 1, 1, 1)
 		_update_count_label(count_lbl, buy_count, limit)
@@ -564,20 +564,20 @@ func _show_confirm(message: String, on_confirm: Callable) -> void:
 	_pending_action = on_confirm
 	confirm_msg.text = message
 	cancel_btn.show()
-	confirm_btn.text = "确认"
+	confirm_btn.text = tr("UI_DIALOG_CONFIRM")
 	confirm_overlay.show()
 
 func _show_alert(message: String) -> void:
 	_pending_action = Callable()
 	confirm_msg.text = message
 	cancel_btn.hide()
-	confirm_btn.text = "确定"
+	confirm_btn.text = tr("UI_SHOP_OK")
 	confirm_overlay.show()
 
 func _on_confirm_yes() -> void:
 	confirm_overlay.hide()
 	cancel_btn.show()
-	confirm_btn.text = "确认"
+	confirm_btn.text = tr("UI_DIALOG_CONFIRM")
 	if _pending_action.is_valid():
 		_pending_action.call()
 	_pending_action = Callable()
@@ -585,7 +585,7 @@ func _on_confirm_yes() -> void:
 func _on_confirm_no() -> void:
 	confirm_overlay.hide()
 	cancel_btn.show()
-	confirm_btn.text = "确认"
+	confirm_btn.text = tr("UI_DIALOG_CONFIRM")
 	_pending_action = Callable()
 
 func _on_overlay_input(event: InputEvent) -> void:

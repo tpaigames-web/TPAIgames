@@ -1,0 +1,76 @@
+keys,zh,en,ms
+TOWER_SCARECROW,稻草人,Scarecrow,Orang-orangan Sawah
+TOWER_WATER_PIPE,水压管道,Water Pipe,Paip Air
+TOWER_FARMER,农夫,Farmer,Petani
+TOWER_BEAR_TRAP,捕兽夹,Bear Trap,Perangkap
+TOWER_BEEHIVE,蜂巢,Beehive,Sarang Lebah
+TOWER_FARM_CANNON,农场大炮,Farm Cannon,Meriam Ladang
+TOWER_BARBED_WIRE,带刺铁网,Barbed Wire,Dawai Berduri
+TOWER_WINDMILL,风车,Windmill,Kincir Angin
+TOWER_SEED_SHOOTER,播种机,Seed Shooter,Penembak Biji
+TOWER_MUSHROOM_BOMB,蘑菇炸弹,Mushroom Bomb,Bom Cendawan
+TOWER_CHILI_FLAMER,辣椒喷火器,Chili Flamer,Penyembur Api Cili
+TOWER_WATCHTOWER,弓弩,Watchtower,Menara Pengawal
+TOWER_SUNFLOWER,向日葵,Sunflower,Bunga Matahari
+TOWER_HERO_FARMER,老阿福,Old Afu,Pak Afu
+TOWER_FARM_GUARDIAN,农场守卫者,Farm Guardian,Pengawal Ladang
+ENEMY_RAT_SMALL,小老鼠,Small Rat,Tikus Kecil
+ENEMY_RAT_FAT,肥老鼠,Fat Rat,Tikus Gemuk
+ENEMY_SQUIRREL,松鼠,Squirrel,Tupai
+ENEMY_CROW,乌鸦,Crow,Gagak
+ENEMY_CROW_KING,乌鸦王,Crow King,Raja Gagak
+ENEMY_ANT_SWARM,蚂蚁群,Ant Swarm,Gerombolan Semut
+ENEMY_ANT_QUEEN,蚁后,Ant Queen,Ratu Semut
+ENEMY_BOAR,野猪,Boar,Babi Hutan
+ENEMY_ARMORED_BOAR,装甲野猪,Armored Boar,Babi Hutan Berperisai
+ENEMY_SNAKE,毒蛇,Snake,Ular
+ENEMY_TOAD,毒蛙,Toad,Kodok Beracun
+ENEMY_LOCUST,蝗虫,Locust,Belalang
+ENEMY_MOLE,地鼠,Mole,Tahi Lalat
+ENEMY_GIANT_MOLE,巨型地鼠,Giant Mole,Tahi Lalat Gergasi
+ENEMY_FOX_LEADER,狐狸首领,Fox Leader,Ketua Rubah
+ENEMY_GIANT_RABBIT,大兔子,Giant Rabbit,Arnab Gergasi
+ENEMY_ARMADILLO,钢背犰狳,Armadillo,Armadillo
+ENEMY_FOREST_KING,森林之王,Forest King,Raja Hutan
+WAVE_01,热身·小鼠来袭,Warm Up: Rat Attack,Pemanasan: Serangan Tikus
+WAVE_02,肥鼠登场,Fat Rats Appear,Tikus Gemuk Muncul
+WAVE_03,松鼠与蚁群,Squirrels & Ants,Tupai & Semut
+WAVE_04,地鼠偷袭,Mole Ambush,Serangan Mengejut Tahi Lalat
+WAVE_05,★蛇群涌现,★ Snake Swarm,★ Gerombolan Ular
+WAVE_06,毒蛙首现,Toad Debut,Debut Kodok
+WAVE_07,巨兔野猪蚁后,Rabbit Boar Queen,Arnab Babi Ratu
+WAVE_08,潜地突击,Underground Strike,Serangan Bawah Tanah
+WAVE_09,狐狸狂奔,Fox Rush,Serangan Rubah
+WAVE_10,★精英合围,★ Elite Siege,★ Kepungan Elit
+WAVE_11,乌鸦先锋,Crow Vanguard,Gagak Perintis
+WAVE_12,蝗虫过境,Locust Plague,Wabak Belalang
+WAVE_13,空地双线,Air-Ground Assault,Serangan Udara-Darat
+WAVE_14,毒蛙蜂拥,Toad Swarm,Gerombolan Kodok
+WAVE_15,★铁翼重甲,★ Iron Wings,★ Sayap Besi
+WAVE_16,潜地空袭,Underground Air Raid,Serbuan Udara Bawah Tanah
+WAVE_17,钢背犰狳首现,Armadillo Debut,Debut Armadillo
+WAVE_18,暗影双线,Shadow Dual Strike,Serangan Berganda Bayangan
+WAVE_19,蚁后大军,Queen's Army,Tentera Ratu
+WAVE_20,★乌鸦之王,★ Crow King,★ Raja Gagak
+WAVE_21,精英起势,Elite Rising,Kebangkitan Elit
+WAVE_22,钢铁洪流,Steel Flood,Banjir Baja
+WAVE_23,毒免军团,Poison Legion,Legion Racun
+WAVE_24,空中大军,Sky Army,Tentera Udara
+WAVE_25,★全面攻势,★ Full Assault,★ Serangan Penuh
+WAVE_26,毒巢狂潮,Toxic Tide,Ombak Toksik
+WAVE_27,暗翼风暴,Dark Wing Storm,Ribut Sayap Gelap
+WAVE_28,铁血精英,Iron Elite,Elit Besi
+WAVE_29,黑夜突袭,Night Raid,Serbuan Malam
+WAVE_30,★乌鸦王强化,★ Empowered Crow King,★ Raja Gagak Diperkuat
+WAVE_31,末日序幕,Doomsday Prelude,Prakata Kiamat
+WAVE_32,召唤洪潮,Summon Flood,Banjir Panggilan
+WAVE_33,空中死神,Sky Reaper,Penuai Langit
+WAVE_34,穿甲极限,Armor Break,Had Penembusan Perisai
+WAVE_35,★巅峰军团,★ Apex Legion,★ Legion Kemuncak
+WAVE_36,怒潮席卷,Rage Tide,Ombak Kemarahan
+WAVE_37,终极蚁群,Ultimate Ant Horde,Gerombolan Semut Muktamad
+WAVE_38,暗夜飞翼,Night Wings,Sayap Malam
+WAVE_39,绝境守护,Last Stand,Pertahanan Terakhir
+WAVE_40,★森林之王,★ Forest King,★ Raja Hutan
+ITEM_GOLD_BAG,金币袋,Gold Bag,Beg Emas
+ITEM_LANDMINE,地雷,Landmine,Periuk Api
