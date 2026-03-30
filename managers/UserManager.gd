@@ -22,6 +22,12 @@ var xp_to_next_level: int = 500   # 首级需 500 XP；公式：500 + (level-1)*
 ## 付费通行证（RM 8.88 永久激活）
 var has_paid_pass: bool = false
 
+## 免广告特权（RM 12.88 永久）
+var ad_free: bool = false
+
+## 月卡系统
+var monthly_card_end_unix: int = 0  ## 月卡到期 Unix 时间戳（0=未激活）
+
 ## 已领取奖励记录（存储等级编号，避免重复领取）
 var claimed_free_rewards: Array[int] = []
 var claimed_paid_rewards: Array[int] = []
@@ -253,6 +259,36 @@ func use_item(item_id: String) -> bool:
 	currency_changed.emit()
 	return true
 
+
+## ── 月卡系统 ──────────────────────────────────────────────────────────
+
+func activate_monthly_card() -> void:
+	monthly_card_end_unix = int(Time.get_unix_time_from_system()) + 30 * 86400  # 30 天
+	currency_changed.emit()
+
+func is_monthly_card_active() -> bool:
+	return monthly_card_end_unix > int(Time.get_unix_time_from_system())
+
+func claim_monthly_card_daily() -> bool:
+	## 每日领取 30 💎（由 HomeScene 在登录时检查）
+	if not is_monthly_card_active():
+		return false
+	var today: String = Time.get_date_string_from_system()
+	if last_monthly_claim_date == today:
+		return false
+	last_monthly_claim_date = today
+	add_gems(30)
+	return true
+
+var last_monthly_claim_date: String = ""
+
+
+## ── 免广告判断 ────────────────────────────────────────────────────────
+
+func is_ad_free() -> bool:
+	return ad_free
+
+
 ## 碎片商店周期内购买记录（key = "{rng_seed}_{tower_id}"，防止重启后重复购买同周期商品）
 var fragment_shop_purchases: Dictionary = {}
 
@@ -299,6 +335,9 @@ func get_save_data() -> Dictionary:
 		"vouchers":                  vouchers,
 		"selected_avatar":           selected_avatar,
 		"has_paid_pass":             has_paid_pass,
+		"ad_free":                   ad_free,
+		"monthly_card_end_unix":     monthly_card_end_unix,
+		"last_monthly_claim_date":   last_monthly_claim_date,
 		"claimed_free_rewards":      claimed_free_rewards,
 		"claimed_paid_rewards":      claimed_paid_rewards,
 		"shop_purchases":            shop_purchases,
@@ -331,6 +370,9 @@ func load_save_data(dict: Dictionary) -> void:
 	vouchers                  = int(dict.get("vouchers",               0))
 	selected_avatar           = int(dict.get("selected_avatar",        selected_avatar))
 	has_paid_pass             = bool(dict.get("has_paid_pass",         has_paid_pass))
+	ad_free                   = (dict.get("ad_free", false) == true)
+	monthly_card_end_unix     = int(dict.get("monthly_card_end_unix", 0))
+	last_monthly_claim_date   = str(dict.get("last_monthly_claim_date", ""))
 	tutorial_completed        = bool(dict.get("tutorial_completed",    tutorial_completed))
 	story_watched             = bool(dict.get("story_watched",         story_watched))
 	games_played              = int(dict.get("games_played",           games_played))

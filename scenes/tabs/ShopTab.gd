@@ -10,6 +10,85 @@ extends Control
 ##            "frags_random":{"rarity":int,"count":int} }
 ## badge: 空字符串=不显示，"首次特惠" 等显示红色角标
 const PACKAGES: Array = [
+	# ─── 特别优惠 ───────────────────────────────────────────────────
+	{
+		"id":             "newbie_pack",
+		"name":           "UI_SHOP_PKG_NEWBIE",
+		"emoji":          "🎁",
+		"desc":           "UI_SHOP_DESC_NEWBIE",
+		"section":        "special",
+		"price_type":     "cash",
+		"price_rm":       3.88,
+		"price_gems":     0,
+		"purchase_limit": 1,
+		"rewards":        {"gems": 500, "gold": 5000, "trial_tickets": 3},
+		"badge":          "UI_SHOP_BADGE_NEWBIE",
+	},
+	{
+		"id":             "monthly_card",
+		"name":           "UI_SHOP_PKG_MONTHLY",
+		"emoji":          "📅",
+		"desc":           "UI_SHOP_DESC_MONTHLY",
+		"section":        "special",
+		"price_type":     "cash",
+		"price_rm":       8.88,
+		"price_gems":     0,
+		"purchase_limit": 0,
+		"rewards":        {"monthly_card": true, "gems": 200},
+		"badge":          "",
+	},
+	{
+		"id":             "ad_free",
+		"name":           "UI_SHOP_PKG_AD_FREE",
+		"emoji":          "🚫",
+		"desc":           "UI_SHOP_DESC_AD_FREE",
+		"section":        "special",
+		"price_type":     "cash",
+		"price_rm":       12.88,
+		"price_gems":     0,
+		"purchase_limit": 1,
+		"rewards":        {"ad_free": true},
+		"badge":          "",
+	},
+	{
+		"id":             "hero_afu_pack",
+		"name":           "UI_SHOP_PKG_HERO_AFU",
+		"emoji":          "👴",
+		"desc":           "UI_SHOP_DESC_HERO_AFU",
+		"section":        "special",
+		"price_type":     "cash",
+		"price_rm":       18.88,
+		"price_gems":     0,
+		"purchase_limit": 1,
+		"rewards":        {"unlock_hero": "hero_farmer", "frags_fixed": {"hero_farmer": 60}, "trial_tickets": 2},
+		"badge":          "UI_SHOP_BADGE_HERO",
+	},
+	{
+		"id":             "gems_medium",
+		"name":           "UI_SHOP_PKG_GEMS_MED",
+		"emoji":          "💎",
+		"desc":           "UI_SHOP_DESC_GEMS_800",
+		"section":        "currency",
+		"price_type":     "cash",
+		"price_rm":       15.88,
+		"price_gems":     0,
+		"purchase_limit": 0,
+		"rewards":        {"gems": 800, "trial_tickets": 2},
+		"badge":          "",
+	},
+	{
+		"id":             "gems_large",
+		"name":           "UI_SHOP_PKG_GEMS_LARGE",
+		"emoji":          "💎",
+		"desc":           "UI_SHOP_DESC_GEMS_2000",
+		"section":        "currency",
+		"price_type":     "cash",
+		"price_rm":       38.80,
+		"price_gems":     0,
+		"purchase_limit": 0,
+		"rewards":        {"gems": 2000, "trial_tickets": 5, "frags_random": {"rarity": 3, "count": 50}},
+		"badge":          "UI_SHOP_BADGE_VALUE",
+	},
 	# ─── 碎片礼包 ───────────────────────────────────────────────────
 	{
 		"id":             "starter_basic",
@@ -254,6 +333,8 @@ func _build_all_sections() -> void:
 	top_pad.custom_minimum_size = Vector2(0, 12)
 	main_vbox.add_child(top_pad)
 
+	_build_section("special",  tr("UI_SHOP_SECTION_SPECIAL"))
+	_add_section_gap()
 	_build_section("frags",    tr("UI_SHOP_SECTION_FRAGS"))
 	_add_section_gap()
 	_build_section("items",    tr("UI_SHOP_SECTION_ITEMS"))
@@ -485,6 +566,20 @@ func _apply_rewards(pkg: Dictionary) -> void:
 		_grant_max_level()
 	if r.get("all_tower_frags", 0) > 0:
 		_grant_all_tower_frags(r["all_tower_frags"])
+	# 试用券
+	if r.get("trial_tickets", 0) > 0:
+		UserManager.add_item("trial_ticket", r["trial_tickets"])
+	# 月卡
+	if r.get("monthly_card", false):
+		UserManager.activate_monthly_card()
+	# 免广告
+	if r.get("ad_free", false):
+		UserManager.ad_free = true
+	# 英雄解锁
+	if r.has("unlock_hero"):
+		var hero_id: String = r["unlock_hero"]
+		if hero_id not in CollectionManager.unlocked_towers:
+			CollectionManager.unlocked_towers.append(hero_id)
 	for tid: String in r.get("frags_fixed", {}).keys():
 		CollectionManager.add_fragments(tid, r["frags_fixed"][tid])
 	var rand_info: Dictionary = r.get("frags_random", {})
