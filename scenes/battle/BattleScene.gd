@@ -172,10 +172,7 @@ func _create_subsystems() -> void:
 	_game_end_flow.set_script(gef_script)
 	add_child(_game_end_flow)
 	_game_end_flow.init(self, wave_manager, speed_btn, wave_label, _disconnect_signals)
-	_game_end_flow.game_ended_signal.connect(func():
-		_game_ended = true
-		call_deferred("_show_trial_end_popup")
-	)
+	_game_end_flow.game_ended_signal.connect(_on_game_ended_for_trial)
 	_game_end_flow.endless_entered.connect(_on_endless_entered)
 	_game_end_flow.request_reconnect_signals.connect(_reconnect_signals)
 
@@ -666,6 +663,11 @@ func _show_treasure_reward(text: String) -> void:
 	tw.tween_interval(1.5)
 	tw.tween_property(lbl, "modulate:a", 0.0, 0.5)
 	tw.tween_callback(lbl.queue_free)
+
+
+func _on_game_ended_for_trial() -> void:
+	_game_ended = true
+	call_deferred("_show_trial_end_popup")
 
 
 func _show_trial_end_popup() -> void:
