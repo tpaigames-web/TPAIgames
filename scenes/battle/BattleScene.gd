@@ -618,7 +618,8 @@ func _on_treasure_killed() -> void:
 		_show_treasure_reward("🎟️ " + tr("ITEM_TRIAL_TICKET") + " ×1")
 	elif roll < 0.60:
 		# 30% 随机紫碎片 ×5
-		var towers = TowerResourceRegistry.get_towers_by_rarity(3)
+		var by_rarity: Dictionary = TowerResourceRegistry.get_towers_by_rarity()
+		var towers: Array = by_rarity.get(3, [])
 		if towers.size() > 0:
 			var td = towers[randi() % towers.size()]
 			CollectionManager.add_fragments(td.tower_id, 5)
