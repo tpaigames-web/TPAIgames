@@ -174,7 +174,7 @@ func _create_subsystems() -> void:
 	_game_end_flow.init(self, wave_manager, speed_btn, wave_label, _disconnect_signals)
 	_game_end_flow.game_ended_signal.connect(func():
 		_game_ended = true
-		_show_trial_end_popup()
+		call_deferred("_show_trial_end_popup")
 	)
 	_game_end_flow.endless_entered.connect(_on_endless_entered)
 	_game_end_flow.request_reconnect_signals.connect(_reconnect_signals)
