@@ -35,23 +35,28 @@ func deal_damage(source_info: Dictionary, target: Area2D,
 	var has_armor_pen: bool = false
 	if ed and ed.armor > 0:
 		var effective_armor: int = maxi(ed.armor - armor_pen, 0)
-		has_armor_pen = (armor_pen > 0 and effective_armor < ed.armor)
+		# 检查护穿是否生效（直接穿甲 或 完全忽略护甲）
+		if armor_pen > 0:
+			has_armor_pen = true
 		if effective_armor > 0:
 			const ARMOR_REDUCTION: Array[float] = [0.0, 0.15, 0.30, 0.45, 0.60]
 			var idx: int = mini(effective_armor, ARMOR_REDUCTION.size() - 1)
 			var reduction: float = ARMOR_REDUCTION[idx]
+			# 地形/debuff 洗甲（也算破甲效果）
 			var terrain_ar: float = target.get("terrain_armor_reduction") if target.get("terrain_armor_reduction") else 0.0
 			var debuff_ar: float = target.get("debuff_armor_reduction") if target.get("debuff_armor_reduction") else 0.0
 			var total_ar: float = terrain_ar + debuff_ar
-			if total_ar > 0.0:
+			if total_ar > 0.001:
+				has_armor_pen = true  # 洗甲也显示破甲标记
 				reduction = maxf(reduction - total_ar, 0.0)
 			final_dmg *= (1.0 - reduction)
 
 	# 4. 暴击检查
 	var source_tower = source_info.get("source_tower", null)
 	var is_crit: bool = false
-	if is_instance_valid(source_tower) and source_tower.get("global_crit_bonus"):
-		var crit_chance: float = source_tower.global_crit_bonus
+	if is_instance_valid(source_tower):
+		var crit_val = source_tower.get("global_crit_bonus")
+		var crit_chance: float = float(crit_val) if crit_val != null else 0.0
 		if crit_chance > 0.0 and randf() < crit_chance:
 			final_dmg *= 2.0
 			is_crit = true
