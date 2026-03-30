@@ -63,6 +63,11 @@ func ability_process(_delta: float) -> void:
 	tower.ability_damage_bonus = P1_DMG[_lv(1)]
 	tower.ability_speed_bonus = P1_SPD[_lv(1)] + P2_SPD[_lv(2)]
 	tower.ability_range_bonus = P2_RNG[_lv(2)] + P3_RNG[_lv(3)]
+	# P2 T3+: 解锁空中攻击（attack_type=2 即全部）
+	if _lv(2) >= 3:
+		tower.ability_attack_type = 2  # 地面+空中
+	else:
+		tower.ability_attack_type = -1  # 使用默认（地面）
 	# P3 T5: 全图射程
 	if _lv(3) >= 5:
 		tower.ability_range_bonus = 99.0

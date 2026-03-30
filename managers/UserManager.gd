@@ -289,6 +289,56 @@ func is_ad_free() -> bool:
 	return ad_free
 
 
+## ── 每日签到 ──────────────────────────────────────────────────────────
+
+var sign_in_day: int = 0          ## 当前签到进度（0-6，7天循环）
+var last_sign_in_date: String = "" ## 上次签到日期（yyyy-mm-dd）
+var sign_in_streak: int = 0       ## 连续签到天数
+
+## 7天签到奖励表
+const SIGN_IN_REWARDS: Array[Dictionary] = [
+	{"gold": 200},
+	{"gems": 10},
+	{"frags_random_green": 5},
+	{"gold": 300},
+	{"trial_tickets": 1},
+	{"gems": 20},
+	{"chest_iron": 1},
+]
+
+func can_sign_in_today() -> bool:
+	return last_sign_in_date != Time.get_date_string_from_system()
+
+func do_sign_in() -> Dictionary:
+	if not can_sign_in_today():
+		return {}
+	last_sign_in_date = Time.get_date_string_from_system()
+	var reward: Dictionary = SIGN_IN_REWARDS[sign_in_day]
+	# 发放奖励
+	if reward.get("gold", 0) > 0:
+		add_gold(reward["gold"])
+	if reward.get("gems", 0) > 0:
+		add_gems(reward["gems"])
+	if reward.get("trial_tickets", 0) > 0:
+		add_item("trial_ticket", reward["trial_tickets"])
+	if reward.get("frags_random_green", 0) > 0:
+		# 随机绿碎片（由调用方处理具体炮台）
+		pass
+	if reward.get("chest_iron", 0) > 0:
+		add_chest_to_slot(1)  # 铁宝箱
+	# 推进签到日
+	sign_in_day = (sign_in_day + 1) % 7
+	sign_in_streak += 1
+	# 7天全签额外奖励
+	var bonus: Dictionary = {}
+	if sign_in_streak >= 7 and sign_in_streak % 7 == 0:
+		add_chest_to_slot(2)  # 金宝箱
+		bonus["chest_gold"] = 1
+	SaveManager.save()
+	currency_changed.emit()
+	return reward.duplicate()
+
+
 ## 碎片商店周期内购买记录（key = "{rng_seed}_{tower_id}"，防止重启后重复购买同周期商品）
 var fragment_shop_purchases: Dictionary = {}
 
@@ -344,6 +394,9 @@ func get_save_data() -> Dictionary:
 		"item_inventory":            item_inventory,
 		"tutorial_completed":        tutorial_completed,
 		"story_watched":             story_watched,
+		"sign_in_day":               sign_in_day,
+		"last_sign_in_date":         last_sign_in_date,
+		"sign_in_streak":            sign_in_streak,
 		"games_played":              games_played,
 		"games_won":                 games_won,
 		"enemies_defeated":          enemies_defeated,
@@ -375,6 +428,9 @@ func load_save_data(dict: Dictionary) -> void:
 	last_monthly_claim_date   = str(dict.get("last_monthly_claim_date", ""))
 	tutorial_completed        = bool(dict.get("tutorial_completed",    tutorial_completed))
 	story_watched             = bool(dict.get("story_watched",         story_watched))
+	sign_in_day               = int(dict.get("sign_in_day",           0))
+	last_sign_in_date         = str(dict.get("last_sign_in_date",     ""))
+	sign_in_streak            = int(dict.get("sign_in_streak",        0))
 	games_played              = int(dict.get("games_played",           games_played))
 	games_won                 = int(dict.get("games_won",              games_won))
 	enemies_defeated          = int(dict.get("enemies_defeated",       enemies_defeated))
