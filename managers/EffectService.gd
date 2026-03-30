@@ -94,6 +94,7 @@ func process_tick(enemy: Area2D, delta: float) -> void:
 				# DoT 伤害直接扣 HP（绕过护盾）
 				var dot_dmg: float = eff.get("damage_per_tick", 0.0)
 				if dot_dmg > 0.0:
+					CombatService.show_dot_damage_number(enemy, int(dot_dmg), eff.type)
 					enemy.hp -= int(dot_dmg)
 					enemy._update_hp_bar()
 					if enemy.hp <= 0:
