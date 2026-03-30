@@ -189,8 +189,8 @@ func _build_settings_ui() -> void:
 
 	# 画面
 	_add_section_label("🖥 画面")
-	_add_option_row("画质", ["流畅", "高画质"], SettingsManager.quality, func(idx: int):
-		SettingsManager.quality = idx
+	_add_option_row("画质", ["流畅", "均衡", "高画质"], SettingsManager.quality, func(idx: int):
+		SettingsManager.set_quality(idx)
 	)
 	_add_toggle_row("粒子效果", SettingsManager.particles_enabled, func(toggled: bool):
 		SettingsManager.particles_enabled = toggled

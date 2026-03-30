@@ -1,53 +1,53 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://be6grmj71oc8q"]
 
-[ext_resource type="Texture2D" path="res://assets/sprites/ui/Day_panel.png" id="day_panel"]
+[ext_resource type="Texture2D" uid="uid://djfqcb8i0ufg1" path="res://assets/sprites/ui/Day_panel.png" id="day_panel"]
 
 [sub_resource type="StyleBoxEmpty" id="btn_empty"]
 
-[node name="TutorialCard" type="Control"]
+[node name="TutorialCard" type="Control" unique_id=670032981]
 custom_minimum_size = Vector2(320, 110)
+layout_mode = 3
+anchors_preset = 0
 
-[node name="PanelBg" type="TextureRect" parent="."]
+[node name="PanelBg" type="TextureRect" parent="." unique_id=1056071530]
 layout_mode = 0
-offset_right = 320.0
-offset_bottom = 110.0
+offset_right = 448.0
+offset_bottom = 154.0
 mouse_filter = 2
 texture = ExtResource("day_panel")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="TitleLabel" type="Label" parent="."]
+[node name="TitleLabel" type="Label" parent="." unique_id=1765625608]
 layout_mode = 0
-offset_left = 15.0
-offset_top = 15.0
-offset_right = 305.0
-offset_bottom = 55.0
-mouse_filter = 2
-theme_override_font_sizes/font_size = 32
+offset_left = 62.0
+offset_top = 37.0
+offset_right = 352.0
+offset_bottom = 77.0
 theme_override_colors/font_color = Color(1, 0.95, 0.85, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5)
 theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 32
 text = "🎓 新手教学"
 horizontal_alignment = 1
 
-[node name="StatusLabel" type="Label" parent="."]
+[node name="StatusLabel" type="Label" parent="." unique_id=406233629]
 layout_mode = 0
-offset_left = 15.0
-offset_top = 55.0
-offset_right = 305.0
-offset_bottom = 95.0
-mouse_filter = 2
-theme_override_font_sizes/font_size = 32
+offset_left = 62.0
+offset_top = 77.0
+offset_right = 352.0
+offset_bottom = 117.0
 theme_override_colors/font_color = Color(0.7, 1, 0.7, 1)
+theme_override_font_sizes/font_size = 32
 text = "✅ 已通过"
 horizontal_alignment = 1
 
-[node name="HitButton" type="Button" parent="."]
+[node name="HitButton" type="Button" parent="." unique_id=391423831]
 layout_mode = 0
-offset_right = 320.0
-offset_bottom = 110.0
+offset_right = 395.63635
+offset_bottom = 136.0
 theme_override_styles/normal = SubResource("btn_empty")
-theme_override_styles/hover = SubResource("btn_empty")
 theme_override_styles/pressed = SubResource("btn_empty")
+theme_override_styles/hover = SubResource("btn_empty")
 theme_override_styles/focus = SubResource("btn_empty")
