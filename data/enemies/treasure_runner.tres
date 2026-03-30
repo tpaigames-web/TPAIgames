@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=2 format=3]
+
+[ext_resource type="Script" uid="uid://dapicbkaarem1" path="res://enemy/enemy_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+enemy_id = "treasure_runner"
+display_name = "宝箱松鼠"
+display_emoji = "🎁"
+max_hp = 300
+move_speed = 180.0
+armor = 0
+damage_to_player = 0
+gold_reward = 0
+xp_reward = 0
+is_fast = true
+is_treasure_runner = true
+counter_strategy = "高伤单体、减速控制"

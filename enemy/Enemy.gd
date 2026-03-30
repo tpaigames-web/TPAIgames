@@ -2,6 +2,8 @@ extends Area2D
 
 ## 敌人召唤子单位时发出（WaveManager 监听此信号生成新敌人）
 signal want_spawn(enemy_type: String, count: int, path_progress: float)
+signal treasure_killed()    ## 宝箱敌人被击杀（掉落奖励）
+signal treasure_escaped()   ## 宝箱敌人逃走（无奖励）
 
 @export var enemy_data: Resource
 
@@ -391,6 +393,11 @@ func _reach_goal() -> void:
 	if finished:
 		return
 	finished = true
+	# 宝箱敌人到达终点不扣血，只是逃走（奖励消失）
+	if enemy_data and enemy_data.is_treasure_runner:
+		treasure_escaped.emit()
+		queue_free()
+		return
 	var dmg: int = enemy_data.damage_to_player if enemy_data else 1
 	GameManager.damage_player(dmg)
 	queue_free()
@@ -438,6 +445,11 @@ func die() -> void:
 	if _dead:
 		return
 	_dead = true
+	# 宝箱敌人击杀 → 发射掉落信号（不给金币/XP，奖励由外部处理）
+	if enemy_data and enemy_data.is_treasure_runner:
+		treasure_killed.emit()
+		_play_death_anim()
+		return
 	if enemy_data and not is_summoned:
 		GameManager.add_gold(enemy_data.gold_reward)
 		UserManager.add_xp(enemy_data.xp_reward)

@@ -104,6 +104,7 @@ func _ready() -> void:
 	wave_manager.all_waves_cleared.connect(_on_victory)
 	wave_manager.wave_started.connect(_on_wave_started)
 	wave_manager.wave_cleared.connect(_on_wave_cleared)
+	wave_manager.treasure_enemy_spawned.connect(_on_treasure_enemy_spawned)
 
 	# ── 连接按钮 ─────────────────────────────────────────────────────
 	back_btn.pressed.connect(_on_back)
@@ -599,6 +600,71 @@ func _add_trial_tower_card(td: TowerCollectionData) -> void:
 	)
 
 	tower_hbox.add_child(card)
+
+
+## ── 宝箱敌人掉落 ────────────────────────────────────────────────────
+
+func _on_treasure_enemy_spawned(enemy: Node) -> void:
+	if not is_instance_valid(enemy):
+		return
+	enemy.treasure_killed.connect(_on_treasure_killed)
+	enemy.treasure_escaped.connect(_on_treasure_escaped)
+
+
+func _on_treasure_killed() -> void:
+	# 随机掉落奖励
+	var roll: float = randf()
+	if roll < 0.30:
+		# 30% 试用券
+		UserManager.add_item("trial_ticket", 1)
+		_show_treasure_reward("🎟️ " + tr("ITEM_TRIAL_TICKET") + " ×1")
+	elif roll < 0.60:
+		# 30% 随机紫碎片 ×5
+		var towers = TowerResourceRegistry.get_towers_by_rarity(3)
+		if towers.size() > 0:
+			var td = towers[randi() % towers.size()]
+			CollectionManager.add_fragments(td.tower_id, 5)
+			var tname: String = TowerResourceRegistry.get_tower_display_name(td.tower_id, td.display_name)
+			_show_treasure_reward("🧩 " + tname + " ×5")
+		else:
+			UserManager.add_gems(30)
+			_show_treasure_reward("💎 ×30")
+	else:
+		# 40% 钻石 15-30
+		var gems: int = randi_range(15, 30)
+		UserManager.add_gems(gems)
+		_show_treasure_reward("💎 ×%d" % gems)
+	SaveManager.save()
+
+
+func _on_treasure_escaped() -> void:
+	# 宝箱敌人逃走，什么都不给
+	pass
+
+
+func _show_treasure_reward(text: String) -> void:
+	var lbl := Label.new()
+	lbl.text = "🎁 " + text
+	lbl.add_theme_font_size_override("font_size", 40)
+	lbl.add_theme_color_override("font_color", Color(1.0, 0.9, 0.2))
+	lbl.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.8))
+	lbl.add_theme_constant_override("shadow_offset_x", 2)
+	lbl.add_theme_constant_override("shadow_offset_y", 2)
+	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	lbl.set_anchors_preset(Control.PRESET_CENTER)
+	lbl.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	lbl.custom_minimum_size = Vector2(600, 60)
+	lbl.z_index = 50
+	$HUD.add_child(lbl)
+	var vp_size: Vector2 = get_viewport().get_visible_rect().size
+	lbl.position = Vector2((vp_size.x - 600) / 2.0, vp_size.y * 0.35)
+	# 动画：弹出 → 停留 → 淡出
+	lbl.modulate.a = 0.0
+	var tw := lbl.create_tween()
+	tw.tween_property(lbl, "modulate:a", 1.0, 0.2)
+	tw.tween_interval(1.5)
+	tw.tween_property(lbl, "modulate:a", 0.0, 0.5)
+	tw.tween_callback(lbl.queue_free)
 
 
 func _show_trial_end_popup() -> void:

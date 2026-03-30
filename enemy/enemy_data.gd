@@ -35,6 +35,8 @@ class_name EnemyData
 @export var is_healer:           bool   = false
 ## 分裂型：死亡时生成若干小单位（预留）
 @export var is_splitter:         bool   = false
+## 宝箱跑者：击杀掉落奖励，走完路径不扣血
+@export var is_treasure_runner:  bool   = false
 ## 免疫控制：减速 / 定身效果完全无效
 @export var is_control_immune:   bool   = false
 ## 免疫DOT：燃烧 / 中毒 / 流血效果完全无效

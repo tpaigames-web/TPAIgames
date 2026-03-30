@@ -97,7 +97,15 @@ var enemy_data_map: Dictionary = {
 	"forest_king":  preload("res://data/enemies/forest_king.tres"),
 	"toad":         preload("res://data/enemies/toad.tres"),
 	"armadillo":    preload("res://data/enemies/armadillo.tres"),
+	"treasure_runner": preload("res://data/enemies/treasure_runner.tres"),
 }
+
+## 宝箱敌人出现控制
+signal treasure_enemy_spawned(enemy: Node)  ## BattleScene 连接此信号处理掉落
+var _games_since_treasure: int = 0  ## 距离上次出现宝箱敌人的局数
+const TREASURE_MIN_GAMES: int = 3   ## 最少间隔局数
+const TREASURE_MAX_GAMES: int = 5   ## 最多间隔局数
+var _treasure_wave_target: int = -1 ## 本局在哪波插入宝箱敌人（-1=本局不出现）
 
 var spawn_queue: Array = []
 var spawn_timer: Timer
@@ -112,8 +120,24 @@ func _ready():
 	# 预加载主线波次
 	_load_wave_configs(WAVE_DIR, _wave_configs)
 
+## 决定本局是否出现宝箱敌人（在 start 前调用）
+func _decide_treasure_spawn() -> void:
+	_games_since_treasure += 1
+	if _games_since_treasure >= TREASURE_MIN_GAMES:
+		# 达到最小间隔后按概率出现（间隔越长概率越高）
+		var chance: float = float(_games_since_treasure - TREASURE_MIN_GAMES + 1) / float(TREASURE_MAX_GAMES - TREASURE_MIN_GAMES + 1)
+		if randf() < chance or _games_since_treasure >= TREASURE_MAX_GAMES:
+			# 随机选一个中间波次（避免第 1 波和最后 5 波）
+			var total: int = get_total_waves()
+			var min_wave: int = maxi(3, total / 4)
+			var max_wave: int = maxi(min_wave + 1, total - 5)
+			_treasure_wave_target = randi_range(min_wave, max_wave)
+			_games_since_treasure = 0
+
+
 ## 由 BattleScene 在玩家点击播放按钮后调用
 func start() -> void:
+	_decide_treasure_spawn()
 	start_next_wave()
 
 ## 从指定波次开始（用于战局存档恢复）
@@ -146,6 +170,12 @@ func start_next_wave():
 	for group in groups:
 		for i in range(group["count"]):
 			spawn_queue.append(group["type"])
+
+	# 宝箱敌人：在目标波次的队列中间插入
+	if _treasure_wave_target == current_wave:
+		var insert_pos: int = spawn_queue.size() / 2
+		spawn_queue.insert(insert_pos, "treasure_runner")
+		_treasure_wave_target = -1  # 已使用
 
 	spawn_timer.start()
 
@@ -181,6 +211,10 @@ func spawn_enemy(enemy_type: String) -> void:
 
 	if enemy.has_signal("want_spawn"):
 		enemy.want_spawn.connect(_on_enemy_want_spawn)
+
+	# 宝箱敌人：连接掉落信号
+	if enemy.enemy_data and enemy.enemy_data.is_treasure_runner:
+		treasure_enemy_spawned.emit(enemy)
 
 	path_follow.add_child(enemy)
 
