@@ -28,9 +28,9 @@ var tab_nodes: Array = [null, null, null, null, null]
 @onready var gold_label: Label         = $TopBar/CurrencyWrapper/CurrencyRow/GoldItem/GoldLabel
 @onready var gems_label: Label         = $TopBar/CurrencyWrapper/CurrencyRow/GemItem/GemsLabel
 @onready var vouchers_label: Label     = $TopBar/CurrencyWrapper/CurrencyRow/VoucherItem/VouchersLabel
-@onready var side_buttons: VBoxContainer       = $SideButtons
-@onready var left_side_buttons: VBoxContainer  = $LeftSideButtons
-@onready var level_pass_side_btn: Button       = $LeftSideButtons/LevelPassBtn
+var side_buttons: VBoxContainer = null
+var left_side_buttons: VBoxContainer = null
+var level_pass_side_btn: Button = null
 @onready var tab_container: Control    = $TabContainer
 @onready var coming_soon_dialog: AcceptDialog = $ComingSoonDialog
 
@@ -72,6 +72,8 @@ func _ready() -> void:
 	await get_tree().process_frame
 	_update_nav_highlight()
 	$TopBar/ProfileArea.gui_input.connect(_on_profile_area_input)
+	# 左侧快捷按钮（签到 + 升级通行证）
+	_setup_left_side_buttons()
 	# 左上角设置按钮
 	_setup_settings_button()
 	# 金币/钻石/XP 变化时自动刷新顶栏显示
@@ -408,6 +410,33 @@ func _setup_settings_button() -> void:
 	btn.size = Vector2(80, 80)
 	btn.pressed.connect(_open_settings)
 	add_child(btn)
+
+
+func _setup_left_side_buttons() -> void:
+	left_side_buttons = VBoxContainer.new()
+	left_side_buttons.position = Vector2(10, 350)
+	left_side_buttons.add_theme_constant_override("separation", 10)
+	add_child(left_side_buttons)
+
+	# 签到按钮
+	var sign_btn := Button.new()
+	sign_btn.text = "📅\n签到"
+	sign_btn.custom_minimum_size = Vector2(100, 90)
+	sign_btn.add_theme_font_size_override("font_size", 24)
+	if UserManager.can_sign_in_today():
+		sign_btn.modulate = Color(1.0, 0.9, 0.3)  # 黄色高亮（可签到）
+	else:
+		sign_btn.modulate = Color(0.6, 0.6, 0.6)
+	sign_btn.pressed.connect(_show_sign_in_popup)
+	left_side_buttons.add_child(sign_btn)
+
+	# 升级通行证按钮
+	level_pass_side_btn = Button.new()
+	level_pass_side_btn.text = "⭐\n升级"
+	level_pass_side_btn.custom_minimum_size = Vector2(100, 90)
+	level_pass_side_btn.add_theme_font_size_override("font_size", 24)
+	level_pass_side_btn.pressed.connect(_open_level_pass)
+	left_side_buttons.add_child(level_pass_side_btn)
 
 
 func _open_settings() -> void:
