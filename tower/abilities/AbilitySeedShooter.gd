@@ -39,7 +39,6 @@ var _slow_fx: BulletEffect = null
 
 # ── 穿透/双发计数 ──────────────────────────────────────────────────
 var _shot_count: int = 0
-var _last_p3_lv: int = -1
 
 
 func on_placed() -> void:
@@ -72,11 +71,6 @@ func ability_process(_delta: float) -> void:
 	if _lv(3) >= 5:
 		tower.ability_range_bonus = 99.0
 	tower.apply_stat_upgrades()
-	# P3 T3: 优先空中目标（只设一次）
-	var cur_p3: int = _lv(3)
-	if cur_p3 >= 3 and cur_p3 != _last_p3_lv:
-		tower.target_mode = 3  # LAST = 优先最后（空中敌人通常在后面）
-	_last_p3_lv = cur_p3
 
 
 # ═══════════════════════════════════════════════════════════════════════

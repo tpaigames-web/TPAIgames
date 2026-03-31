@@ -30,7 +30,7 @@ tier_costs = Array[int]([120, 240, 400, 600, 900])
 script = ExtResource("2_tup")
 path_name = "全图覆盖"
 tier_names = Array[String](["加长枪管", "精准弹道", "远程播种", "超远程炮", "全图覆盖"])
-tier_effects = Array[String](["射程+20%", "射程+40%", "射程+60% 优先攻击最远敌人", "射程+80%", "全图射程 命中附带减速20% 无死角"])
+tier_effects = Array[String](["射程+20%", "射程+40%", "射程+60% 🎯解锁空中攻击", "射程+80%", "全图射程 命中附带减速20% 无死角"])
 tier_costs = Array[int]([100, 200, 350, 550, 800])
 
 [resource]
