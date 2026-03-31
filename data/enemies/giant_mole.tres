@@ -1,16 +1,19 @@
 [gd_resource type="Resource" script_class="EnemyData" format=3 uid="uid://ifagrcabvkxq"]
 
 [ext_resource type="Script" uid="uid://dapicbkaarem1" path="res://enemy/enemy_data.gd" id="1_gmole"]
+[ext_resource type="SpriteFrames" path="res://data/enemies/mole_frames.tres" id="2_frames"]
 
 [resource]
 script = ExtResource("1_gmole")
 enemy_id = "giant_mole"
 display_name = "巨型地鼠"
 display_emoji = "🦡"
-max_hp = 600
+max_hp = 400
 move_speed = 70.0
 armor = 3
+sprite_frames = ExtResource("2_frames")
 sprite_display_size = 150.0
+sprite_rotation_offset = -90.0
 damage_to_player = 5
 gold_reward = 32
 xp_reward = 32

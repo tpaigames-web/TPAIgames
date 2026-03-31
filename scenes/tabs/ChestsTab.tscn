@@ -28,7 +28,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.18, 0.14, 0.08, 1)
+color = Color(0.22, 0.15, 0.1, 1)
 
 [node name="TitleLabel" type="Label" parent="." unique_id=1501561697]
 layout_mode = 0

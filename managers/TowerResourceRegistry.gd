@@ -82,6 +82,19 @@ func tr_enemy_name(data: Resource) -> String:
 		return dname if dname else ""
 	return get_enemy_display_name(eid, dname if dname else eid)
 
+# ── 临时炮台显示名称 ─────────────────────────────────────────────────
+## 根据临时炮台条目生成显示名（普通："XX临时炮台"，英雄："XX临时英雄LvN"）
+func get_temp_tower_display_name(entry: Dictionary) -> String:
+	var tower_id: String = entry.get("tower_id", "")
+	var is_hero: bool = entry.get("is_hero", false)
+	var hero_level: int = int(entry.get("hero_level", 0))
+	# 获取炮台基础名称
+	var base_name: String = get_tower_display_name(tower_id, tower_id)
+	if is_hero and hero_level > 0:
+		return "%s%s Lv%d" % [base_name, tr("UI_TEMP_HERO_SUFFIX"), hero_level]
+	var suffix: String = tr("UI_TEMP_TOWER_SUFFIX")
+	return "%s%s" % [base_name, suffix]
+
 # ── 缓存 ──────────────────────────────────────────────────────────────
 var _all_resources: Array = []
 var _by_rarity: Dictionary = {}

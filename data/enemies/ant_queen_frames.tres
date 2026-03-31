@@ -1,0 +1,18 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="CompressedTexture2D" uid="uid://lr4ean2wawm7" path="res://assets/sprites/Queen Ants/QueenAnts_01.png" id="q1"]
+[ext_resource type="CompressedTexture2D" uid="uid://56q6ndhp4fdv" path="res://assets/sprites/Queen Ants/QueenAnts_02.png" id="q2"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("q1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("q2")
+}],
+"loop": true,
+"name": &"default",
+"speed": 6.0
+}]

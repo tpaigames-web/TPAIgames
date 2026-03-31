@@ -1,4 +1,5 @@
 keys,zh,en,ms
+UI_SPAWN_TEXT,召唤 +%d,Spawn +%d,Panggil +%d
 UI_HOME_BATTLE,战斗,Battle,Pertempuran
 UI_HOME_SHOP,商城,Shop,Kedai
 UI_HOME_ARSENAL,军火库,Arsenal,Gudang Senjata
@@ -103,11 +104,13 @@ UI_RETURN_HOME,返回主界面,Return to Menu,Kembali ke Menu
 UI_TUTORIAL_TITLE,🎓 新手教学,🎓 Tutorial,🎓 Tutorial
 UI_TUTORIAL_COMPLETED,✅ 已通过,✅ Completed,✅ Selesai
 UI_TUTORIAL_START,开始 ▶,Start ▶,Mula ▶
-UI_FACTORY_TITLE,兵工厂,Factory,Kilang
+UI_FACTORY_TITLE,兵工厂,Arsenal,Kilang
+UI_FRAG_SHOP_TITLE,每日刷新,Daily Shop,Kedai Harian
 UI_FACTORY_TOWERS,⚔️ 炮台,⚔️ Towers,⚔️ Menara
 UI_FACTORY_HEROES,🗿 英雄,🗿 Heroes,🗿 Wira
 UI_FACTORY_ITEMS,📦 道具,📦 Items,📦 Item
 UI_FACTORY_FILTER_ALL,全部,All,Semua
+UI_FACTORY_FILTER_UPGRADE,可升级,Upgrade,Naik Taraf
 UI_LEVEL_PASS_TITLE,升级通行证,Battle Pass,Pas Pertempuran
 UI_LEVEL_PASS_FREE,免费,Free,Percuma
 UI_LEVEL_PASS_CLAIM_ALL,全部领取,Claim All,Tuntut Semua
@@ -317,11 +320,11 @@ UI_SHOP_PURCHASED,✓ 已购买,✓ Purchased,✓ Dibeli
 UI_SHOP_SOLD_OUT,已售罄,Sold Out,Habis Dijual
 UI_SHOP_LIMIT_ONE,限购1次,Limit 1,Had 1
 UI_SHOP_BOUGHT_COUNT,已购 %d/%d,Bought %d/%d,Dibeli %d/%d
-UI_SHOP_CONFIRM_BUY,确认购买 %s？\n花费 🪙 %d（当前 🪙 %d）,Buy %s?\nCost 🪙 %d (Have 🪙 %d),Beli %s?\nKos 🪙 %d (Ada 🪙 %d)
+UI_SHOP_CONFIRM_BUY,确认购买 %s？\n价格：%s,Buy %s?\nPrice: %s,Beli %s?\nHarga: %s
 UI_SHOP_CONFIRM_GEMS,确认购买 %s？\n花费 💎 %d（当前 💎 %d）,Buy %s?\nCost 💎 %d (Have 💎 %d),Beli %s?\nKos 💎 %d (Ada 💎 %d)
 UI_SHOP_PAYMENT_FAILED,购买失败,Purchase Failed,Pembelian Gagal
 UI_SHOP_GEMS_LOW,钻石不足！\n需要 💎 %d（当前 💎 %d）,Not enough gems!\nNeed 💎 %d (Have 💎 %d),Permata tidak mencukupi!\nPerlu 💎 %d (Ada 💎 %d)
-UI_SHOP_FRAG_REWARD,获得 %s 碎片 ×%d！,Got %s fragments ×%d!,Dapat serpihan %s ×%d!
+UI_SHOP_FRAG_REWARD_TITLE,获得 %s 碎片：,Got %s fragments:,Dapat serpihan %s:
 UI_SHOP_OK,确定,OK,OK
 UI_FRAG_QTY,×%d 碎片,×%d Fragments,×%d Serpihan
 UI_FRAG_BOUGHT,✓ 已购买,✓ Purchased,✓ Dibeli
@@ -351,14 +354,17 @@ UI_DIALOG_HINT,提示,Notice,Notis
 UI_FRAG_REFRESH_6H,⏱ 6小时刷新,⏱ 6h Refresh,⏱ Segar Semula 6j
 UI_FRAG_REFRESH_DAILY,📅 每日刷新,📅 Daily Refresh,📅 Segar Semula Harian
 UI_FRAG_REFRESH_WEEKLY,📆 每周刷新,📆 Weekly Refresh,📆 Segar Semula Mingguan
-UI_SHOP_PKG_STARTER_BASIC,新手大礼包 · 基础,Starter Pack · Basic,Pek Pemula · Asas
-UI_SHOP_DESC_STARTER_BASIC,稻草人碎片 ×100\n金币 ×500  钻石 ×100,Scarecrow Frags ×100\nGold ×500  Gems ×100,Serpihan Orang-orangan ×100\nEmas ×500  Permata ×100
-UI_SHOP_PKG_STARTER_FARMER,新手大礼包 · 农夫,Starter Pack · Farmer,Pek Pemula · Petani
-UI_SHOP_DESC_STARTER_FARMER,农夫碎片 ×150\n金币 ×1000  钻石 ×500,Farmer Frags ×150\nGold ×1000  Gems ×500,Serpihan Petani ×150\nEmas ×1000  Permata ×500
-UI_SHOP_PKG_PURPLE_BUNDLE,新手紫色礼包,Purple Hero Bundle,Pek Wira Ungu
-UI_SHOP_DESC_PURPLE_BUNDLE,随机紫色英雄碎片 ×150\n金币 ×300,Random Purple Hero Frags ×150\nGold ×300,Serpihan Wira Ungu Rawak ×150\nEmas ×300
-UI_SHOP_PKG_WHITE_BUNDLE,新手白色礼包,White Tower Bundle,Pek Menara Putih
-UI_SHOP_DESC_WHITE_BUNDLE,随机白色炮台碎片 ×100,Random White Tower Frags ×100,Serpihan Menara Putih Rawak ×100
+UI_SHOP_PKG_ORANGE_BUNDLE,🧡 橙色碎片大礼包,🧡 Orange Fragment Bundle,🧡 Pek Serpihan Oren
+UI_SHOP_DESC_ORANGE_BUNDLE,随机橙色炮台碎片 ×50,Random Orange Frags ×50,Serpihan Oren Rawak ×50
+UI_SHOP_PKG_PURPLE_BUNDLE,💜 紫色碎片大礼包,💜 Purple Fragment Bundle,💜 Pek Serpihan Ungu
+UI_SHOP_DESC_PURPLE_BUNDLE,随机紫色炮台碎片 ×80,Random Purple Frags ×80,Serpihan Ungu Rawak ×80
+UI_SHOP_PKG_BLUE_BUNDLE,💙 蓝色碎片大礼包,💙 Blue Fragment Bundle,💙 Pek Serpihan Biru
+UI_SHOP_DESC_BLUE_BUNDLE,随机蓝色炮台碎片 ×50,Random Blue Frags ×50,Serpihan Biru Rawak ×50
+UI_SHOP_PKG_GREEN_BUNDLE,💚 绿色碎片大礼包,💚 Green Fragment Bundle,💚 Pek Serpihan Hijau
+UI_SHOP_DESC_GREEN_BUNDLE,随机绿色炮台碎片 ×36,Random Green Frags ×36,Serpihan Hijau Rawak ×36
+UI_SHOP_PKG_WHITE_BUNDLE,🤍 白色碎片大礼包,🤍 White Fragment Bundle,🤍 Pek Serpihan Putih
+UI_SHOP_DESC_WHITE_BUNDLE,随机白色炮台碎片 ×50,Random White Frags ×50,Serpihan Putih Rawak ×50
+UI_SHOP_MONTHLY_ACTIVE,已激活,Active,Aktif
 UI_SHOP_PKG_ULTIMATE,终极大礼包,Ultimate Bundle,Pek Muktamad
 UI_SHOP_DESC_ULTIMATE,直接满等级（Lv.100）\n全部炮台碎片 ×30,Instant Max Level (Lv.100)\nAll Tower Frags ×30,Tahap Maks Segera (Lv.100)\nSemua Serpihan Menara ×30
 UI_SHOP_BADGE_ULTIMATE,终极特惠,Ultimate Deal,Tawaran Muktamad
@@ -423,22 +429,30 @@ UI_DETAIL_PATHS_TBD,（升级路径待定）,(Upgrade paths TBD),(Laluan naik ta
 UI_HERO_UPGRADE_TITLE,%s %s 英雄升级 · 第 %d 波,%s %s Hero Upgrade · Wave %d,%s %s Naik Taraf Wira · Gelombang %d
 UI_LEVEL_PASS_TITLE,升级通行证,Level Pass,Pas Tahap
 UI_LEVEL_PASS_FREE,免费,Free,Percuma
-UI_TRIAL_SELECT_TITLE,🎟️ 选择试用炮台,🎟️ Select Trial Tower,🎟️ Pilih Menara Percubaan
-UI_TRIAL_BADGE,试用,Trial,Percubaan
-UI_TRIAL_FREE_PLACE,免费放置,Free Place,Letak Percuma
-UI_TRIAL_END_TITLE,🎟️ 试用结束,🎟️ Trial Ended,🎟️ Percubaan Tamat
-UI_TRIAL_END_MSG,试用炮台已在战斗结束后移除。\n想要永久拥有？前往商店解锁！,Trial towers removed after battle.\nWant to keep them? Unlock in the shop!,Menara percubaan dialih selepas pertempuran.\nMahu simpan? Buka kunci di kedai!
-UI_TRIAL_GO_SHOP,前往商店,Go to Shop,Pergi ke Kedai
-UI_TRIAL_LATER,稍后再说,Maybe Later,Nanti
+UI_TEMP_BADGE,临时,Temp,Sementara
+UI_TEMP_FREE_PLACE,免费放置,Free Place,Letak Percuma
+UI_TEMP_TOWER_SUFFIX,临时炮台,Temp Tower,Menara Sementara
+UI_TEMP_HERO_SUFFIX,临时英雄,Temp Hero,Hero Sementara
+UI_TEMP_END_TITLE,🏗️ 临时炮台,🏗️ Temp Towers,🏗️ Menara Sementara
+UI_TEMP_END_MSG,临时炮台已在战斗结束后移除。\n想要永久拥有？前往商店解锁！,Temp towers removed after battle.\nWant to keep them? Unlock in the shop!,Menara sementara dialih selepas pertempuran.\nMahu simpan? Buka kunci di kedai!
+UI_TEMP_GO_SHOP,前往商店,Go to Shop,Pergi ke Kedai
+UI_TEMP_LATER,稍后再说,Maybe Later,Nanti
+UI_TEMP_BUY_TITLE,购买临时炮台,Buy Temp Tower,Beli Menara Sementara
+UI_TEMP_BUY_BTN,购买,Buy,Beli
+UI_TEMP_BUY_CONFIRM_TITLE,确认购买,Confirm Purchase,Sahkan Pembelian
+UI_TEMP_BUY_CONFIRM_MSG,花费 💎%d 购买随机临时炮台？\n当前钻石：💎%d,Spend 💎%d for a random temp tower?\nCurrent gems: 💎%d,Belanja 💎%d untuk menara sementara rawak?\nPermata semasa: 💎%d
+UI_TEMP_REVEAL,获得：%s,Got: %s,Dapat: %s
+UI_TEMP_BUY_FRAG_CONFIRM,购买 %s？\n价格：🪙%d,Buy %s?\nPrice: 🪙%d,Beli %s?\nHarga: 🪙%d
+UI_FRAG_SECTION_TEMP_TOWER,临时炮台,Temp Towers,Menara Sementara
 UI_SHOP_PKG_NEWBIE,🎁 新手礼包,🎁 Newbie Pack,🎁 Pek Pemula
-UI_SHOP_DESC_NEWBIE,500💎 + 5000金 + 试用券×3,500💎 + 5000 Gold + Trial×3,500💎 + 5000 Emas + Percubaan×3
+UI_SHOP_DESC_NEWBIE,500💎 + 5000金 + 临时炮台×3,500💎 + 5000 Gold + Temp Tower×3,500💎 + 5000 Emas + Menara Sementara×3
 UI_SHOP_BADGE_NEWBIE,限时特惠,Limited Offer,Tawaran Terhad
 UI_SHOP_PKG_MONTHLY,📅 月卡,📅 Monthly Card,📅 Kad Bulanan
 UI_SHOP_DESC_MONTHLY,每日30💎×30天 + 首日200💎,30💎/day × 30 days + 200💎 Day 1,30💎/hari × 30 hari + 200💎 Hari 1
 UI_SHOP_PKG_AD_FREE,🚫 免广告特权,🚫 Ad-Free,🚫 Tanpa Iklan
 UI_SHOP_DESC_AD_FREE,永久去除所有广告，广告奖励自动获得,Remove all ads permanently. Ad rewards auto-claimed,Alih semua iklan. Ganjaran iklan automatik
 UI_SHOP_PKG_HERO_AFU,👴 老阿福英雄包,👴 Old Afu Hero Pack,👴 Pek Wira Pak Afu
-UI_SHOP_DESC_HERO_AFU,老阿福永久解锁 + 碎片×60 + 试用券×2,Old Afu unlock + 60 frags + Trial×2,Buka kunci Pak Afu + 60 serpihan + Percubaan×2
+UI_SHOP_DESC_HERO_AFU,老阿福永久解锁 + 碎片×60 + 临时炮台×2,Old Afu unlock + 60 frags + Temp Tower×2,Buka kunci Pak Afu + 60 serpihan + Menara Sementara×2
 UI_SHOP_PKG_GEMS_MED,💎 中量钻石,💎 Medium Gems,💎 Permata Sederhana
 UI_SHOP_DESC_GEMS_800,800💎 + 试用券×2,800💎 + Trial×2,800💎 + Percubaan×2
 UI_SHOP_PKG_GEMS_LARGE,💎 大量钻石,💎 Large Gems,💎 Permata Banyak
@@ -448,7 +462,13 @@ UI_SHOP_PKG_MONTHLY_V,📅 月卡（券）,📅 Monthly Card (Voucher),📅 Kad 
 UI_SHOP_DESC_MONTHLY_V,🎫100券 = 每日30💎×30天 + 100💎,🎫100 Vouchers = 30💎/day×30d + 100💎,🎫100 Baucar = 30💎/hari×30h + 100💎
 UI_SHOP_PKG_GEMS_SMALL_R,💎 小量钻石,💎 Small Gems,💎 Permata Kecil
 UI_SHOP_DESC_GEMS_220,220💎,220💎,220💎
-UI_SHOP_DESC_GEMS_680,680💎 + 试用券×2,680💎 + Trial×2,680💎 + Percubaan×2
-UI_SHOP_DESC_GEMS_1800,1800💎 + 试用券×5 + 紫碎片×50,1800💎 + Trial×5 + Purple frags×50,1800💎 + Percubaan×5 + Serpihan Ungu×50
+UI_SHOP_DESC_GEMS_680,680💎 + 临时炮台×2,680💎 + Temp Tower×2,680💎 + Menara Sementara×2
+UI_SHOP_DESC_GEMS_1800,1800💎 + 临时炮台×5 + 紫碎片×50,1800💎 + Temp Tower×5 + Purple frags×50,1800💎 + Menara Sementara×5 + Serpihan Ungu×50
 UI_SHOP_DESC_MONTHLY_300,每日30💎×30天 + 首日300💎,30💎/day×30d + 300💎 Day 1,30💎/hari×30h + 300💎 Hari 1
 UI_SHOP_DESC_MONTHLY_V_300,🎫100券 = 每日30💎×30天 + 300💎,🎫100 = 30💎/day×30d + 300💎,🎫100 = 30💎/hari×30h + 300💎
+UI_SHOP_PKG_TEMP_TOWER,🎲 临时炮台随机券,🎲 Random Temp Tower,🎲 Menara Sementara Rawak
+UI_SHOP_DESC_TEMP_TOWER,随机获得一个临时炮台,Get a random temp tower,Dapat menara sementara rawak
+UI_SHOP_PKG_LANDMINE,💣 地雷,💣 Landmine,💣 Periuk Api
+UI_SHOP_DESC_LANDMINE,获得1个地雷道具,Get 1 landmine item,Dapat 1 periuk api
+UI_SHOP_PKG_GOLD_BAG,💰 金币袋,💰 Gold Bag,💰 Beg Emas
+UI_SHOP_DESC_GOLD_BAG,获得1个金币袋道具,Get 1 gold bag item,Dapat 1 beg emas

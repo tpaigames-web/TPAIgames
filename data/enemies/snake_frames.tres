@@ -1,0 +1,38 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/enemy/Snake/Snake_01.png" id="s1"]
+[ext_resource type="Texture2D" path="res://assets/sprites/enemy/Snake/Snake_02.png" id="s2"]
+[ext_resource type="Texture2D" path="res://assets/sprites/enemy/Snake/Snake_03.png" id="s3"]
+[ext_resource type="Texture2D" path="res://assets/sprites/enemy/Snake/Snake_04.png" id="s4"]
+[ext_resource type="Texture2D" path="res://assets/sprites/enemy/Snake/Snake_05.png" id="s5"]
+[ext_resource type="Texture2D" path="res://assets/sprites/enemy/Snake/Snake_06.png" id="s6"]
+[ext_resource type="Texture2D" path="res://assets/sprites/enemy/Snake/Snake_07.png" id="s7"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("s1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("s2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("s3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("s4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("s5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("s6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("s7")
+}],
+"loop": true,
+"name": &"default",
+"speed": 8.0
+}]

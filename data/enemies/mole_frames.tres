@@ -1,0 +1,134 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://0uri1wpxnd7h"]
+
+[ext_resource type="Texture2D" uid="uid://ekhkkhr738fx" path="res://assets/sprites/enemy/Groundhog/GroundHog_Dirt_03.png" id="d3"]
+[ext_resource type="Texture2D" uid="uid://b2mdpjthskhy2" path="res://assets/sprites/enemy/Groundhog/GroundHog_Dirt_04.png" id="d4"]
+[ext_resource type="Texture2D" uid="uid://c0yrsxqg1qmpl" path="res://assets/sprites/enemy/Groundhog/GroundHog_Dirt_05.png" id="d5"]
+[ext_resource type="Texture2D" uid="uid://dk7uvs6io5lik" path="res://assets/sprites/enemy/Groundhog/GroundHog_Dirt_06.png" id="d6"]
+[ext_resource type="Texture2D" uid="uid://clcdr1a3dv8gs" path="res://assets/sprites/enemy/Groundhog/GroundHog_Dirt_07.png" id="d7"]
+[ext_resource type="Texture2D" uid="uid://b8amkbauvmitb" path="res://assets/sprites/enemy/Groundhog/GroundHog_Dirt_08.png" id="d8"]
+[ext_resource type="Texture2D" uid="uid://da3vaejkyv7gy" path="res://assets/sprites/enemy/Groundhog/GroundHog_Dirt_09.png" id="d9"]
+[ext_resource type="Texture2D" uid="uid://1ims8yaata6i" path="res://assets/sprites/enemy/Groundhog/GroundHog_Dirt_10.png" id="d10"]
+[ext_resource type="Texture2D" uid="uid://bxai5cik2fmep" path="res://assets/sprites/enemy/Groundhog/GroundHog_Dirt_11.png" id="d11"]
+[ext_resource type="Texture2D" uid="uid://dr0bpr0gvvqd3" path="res://assets/sprites/enemy/Groundhog/GroundHog_Dirt_12.png" id="d12"]
+[ext_resource type="Texture2D" uid="uid://bkahtihsd83x6" path="res://assets/sprites/enemy/Groundhog/GroundHog_Dirt_13.png" id="d13"]
+[ext_resource type="Texture2D" uid="uid://c7bx4mkyup65t" path="res://assets/sprites/enemy/Groundhog/GroundHog_Dirt_14.png" id="d14"]
+[ext_resource type="Texture2D" uid="uid://cd7wq34gnrdaw" path="res://assets/sprites/enemy/Groundhog/GroundHog_Jump_01.png" id="j1"]
+[ext_resource type="Texture2D" uid="uid://dxjqjlf8drpei" path="res://assets/sprites/enemy/Groundhog/GroundHog_Jump_02.png" id="j2"]
+[ext_resource type="Texture2D" uid="uid://bhicm3w4m8vn3" path="res://assets/sprites/enemy/Groundhog/GroundHog_Jump_03.png" id="j3"]
+[ext_resource type="Texture2D" uid="uid://m2bjchtmstap" path="res://assets/sprites/enemy/Groundhog/GroundHog_Jump_04.png" id="j4"]
+[ext_resource type="Texture2D" uid="uid://c42fivb3v8cik" path="res://assets/sprites/enemy/Groundhog/GroundHog_Out_01.png" id="o1"]
+[ext_resource type="Texture2D" uid="uid://c203e37f6qvlx" path="res://assets/sprites/enemy/Groundhog/GroundHog_Out_02.png" id="o2"]
+[ext_resource type="Texture2D" uid="uid://c6ikksmvd6tws" path="res://assets/sprites/enemy/Groundhog/GroundHog_Out_03.png" id="o3"]
+[ext_resource type="Texture2D" uid="uid://bcf64vaea46qh" path="res://assets/sprites/enemy/Groundhog/GroundHog_Run_01.png" id="r1"]
+[ext_resource type="Texture2D" uid="uid://d3uiwiog7g3an" path="res://assets/sprites/enemy/Groundhog/GroundHog_Run_02.png" id="r2"]
+[ext_resource type="Texture2D" uid="uid://dgig7m7psxide" path="res://assets/sprites/enemy/Groundhog/GroundHog_Run_03.png" id="r3"]
+[ext_resource type="Texture2D" uid="uid://br6cbkvm6afl5" path="res://assets/sprites/enemy/Groundhog/GroundHog_Run_04.png" id="r4"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("r1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("r2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("r3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("r4")
+}],
+"loop": true,
+"name": &"default",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("d3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("d4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("d5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("d6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("d7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("d8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("d9")
+}, {
+"duration": 1.0,
+"texture": ExtResource("d10")
+}, {
+"duration": 1.0,
+"texture": ExtResource("d11")
+}, {
+"duration": 1.0,
+"texture": ExtResource("d12")
+}, {
+"duration": 1.0,
+"texture": ExtResource("d13")
+}, {
+"duration": 1.0,
+"texture": ExtResource("d14")
+}],
+"loop": true,
+"name": &"dirt_move",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("o1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("o2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("o3")
+}],
+"loop": false,
+"name": &"emerge",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("j1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("j2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("j3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("j4")
+}],
+"loop": false,
+"name": &"jump",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("r1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("r2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("r3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("r4")
+}],
+"loop": true,
+"name": &"run",
+"speed": 8.0
+}]

@@ -1,9 +1,11 @@
 [gd_resource type="Resource" script_class="EnemyData" format=3 uid="uid://jo0wpferyclo"]
 
 [ext_resource type="Script" uid="uid://dapicbkaarem1" path="res://enemy/enemy_data.gd" id="1_snake"]
+[ext_resource type="SpriteFrames" path="res://data/enemies/snake_frames.tres" id="2_frames"]
 
 [resource]
 script = ExtResource("1_snake")
+sprite_frames = ExtResource("2_frames")
 enemy_id = "snake"
 display_name = "毒蛇"
 display_emoji = "🐍"

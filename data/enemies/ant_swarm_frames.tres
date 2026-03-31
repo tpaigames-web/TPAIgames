@@ -1,0 +1,22 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="CompressedTexture2D" uid="uid://c5pibuqbiw88q" path="res://assets/sprites/Ants/Ants_01.png" id="a1"]
+[ext_resource type="CompressedTexture2D" uid="uid://c26cnwldldjk3" path="res://assets/sprites/Ants/Ants_02.png" id="a2"]
+[ext_resource type="CompressedTexture2D" uid="uid://b5vvqicl16ayq" path="res://assets/sprites/Ants/Ants_03.png" id="a3"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("a1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("a2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("a3")
+}],
+"loop": true,
+"name": &"default",
+"speed": 8.0
+}]

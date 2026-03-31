@@ -81,6 +81,9 @@ func apply_single_effect(enemy: Area2D, effect: BulletEffect, pierce_giant: bool
 func process_tick(enemy: Area2D, delta: float) -> void:
 	if not is_instance_valid(enemy):
 		return
+	# 地鼠挖洞中暂停所有效果计时和DoT
+	if enemy.get("is_burrowed"):
+		return
 	var active_effects: Array = enemy._active_effects
 	var i: int = active_effects.size() - 1
 	while i >= 0:

@@ -27,6 +27,9 @@ func get_enemies_in_range(attack_type: int = 2) -> Array:
 	for enemy in GameManager.get_all_enemies():
 		if not is_instance_valid(enemy):
 			continue
+		# 地鼠挖洞中不可被选中
+		if enemy.get("is_burrowed"):
+			continue
 		if my_pos.distance_squared_to(enemy.global_position) > r2:
 			continue
 		# 根据 attack_type 过滤飞行/地面敌人

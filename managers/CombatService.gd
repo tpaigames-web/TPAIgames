@@ -17,6 +17,9 @@ func deal_damage(source_info: Dictionary, target: Area2D,
 		return
 	if not target.has_method("take_damage"):
 		return
+	# 地鼠挖洞中完全无敌（拦截子弹飞行中的伤害）
+	if target.get("is_burrowed"):
+		return
 	var ed = target.get("enemy_data")
 
 	# 1. 闪避检查
@@ -103,11 +106,17 @@ func deal_damage(source_info: Dictionary, target: Area2D,
 
 
 ## ── 伤害数字显示 ────────────────────────────────────────────────────────
+const MAX_DAMAGE_LABELS: int = 30   ## 同时最大伤害数字节点数
+var _active_damage_labels: int = 0
 
 func _show_damage_number(target: Area2D, dmg: int, color: Color,
 		prefix: String = "", font_size: int = 24) -> void:
 	if dmg <= 0:
 		return
+	# 节流：超过上限时跳过（避免大量 Label 导致卡顿）
+	if _active_damage_labels >= MAX_DAMAGE_LABELS:
+		return
+	_active_damage_labels += 1
 	var lbl := Label.new()
 	lbl.text = "%s%d" % [prefix, dmg] if prefix != "" else str(dmg)
 	lbl.add_theme_font_size_override("font_size", font_size)
@@ -133,7 +142,10 @@ func _show_damage_number(target: Area2D, dmg: int, color: Color,
 	var tw := lbl.create_tween()
 	tw.tween_property(lbl, "position:y", lbl.position.y - 60, 0.8).set_ease(Tween.EASE_OUT)
 	tw.parallel().tween_property(lbl, "modulate:a", 0.0, 0.8).set_delay(0.2)
-	tw.tween_callback(lbl.queue_free)
+	tw.tween_callback(func():
+		_active_damage_labels -= 1
+		lbl.queue_free()
+	)
 
 
 ## 供 EffectService 调用的 DoT 伤害数字显示

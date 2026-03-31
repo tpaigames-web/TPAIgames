@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="EnemyData" format=3 uid="uid://cc1tgpala35be"]
 
 [ext_resource type="Script" uid="uid://dapicbkaarem1" path="res://enemy/enemy_data.gd" id="1_mole1"]
+[ext_resource type="SpriteFrames" path="res://data/enemies/mole_frames.tres" id="2_frames"]
 
 [resource]
 script = ExtResource("1_mole1")
@@ -10,7 +11,9 @@ display_emoji = "🐾"
 max_hp = 120
 move_speed = 90.0
 armor = 1
+sprite_frames = ExtResource("2_frames")
 sprite_display_size = 90.0
+sprite_rotation_offset = -90.0
 damage_to_player = 2
 gold_reward = 12
 xp_reward = 10

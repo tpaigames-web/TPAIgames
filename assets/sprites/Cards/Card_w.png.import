@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://clkgsp018bylu"
-path="res://.godot/imported/Rat_HR_01.png-97028375f5ee4f8691a4a9da62d356a0.ctex"
+uid="uid://jv8rxuf3gidf"
+path="res://.godot/imported/Card_w.png-8bf761f6316a60bb35f6b135b1be4f9e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/enemy/Rat_Small/HR/Rat_HR_01.png"
-dest_files=["res://.godot/imported/Rat_HR_01.png-97028375f5ee4f8691a4a9da62d356a0.ctex"]
+source_file="res://assets/sprites/Cards/Card_w.png"
+dest_files=["res://.godot/imported/Card_w.png-8bf761f6316a60bb35f6b135b1be4f9e.ctex"]
 
 [params]
 

@@ -1,17 +1,21 @@
 class_name ItemPanel
 extends Node
 
-## ── 消耗品道具 ───────────────────────────────────────────────────────
+## ── 消耗品道具 + 临时炮台 ──────────────────────────────────────────────
 const ITEM_PATHS: Array[String] = [
 	"res://data/items/gold_bag.tres",
 	"res://data/items/landmine.tres",
-	"res://data/items/trial_ticket.tres",
 ]
 
-## 试用炮台选择完成信号（BattleScene 连接后处理）
-signal trial_tower_selected(tower_data: Resource)
+## 临时炮台使用完成信号（BattleScene 连接后处理）
+signal temp_tower_selected(tower_data: Resource, hero_config: Dictionary)
+
+## 战局内购买临时炮台的钻石价格
+const TEMP_TOWER_GEM_COST: int = 60
 
 var _item_card_entries: Array = []
+var _temp_card_entries: Array = []   # 临时炮台卡片
+var _buy_card: Control = null        # 购买随机临时炮台按钮
 var _item_preview: Node2D = null
 var _item_drag_data: ItemData = null
 var _item_dragging: bool = false
@@ -29,6 +33,10 @@ func init(item_hbox: HBoxContainer, battle_scene: Node, bottom_panel: Control) -
 
 func build_cards() -> void:
 	_item_card_entries.clear()
+	_temp_card_entries.clear()
+	_buy_card = null
+
+	# ── 1. 常规道具卡（金币袋、地雷）──────────────────────────────────
 	for path in ITEM_PATHS:
 		var data: ItemData = load(path)
 		if data == null:
@@ -37,27 +45,23 @@ func build_cards() -> void:
 		card.custom_minimum_size = Vector2(140, 220)
 		card.add_theme_constant_override("separation", 4)
 
-		# emoji 图标
 		var emoji_lbl := Label.new()
 		emoji_lbl.text = data.emoji
 		emoji_lbl.add_theme_font_size_override("font_size", 56)
 		emoji_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		card.add_child(emoji_lbl)
 
-		# 名称
 		var name_lbl := Label.new()
 		name_lbl.text = TowerResourceRegistry.tr_item_name(data)
 		name_lbl.add_theme_font_size_override("font_size", 22)
 		name_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		card.add_child(name_lbl)
 
-		# 库存/价格标签（动态更新）
 		var count_lbl := Label.new()
 		count_lbl.add_theme_font_size_override("font_size", 22)
 		count_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		card.add_child(count_lbl)
 
-		# 使用/购买按钮
 		var use_btn := Button.new()
 		use_btn.custom_minimum_size = Vector2(130, 50)
 		use_btn.add_theme_font_size_override("font_size", 20)
@@ -68,10 +72,13 @@ func build_cards() -> void:
 
 		_item_hbox.add_child(card)
 		_item_card_entries.append({"card": card, "data": data, "count_label": count_lbl, "use_btn": use_btn})
-	refresh_cards()
+
+	# ── 2. 临时炮台卡 + 购买按钮 ─────────────────────────────────────
+	_rebuild_temp_cards()
 
 
 func refresh_cards() -> void:
+	# 刷新常规道具
 	for entry in _item_card_entries:
 		var data: ItemData = entry.data
 		var count_lbl: Label = entry.count_label
@@ -90,24 +97,238 @@ func refresh_cards() -> void:
 			use_btn.text = tr("UI_ITEM_WATCH_AD")
 			use_btn.disabled = false
 
+	# 刷新临时炮台区域（重建）
+	_rebuild_temp_cards()
 
-func _on_item_pressed(data: ItemData) -> void:
-	# 试用券特殊处理：不拖拽，弹出炮台选择
-	if data.effect_type == "trial_tower":
-		_handle_trial_ticket(data)
+
+## ── 重建临时炮台卡片 ─────────────────────────────────────────────────
+func _rebuild_temp_cards() -> void:
+	# 清理旧临时炮台卡
+	for entry in _temp_card_entries:
+		if is_instance_valid(entry.card):
+			entry.card.queue_free()
+	_temp_card_entries.clear()
+
+	# 清理购买卡
+	if _buy_card and is_instance_valid(_buy_card):
+		_buy_card.queue_free()
+		_buy_card = null
+
+	# 为每个临时炮台创建独立卡片
+	for i in UserManager.temp_tower_inventory.size():
+		var entry: Dictionary = UserManager.temp_tower_inventory[i]
+		var card := _make_temp_tower_card(entry, i)
+		_item_hbox.add_child(card)
+		_temp_card_entries.append({"card": card, "index": i, "entry": entry})
+
+	# 购买随机临时炮台按钮（始终在末尾）
+	_buy_card = _make_buy_temp_card()
+	_item_hbox.add_child(_buy_card)
+
+
+func _make_temp_tower_card(entry: Dictionary, index: int) -> VBoxContainer:
+	var tower_id: String = entry.get("tower_id", "")
+	var rarity: int = int(entry.get("rarity", 0))
+
+	# 加载炮台数据获取 emoji
+	var tower_data: Resource = _load_tower_data(tower_id)
+	var emoji: String = "📦"
+	if tower_data:
+		emoji = tower_data.get("tower_emoji") if tower_data.get("tower_emoji") else "📦"
+
+	var card := VBoxContainer.new()
+	card.custom_minimum_size = Vector2(140, 220)
+	card.add_theme_constant_override("separation", 4)
+
+	# 稀有度色条
+	var color_bar := ColorRect.new()
+	color_bar.custom_minimum_size = Vector2(140, 6)
+	color_bar.color = TowerResourceRegistry.RARITY_COLORS[clampi(rarity, 0, 4)]
+	card.add_child(color_bar)
+
+	# emoji
+	var emoji_lbl := Label.new()
+	emoji_lbl.text = emoji
+	emoji_lbl.add_theme_font_size_override("font_size", 48)
+	emoji_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	card.add_child(emoji_lbl)
+
+	# 名称
+	var name_lbl := Label.new()
+	name_lbl.text = TowerResourceRegistry.get_temp_tower_display_name(entry)
+	name_lbl.add_theme_font_size_override("font_size", 18)
+	name_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	name_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	card.add_child(name_lbl)
+
+	# "临时" 标记
+	var badge := Label.new()
+	badge.text = tr("UI_TEMP_BADGE")
+	badge.add_theme_font_size_override("font_size", 16)
+	badge.add_theme_color_override("font_color", Color(1.0, 0.85, 0.0))
+	badge.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	card.add_child(badge)
+
+	# 使用按钮
+	var use_btn := Button.new()
+	use_btn.text = tr("UI_ITEM_USE")
+	use_btn.custom_minimum_size = Vector2(130, 50)
+	use_btn.add_theme_font_size_override("font_size", 20)
+	var captured_index: int = index
+	use_btn.pressed.connect(func(): _on_temp_tower_use(captured_index))
+	card.add_child(use_btn)
+
+	return card
+
+
+func _make_buy_temp_card() -> VBoxContainer:
+	var card := VBoxContainer.new()
+	card.custom_minimum_size = Vector2(140, 220)
+	card.add_theme_constant_override("separation", 4)
+
+	var emoji_lbl := Label.new()
+	emoji_lbl.text = "🎲"
+	emoji_lbl.add_theme_font_size_override("font_size", 48)
+	emoji_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	card.add_child(emoji_lbl)
+
+	var name_lbl := Label.new()
+	name_lbl.text = tr("UI_TEMP_BUY_TITLE")
+	name_lbl.add_theme_font_size_override("font_size", 18)
+	name_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	name_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	card.add_child(name_lbl)
+
+	var price_lbl := Label.new()
+	price_lbl.text = "💎 %d" % TEMP_TOWER_GEM_COST
+	price_lbl.add_theme_font_size_override("font_size", 22)
+	price_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	card.add_child(price_lbl)
+
+	var buy_btn := Button.new()
+	buy_btn.text = tr("UI_TEMP_BUY_BTN")
+	buy_btn.custom_minimum_size = Vector2(130, 50)
+	buy_btn.add_theme_font_size_override("font_size", 20)
+	buy_btn.pressed.connect(_on_buy_temp_tower)
+	card.add_child(buy_btn)
+
+	return card
+
+
+## ── 临时炮台使用 ─────────────────────────────────────────────────────
+func _on_temp_tower_use(index: int) -> void:
+	if index < 0 or index >= UserManager.temp_tower_inventory.size():
+		return
+	var entry: Dictionary = UserManager.temp_tower_inventory[index]
+	var tower_id: String = entry.get("tower_id", "")
+	var tower_data: Resource = _load_tower_data(tower_id)
+	if tower_data == null:
 		return
 
+	# 构建英雄配置
+	var hero_config: Dictionary = {
+		"is_hero": entry.get("is_hero", false),
+		"hero_level": int(entry.get("hero_level", 0)),
+		"hero_directions": entry.get("hero_directions", []),
+	}
+
+	# 从背包移除
+	UserManager.remove_temp_tower(index)
+	SaveManager.save()
+
+	# 通知 BattleScene
+	temp_tower_selected.emit(tower_data, hero_config)
+
+	# 刷新（卡片消失）
+	_rebuild_temp_cards()
+
+
+## ── 购买随机临时炮台 ─────────────────────────────────────────────────
+func _on_buy_temp_tower() -> void:
+	if UserManager.gems < TEMP_TOWER_GEM_COST:
+		# 钻石不足 → 看广告
+		AdManager.show_rewarded_ad(
+			func():
+				var entry: Dictionary = TempTowerGenerator.generate_random()
+				UserManager.add_temp_tower(entry)
+				SaveManager.save()
+				_rebuild_temp_cards()
+				_show_temp_tower_reveal(entry),
+			func(): pass
+		)
+		return
+
+	# 确认购买弹窗
+	var dlg := ConfirmationDialog.new()
+	dlg.title = tr("UI_TEMP_BUY_CONFIRM_TITLE")
+	dlg.dialog_text = tr("UI_TEMP_BUY_CONFIRM_MSG") % [TEMP_TOWER_GEM_COST, UserManager.gems]
+	dlg.ok_button_text = tr("UI_ITEM_PURCHASE_CONFIRM")
+	dlg.cancel_button_text = tr("UI_DIALOG_CANCEL")
+	dlg.confirmed.connect(func():
+		dlg.queue_free()
+		if UserManager.spend_gems(TEMP_TOWER_GEM_COST):
+			var entry: Dictionary = TempTowerGenerator.generate_random()
+			UserManager.add_temp_tower(entry)
+			SaveManager.save()
+			_rebuild_temp_cards()
+			_show_temp_tower_reveal(entry)
+	)
+	dlg.canceled.connect(func(): dlg.queue_free())
+	_battle_scene.add_child(dlg)
+	dlg.get_label().add_theme_font_size_override("font_size", 28)
+	dlg.get_ok_button().add_theme_font_size_override("font_size", 26)
+	dlg.get_cancel_button().add_theme_font_size_override("font_size", 26)
+	dlg.popup_centered()
+
+
+## 显示获得的临时炮台（简短提示）
+func _show_temp_tower_reveal(entry: Dictionary) -> void:
+	var name_str: String = TowerResourceRegistry.get_temp_tower_display_name(entry)
+	var rarity: int = int(entry.get("rarity", 0))
+	var color: Color = TowerResourceRegistry.RARITY_COLORS[clampi(rarity, 0, 4)]
+
+	var overlay := ColorRect.new()
+	overlay.color = Color(0, 0, 0, 0.5)
+	overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
+	overlay.mouse_filter = Control.MOUSE_FILTER_STOP
+	_battle_scene.add_child(overlay)
+
+	var lbl := Label.new()
+	lbl.text = tr("UI_TEMP_REVEAL") % name_str
+	lbl.add_theme_font_size_override("font_size", 36)
+	lbl.add_theme_color_override("font_color", color)
+	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	lbl.set_anchors_preset(Control.PRESET_CENTER)
+	lbl.position = Vector2(-350, -30)
+	lbl.custom_minimum_size = Vector2(700, 60)
+	overlay.add_child(lbl)
+
+	# 1.5秒后自动消失，或点击消失
+	overlay.gui_input.connect(func(event: InputEvent):
+		if event is InputEventMouseButton and event.pressed:
+			overlay.queue_free()
+		elif event is InputEventScreenTouch and event.pressed:
+			overlay.queue_free()
+	)
+	var tw := overlay.create_tween()
+	tw.tween_interval(1.5)
+	tw.tween_callback(func():
+		if is_instance_valid(overlay):
+			overlay.queue_free()
+	)
+
+
+## ── 常规道具按下 ─────────────────────────────────────────────────────
+func _on_item_pressed(data: ItemData) -> void:
 	var count: int = UserManager.get_item_count(data.item_id)
 	if count > 0:
-		# 有库存 → 开始拖拽
 		UserManager.use_item(data.item_id)
 		SaveManager.save()
 		_start_item_drag(data)
 	elif UserManager.gems >= data.gem_cost:
-		# 无库存 → 确认购买弹窗
 		_show_item_purchase_confirm(data)
 	else:
-		# 无钻石 → 看广告
 		AdManager.show_rewarded_ad(
 			func():
 				UserManager.add_item(data.item_id, 1)
@@ -115,92 +336,6 @@ func _on_item_pressed(data: ItemData) -> void:
 				refresh_cards(),
 			func(): pass
 		)
-
-
-## ── 试用券逻辑 ──────────────────────────────────────────────────────
-func _handle_trial_ticket(data: ItemData) -> void:
-	var count: int = UserManager.get_item_count(data.item_id)
-	if count <= 0:
-		if UserManager.gems >= data.gem_cost:
-			_show_item_purchase_confirm(data)
-		else:
-			AdManager.show_rewarded_ad(
-				func():
-					UserManager.add_item(data.item_id, 1)
-					SaveManager.save()
-					refresh_cards(),
-				func(): pass
-			)
-		return
-	# 有库存 → 弹出紫/橙炮台选择面板
-	_show_trial_tower_select()
-
-
-func _show_trial_tower_select() -> void:
-	# 收集所有紫（3）和橙（4）炮台
-	var options: Array = []
-	for res in TowerResourceRegistry.get_all_resources():
-		var td = res as TowerCollectionData
-		if td and td.rarity >= 3 and not td.is_hero:
-			options.append(td)
-
-	if options.is_empty():
-		return
-
-	# 创建选择弹窗
-	var overlay := ColorRect.new()
-	overlay.color = Color(0, 0, 0, 0.6)
-	overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
-	overlay.mouse_filter = Control.MOUSE_FILTER_STOP
-	_battle_scene.add_child(overlay)
-
-	var panel := PanelContainer.new()
-	panel.set_anchors_preset(Control.PRESET_CENTER)
-	panel.custom_minimum_size = Vector2(700, 500)
-	panel.position = Vector2(-350, -250)
-	overlay.add_child(panel)
-
-	var vbox := VBoxContainer.new()
-	vbox.add_theme_constant_override("separation", 12)
-	panel.add_child(vbox)
-
-	var title := Label.new()
-	title.text = tr("UI_TRIAL_SELECT_TITLE")
-	title.add_theme_font_size_override("font_size", 38)
-	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	vbox.add_child(title)
-
-	var grid := GridContainer.new()
-	grid.columns = 3
-	grid.add_theme_constant_override("h_separation", 12)
-	grid.add_theme_constant_override("v_separation", 12)
-	vbox.add_child(grid)
-
-	for td in options:
-		var btn := Button.new()
-		var tname: String = TowerResourceRegistry.get_tower_display_name(td.tower_id, td.display_name)
-		btn.text = "%s\n%s" % [td.tower_emoji, tname]
-		btn.custom_minimum_size = Vector2(200, 100)
-		btn.add_theme_font_size_override("font_size", 28)
-		var captured_td = td
-		btn.pressed.connect(func():
-			overlay.queue_free()
-			# 消耗试用券
-			UserManager.use_item("trial_ticket")
-			SaveManager.save()
-			refresh_cards()
-			# 通知 BattleScene 添加临时炮台
-			trial_tower_selected.emit(captured_td)
-		)
-		grid.add_child(btn)
-
-	# 取消按钮
-	var cancel := Button.new()
-	cancel.text = tr("UI_DIALOG_CANCEL")
-	cancel.add_theme_font_size_override("font_size", 32)
-	cancel.custom_minimum_size = Vector2(0, 60)
-	cancel.pressed.connect(func(): overlay.queue_free())
-	vbox.add_child(cancel)
 
 
 func _show_item_purchase_confirm(data: ItemData) -> void:
@@ -234,7 +369,6 @@ func _start_item_drag(data: ItemData) -> void:
 	_item_drag_data = data
 	_item_dragging = true
 
-	# 创建预览（跟随手指）
 	_item_preview = Node2D.new()
 	var lbl := Label.new()
 	lbl.text = data.emoji
@@ -266,7 +400,6 @@ func _input(event: InputEvent) -> void:
 		return
 	_item_preview.position = map_node.to_local(pos)
 
-	# 松开 → 判断放置
 	var released: bool = false
 	if event is InputEventMouseButton and not event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		released = true
@@ -283,16 +416,13 @@ func _on_item_drop(screen_pos: Vector2) -> void:
 		_item_preview.queue_free()
 		_item_preview = null
 
-	# 判断是否在操作台（底部面板）区域内 → 放回库存
 	var panel_top: float = get_viewport().get_visible_rect().size.y + _bottom_panel.offset_top
 	if screen_pos.y >= panel_top:
-		# 放回库存
 		UserManager.add_item(_item_drag_data.item_id, 1)
 		SaveManager.save()
 		refresh_cards()
 		return
 
-	# 在地图区域 → 使用道具
 	match _item_drag_data.effect_type:
 		"gold_boost":
 			GameManager.add_gold(int(_item_drag_data.effect_value))
@@ -302,14 +432,12 @@ func _on_item_drop(screen_pos: Vector2) -> void:
 			if not map_node:
 				return
 			var local_pos: Vector2 = map_node.to_local(screen_pos)
-			# 吸附路径
 			var path2d: Path2D = map_node.get_node_or_null("Path2D")
 			if path2d and path2d.curve:
 				var curve: Curve2D = path2d.curve
 				var closest_offset: float = curve.get_closest_offset(local_pos)
 				var snap_pos: Vector2 = curve.sample_baked(closest_offset)
 				if local_pos.distance_to(snap_pos) > 150.0:
-					# 距路径太远 → 返还
 					UserManager.add_item(_item_drag_data.item_id, 1)
 					SaveManager.save()
 					refresh_cards()
@@ -329,12 +457,12 @@ func _spawn_active_mine(mine_pos: Vector2, data: ItemData) -> void:
 	var mine := Area2D.new()
 	mine.position = mine_pos
 	mine.collision_layer = 0
-	mine.collision_mask  = 8   # 检测敌人层
+	mine.collision_mask  = 8
 	mine.monitoring      = true
 
 	var col := CollisionShape2D.new()
 	var shape := CircleShape2D.new()
-	shape.radius = 60.0   # 触发范围（小），爆炸伤害范围用 blast_radius
+	shape.radius = 60.0
 	col.shape = shape
 	mine.add_child(col)
 
@@ -351,13 +479,11 @@ func _spawn_active_mine(mine_pos: Vector2, data: ItemData) -> void:
 	var blast_r: float = data.blast_radius
 	mine.area_entered.connect(func(area: Area2D):
 		if area.is_in_group("enemy"):
-			# 爆炸：对范围内所有敌人造成伤害
 			for enemy in GameManager.get_all_enemies():
 				if is_instance_valid(enemy):
 					var dist: float = enemy.global_position.distance_to(mine.global_position)
 					if dist <= blast_r:
 						enemy.take_damage(damage)
-			# 爆炸特效
 			lbl.text = "💥"
 			mine.monitoring = false
 			var tw := mine.create_tween()
@@ -370,3 +496,11 @@ func _spawn_active_mine(mine_pos: Vector2, data: ItemData) -> void:
 		tower_layer.add_child(mine)
 	else:
 		map_node.add_child(mine)
+
+
+## ── 辅助：加载炮台数据 ──────────────────────────────────────────────
+func _load_tower_data(tower_id: String) -> Resource:
+	for res in TowerResourceRegistry.get_all_resources():
+		if res.get("tower_id") == tower_id:
+			return res
+	return null

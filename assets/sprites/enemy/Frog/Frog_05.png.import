@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ckychl7bnggha"
-path="res://.godot/imported/Rat_HR_03.png-f3764328e94e56f106d32cb57408f278.ctex"
+uid="uid://bbhd8y02h2u7w"
+path="res://.godot/imported/Frog_05.png-ccf71c53d3ae6b2776c9a78bc3207b29.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/enemy/Rat_Small/HR/Rat_HR_03.png"
-dest_files=["res://.godot/imported/Rat_HR_03.png-f3764328e94e56f106d32cb57408f278.ctex"]
+source_file="res://assets/sprites/enemy/Frog/Frog_05.png"
+dest_files=["res://.godot/imported/Frog_05.png-ccf71c53d3ae6b2776c9a78bc3207b29.ctex"]
 
 [params]
 

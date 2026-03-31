@@ -243,6 +243,10 @@ func record_purchase(product_id: String) -> void:
 ## 消耗品道具库存（item_id → count）
 var item_inventory: Dictionary = {}
 
+## 临时炮台背包（每条 = 一个具体临时炮台）
+## 条目格式：{tower_id, rarity, is_hero, hero_level, hero_directions}
+var temp_tower_inventory: Array = []
+
 func get_item_count(item_id: String) -> int:
 	return item_inventory.get(item_id, 0)
 
@@ -258,6 +262,21 @@ func use_item(item_id: String) -> bool:
 		item_inventory.erase(item_id)
 	currency_changed.emit()
 	return true
+
+
+## ── 临时炮台背包 ─────────────────────────────────────────────────────
+
+func add_temp_tower(entry: Dictionary) -> void:
+	temp_tower_inventory.append(entry)
+	currency_changed.emit()
+
+func remove_temp_tower(index: int) -> void:
+	if index >= 0 and index < temp_tower_inventory.size():
+		temp_tower_inventory.remove_at(index)
+		currency_changed.emit()
+
+func get_temp_tower_count() -> int:
+	return temp_tower_inventory.size()
 
 
 ## ── 月卡系统 ──────────────────────────────────────────────────────────
@@ -301,7 +320,7 @@ const SIGN_IN_REWARDS: Array[Dictionary] = [
 	{"gems": 10},
 	{"frags_random_green": 5},
 	{"gold": 300},
-	{"trial_tickets": 1},
+	{"temp_tower_random": 1},
 	{"gems": 20},
 	{"chest_iron": 1},
 ]
@@ -319,8 +338,9 @@ func do_sign_in() -> Dictionary:
 		add_gold(reward["gold"])
 	if reward.get("gems", 0) > 0:
 		add_gems(reward["gems"])
-	if reward.get("trial_tickets", 0) > 0:
-		add_item("trial_ticket", reward["trial_tickets"])
+	if reward.get("temp_tower_random", 0) > 0:
+		for _i in reward["temp_tower_random"]:
+			add_temp_tower(TempTowerGenerator.generate_random())
 	if reward.get("frags_random_green", 0) > 0:
 		# 随机绿碎片（由调用方处理具体炮台）
 		pass
@@ -392,6 +412,7 @@ func get_save_data() -> Dictionary:
 		"claimed_paid_rewards":      claimed_paid_rewards,
 		"shop_purchases":            shop_purchases,
 		"item_inventory":            item_inventory,
+		"temp_tower_inventory":      temp_tower_inventory,
 		"tutorial_completed":        tutorial_completed,
 		"story_watched":             story_watched,
 		"sign_in_day":               sign_in_day,
@@ -504,3 +525,29 @@ func load_save_data(dict: Dictionary) -> void:
 
 	# 广告奖励时间戳（兼容旧存档，缺失 = 0 = 新账号必有奖励）
 	last_ad_reward_time = int(dict.get("last_ad_reward_time", 0))
+
+	# 临时炮台背包（Array[Dictionary]）
+	temp_tower_inventory.clear()
+	var tti = dict.get("temp_tower_inventory", [])
+	if tti is Array:
+		for entry in tti:
+			if entry is Dictionary and entry.has("tower_id"):
+				var restored: Dictionary = {
+					"tower_id": str(entry.get("tower_id", "")),
+					"rarity": int(entry.get("rarity", 0)),
+					"is_hero": (entry.get("is_hero", false) == true),
+					"hero_level": int(entry.get("hero_level", 0)),
+					"hero_directions": [],
+				}
+				var dirs = entry.get("hero_directions", [])
+				if dirs is Array:
+					for d in dirs:
+						restored["hero_directions"].append(str(d))
+				temp_tower_inventory.append(restored)
+
+	# 迁移：旧存档 trial_ticket → 随机临时炮台
+	var old_trial_count: int = item_inventory.get("trial_ticket", 0)
+	if old_trial_count > 0:
+		for _i in old_trial_count:
+			temp_tower_inventory.append(TempTowerGenerator.generate_random())
+		item_inventory.erase("trial_ticket")

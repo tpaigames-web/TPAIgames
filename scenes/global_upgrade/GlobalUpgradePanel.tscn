@@ -25,6 +25,8 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 
 [node name="TitleLabel" type="Label" parent="Content" unique_id=550996006]
@@ -61,9 +63,9 @@ mouse_filter = 2
 [node name="LeftBtn" type="TextureButton" parent="Content/CardArea" unique_id=1796887654]
 layout_mode = 0
 offset_left = 164.0
-offset_top = 1167.0
+offset_top = 1276.0
 offset_right = 284.0
-offset_bottom = 1287.0
+offset_bottom = 1396.0
 texture_normal = ExtResource("tex_left")
 ignore_texture_size = true
 stretch_mode = 0
@@ -71,9 +73,9 @@ stretch_mode = 0
 [node name="RightBtn" type="TextureButton" parent="Content/CardArea" unique_id=40547264]
 layout_mode = 0
 offset_left = 752.0
-offset_top = 1163.0
+offset_top = 1272.0
 offset_right = 872.0
-offset_bottom = 1283.0
+offset_bottom = 1392.0
 texture_normal = ExtResource("tex_right")
 ignore_texture_size = true
 stretch_mode = 0
@@ -81,9 +83,9 @@ stretch_mode = 0
 [node name="ConfirmBtn" type="TextureButton" parent="Content" unique_id=796947225]
 layout_mode = 0
 offset_left = 300.0
-offset_top = 1340.0
+offset_top = 1449.0
 offset_right = 780.0
-offset_bottom = 1460.0
+offset_bottom = 1569.0
 texture_normal = ExtResource("tex_start")
 ignore_texture_size = true
 stretch_mode = 0
@@ -107,9 +109,9 @@ vertical_alignment = 1
 [node name="RefreshRow" type="HBoxContainer" parent="Content" unique_id=634341262]
 layout_mode = 0
 offset_left = 370.0
-offset_top = 1500.0
+offset_top = 1609.0
 offset_right = 710.0
-offset_bottom = 1580.0
+offset_bottom = 1689.0
 theme_override_constants/separation = 12
 alignment = 1
 

@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="EnemyData" format=3]
+[gd_resource type="Resource" script_class="EnemyData" format=3 uid="uid://drydrf0j5s2q2"]
 
 [ext_resource type="Script" uid="uid://dapicbkaarem1" path="res://enemy/enemy_data.gd" id="1_toad"]
+[ext_resource type="SpriteFrames" path="res://data/enemies/toad_frames.tres" id="2_frames"]
 
 [resource]
 script = ExtResource("1_toad")
@@ -8,12 +9,13 @@ enemy_id = "toad"
 display_name = "毒蛙"
 display_emoji = "🐸"
 max_hp = 180
-move_speed = 115.0
+move_speed = 150.0
+sprite_frames = ExtResource("2_frames")
 sprite_display_size = 90.0
-damage_to_player = 1
+sprite_rotation_offset = -90.0
 gold_reward = 14
 xp_reward = 14
 is_dot_immune = true
-regen_per_second = 5.0
+regen_per_second = 15.0
 counter_strategy = "直接伤害·高爆发"
 metadata/_custom_type_script = "uid://dapicbkaarem1"

@@ -250,19 +250,19 @@ func _get_reward(lv: int, is_paid: bool) -> Dictionary:
 	var r: Dictionary = {}
 
 	# ── 特殊里程碑（按设计文档）──────────────────────────────────────
-	# 试用券里程碑：Lv.3, 8, 15, 25, 50
+	# 临时炮台里程碑：Lv.3, 8, 15, 25, 50
 	if lv in [3, 8]:
-		r["trial_tickets"] = 2 if is_paid else 1
+		r["temp_tower_random"] = 2 if is_paid else 1
 	elif lv == 15:
-		r["trial_tickets"] = 3 if is_paid else 2
+		r["temp_tower_random"] = 3 if is_paid else 2
 		r["frags_tower"] = "farmer"
 		r["frags_count"] = 50 if is_paid else 30
 	elif lv == 25:
-		r["trial_tickets"] = 3 if is_paid else 2
+		r["temp_tower_random"] = 3 if is_paid else 2
 		r["frags_rarity"] = 3
 		r["frags_count"] = 50 if is_paid else 30
 	elif lv == 50:
-		r["trial_tickets"] = 5 if is_paid else 3
+		r["temp_tower_random"] = 5 if is_paid else 3
 		r["frags_tower"] = "watchtower"
 		r["frags_count"] = 120 if is_paid else 60
 	elif lv == 75:
@@ -359,9 +359,10 @@ func _apply_reward(reward: Dictionary) -> void:
 		UserManager.add_gold(reward["gold"])
 	if reward.get("gems", 0) > 0:
 		UserManager.add_gems(reward["gems"])
-	# 试用券
-	if reward.get("trial_tickets", 0) > 0:
-		UserManager.add_item("trial_ticket", reward["trial_tickets"])
+	# 临时炮台
+	if reward.get("temp_tower_random", 0) > 0:
+		for _i in reward["temp_tower_random"]:
+			UserManager.add_temp_tower(TempTowerGenerator.generate_random())
 	# 指定炮台碎片
 	if "frags_tower" in reward:
 		var tid: String = reward["frags_tower"]

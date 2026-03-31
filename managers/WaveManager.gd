@@ -205,8 +205,8 @@ func spawn_enemy(enemy_type: String) -> void:
 	path_follow.progress = 0
 
 	var enemy = ENEMY_SCENE.instantiate()
-	enemy.enemy_data = enemy_data_map.get(enemy_type, enemy_data_map["rat_small"])
-	enemy.apply_enemy_data()
+	enemy.set("enemy_data", enemy_data_map.get(enemy_type, enemy_data_map["rat_small"]))
+	enemy.call("apply_enemy_data")
 	_apply_difficulty_scaling(enemy)
 
 	if enemy.has_signal("want_spawn"):
@@ -235,15 +235,23 @@ func _on_enemy_want_spawn(etype: String, count: int, prog: float) -> void:
 		path_follow.progress = prog
 
 		var enemy = ENEMY_SCENE.instantiate()
-		enemy.enemy_data = enemy_data_map.get(etype, enemy_data_map["rat_small"])
-		enemy.apply_enemy_data()
-		enemy.is_summoned = true
+		enemy.set("enemy_data", enemy_data_map.get(etype, enemy_data_map["rat_small"]))
+		enemy.call("apply_enemy_data")
+		enemy.set("is_summoned", true)
 		_apply_difficulty_scaling(enemy)
 
 		if enemy.has_signal("want_spawn"):
 			enemy.want_spawn.connect(_on_enemy_want_spawn)
 
 		path_follow.add_child(enemy)
+
+		# 召唤出生动画：从小缩放+透明 → 正常（类似死亡反转）
+		enemy.scale = Vector2(0.3, 0.3)
+		enemy.modulate = Color(1, 1, 1, 0)
+		var spawn_tw := enemy.create_tween()
+		spawn_tw.set_parallel(true)
+		spawn_tw.tween_property(enemy, "scale", Vector2(1, 1), 0.3).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
+		spawn_tw.tween_property(enemy, "modulate:a", 1.0, 0.2)
 
 		active_enemies += 1
 		enemy.tree_exited.connect(_on_enemy_dead)

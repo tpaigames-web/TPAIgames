@@ -142,17 +142,19 @@ func setup(pool: Array, active: Array, wave_num: int) -> void:
 	_wave_ref   = wave_num
 	_wave_num   = wave_num
 
-	# 第 0 波强制使用测试卡
-	if wave_num == 0:
-		_choices = _get_wave0_test_cards(pool)
-	else:
-		var filtered := _filter_pool(pool, active, wave_num)
-		_choices = _roll_choices(filtered)
+	# 所有波次统一按概率随机抽取
+	var filtered := _filter_pool(pool, active, wave_num)
+	_choices = _roll_choices(filtered)
+
+	# 安全回退：如果加权随机失败但池子有内容，直接取前3个
+	if _choices.is_empty() and not filtered.is_empty():
+		filtered.shuffle()
+		for i in mini(3, filtered.size()):
+			_choices.append(filtered[i] as GlobalUpgradeData)
+		push_warning("GlobalUpgradePanel: roll failed, fallback to first %d from %d filtered" % [_choices.size(), filtered.size()])
 
 	if _choices.is_empty():
-		push_warning("GlobalUpgradePanel: No upgrades for wave %d" % wave_num)
-	else:
-		print("GlobalUpgradePanel: %d choices for wave %d" % [_choices.size(), wave_num])
+		push_warning("GlobalUpgradePanel: No upgrades for wave %d (pool=%d, filtered=%d)" % [wave_num, pool.size(), filtered.size()])
 
 	_build_cards()
 	_current_index = mini(1, _choices.size() - 1)
@@ -183,8 +185,7 @@ func _filter_pool(pool: Array, active: Array, wave_num: int) -> Array:
 		var upg := upg_raw as GlobalUpgradeData
 		if upg == null:
 			continue
-		if wave_num == 0 and upg.rarity > 0:
-			continue
+		# wave 0 不再限制稀有度（之前限白色是为测试卡，已移除）
 		if upg.upgrade_id in active_ids:
 			continue
 		if not _is_upgrade_unlocked(upg):
@@ -535,7 +536,8 @@ func _on_right() -> void:
 
 # ── 确认按钮 ─────────────────────────────────────────────────────────────────
 # ── 触控滑动 ─────────────────────────────────────────────────────────────────
-func _input(event: InputEvent) -> void:
+## 滑动手势 — 使用 _unhandled_input 确保暂停时也能处理
+func _unhandled_input(event: InputEvent) -> void:
 	if not visible:
 		return
 	if event is InputEventScreenTouch:
@@ -545,13 +547,15 @@ func _input(event: InputEvent) -> void:
 		else:
 			if _swiping:
 				var dx: float = event.position.x - _swipe_start_x
-				if dx < -80.0:
+				if dx < -50.0:
 					_on_right()
-				elif dx > 80.0:
+				elif dx > 50.0:
 					_on_left()
 				_swiping = false
+	elif event is InputEventScreenDrag:
+		# 实时跟随手指（可选：暂时不做实时偏移，只在松手时切换）
+		pass
 	elif event is InputEventMouseButton:
-		# 鼠标也支持左右拖拽
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.pressed:
 				_swipe_start_x = event.position.x
@@ -559,9 +563,9 @@ func _input(event: InputEvent) -> void:
 			else:
 				if _swiping:
 					var dx: float = event.position.x - _swipe_start_x
-					if dx < -80.0:
+					if dx < -50.0:
 						_on_right()
-					elif dx > 80.0:
+					elif dx > 50.0:
 						_on_left()
 					_swiping = false
 

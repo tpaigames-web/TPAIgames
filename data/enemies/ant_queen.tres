@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="EnemyData" format=3 uid="uid://dcr30r7hu2foh"]
 
 [ext_resource type="Script" uid="uid://dapicbkaarem1" path="res://enemy/enemy_data.gd" id="1_antq"]
+[ext_resource type="SpriteFrames" path="res://data/enemies/ant_queen_frames.tres" id="2_frames"]
 
 [resource]
 script = ExtResource("1_antq")
@@ -10,7 +11,9 @@ display_emoji = "🐜"
 max_hp = 250
 move_speed = 120.0
 armor = 1
-sprite_display_size = 130.0
+sprite_frames = ExtResource("2_frames")
+sprite_display_size = 75.0
+sprite_rotation_offset = -90.0
 damage_to_player = 3
 gold_reward = 22
 xp_reward = 20

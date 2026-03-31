@@ -8,8 +8,6 @@ var _accounts_data: Dictionary = {}
 
 
 func _ready():
-	start_button.pressed.connect(_on_start_pressed)
-
 	_load_accounts()
 
 	# 自动登录上次账号
@@ -19,6 +17,10 @@ func _ready():
 			if acc.get("account") == last:
 				_login_as(acc)
 				return
+
+	# 无账号时自动以游客身份进入（跳过登录界面）
+	UserManager.set_guest()
+	SceneManager.go_home()
 
 
 func _on_start_pressed() -> void:

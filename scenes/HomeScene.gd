@@ -100,6 +100,8 @@ func _ready() -> void:
 			pass  # 静默领取（后续可加提示）
 	# 每日签到弹窗
 	call_deferred("_check_sign_in")
+	# 后台预加载所有Tab（分帧加载，避免首次切换卡顿）
+	_preload_all_tabs()
 
 
 func _process(delta: float) -> void:
@@ -173,6 +175,140 @@ func _ensure_tab_loaded(index: int) -> void:
 		instance.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	tab_nodes[index] = instance
 
+## ── 启动加载画面 + 预加载所有Tab ─────────────────────────────────────
+const COVER_TEX = preload("res://assets/sprites/ui/Cover/cover.png")
+
+var _loading_overlay: CanvasLayer = null
+var _loading_bar: ProgressBar = null
+var _loading_detail: Label = null
+
+## 加载步骤定义：[tab_index 或负数(自定义), 显示文本]
+const _LOAD_STEPS: Array = [
+	[0, "加载商店..."],
+	[1, "加载碎片商店..."],
+	[-1, "加载炮台数据..."],
+	[3, "加载兵工厂..."],
+	[4, "加载宝箱..."],
+	[-3, "加载设置与指南..."],
+	[-2, "初始化完成"],
+]
+
+func _preload_all_tabs() -> void:
+	_create_loading_overlay()
+	await get_tree().process_frame  # 让遮罩先显示出来
+
+	var total: int = _LOAD_STEPS.size()
+	for step_idx in total:
+		var step: Array = _LOAD_STEPS[step_idx]
+		var tab_idx: int = step[0]
+		var detail: String = step[1]
+
+		# 更新进度
+		if _loading_detail:
+			_loading_detail.text = detail
+		if _loading_bar:
+			_loading_bar.value = float(step_idx) / float(total) * 100.0
+
+		await get_tree().process_frame  # 让UI刷新一帧
+
+		# 执行加载
+		if tab_idx >= 0 and tab_nodes[tab_idx] == null:
+			_ensure_tab_loaded(tab_idx)
+			if tab_nodes[tab_idx] != null:
+				tab_nodes[tab_idx].visible = false
+				tab_nodes[tab_idx].process_mode = Node.PROCESS_MODE_DISABLED
+		elif tab_idx == -1:
+			# 预热炮台资源缓存
+			TowerResourceRegistry.get_all_resources()
+			TowerResourceRegistry.get_towers_by_rarity()
+		elif tab_idx == -3:
+			# 预加载设置面板的指南数据（敌人+升级+炮台，123+ .tres）
+			SettingsPanel.preload_guide_data()
+
+		await get_tree().process_frame
+
+	# 加载完成 → 进度条满
+	if _loading_bar:
+		_loading_bar.value = 100.0
+	if _loading_detail:
+		_loading_detail.text = "加载完成！"
+	await get_tree().process_frame
+
+	# 淡出遮罩
+	_fade_out_loading()
+
+
+func _create_loading_overlay() -> void:
+	_loading_overlay = CanvasLayer.new()
+	_loading_overlay.layer = 90  # 在大多数UI之上
+	add_child(_loading_overlay)
+
+	# 封面背景
+	var bg := TextureRect.new()
+	bg.texture = COVER_TEX
+	bg.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	bg.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	bg.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	_loading_overlay.add_child(bg)
+
+	# 半透明黑色叠加（让文字更清晰）
+	var dim := ColorRect.new()
+	dim.color = Color(0, 0, 0, 0.4)
+	dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	dim.mouse_filter = Control.MOUSE_FILTER_STOP
+	_loading_overlay.add_child(dim)
+
+	# 加载详情文字
+	_loading_detail = Label.new()
+	_loading_detail.text = "准备中..."
+	_loading_detail.add_theme_font_size_override("font_size", 32)
+	_loading_detail.add_theme_color_override("font_color", Color(1, 0.95, 0.85, 0.9))
+	_loading_detail.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.7))
+	_loading_detail.add_theme_constant_override("shadow_offset_x", 2)
+	_loading_detail.add_theme_constant_override("shadow_offset_y", 2)
+	_loading_detail.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
+	_loading_detail.offset_top = -160.0
+	_loading_detail.offset_bottom = -110.0
+	_loading_detail.offset_left = 40.0
+	_loading_detail.offset_right = -40.0
+	_loading_detail.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_loading_overlay.add_child(_loading_detail)
+
+	# 进度条
+	_loading_bar = ProgressBar.new()
+	_loading_bar.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
+	_loading_bar.offset_top = -100.0
+	_loading_bar.offset_bottom = -60.0
+	_loading_bar.offset_left = 60.0
+	_loading_bar.offset_right = -60.0
+	_loading_bar.min_value = 0
+	_loading_bar.max_value = 100
+	_loading_bar.value = 0
+	_loading_bar.show_percentage = false
+	_loading_overlay.add_child(_loading_bar)
+
+
+func _fade_out_loading() -> void:
+	if _loading_overlay == null:
+		return
+	# 创建一个覆盖全屏的 ColorRect 用于淡出
+	var fade := ColorRect.new()
+	fade.color = Color(0, 0, 0, 0)
+	fade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	fade.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_loading_overlay.add_child(fade)
+
+	var tw := create_tween()
+	tw.tween_property(fade, "color:a", 1.0, 0.3)
+	tw.tween_callback(func():
+		if is_instance_valid(_loading_overlay):
+			_loading_overlay.queue_free()
+			_loading_overlay = null
+			_loading_bar = null
+			_loading_detail = null
+	)
+
+
 func _connect_nav_buttons() -> void:
 	for i in range(nav_buttons.size()):
 		var btn: BaseButton = nav_buttons[i]
@@ -183,14 +319,18 @@ func _connect_nav_buttons() -> void:
 func _switch_tab(index: int) -> void:
 	if tab_nodes[current_tab] != null:
 		tab_nodes[current_tab].visible = false
+		tab_nodes[current_tab].process_mode = Node.PROCESS_MODE_DISABLED
 	current_tab = index
 	_ensure_tab_loaded(current_tab)
 	if tab_nodes[current_tab] != null:
+		tab_nodes[current_tab].process_mode = Node.PROCESS_MODE_INHERIT
 		tab_nodes[current_tab].visible = true
 
-	# 战斗标签才显示个人信息和广告按钮
+	# 战斗标签才显示个人信息、广告按钮、左侧快捷按钮（签到/月卡/升级）
 	var is_battle := (index == TAB_BATTLE)
 	$TopBar/ProfileArea.visible = is_battle
+	if left_side_buttons and is_instance_valid(left_side_buttons):
+		left_side_buttons.visible = is_battle
 	if is_battle:
 		_check_ad_reward()
 	else:
@@ -377,17 +517,22 @@ func _update_badges() -> void:
 
 ## 兵工厂通知：有炮台可以用碎片解锁
 func _has_factory_notification() -> bool:
-	for path in CollectionManager.TOWER_RESOURCE_PATHS:
-		var res = load(path)
-		if res == null:
+	for res in TowerResourceRegistry.get_all_resources():
+		var td := res as TowerCollectionData
+		if td == null:
 			continue
-		var tid = res.get("tower_id")
-		if tid == null:
-			continue
-		if CollectionManager.get_tower_status(str(tid)) == 1:
-			var unlock_frags = res.get("unlock_fragments")
-			if unlock_frags != null and CollectionManager.get_fragments(str(tid)) >= int(unlock_frags):
-				return true
+		var status: int = CollectionManager.get_tower_status(td.tower_id)
+		var frags: int = CollectionManager.get_fragments(td.tower_id)
+		# 可解锁
+		if status == 1 and td.unlock_fragments > 0 and frags >= td.unlock_fragments:
+			return true
+		# 可升级（已解锁，碎片够下一级）
+		if status == 2:
+			var level: int = CollectionManager.get_tower_level(td.tower_id)
+			if level < td.max_level and level >= 1:
+				var idx: int = level - 1
+				if idx < td.upgrade_fragments.size() and frags >= td.upgrade_fragments[idx]:
+					return true
 	return false
 
 
@@ -419,7 +564,7 @@ func _setup_left_side_buttons() -> void:
 	const FLAG_SCENE = preload("res://scenes/components/UpgradeButton.tscn")
 
 	left_side_buttons = VBoxContainer.new()
-	left_side_buttons.position = Vector2(5, 250)
+	left_side_buttons.position = Vector2(5, 420)
 	left_side_buttons.add_theme_constant_override("separation", 5)
 	add_child(left_side_buttons)
 

@@ -291,23 +291,10 @@ func _on_popup_overlay_input(event: InputEvent) -> void:
 
 func _load_upgrade_pool() -> void:
 	_upgrade_pool.clear()
-	var dir := DirAccess.open(UPGRADE_POOL_DIR)
-	if dir:
-		dir.list_dir_begin()
-		var fname: String = dir.get_next()
-		while fname != "":
-			if fname.ends_with(".tres"):
-				var res := load(UPGRADE_POOL_DIR + fname) as GlobalUpgradeData
-				if res:
-					_upgrade_pool.append(res)
-			fname = dir.get_next()
-		dir.list_dir_end()
-	else:
-		for fname2 in _UPGRADE_FILES:
-			var res := load(UPGRADE_POOL_DIR + fname2) as GlobalUpgradeData
-			if res:
-				_upgrade_pool.append(res)
-			else:
-				push_warning("GlobalUpgrade: 无法加载 " + UPGRADE_POOL_DIR + fname2)
+	# 始终使用硬编码文件列表（DirAccess 在 Android 导出后不可靠）
+	for fname in _UPGRADE_FILES:
+		var res := load(UPGRADE_POOL_DIR + fname) as GlobalUpgradeData
+		if res:
+			_upgrade_pool.append(res)
 	if _upgrade_pool.is_empty():
-		push_warning("GlobalUpgrade: 升级池为空！检查 data/global_upgrades/ 目录")
+		push_warning("GlobalUpgrade: 升级池为空！检查 data/global_upgrades/ 目录和 _UPGRADE_FILES 列表")

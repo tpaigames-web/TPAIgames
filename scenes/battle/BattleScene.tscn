@@ -13,8 +13,8 @@
 [ext_resource type="Texture2D" uid="uid://cpfgrw1gbu62y" path="res://assets/sprites/ui/Ingame_panel_hero.png" id="tex_panel_hero"]
 [ext_resource type="Texture2D" uid="uid://1bo8pma41sun" path="res://assets/sprites/ui/Ingame_panel_item.png" id="tex_panel_item"]
 [ext_resource type="Texture2D" uid="uid://6mfx5ss8g00l" path="res://assets/sprites/ui/Ingame_panel_tower.png" id="tex_panel_tower"]
+[ext_resource type="Texture2D" uid="uid://bi6pyj0kj1b70" path="res://assets/sprites/ui/Setting.png" id="tex_setting"]
 [ext_resource type="Texture2D" uid="uid://cug8p0h7c8yr2" path="res://assets/sprites/ui/Top.png" id="tex_top"]
-[ext_resource type="Texture2D" path="res://assets/sprites/ui/Setting.png" id="tex_setting"]
 
 [node name="BattleScene" type="Node" unique_id=991539732]
 script = ExtResource("6_script")
@@ -49,6 +49,7 @@ layout_mode = 3
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 80.0
+grow_horizontal = 2
 mouse_filter = 2
 
 [node name="BackBtn" type="TextureButton" parent="HUD/TopBar" unique_id=561845765]
@@ -72,7 +73,6 @@ theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5)
 theme_override_constants/shadow_offset_y = 2
 theme_override_fonts/font = ExtResource("font_700")
 theme_override_font_sizes/font_size = 38
-text = ""
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -216,12 +216,20 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_top = -490.0
+grow_horizontal = 2
+grow_vertical = 0
 
 [node name="PanelBgTower" type="TextureRect" parent="HUD/BottomPanel" unique_id=371529013]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -98.183716
+offset_top = -66.0
+offset_right = 97.979614
+offset_bottom = 23.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 texture = ExtResource("tex_panel_tower")
 expand_mode = 1
@@ -229,9 +237,14 @@ stretch_mode = 5
 
 [node name="PanelBgHero" type="TextureRect" parent="HUD/BottomPanel" unique_id=896295809]
 visible = false
-layout_mode = 0
+layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -96.40808
+offset_top = -63.0
+offset_right = 97.551025
+offset_bottom = 25.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -241,9 +254,14 @@ stretch_mode = 5
 
 [node name="PanelBgItem" type="TextureRect" parent="HUD/BottomPanel" unique_id=2113168087]
 visible = false
-layout_mode = 0
+layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -97.63269
+offset_top = -64.0
+offset_right = 96.326416
+offset_bottom = 24.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -252,9 +270,12 @@ expand_mode = 1
 stretch_mode = 5
 
 [node name="TabBar" type="HBoxContainer" parent="HUD/BottomPanel" unique_id=1538764492]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
 anchor_right = 1.0
-offset_bottom = 70.0
+anchor_bottom = 0.071
+offset_bottom = 35.21
+grow_horizontal = 2
 theme_override_constants/separation = 0
 
 [node name="TowerTabBtn" type="Button" parent="HUD/BottomPanel/TabBar" unique_id=1919045828]
@@ -286,10 +307,14 @@ text = "UI_BATTLE_TAB_ITEM"
 flat = true
 
 [node name="TowerScroll" type="ScrollContainer" parent="HUD/BottomPanel" unique_id=524475819]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = 10
 anchor_right = 1.0
-offset_top = 70.0
-offset_bottom = 360.0
+offset_left = 2.0
+offset_top = 111.0
+offset_right = 2.0
+offset_bottom = 401.0
+grow_horizontal = 2
 
 [node name="TowerHBox" type="HBoxContainer" parent="HUD/BottomPanel/TowerScroll" unique_id=667331494]
 layout_mode = 2
@@ -298,10 +323,12 @@ theme_override_constants/separation = 8
 
 [node name="ItemScroll" type="ScrollContainer" parent="HUD/BottomPanel" unique_id=175883210]
 visible = false
-layout_mode = 0
+layout_mode = 1
+anchors_preset = 10
 anchor_right = 1.0
-offset_top = 70.0
-offset_bottom = 360.0
+offset_top = 113.0
+offset_bottom = 403.0
+grow_horizontal = 2
 
 [node name="ItemHBox" type="HBoxContainer" parent="HUD/BottomPanel/ItemScroll" unique_id=2003219627]
 layout_mode = 2
@@ -310,10 +337,12 @@ theme_override_constants/separation = 8
 
 [node name="UpgradePanel" type="ScrollContainer" parent="HUD/BottomPanel" unique_id=1870404478]
 visible = false
-layout_mode = 0
+layout_mode = 1
+anchors_preset = 10
 anchor_right = 1.0
-offset_top = 70.0
-offset_bottom = 360.0
+offset_top = 111.0
+offset_bottom = 401.0
+grow_horizontal = 2
 
 [node name="UpgradeVBox" type="VBoxContainer" parent="HUD/BottomPanel/UpgradePanel" unique_id=609737934]
 layout_mode = 2

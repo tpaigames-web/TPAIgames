@@ -17,6 +17,8 @@ const CHEST_TEXTURES: Array[String] = [
 	"res://assets/sprites/ui/Chest_Silver.png",
 	"res://assets/sprites/ui/Chest_Gold.png",
 ]
+# 预缓存宝箱纹理（避免每秒重复 load）
+var _chest_tex_cache: Array[Texture2D] = []
 
 const BULK_COSTS: Array[int] = [50, 100, 150]
 const BULK_COUNT: int = 10
@@ -66,6 +68,13 @@ var _ticker: Timer = null
 
 
 func _ready() -> void:
+	# 背景飘动效果
+	BgFxLayer.create_and_attach(self, $Background)
+
+	# 预缓存宝箱纹理
+	for path in CHEST_TEXTURES:
+		_chest_tex_cache.append(load(path) as Texture2D)
+
 	# 加载宝箱数据
 	for path in CHEST_PATHS:
 		var data: ChestData = load(path)
@@ -135,7 +144,7 @@ func _update_chest_slots() -> void:
 			time_lbl.visible = false
 			hint_lbl.visible = false
 		elif slot.get("unlock_start_unix", -1) == -1:
-			chest_tex.texture = load(CHEST_TEXTURES[chest_type])
+			chest_tex.texture = _chest_tex_cache[chest_type]
 			chest_tex.visible = true
 			dim.visible = true
 			lock.visible = true
@@ -144,7 +153,7 @@ func _update_chest_slots() -> void:
 			hint_lbl.add_theme_color_override("font_color", Color(1, 0.9, 0.6))
 			hint_lbl.visible = true
 		elif UserManager.is_chest_ready(i):
-			chest_tex.texture = load(CHEST_TEXTURES[chest_type])
+			chest_tex.texture = _chest_tex_cache[chest_type]
 			chest_tex.visible = true
 			dim.visible = false
 			lock.visible = false
@@ -154,7 +163,7 @@ func _update_chest_slots() -> void:
 			hint_lbl.visible = true
 			_play_shake(chest_tex)
 		else:
-			chest_tex.texture = load(CHEST_TEXTURES[chest_type])
+			chest_tex.texture = _chest_tex_cache[chest_type]
 			chest_tex.visible = true
 			dim.visible = true
 			lock.visible = true

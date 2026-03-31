@@ -1,0 +1,65 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="CompressedTexture2D" uid="uid://b86yoqv3p46xr" path="res://assets/sprites/enemy/Frog/Frog_01.png" id="f1"]
+[ext_resource type="CompressedTexture2D" uid="uid://f1dyxtfm2l7i" path="res://assets/sprites/enemy/Frog/Frog_02.png" id="f2"]
+[ext_resource type="CompressedTexture2D" uid="uid://c6jmcwni70uxc" path="res://assets/sprites/enemy/Frog/Frog_03.png" id="f3"]
+[ext_resource type="CompressedTexture2D" uid="uid://b8r5ahy7hmrs0" path="res://assets/sprites/enemy/Frog/Frog_04.png" id="f4"]
+[ext_resource type="CompressedTexture2D" uid="uid://bbhd8y02h2u7w" path="res://assets/sprites/enemy/Frog/Frog_05.png" id="f5"]
+[ext_resource type="CompressedTexture2D" uid="uid://dkbheo2jwmm8j" path="res://assets/sprites/enemy/Frog/Frog_06.png" id="f6"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("f1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("f2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("f3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("f4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("f5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("f6")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("f1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("f2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("f3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("f4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("f5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("f6")
+}],
+"loop": false,
+"name": &"jump",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("f1")
+}],
+"loop": false,
+"name": &"idle",
+"speed": 1.0
+}]

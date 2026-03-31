@@ -49,6 +49,26 @@ var _visual_pos: Vector2 = Vector2.ZERO
 var _hit_tween: Tween = null
 var _knockback_tween: Tween = null
 
+## ── 地鼠挖洞系统 ──────────────────────────────────────────────────────
+var is_burrowed: bool = false        ## 炮台不可选中标志
+var _mole_state: int = 0             ## 0=run, 1=jumping_in, 2=burrowed, 3=emerging
+const MOLE_TRAP_DETECT_RANGE: float = 180.0  ## 检测陷阱的前方距离
+## 地洞节点列表存储在 GameManager.burrow_holes（全局共享）
+## 地洞纹理（preload 确保 Android 可用）
+const DIRT_HOLE_ENTER_TEX = preload("res://assets/sprites/enemy/Groundhog/GroundHog_Dirt_02.png")  ## 入口洞
+const DIRT_HOLE_EXIT_TEX  = preload("res://assets/sprites/enemy/Groundhog/GroundHog_Dirt_16.png")  ## 出口洞
+const DIRT_TRAIL_TEX      = preload("res://assets/sprites/enemy/Groundhog/GroundHog_Dirt_08.png")  ## 移动痕迹
+## 地下移动痕迹间隔
+var _trail_timer: float = 0.0
+const TRAIL_INTERVAL: float = 0.3  ## 每0.3秒留一个痕迹
+
+## ── 毒蛙跳跃系统 ──────────────────────────────────────────────────────
+var _toad_state: int = 0         ## 0=jumping(移动中), 1=idle(停下回血)
+var _toad_timer: float = 0.0
+const TOAD_JUMP_DURATION: float = 1.0   ## 跳跃动画时长（115速×1.0s≈120px）
+const TOAD_IDLE_DURATION: float = 1.0   ## 停下时间（1秒，期间回血）
+var _toad_is_idle: bool = false          ## 停下标志（用于增强回血）
+
 ## 护甲等级对应的伤害减免比例（Lv0~Lv4）
 const ARMOR_REDUCTION: Array[float] = [0.0, 0.15, 0.35, 0.55, 0.75]
 
@@ -116,16 +136,18 @@ func apply_enemy_data() -> void:
 		$AnimSprite.visible = true
 		$Sprite2D.visible   = false
 		$EmojiLabel.visible = false
-		# 自动缩放至约 80px
-		var anim_name: String = "default"
-		if enemy_data.sprite_frames.has_animation(anim_name):
-			var frame_tex: Texture2D = enemy_data.sprite_frames.get_frame_texture(anim_name, 0)
-			if frame_tex:
-				var tex_size: Vector2 = frame_tex.get_size()
-				var max_dim: float = max(tex_size.x, tex_size.y)
-				if max_dim > 0:
-					var s: float = target / max_dim
-					$AnimSprite.scale = Vector2(s, s)
+		# 遍历所有动画所有帧取最大尺寸，确保缩放固定不抖动
+		var max_dim: float = 0.0
+		var sf: SpriteFrames = enemy_data.sprite_frames
+		for anim in sf.get_animation_names():
+			for fi in sf.get_frame_count(anim):
+				var ftex: Texture2D = sf.get_frame_texture(anim, fi)
+				if ftex:
+					var sz: Vector2 = ftex.get_size()
+					max_dim = maxf(max_dim, maxf(sz.x, sz.y))
+		if max_dim > 0:
+			var s: float = target / max_dim
+			$AnimSprite.scale = Vector2(s, s)
 		$AnimSprite.play("default")
 		# 应用贴图朝向偏移
 		$AnimSprite.rotation = deg_to_rad(enemy_data.sprite_rotation_offset)
@@ -171,6 +193,12 @@ func _process(delta: float) -> void:
 	_process_effects(delta)
 	_process_regen(delta)
 	_update_debuff_display()
+	# 地鼠挖洞状态机
+	if enemy_data and enemy_data.can_bypass_traps:
+		_mole_process(delta)
+	# 毒蛙跳跃状态机
+	if enemy_data and enemy_data.regen_per_second > 0 and enemy_data.is_dot_immune:
+		_toad_process(delta)
 
 	# 血条/护盾条始终水平固定在敌人头顶，不随 PathFollow2D 旋转
 	# 只在旋转角度变化时才重新计算（避免每帧三角函数）
@@ -193,7 +221,9 @@ func _process(delta: float) -> void:
 		if parent.progress_ratio >= 1.0:
 			_reach_goal()
 			return
-		parent.progress += _get_effective_speed() * delta
+		# 毒蛙停下时不移动
+		if not _toad_is_idle:
+			parent.progress += _get_effective_speed() * delta
 		if parent.progress_ratio >= 1.0:
 			_reach_goal()
 			return
@@ -207,6 +237,209 @@ func _process(delta: float) -> void:
 			else:
 				_visual_pos = _visual_pos.lerp(target_pos, minf(15.0 * delta, 1.0))
 			spr.global_position = _visual_pos
+
+
+# ── 毒蛙跳跃状态机 ────────────────────────────────────────────────────
+func _toad_process(delta: float) -> void:
+	_toad_timer += delta
+	var anim_spr: AnimatedSprite2D = $AnimSprite
+
+	match _toad_state:
+		0:  # JUMPING — 播放跳跃动画，移动中
+			if _toad_timer >= TOAD_JUMP_DURATION:
+				# 跳完 → 停下
+				_toad_state = 1
+				_toad_timer = 0.0
+				_toad_is_idle = true
+				if anim_spr.visible and anim_spr.sprite_frames and anim_spr.sprite_frames.has_animation("idle"):
+					anim_spr.play("idle")
+		1:  # IDLE — 停下回血
+			if _toad_timer >= TOAD_IDLE_DURATION:
+				# 回血完 → 继续跳
+				_toad_state = 0
+				_toad_timer = 0.0
+				_toad_is_idle = false
+				if anim_spr.visible and anim_spr.sprite_frames and anim_spr.sprite_frames.has_animation("jump"):
+					anim_spr.play("jump")
+				elif anim_spr.visible and anim_spr.sprite_frames and anim_spr.sprite_frames.has_animation("default"):
+					anim_spr.play("default")
+
+
+# ── 地鼠挖洞状态机 ────────────────────────────────────────────────────
+func _mole_process(_delta: float) -> void:
+	match _mole_state:
+		0:  # RUN — 检测前方是否有陷阱
+			if _detect_trap_ahead():
+				_mole_start_jump()
+		1:  # JUMPING_IN — 等 jump 动画播完（由 animation_finished 信号处理）
+			pass
+		2:  # BURROWED — 地下移动，定期留痕迹，检测是否离开陷阱区域
+			_trail_timer += _delta
+			if _trail_timer >= TRAIL_INTERVAL:
+				_trail_timer -= TRAIL_INTERVAL
+				_create_trail_mark(global_position)
+			if not _detect_trap_ahead():
+				_mole_start_emerge()
+		3:  # EMERGING — 等 emerge 动画播完
+			pass
+
+
+func _detect_trap_ahead() -> bool:
+	var my_pos: Vector2 = global_position
+	for tower in get_tree().get_nodes_in_group("tower"):
+		if not is_instance_valid(tower):
+			continue
+		var td = tower.get("tower_data")
+		if td == null:
+			continue
+		if not td.get("place_on_path_only"):
+			continue
+		if tower.get("is_preview"):
+			continue
+		var dist: float = my_pos.distance_to(tower.global_position)
+		if dist < MOLE_TRAP_DETECT_RANGE:
+			return true
+	return false
+
+
+var _jump_hole_created: bool = false
+
+func _mole_start_jump() -> void:
+	_mole_state = 1
+	_jump_hole_created = _find_nearby_hole(global_position, 80.0) != null
+	var anim_spr: AnimatedSprite2D = $AnimSprite
+	if not anim_spr.visible:
+		_mole_enter_burrow()
+		return
+	if anim_spr.sprite_frames.has_animation("jump"):
+		anim_spr.play("jump")
+		if not anim_spr.animation_finished.is_connected(_on_jump_finished):
+			anim_spr.animation_finished.connect(_on_jump_finished, CONNECT_ONE_SHOT)
+		# 持续监听帧变化，在 frame>=2 时创建地洞
+		if not _jump_hole_created:
+			if not anim_spr.frame_changed.is_connected(_on_jump_frame_changed):
+				anim_spr.frame_changed.connect(_on_jump_frame_changed)
+	else:
+		if not _jump_hole_created:
+			_create_burrow_hole(global_position)
+		_mole_enter_burrow()
+
+
+func _on_jump_frame_changed() -> void:
+	var anim_spr: AnimatedSprite2D = $AnimSprite
+	if anim_spr.animation != "jump":
+		# 动画已切换，断开
+		if anim_spr.frame_changed.is_connected(_on_jump_frame_changed):
+			anim_spr.frame_changed.disconnect(_on_jump_frame_changed)
+		return
+	if anim_spr.frame >= 2 and not _jump_hole_created:
+		_jump_hole_created = true
+		_create_burrow_hole(global_position)
+		# 地洞已创建，断开监听
+		if anim_spr.frame_changed.is_connected(_on_jump_frame_changed):
+			anim_spr.frame_changed.disconnect(_on_jump_frame_changed)
+
+
+func _on_jump_finished() -> void:
+	# 确保断开帧监听
+	var anim_spr: AnimatedSprite2D = $AnimSprite
+	if anim_spr.frame_changed.is_connected(_on_jump_frame_changed):
+		anim_spr.frame_changed.disconnect(_on_jump_frame_changed)
+	# 如果地洞还没创建（动画太快跳过了frame 2），这里补创建
+	if not _jump_hole_created:
+		_jump_hole_created = true
+		_create_burrow_hole(global_position)
+	_mole_enter_burrow()
+
+
+func _mole_enter_burrow() -> void:
+	_mole_state = 2
+	is_burrowed = true
+	# 隐藏血条等
+	if is_instance_valid(_hp_bar): _hp_bar.visible = false
+	if is_instance_valid(_shield_bar): _shield_bar.visible = false
+	if is_instance_valid(_debuff_lbl): _debuff_lbl.visible = false
+	if is_instance_valid(_armor_lbl): _armor_lbl.visible = false
+	# 切换到 dirt_move 动画
+	var anim_spr: AnimatedSprite2D = $AnimSprite
+	if anim_spr.sprite_frames.has_animation("dirt_move"):
+		anim_spr.play("dirt_move")
+
+
+func _mole_start_emerge() -> void:
+	_mole_state = 3
+	# 在钻出位置创建出口地洞
+	_create_exit_hole(global_position)
+	var anim_spr: AnimatedSprite2D = $AnimSprite
+	if anim_spr.sprite_frames.has_animation("emerge"):
+		anim_spr.play("emerge")
+		if not anim_spr.animation_finished.is_connected(_on_emerge_finished):
+			anim_spr.animation_finished.connect(_on_emerge_finished, CONNECT_ONE_SHOT)
+	else:
+		_mole_exit_burrow()
+
+
+func _on_emerge_finished() -> void:
+	_mole_exit_burrow()
+
+
+func _mole_exit_burrow() -> void:
+	_mole_state = 0
+	is_burrowed = false
+	# 恢复血条等
+	if is_instance_valid(_hp_bar): _hp_bar.visible = true
+	if is_instance_valid(_debuff_lbl): _debuff_lbl.visible = true
+	if enemy_data and enemy_data.armor > 0 and is_instance_valid(_armor_lbl):
+		_armor_lbl.visible = true
+	# 恢复 run 动画
+	var anim_spr: AnimatedSprite2D = $AnimSprite
+	if anim_spr.sprite_frames.has_animation("run"):
+		anim_spr.play("run")
+	elif anim_spr.sprite_frames.has_animation("default"):
+		anim_spr.play("default")
+
+
+## 创建入口地洞
+func _create_burrow_hole(pos: Vector2) -> void:
+	_spawn_ground_sprite(pos, DIRT_HOLE_ENTER_TEX, 120.0)
+
+## 创建出口地洞
+func _create_exit_hole(pos: Vector2) -> void:
+	_spawn_ground_sprite(pos, DIRT_HOLE_EXIT_TEX, 120.0)
+
+## 创建地下移动痕迹
+func _create_trail_mark(pos: Vector2) -> void:
+	_spawn_ground_sprite(pos, DIRT_TRAIL_TEX, 100.0)
+
+## 通用：在地面创建一个纹理节点
+func _spawn_ground_sprite(pos: Vector2, tex: Texture2D, target_size: float) -> void:
+	if tex == null:
+		return
+	var spr := Sprite2D.new()
+	spr.texture = tex
+	spr.global_position = pos
+	spr.z_index = -1
+	var tex_size: Vector2 = tex.get_size()
+	if tex_size.x > 0:
+		spr.scale = Vector2.ONE * (target_size / max(tex_size.x, tex_size.y))
+	var scene := get_tree().current_scene
+	var tower_layer = scene.get_node_or_null("TutorialMap/TowerLayer") if scene else null
+	if tower_layer:
+		tower_layer.add_child(spr)
+	elif scene:
+		scene.add_child(spr)
+	GameManager.burrow_holes.append(spr)
+
+
+## 查找附近已存在的地洞
+func _find_nearby_hole(pos: Vector2, radius: float) -> Node2D:
+	for hole in GameManager.burrow_holes:
+		if is_instance_valid(hole) and hole.global_position.distance_to(pos) < radius:
+			return hole
+	return null
+
+
+## 清除所有地洞 — 由 BattleScene 直接调用 GameManager
 
 
 # ── 冲锋逻辑 ──────────────────────────────────────────────────────────
@@ -292,7 +525,9 @@ func _process_regen(delta: float) -> void:
 		return
 	if hp <= 0 or hp >= enemy_data.max_hp:
 		return
-	_regen_accumulator += enemy_data.regen_per_second * delta
+	# 毒蛙：只有停下时才回血
+	if _toad_is_idle or not enemy_data.is_dot_immune:
+		_regen_accumulator += enemy_data.regen_per_second * delta
 	if _regen_accumulator >= 1.0:
 		var heal: int = int(_regen_accumulator)
 		_regen_accumulator -= float(heal)
@@ -405,6 +640,9 @@ func _reach_goal() -> void:
 
 # ── 受到伤害 ──────────────────────────────────────────────────────────
 func take_damage(amount: float) -> void:
+	# 地鼠挖洞中完全无敌
+	if is_burrowed:
+		return
 	var final_dmg: int = int(amount)
 
 	# 护盾吸收（森林之王）
@@ -483,13 +721,17 @@ func _play_death_anim() -> void:
 func _show_spawn_vfx() -> void:
 	var lbl := Label.new()
 	var count: int = enemy_data.spawn_count if enemy_data else 1
-	lbl.text = "🌀 +%d" % count
+	lbl.text = tr("UI_SPAWN_TEXT") % count  # "召唤 +2" / "Spawn +2"
 	lbl.add_theme_font_size_override("font_size", 28)
-	lbl.modulate = Color(0.4, 0.9, 1.0)
+	lbl.add_theme_color_override("font_color", Color(0.4, 0.9, 1.0))
+	lbl.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.6))
+	lbl.add_theme_constant_override("shadow_offset_x", 1)
+	lbl.add_theme_constant_override("shadow_offset_y", 1)
 	lbl.z_index = 10
+	lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	get_tree().current_scene.add_child(lbl)
-	lbl.global_position = global_position + Vector2(-30, -80)   # 场景空间定位
-	var tw := lbl.create_tween()   # 绑定到 lbl，lbl 被释放时 tween 自动停止
+	lbl.global_position = global_position + Vector2(-40, -80)
+	var tw := lbl.create_tween()
 	tw.tween_property(lbl, "position:y", lbl.position.y - 60, 1.0)
 	tw.parallel().tween_property(lbl, "modulate:a", 0.0, 1.0)
 	tw.tween_callback(lbl.queue_free)

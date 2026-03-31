@@ -21,7 +21,7 @@ const PACKAGES: Array = [
 		"price_rm":       3.88,
 		"price_gems":     0,
 		"purchase_limit": 1,
-		"rewards":        {"gems": 500, "gold": 5000, "trial_tickets": 3},
+		"rewards":        {"gems": 500, "gold": 5000, "temp_tower_random": 3},
 		"badge":          "UI_SHOP_BADGE_NEWBIE",
 	},
 	{
@@ -74,7 +74,7 @@ const PACKAGES: Array = [
 		"price_rm":       18.88,
 		"price_gems":     0,
 		"purchase_limit": 1,
-		"rewards":        {"unlock_hero": "hero_farmer", "frags_fixed": {"hero_farmer": 60}, "trial_tickets": 2},
+		"rewards":        {"unlock_hero": "hero_farmer", "frags_fixed": {"hero_farmer": 60}, "temp_tower_random": 2},
 		"badge":          "UI_SHOP_BADGE_HERO",
 	},
 	{
@@ -87,7 +87,7 @@ const PACKAGES: Array = [
 		"price_rm":       15.88,
 		"price_gems":     0,
 		"purchase_limit": 0,
-		"rewards":        {"gems": 680, "trial_tickets": 2},
+		"rewards":        {"gems": 680, "temp_tower_random": 2},
 		"badge":          "",
 	},
 	{
@@ -100,34 +100,21 @@ const PACKAGES: Array = [
 		"price_rm":       38.80,
 		"price_gems":     0,
 		"purchase_limit": 0,
-		"rewards":        {"gems": 1800, "trial_tickets": 5, "frags_random": {"rarity": 3, "count": 50}},
+		"rewards":        {"gems": 1800, "temp_tower_random": 5, "frags_random": {"rarity": 3, "count": 50}},
 		"badge":          "UI_SHOP_BADGE_VALUE",
 	},
-	# ─── 碎片礼包 ───────────────────────────────────────────────────
+	# ─── 碎片礼包（橙→紫→蓝→绿→白 排列）────────────────────────────
 	{
-		"id":             "starter_basic",
-		"name":           "UI_SHOP_PKG_STARTER_BASIC",
-		"emoji":          "🌾",
-		"desc":           "UI_SHOP_DESC_STARTER_BASIC",
+		"id":             "orange_bundle",
+		"name":           "UI_SHOP_PKG_ORANGE_BUNDLE",
+		"emoji":          "🧡",
+		"desc":           "UI_SHOP_DESC_ORANGE_BUNDLE",
 		"section":        "frags",
-		"price_type":     "cash",
-		"price_rm":       6.0,
-		"price_gems":     0,
-		"purchase_limit": 5,
-		"rewards":        {"frags_fixed": {"scarecrow": 100}, "gold": 500, "gems": 100},
-		"badge":          "",
-	},
-	{
-		"id":             "starter_farmer",
-		"name":           "UI_SHOP_PKG_STARTER_FARMER",
-		"emoji":          "👨‍🌾",
-		"desc":           "UI_SHOP_DESC_STARTER_FARMER",
-		"section":        "frags",
-		"price_type":     "cash",
-		"price_rm":       28.8,
-		"price_gems":     0,
-		"purchase_limit": 3,
-		"rewards":        {"frags_fixed": {"farmer": 150}, "gold": 1000, "gems": 500},
+		"price_type":     "gems",
+		"price_rm":       0.0,
+		"price_gems":     2500,
+		"purchase_limit": 0,
+		"rewards":        {"frags_random": {"rarity": 4, "count": 50}},
 		"badge":          "",
 	},
 	{
@@ -138,9 +125,35 @@ const PACKAGES: Array = [
 		"section":        "frags",
 		"price_type":     "gems",
 		"price_rm":       0.0,
-		"price_gems":     1000,
+		"price_gems":     1500,
 		"purchase_limit": 0,
-		"rewards":        {"frags_random": {"rarity": 3, "count": 150}, "gold": 300},
+		"rewards":        {"frags_random": {"rarity": 3, "count": 80}},
+		"badge":          "",
+	},
+	{
+		"id":             "blue_bundle",
+		"name":           "UI_SHOP_PKG_BLUE_BUNDLE",
+		"emoji":          "💙",
+		"desc":           "UI_SHOP_DESC_BLUE_BUNDLE",
+		"section":        "frags",
+		"price_type":     "gems",
+		"price_rm":       0.0,
+		"price_gems":     600,
+		"purchase_limit": 0,
+		"rewards":        {"frags_random": {"rarity": 2, "count": 50}},
+		"badge":          "",
+	},
+	{
+		"id":             "green_bundle",
+		"name":           "UI_SHOP_PKG_GREEN_BUNDLE",
+		"emoji":          "💚",
+		"desc":           "UI_SHOP_DESC_GREEN_BUNDLE",
+		"section":        "frags",
+		"price_type":     "gems",
+		"price_rm":       0.0,
+		"price_gems":     200,
+		"purchase_limit": 0,
+		"rewards":        {"frags_random": {"rarity": 1, "count": 36}},
 		"badge":          "",
 	},
 	{
@@ -151,23 +164,10 @@ const PACKAGES: Array = [
 		"section":        "frags",
 		"price_type":     "gems",
 		"price_rm":       0.0,
-		"price_gems":     100,
+		"price_gems":     80,
 		"purchase_limit": 0,
-		"rewards":        {"frags_random": {"rarity": 0, "count": 100}},
+		"rewards":        {"frags_random": {"rarity": 0, "count": 50}},
 		"badge":          "",
-	},
-	{
-		"id":             "ultimate_bundle",
-		"name":           "UI_SHOP_PKG_ULTIMATE",
-		"emoji":          "👑",
-		"desc":           "UI_SHOP_DESC_ULTIMATE",
-		"section":        "frags",
-		"price_type":     "cash",
-		"price_rm":       88.8,
-		"price_gems":     0,
-		"purchase_limit": 1,
-		"rewards":        {"max_level": true, "all_tower_frags": 30},
-		"badge":          "UI_SHOP_BADGE_ULTIMATE",
 	},
 	{
 		"id":                     "hero_frag_farm_guardian",
@@ -182,6 +182,19 @@ const PACKAGES: Array = [
 		"rewards":                {"frags_fixed": {"farm_guardian": 30}},
 		"badge":          "UI_SHOP_BADGE_HERO",
 		"require_level":  10,
+	},
+	{
+		"id":             "ultimate_bundle",
+		"name":           "UI_SHOP_PKG_ULTIMATE",
+		"emoji":          "👑",
+		"desc":           "UI_SHOP_DESC_ULTIMATE",
+		"section":        "frags",
+		"price_type":     "cash",
+		"price_rm":       88.8,
+		"price_gems":     0,
+		"purchase_limit": 1,
+		"rewards":        {"max_level": true, "all_tower_frags": 30},
+		"badge":          "UI_SHOP_BADGE_ULTIMATE",
 	},
 	# ─── 货币 ────────────────────────────────────────────────────────
 	{
@@ -222,19 +235,6 @@ const PACKAGES: Array = [
 		"purchase_limit": 1,
 		"rewards":        {"gems": 300},
 		"badge":          "UI_SHOP_BADGE_FIRST_DEAL",
-	},
-	{
-		"id":             "gems_small_repeat",
-		"name":           "UI_SHOP_PKG_GEMS_SMALL_R",
-		"emoji":          "💎",
-		"desc":           "UI_SHOP_DESC_GEMS_220",
-		"section":        "currency",
-		"price_type":     "cash",
-		"price_rm":       6.0,
-		"price_gems":     0,
-		"purchase_limit": 0,
-		"rewards":        {"gems": 220},
-		"badge":          "",
 	},
 	{
 		"id":             "gold_cash_888",
@@ -314,6 +314,46 @@ const PACKAGES: Array = [
 		"rewards":        {"vouchers": 110},
 		"badge":          "UI_SHOP_BADGE_VALUE",
 	},
+	# ─── 道具 ────────────────────────────────────────────────────────
+	{
+		"id":             "shop_temp_tower",
+		"name":           "UI_SHOP_PKG_TEMP_TOWER",
+		"emoji":          "🎲",
+		"desc":           "UI_SHOP_DESC_TEMP_TOWER",
+		"section":        "items",
+		"price_type":     "gems",
+		"price_rm":       0.0,
+		"price_gems":     60,
+		"purchase_limit": 0,
+		"rewards":        {"temp_tower_random": 1},
+		"badge":          "",
+	},
+	{
+		"id":             "shop_landmine",
+		"name":           "UI_SHOP_PKG_LANDMINE",
+		"emoji":          "💣",
+		"desc":           "UI_SHOP_DESC_LANDMINE",
+		"section":        "items",
+		"price_type":     "gems",
+		"price_rm":       0.0,
+		"price_gems":     50,
+		"purchase_limit": 0,
+		"rewards":        {"item_grant": {"item_id": "landmine", "count": 1}},
+		"badge":          "",
+	},
+	{
+		"id":             "shop_gold_bag",
+		"name":           "UI_SHOP_PKG_GOLD_BAG",
+		"emoji":          "💰",
+		"desc":           "UI_SHOP_DESC_GOLD_BAG",
+		"section":        "items",
+		"price_type":     "gems",
+		"price_rm":       0.0,
+		"price_gems":     30,
+		"purchase_limit": 0,
+		"rewards":        {"item_grant": {"item_id": "gold_bag", "count": 1}},
+		"badge":          "",
+	},
 ]
 
 ## ── 节点引用 ─────────────────────────────────────────────────────────
@@ -332,6 +372,7 @@ var _pending_action: Callable = Callable()
 # ── 初始化 ────────────────────────────────────────────────────────────
 func _ready() -> void:
 	_load_tower_resources()
+	_setup_bg_effects()
 	_build_all_sections()
 	confirm_btn.pressed.connect(_on_confirm_yes)
 	cancel_btn.pressed.connect(_on_confirm_no)
@@ -339,6 +380,10 @@ func _ready() -> void:
 	confirm_overlay.hide()
 	# 玩家升级时自动刷新商店，等级达标后显示英雄礼包
 	UserManager.level_changed.connect(func(_lv: int): _rebuild())
+
+func _setup_bg_effects() -> void:
+	BgFxLayer.create_and_attach(self, $Background)
+
 
 ## 清空并重建商店内容（用于解锁英雄后动态刷新）
 func _rebuild() -> void:
@@ -396,141 +441,236 @@ func _build_section(section: String, title: String) -> void:
 	header.modulate = Color(1.0, 0.82, 0.3)
 	header_margin.add_child(header)
 
-	if section == "items":
-		var empty_margin := MarginContainer.new()
-		empty_margin.add_theme_constant_override("margin_left",   24)
-		empty_margin.add_theme_constant_override("margin_top",    10)
-		empty_margin.add_theme_constant_override("margin_bottom", 10)
-		main_vbox.add_child(empty_margin)
-		var empty_lbl := Label.new()
-		empty_lbl.text = tr("UI_SHOP_NO_ITEMS")
-		empty_lbl.add_theme_font_size_override("font_size", 26)
-		empty_lbl.modulate = Color(1, 1, 1, 0.35)
-		empty_margin.add_child(empty_lbl)
-		return
-
+	# 分离可购买 vs 已售罄（限定包下沉到底部）
+	var available_pkgs: Array = []
+	var soldout_pkgs: Array = []
 	for pkg in PACKAGES:
 		if pkg.get("section", "") != section:
 			continue
-		# ── 条件过滤：require_level 玩家等级必须达到指定值 ────────────────
 		var req_level: int = pkg.get("require_level", 0)
 		if req_level > 0 and UserManager.level < req_level:
 			continue
-		# ── 构建卡片 ─────────────────────────────────────────────────────
-		var card_margin := MarginContainer.new()
-		card_margin.add_theme_constant_override("margin_left",   16)
-		card_margin.add_theme_constant_override("margin_right",  16)
-		card_margin.add_theme_constant_override("margin_top",    4)
-		card_margin.add_theme_constant_override("margin_bottom", 4)
-		card_margin.add_child(_make_package_card(pkg))
-		main_vbox.add_child(card_margin)
+		var limit: int = pkg.get("purchase_limit", 0)
+		var buy_count: int = UserManager.get_purchase_count(pkg["id"])
+		if limit > 0 and buy_count >= limit:
+			soldout_pkgs.append(pkg)
+		else:
+			available_pkgs.append(pkg)
 
-# ── 礼包卡片构建 ──────────────────────────────────────────────────────
+	# 3 列网格布局
+	var grid_margin := MarginContainer.new()
+	grid_margin.add_theme_constant_override("margin_left",   12)
+	grid_margin.add_theme_constant_override("margin_right",  12)
+	grid_margin.add_theme_constant_override("margin_top",    8)
+	main_vbox.add_child(grid_margin)
+
+	var grid := GridContainer.new()
+	grid.columns = 3
+	grid.add_theme_constant_override("h_separation", 12)
+	grid.add_theme_constant_override("v_separation", 12)
+	grid_margin.add_child(grid)
+
+	for pkg in available_pkgs + soldout_pkgs:
+		grid.add_child(_make_package_card(pkg))
+
+const SHOP_PANEL_TEX  = preload("res://assets/sprites/ui/Shop_panel.png")
+const DIAMOND_ICON    = preload("res://assets/sprites/ui/Diamond.png")
+const COIN_ICON       = preload("res://assets/sprites/ui/Coin.png")
+const CLICK_THRESHOLD: float = 20.0   # 拖拽阈值（px），低于此为点击
+
+# ── 礼包卡片构建（卡牌样式）──────────────────────────────────────────
 func _make_package_card(pkg: Dictionary) -> Control:
-	var card := Panel.new()
-	card.custom_minimum_size = Vector2(0, 190)
-
-	var hbox := HBoxContainer.new()
-	hbox.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	hbox.add_theme_constant_override("separation", 0)
-	card.add_child(hbox)
-
-	# ── 左侧信息区 ────────────────────────────────────────────────
-	var left_margin := MarginContainer.new()
-	left_margin.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	left_margin.add_theme_constant_override("margin_left",   24)
-	left_margin.add_theme_constant_override("margin_top",    18)
-	left_margin.add_theme_constant_override("margin_bottom", 18)
-	hbox.add_child(left_margin)
-
-	var left_vbox := VBoxContainer.new()
-	left_vbox.add_theme_constant_override("separation", 8)
-	left_margin.add_child(left_vbox)
-
-	# 名称行
-	var name_row := HBoxContainer.new()
-	name_row.add_theme_constant_override("separation", 12)
-	left_vbox.add_child(name_row)
-
-	var emoji_lbl := Label.new()
-	emoji_lbl.text = pkg.get("emoji", "🎁")
-	emoji_lbl.add_theme_font_size_override("font_size", 44)
-	emoji_lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	name_row.add_child(emoji_lbl)
-
-	var title_col := VBoxContainer.new()
-	title_col.add_theme_constant_override("separation", 4)
-	name_row.add_child(title_col)
-
-	var name_lbl := Label.new()
-	name_lbl.text = tr(pkg.get("name", ""))
-	name_lbl.add_theme_font_size_override("font_size", 30)
-	title_col.add_child(name_lbl)
-
-	var badge: String = pkg.get("badge", "")
-	if badge != "":
-		var badge_lbl := Label.new()
-		badge_lbl.text = tr(badge)
-		badge_lbl.add_theme_font_size_override("font_size", 20)
-		badge_lbl.modulate = Color(1.0, 0.3, 0.3)
-		title_col.add_child(badge_lbl)
-
-	# 内容描述
-	var desc_lbl := Label.new()
-	desc_lbl.text = tr(pkg.get("desc", ""))
-	desc_lbl.add_theme_font_size_override("font_size", 24)
-	desc_lbl.modulate = Color(1, 1, 1, 0.65)
-	desc_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	left_vbox.add_child(desc_lbl)
-
-	# ── 右侧购买区 ────────────────────────────────────────────────
-	var right_margin := MarginContainer.new()
-	right_margin.add_theme_constant_override("margin_right",  20)
-	right_margin.add_theme_constant_override("margin_top",    18)
-	right_margin.add_theme_constant_override("margin_bottom", 18)
-	hbox.add_child(right_margin)
-
-	var right_vbox := VBoxContainer.new()
-	right_vbox.custom_minimum_size = Vector2(220, 0)
-	right_vbox.alignment = BoxContainer.ALIGNMENT_CENTER
-	right_vbox.add_theme_constant_override("separation", 8)
-	right_margin.add_child(right_vbox)
-
-	var buy_btn := Button.new()
-	buy_btn.custom_minimum_size = Vector2(210, 72)
-	buy_btn.add_theme_font_size_override("font_size", 26)
-
 	var price_type: String = pkg.get("price_type", "gems")
 	var buy_count: int     = UserManager.get_purchase_count(pkg["id"])
 	var limit: int         = pkg.get("purchase_limit", 0)
 	var sold_out: bool     = (limit > 0 and buy_count >= limit)
+	var is_monthly_active: bool = (
+		pkg.get("rewards", {}).get("monthly_card", false)
+		and UserManager.is_monthly_card_active()
+	)
+	var is_disabled: bool = sold_out or is_monthly_active
+
+	# ── 根容器 ────────────────────────────────────────────────────
+	var card := Control.new()
+	card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	card.custom_minimum_size = Vector2(0, 420)
+	card.mouse_filter = Control.MOUSE_FILTER_PASS  # PASS：让 ScrollContainer 也能接收拖拽
+
+	# ── 木板背景 ──────────────────────────────────────────────────
+	var bg := TextureRect.new()
+	bg.texture = SHOP_PANEL_TEX
+	bg.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	bg.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	bg.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	card.add_child(bg)
+
+	# ── 内容 margin ──────────────────────────────────────────────
+	var content_margin := MarginContainer.new()
+	content_margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	content_margin.add_theme_constant_override("margin_left",   20)
+	content_margin.add_theme_constant_override("margin_right",  20)
+	content_margin.add_theme_constant_override("margin_top",    24)
+	content_margin.add_theme_constant_override("margin_bottom", 16)
+	content_margin.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	card.add_child(content_margin)
+
+	var vbox := VBoxContainer.new()
+	vbox.alignment = BoxContainer.ALIGNMENT_CENTER
+	vbox.add_theme_constant_override("separation", 6)
+	vbox.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	content_margin.add_child(vbox)
+
+	# ── 商品图片/emoji ────────────────────────────────────────────
+	var icon_path: String = pkg.get("icon_path", "")
+	if icon_path != "" and ResourceLoader.exists(icon_path):
+		var icon_tex := TextureRect.new()
+		icon_tex.texture = load(icon_path)
+		icon_tex.custom_minimum_size = Vector2(120, 120)
+		icon_tex.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
+		icon_tex.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		icon_tex.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+		icon_tex.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		vbox.add_child(icon_tex)
+	else:
+		var emoji_lbl := Label.new()
+		emoji_lbl.text = pkg.get("emoji", "🎁")
+		emoji_lbl.add_theme_font_size_override("font_size", 72)
+		emoji_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		emoji_lbl.custom_minimum_size = Vector2(0, 100)
+		emoji_lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		emoji_lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		vbox.add_child(emoji_lbl)
+
+	# ── 标题 ──────────────────────────────────────────────────────
+	var name_lbl := Label.new()
+	name_lbl.text = tr(pkg.get("name", ""))
+	name_lbl.add_theme_font_size_override("font_size", 22)
+	name_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	name_lbl.clip_text = true
+	name_lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	vbox.add_child(name_lbl)
+
+	# ── 红色角标 ──────────────────────────────────────────────────
+	var badge: String = pkg.get("badge", "")
+	if badge != "":
+		var badge_lbl := Label.new()
+		badge_lbl.text = tr(badge)
+		badge_lbl.add_theme_font_size_override("font_size", 16)
+		badge_lbl.add_theme_color_override("font_color", Color(1.0, 0.3, 0.3))
+		badge_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		badge_lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		vbox.add_child(badge_lbl)
+
+	# ── 描述 ──────────────────────────────────────────────────────
+	var desc_lbl := Label.new()
+	desc_lbl.text = tr(pkg.get("desc", ""))
+	desc_lbl.add_theme_font_size_override("font_size", 18)
+	desc_lbl.modulate = Color(1, 1, 1, 0.65)
+	desc_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	desc_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	desc_lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	vbox.add_child(desc_lbl)
+
+	# ── 弹性间距 ──────────────────────────────────────────────────
+	var spacer := Control.new()
+	spacer.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	vbox.add_child(spacer)
+
+	# ── 价格行 ────────────────────────────────────────────────────
+	var price_row := HBoxContainer.new()
+	price_row.alignment = BoxContainer.ALIGNMENT_CENTER
+	price_row.add_theme_constant_override("separation", 6)
+	price_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	vbox.add_child(price_row)
 
 	if sold_out:
-		buy_btn.text     = tr("UI_SHOP_PURCHASED") if limit == 1 else tr("UI_SHOP_SOLD_OUT")
-		buy_btn.disabled = true
-	elif price_type == "cash":
-		buy_btn.text     = "RM %.2f" % pkg.get("price_rm", 0.0)
-		buy_btn.modulate = Color(0.8, 1.0, 0.65)   # 浅绿
+		var sold_lbl := Label.new()
+		sold_lbl.text = tr("UI_SHOP_PURCHASED") if limit == 1 else tr("UI_SHOP_SOLD_OUT")
+		sold_lbl.add_theme_font_size_override("font_size", 22)
+		sold_lbl.modulate = Color(1, 1, 1, 0.5)
+		sold_lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		price_row.add_child(sold_lbl)
+	elif is_monthly_active:
+		var active_lbl := Label.new()
+		active_lbl.text = tr("UI_SHOP_MONTHLY_ACTIVE")
+		active_lbl.add_theme_font_size_override("font_size", 22)
+		active_lbl.add_theme_color_override("font_color", Color(0.4, 1.0, 0.4))
+		active_lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		price_row.add_child(active_lbl)
 	else:
-		buy_btn.text     = "💎 %d" % pkg.get("price_gems", 0)
-		buy_btn.modulate = Color(0.65, 0.85, 1.0)  # 浅蓝
+		# 货币图标
+		var icon := TextureRect.new()
+		icon.custom_minimum_size = Vector2(28, 28)
+		icon.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
+		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		if price_type == "cash":
+			# 现金不显示图标，直接文字
+			pass
+		elif price_type == "voucher":
+			icon.texture = null  # 券暂无图标
+		else:
+			icon.texture = DIAMOND_ICON
+			price_row.add_child(icon)
 
-	right_vbox.add_child(buy_btn)
+		var price_lbl := Label.new()
+		price_lbl.add_theme_font_size_override("font_size", 24)
+		price_lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		if price_type == "cash":
+			price_lbl.text = "RM %.2f" % pkg.get("price_rm", 0.0)
+			price_lbl.add_theme_color_override("font_color", Color(0.6, 1.0, 0.4))
+		elif price_type == "voucher":
+			price_lbl.text = "🎫 %d" % pkg.get("price_vouchers", 0)
+		else:
+			price_lbl.text = "%d" % pkg.get("price_gems", 0)
+			price_lbl.add_theme_color_override("font_color", Color(0.5, 0.8, 1.0))
+		price_row.add_child(price_lbl)
 
+	# ── 购买次数标签 ──────────────────────────────────────────────
 	var count_lbl := Label.new()
-	count_lbl.add_theme_font_size_override("font_size", 20)
+	count_lbl.add_theme_font_size_override("font_size", 16)
 	count_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	count_lbl.modulate = Color(1, 1, 1, 0.5)
+	count_lbl.modulate = Color(1, 1, 1, 0.45)
+	count_lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_update_count_label(count_lbl, buy_count, limit)
-	right_vbox.add_child(count_lbl)
+	vbox.add_child(count_lbl)
 
-	_card_states.append({"pkg": pkg, "buy_btn": buy_btn, "count_lbl": count_lbl})
+	# ── 已售罄视觉 ────────────────────────────────────────────────
+	if is_disabled:
+		card.modulate = Color(0.6, 0.6, 0.6, 0.7)
 
-	if not sold_out:
+	# ── 记录卡片状态（用于 _refresh_all_cards）────────────────────
+	# buy_btn 改为 price_row 的引用（不再有独立按钮）
+	_card_states.append({"pkg": pkg, "buy_btn": null, "count_lbl": count_lbl, "card": card, "price_row": price_row})
+
+	# ── 点击处理（松手触发，防拖拽误触）────────────────────────────
+	if not is_disabled:
 		var captured_pkg: Dictionary = pkg
-		buy_btn.pressed.connect(func(): _on_buy_pressed(captured_pkg))
+		card.gui_input.connect(func(event: InputEvent) -> void:
+			_on_card_input(event, card, captured_pkg)
+		)
 
 	return card
+
+
+## 卡牌点击处理：按下记录位置，松手时判断是否为点击（非拖拽）
+func _on_card_input(event: InputEvent, card: Control, pkg: Dictionary) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		if event.pressed:
+			card.set_meta("press_pos", event.global_position)
+		else:
+			var press_pos: Vector2 = card.get_meta("press_pos", event.global_position)
+			if event.global_position.distance_to(press_pos) < CLICK_THRESHOLD:
+				_on_buy_pressed(pkg)
+	elif event is InputEventScreenTouch:
+		if event.pressed:
+			card.set_meta("press_pos", event.position)
+		else:
+			var press_pos: Vector2 = card.get_meta("press_pos", event.position)
+			if event.position.distance_to(press_pos) < CLICK_THRESHOLD:
+				_on_buy_pressed(pkg)
 
 func _update_count_label(lbl: Label, bought: int, limit: int) -> void:
 	if limit == 0:
@@ -562,7 +702,7 @@ func _on_buy_pressed(pkg: Dictionary) -> void:
 func _buy_cash(pkg: Dictionary) -> void:
 	var price_label: String = "RM %.2f" % pkg.get("price_rm", 0.0)
 	_show_confirm(
-		tr("UI_SHOP_CONFIRM_BUY") % [pkg.get("desc", ""), price_label],
+		tr("UI_SHOP_CONFIRM_BUY") % [tr(pkg.get("desc", "")), price_label],
 		func():
 			PaymentManager.purchase(
 				pkg["id"],
@@ -579,7 +719,7 @@ func _buy_gems(pkg: Dictionary) -> void:
 		_show_alert(tr("UI_SHOP_GEMS_LOW") % [cost, UserManager.gems])
 		return
 	_show_confirm(
-		tr("UI_SHOP_CONFIRM_GEMS") % [pkg.get("desc", ""), cost],
+		tr("UI_SHOP_CONFIRM_GEMS") % [tr(pkg.get("desc", "")), cost, UserManager.gems],
 		func():
 			UserManager.spend_gems(cost)
 			_apply_rewards(pkg)
@@ -614,9 +754,14 @@ func _apply_rewards(pkg: Dictionary) -> void:
 		_grant_max_level()
 	if r.get("all_tower_frags", 0) > 0:
 		_grant_all_tower_frags(r["all_tower_frags"])
-	# 试用券
-	if r.get("trial_tickets", 0) > 0:
-		UserManager.add_item("trial_ticket", r["trial_tickets"])
+	# 临时炮台随机券
+	if r.get("temp_tower_random", 0) > 0:
+		for _i in r["temp_tower_random"]:
+			UserManager.add_temp_tower(TempTowerGenerator.generate_random())
+	# 道具直接赠送（地雷、金币袋等）
+	var ig: Dictionary = r.get("item_grant", {})
+	if not ig.is_empty():
+		UserManager.add_item(ig.get("item_id", ""), int(ig.get("count", 1)))
 	# 月卡（购买后通知 HomeScene 刷新左侧按钮）
 	if r.get("monthly_card", false):
 		UserManager.activate_monthly_card()
@@ -638,15 +783,15 @@ func _apply_rewards(pkg: Dictionary) -> void:
 	for tid: String in r.get("frags_fixed", {}).keys():
 		CollectionManager.add_fragments(tid, r["frags_fixed"][tid])
 	var rand_info: Dictionary = r.get("frags_random", {})
-	var picked_tower: Resource = null
+	var frag_result: Dictionary = {}
 	if not rand_info.is_empty():
-		picked_tower = _add_random_frags(rand_info.get("rarity", 0), rand_info.get("count", 1))
+		frag_result = _add_random_frags(rand_info.get("rarity", 0), rand_info.get("count", 1))
 	UserManager.record_purchase(pkg["id"])
 	SaveManager.save()
 	_refresh_all_cards()
-	# 随机礼包：展示获得的炮台卡片
-	if picked_tower != null:
-		_show_frag_reward(picked_tower, rand_info.get("count", 1))
+	# 随机礼包：展示分配结果
+	if not frag_result.is_empty():
+		_show_frag_reward(frag_result, rand_info.get("rarity", 0))
 
 ## 将玩家等级直接提升至满级（Lv.100）
 func _grant_max_level() -> void:
@@ -666,8 +811,9 @@ func _grant_all_tower_frags(count: int) -> void:
 			if tid != "":
 				CollectionManager.add_fragments(tid, count)
 
-## 随机发放碎片，返回被选中的炮台资源（失败时返回 null）
-func _add_random_frags(rarity: int, count: int) -> Resource:
+## 随机发放碎片 — 逐片随机分配到该稀有度的所有炮台
+## 返回分配详情 Dictionary {tower_id: count}（失败时返回空）
+func _add_random_frags(rarity: int, total_count: int) -> Dictionary:
 	var r: int = rarity
 	if r not in _towers_by_rarity or _towers_by_rarity[r].is_empty():
 		for delta: int in [1, 2, 3, 4]:
@@ -678,35 +824,45 @@ func _add_random_frags(rarity: int, count: int) -> Resource:
 			if r != rarity:
 				break
 	if r not in _towers_by_rarity or _towers_by_rarity[r].is_empty():
-		return null
-	var tower_res: Resource = _towers_by_rarity[r].pick_random()
-	var tid: String = tower_res.tower_id   # 直接属性访问，Resource.get() 不支持第二参数
-	if tid != "":
-		CollectionManager.add_fragments(tid, count)
-	return tower_res
+		return {}
+	var towers: Array = _towers_by_rarity[r]
+	var result: Dictionary = {}  # {tower_id: count}
+	for _i in total_count:
+		var tower_res: Resource = towers[randi() % towers.size()]
+		var tid: String = tower_res.tower_id
+		result[tid] = result.get(tid, 0) + 1
+	# 批量发放碎片
+	for tid: String in result:
+		CollectionManager.add_fragments(tid, result[tid])
+	return result
 
-## 随机碎片购买结果展示（带品质标签）
-func _show_frag_reward(tower_res: Resource, count: int) -> void:
-	var emoji: String  = str(tower_res.get("tower_emoji"))  if tower_res.get("tower_emoji")  else "🏆"
-	var dname: String  = TowerResourceRegistry.tr_tower_name(tower_res) if tower_res else tr("UI_BATTLE_TAB_TOWER")
-	var rarity: int    = int(tower_res.get("rarity")) if tower_res.get("rarity") != null else 0
+## 随机碎片购买结果展示（显示每个炮台获得的碎片数量）
+func _show_frag_reward(frag_result: Dictionary, rarity: int) -> void:
+	if frag_result.is_empty():
+		return
 	var rarity_labels: Array[String] = [tr("UI_RARITY_WHITE"), tr("UI_RARITY_GREEN"), tr("UI_RARITY_BLUE"), tr("UI_RARITY_PURPLE"), tr("UI_RARITY_ORANGE")]
 	var rarity_str: String = rarity_labels[clampi(rarity, 0, 4)]
-	_show_alert(tr("UI_SHOP_FRAG_REWARD") % [emoji, dname, rarity_str, count])
+	var lines: String = tr("UI_SHOP_FRAG_REWARD_TITLE") % rarity_str
+	for tid: String in frag_result:
+		var tname: String = TowerResourceRegistry.get_tower_display_name(tid, tid)
+		lines += "\n🧩 %s ×%d" % [tname, frag_result[tid]]
+	_show_alert(lines)
 
 # ── 刷新所有卡片状态 ──────────────────────────────────────────────────
 func _refresh_all_cards() -> void:
 	for state in _card_states:
 		var pkg: Dictionary  = state["pkg"]
-		var buy_btn: Button  = state["buy_btn"]
 		var count_lbl: Label = state["count_lbl"]
+		var card: Control    = state.get("card")
 		var buy_count: int   = UserManager.get_purchase_count(pkg["id"])
 		var limit: int       = pkg.get("purchase_limit", 0)
 		var sold_out: bool   = (limit > 0 and buy_count >= limit)
-		if sold_out:
-			buy_btn.text     = tr("UI_SHOP_PURCHASED") if limit == 1 else tr("UI_SHOP_SOLD_OUT")
-			buy_btn.disabled = true
-			buy_btn.modulate = Color(1, 1, 1, 1)
+		var is_monthly_active: bool = (
+			pkg.get("rewards", {}).get("monthly_card", false)
+			and UserManager.is_monthly_card_active()
+		)
+		if (sold_out or is_monthly_active) and card and is_instance_valid(card):
+			card.modulate = Color(0.6, 0.6, 0.6, 0.7)
 		_update_count_label(count_lbl, buy_count, limit)
 
 # ── 确认 / 提示弹窗 ───────────────────────────────────────────────────

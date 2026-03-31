@@ -86,6 +86,29 @@ const UPGRADE_PATHS: Array[String] = [
 
 var _effect_entries: Array[Dictionary] = []
 
+## 资源缓存（启动时预加载，避免切分类时重复 load）
+static var _enemy_cache: Array = []
+static var _upgrade_cache: Array = []
+static var _tower_cache: Array = []
+static var _cache_loaded: bool = false
+
+## 预加载所有指南数据到缓存（由 HomeScene 启动时调用）
+static func preload_guide_data() -> void:
+	if _cache_loaded:
+		return
+	_enemy_cache.clear()
+	for path in ENEMY_PATHS:
+		var res = load(path)
+		if res:
+			_enemy_cache.append(res)
+	_upgrade_cache.clear()
+	for path in UPGRADE_PATHS:
+		var res = load(path)
+		if res:
+			_upgrade_cache.append(res)
+	_tower_cache = TowerResourceRegistry.get_all_resources().duplicate()
+	_cache_loaded = true
+
 var _in_battle: bool = false
 var _current_main_tab: int = 0  # 0=设置, 1=指南
 var _current_guide_category: int = 0
@@ -360,8 +383,9 @@ func _switch_guide_category(cat: int) -> void:
 ## ── 敌人 ──
 
 func _load_enemies() -> void:
-	for path in ENEMY_PATHS:
-		var res = load(path)
+	if _enemy_cache.is_empty():
+		preload_guide_data()
+	for res in _enemy_cache:
 		if res is EnemyData:
 			var data: EnemyData = res
 			_add_grid_item(data.display_emoji, TowerResourceRegistry.tr_enemy_name(data), func(): _show_enemy_detail(data))
@@ -449,8 +473,9 @@ func _show_hero_detail(td: TowerCollectionData) -> void:
 ## ── 升级强化 ──
 
 func _load_upgrades() -> void:
-	for path in UPGRADE_PATHS:
-		var res = load(path)
+	if _upgrade_cache.is_empty():
+		preload_guide_data()
+	for res in _upgrade_cache:
 		if res is GlobalUpgradeData:
 			var data: GlobalUpgradeData = res
 			var rarity_emojis: Array[String] = ["⬜", "🟢", "🔵", "🟣", "🟠"]

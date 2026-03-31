@@ -1,5 +1,6 @@
 extends Node
 
+
 ## 战斗场景编排器（Orchestrator）
 ## 协调 6 个子系统，管理 HUD、波次流程、存档恢复、地图视觉
 ## 子系统：GlobalUpgradeSystem, GameEndFlow, HeroSystem, TowerCardPanel, ItemPanel, TowerUpgradePanel
@@ -57,8 +58,8 @@ var _tower_upgrade_panel:   Node = null
 # ── 对象池 ────────────────────────────────────────────────────────────────
 var _bullet_pool: ObjectPool = null
 
-# ── 试用炮台追踪 ──────────────────────────────────────────────────────────
-var _trial_tower_ids: Array[String] = []  # 本局已试用的炮台 tower_id
+# ── 临时炮台追踪 ──────────────────────────────────────────────────────────
+var _temp_tower_ids: Array[String] = []  # 本局已使用的临时炮台 tower_id
 
 
 # ══════════════════════════════════════════════════════════════════════════
@@ -172,7 +173,7 @@ func _create_subsystems() -> void:
 	_game_end_flow.set_script(gef_script)
 	add_child(_game_end_flow)
 	_game_end_flow.init(self, wave_manager, speed_btn, wave_label, _disconnect_signals)
-	_game_end_flow.game_ended_signal.connect(_on_game_ended_for_trial)
+	_game_end_flow.game_ended_signal.connect(_on_game_ended_for_temp)
 	_game_end_flow.endless_entered.connect(_on_endless_entered)
 	_game_end_flow.request_reconnect_signals.connect(_reconnect_signals)
 
@@ -208,7 +209,7 @@ func _create_subsystems() -> void:
 	_item_panel.set_script(ip_script)
 	add_child(_item_panel)
 	_item_panel.init(item_hbox, self, bottom_panel)
-	_item_panel.trial_tower_selected.connect(_on_trial_tower_selected)
+	_item_panel.temp_tower_selected.connect(_on_temp_tower_selected)
 
 	# ── TowerUpgradePanel ────────────────────────────────────────────
 	var tup_script = load("res://scenes/battle/TowerUpgradePanel.gd")
@@ -326,11 +327,20 @@ func _on_hp_changed(new_hp: int) -> void:
 		elif not _game_ended and not _game_end_flow.is_revive_pending():
 			_game_end_flow.on_game_over()
 
+var _gold_refresh_pending: bool = false
+
 func _on_gold_changed(new_gold: int) -> void:
 	gold_label.text = "%d" % new_gold
-	_refresh_card_affordability()
 	if _upgrade_panel.visible and is_instance_valid(_tower_upgrade_panel.get_active_tower()):
 		_upgrade_panel_dirty = true
+	# 节流：不立即刷新卡牌可购买性，延迟到下一帧（敌人批量死亡时避免多次刷新）
+	if not _gold_refresh_pending:
+		_gold_refresh_pending = true
+		call_deferred("_deferred_gold_refresh")
+
+func _deferred_gold_refresh() -> void:
+	_gold_refresh_pending = false
+	_refresh_card_affordability()
 
 func _refresh_displays() -> void:
 	hp_label.text   = "%d" % GameManager.player_life
@@ -368,6 +378,8 @@ func _on_wave_started(wave_num: int) -> void:
 func _on_wave_cleared(wave_num: int) -> void:
 	if is_instance_valid(_tutorial_guide):
 		_tutorial_guide.notify_wave_cleared(wave_num)
+	# 清除地鼠地洞
+	GameManager.clear_burrow_holes()
 
 func _on_victory() -> void:
 	_game_end_flow.on_victory()
@@ -480,21 +492,29 @@ func _on_hero_sell_requested(tower: Area2D, refund: int, is_hero: bool) -> void:
 	_tower_upgrade_panel._show_sell_confirm(tower, refund, is_hero)
 
 
-## ── 试用炮台 ────────────────────────────────────────────────────────
+## ── 临时炮台 ────────────────────────────────────────────────────────
 
-func _on_trial_tower_selected(tower_data: Resource) -> void:
+func _on_temp_tower_selected(tower_data: Resource, hero_config: Dictionary) -> void:
 	var td := tower_data as TowerCollectionData
 	if not td:
 		return
-	# 记录试用 ID
-	if td.tower_id not in _trial_tower_ids:
-		_trial_tower_ids.append(td.tower_id)
+	# 记录临时炮台 ID
+	if td.tower_id not in _temp_tower_ids:
+		_temp_tower_ids.append(td.tower_id)
 	# 临时添加到炮台栏（放置费用为 0）
-	_add_trial_tower_card(td)
+	_add_temp_tower_card(td, hero_config)
 
 
-func _add_trial_tower_card(td: TowerCollectionData) -> void:
-	# 在 tower_hbox 中添加一个带"试用"标记的炮台卡片
+func _add_temp_tower_card(td: TowerCollectionData, hero_config: Dictionary) -> void:
+	var is_hero: bool = hero_config.get("is_hero", false)
+	var hero_level: int = int(hero_config.get("hero_level", 0))
+	var hero_directions: Array = hero_config.get("hero_directions", [])
+
+	# 构建显示名
+	var display_name: String = TowerResourceRegistry.tr_tower_name(td)
+	if is_hero and hero_level > 0:
+		display_name += tr("UI_TEMP_HERO_SUFFIX") + " Lv%d" % hero_level
+
 	var card := VBoxContainer.new()
 	card.custom_minimum_size = Vector2(100, 0)
 	card.mouse_filter = Control.MOUSE_FILTER_PASS
@@ -524,16 +544,16 @@ func _add_trial_tower_card(td: TowerCollectionData) -> void:
 
 	# 名称
 	var name_lbl := Label.new()
-	name_lbl.text = TowerResourceRegistry.tr_tower_name(td)
-	name_lbl.add_theme_font_size_override("font_size", 20)
+	name_lbl.text = display_name
+	name_lbl.add_theme_font_size_override("font_size", 18)
 	name_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	name_lbl.clip_text = true
 	name_lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	card.add_child(name_lbl)
 
-	# "试用" 标记
+	# "临时" 标记
 	var badge := Label.new()
-	badge.text = "🎟️ " + tr("UI_TRIAL_BADGE")
+	badge.text = tr("UI_TEMP_BADGE")
 	badge.add_theme_font_size_override("font_size", 18)
 	badge.add_theme_color_override("font_color", Color(1.0, 0.85, 0.2))
 	badge.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -542,7 +562,7 @@ func _add_trial_tower_card(td: TowerCollectionData) -> void:
 
 	# 免费放置
 	var cost_lbl := Label.new()
-	cost_lbl.text = tr("UI_TRIAL_FREE_PLACE")
+	cost_lbl.text = tr("UI_TEMP_FREE_PLACE")
 	cost_lbl.name = "CostLbl"
 	cost_lbl.add_theme_font_size_override("font_size", 20)
 	cost_lbl.add_theme_color_override("font_color", Color(0.3, 1.0, 0.4))
@@ -550,8 +570,12 @@ func _add_trial_tower_card(td: TowerCollectionData) -> void:
 	cost_lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	card.add_child(cost_lbl)
 
+	# 保存英雄配置到 meta，放置后可读取
+	card.set_meta("hero_config", hero_config)
+
 	# 拖拽放置（免费，cost=0）
 	var cap := td
+	var cap_hero_config := hero_config
 	card.gui_input.connect(func(e: InputEvent) -> void:
 		if e is InputEventMouseButton and e.button_index == MOUSE_BUTTON_LEFT:
 			if e.pressed:
@@ -559,6 +583,7 @@ func _add_trial_tower_card(td: TowerCollectionData) -> void:
 				card.set_meta("press_pos", e.global_position)
 				card.set_meta("dragging", false)
 				card.set_meta("locked_cost", 0)
+				card.set_meta("temp_hero_config", cap_hero_config)
 			else:
 				if card.get_meta("dragging", false):
 					build_manager.release_drag()
@@ -579,6 +604,7 @@ func _add_trial_tower_card(td: TowerCollectionData) -> void:
 				card.set_meta("press_pos", e.position)
 				card.set_meta("dragging", false)
 				card.set_meta("locked_cost", 0)
+				card.set_meta("temp_hero_config", cap_hero_config)
 			else:
 				if card.get_meta("dragging", false):
 					build_manager.release_drag()
@@ -613,9 +639,11 @@ func _on_treasure_killed() -> void:
 	# 随机掉落奖励
 	var roll: float = randf()
 	if roll < 0.30:
-		# 30% 试用券
-		UserManager.add_item("trial_ticket", 1)
-		_show_treasure_reward("🎟️ " + tr("ITEM_TRIAL_TICKET") + " ×1")
+		# 30% 随机临时炮台
+		var temp_entry: Dictionary = TempTowerGenerator.generate_random()
+		UserManager.add_temp_tower(temp_entry)
+		var temp_name: String = TowerResourceRegistry.get_temp_tower_display_name(temp_entry)
+		_show_treasure_reward("🏗️ " + temp_name)
 	elif roll < 0.60:
 		# 30% 随机紫碎片 ×5
 		var by_rarity: Dictionary = TowerResourceRegistry.get_towers_by_rarity()
@@ -666,23 +694,22 @@ func _show_treasure_reward(text: String) -> void:
 	tw.tween_callback(lbl.queue_free)
 
 
-func _on_game_ended_for_trial() -> void:
+func _on_game_ended_for_temp() -> void:
 	_game_ended = true
-	call_deferred("_show_trial_end_popup")
+	call_deferred("_show_temp_end_popup")
 
 
-func _show_trial_end_popup() -> void:
-	if _trial_tower_ids.is_empty():
+func _show_temp_end_popup() -> void:
+	if _temp_tower_ids.is_empty():
 		return
-	# 延迟显示（等胜利/失败弹窗关闭后再弹）
 	await get_tree().create_timer(0.5).timeout
 	if not is_inside_tree():
 		return
 	var dlg := ConfirmationDialog.new()
-	dlg.title = tr("UI_TRIAL_END_TITLE")
-	dlg.dialog_text = tr("UI_TRIAL_END_MSG")
-	dlg.ok_button_text = tr("UI_TRIAL_GO_SHOP")
-	dlg.cancel_button_text = tr("UI_TRIAL_LATER")
+	dlg.title = tr("UI_TEMP_END_TITLE")
+	dlg.dialog_text = tr("UI_TEMP_END_MSG")
+	dlg.ok_button_text = tr("UI_TEMP_GO_SHOP")
+	dlg.cancel_button_text = tr("UI_TEMP_LATER")
 	dlg.confirmed.connect(func():
 		dlg.queue_free()
 		GameManager.challenge_mode = false
@@ -701,6 +728,16 @@ func _on_tower_sold(tower: Area2D) -> void:
 	if td and td.is_hero:
 		_hero_system.on_hero_sold()
 	_tower_upgrade_panel.cleanup_free_owners_for(tower)
+	# 陷阱售出时清除附近地洞
+	if td and td.place_on_path_only:
+		var sell_pos: Vector2 = tower.global_position
+		var to_remove: Array = []
+		for hole in GameManager.burrow_holes:
+			if is_instance_valid(hole) and hole.global_position.distance_to(sell_pos) < 200.0:
+				to_remove.append(hole)
+		for hole in to_remove:
+			GameManager.burrow_holes.erase(hole)
+			hole.queue_free()
 
 
 func _refresh_card_affordability() -> void:

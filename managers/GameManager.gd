@@ -15,6 +15,15 @@ const MAX_CARRY_OUT_GOLD: int = 2000
 
 var gold: int = 600
 
+## 地鼠地洞节点列表（所有地鼠共享，波次结束时清空）
+var burrow_holes: Array = []
+
+func clear_burrow_holes() -> void:
+	for hole in burrow_holes:
+		if is_instance_valid(hole):
+			hole.queue_free()
+	burrow_holes.clear()
+
 ## 地图测试模式：非空时 BattleScene 从此路径加载 JSON 自定义地图，用完即清空
 var custom_map_path: String = ""
 

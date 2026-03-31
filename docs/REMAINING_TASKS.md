@@ -1,10 +1,11 @@
 # 阿福守农场 — 剩余任务清单
 
 ## 高优先级
+- [x] 临时炮台系统（替代试用券：TempTowerGenerator + 战局购买60💎 + 商店 + 每周碎片商店 + 兵工厂道具栏）
 - [ ] 翻译最终补全（200+ 条）
   - 100+ GlobalUpgradeData display_name/description
   - 60 TowerUpgradePath path_name
-  - 300 tier_names/tier_effects  
+  - 300 tier_names/tier_effects
   - 设置面板 .tscn 按钮文本残留
 
 ## 中优先级
