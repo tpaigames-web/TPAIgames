@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://map03"]
 
-[ext_resource type="Texture2D" uid="uid://ca8qrrgqlfgr8" path="res://assets/sprites/background/Map_01.png" id="1_33axt"]
+[ext_resource type="Texture2D" uid="uid://ddcghsxba8g54" path="res://assets/sprites/background/Map_1-23.png" id="1_4gy2k"]
 [ext_resource type="Script" uid="uid://b6lxh6i8rkbkb" path="res://map/GoalArea.gd" id="3_goalarea"]
 
 [sub_resource type="GDScript" id="GDScript_07vl2"]
@@ -43,7 +43,7 @@ script = SubResource("GDScript_07vl2")
 [node name="Background" type="Sprite2D" parent="." unique_id=98173142]
 z_index = -10
 scale = Vector2(0.70312494, 0.69767433)
-texture = ExtResource("1_33axt")
+texture = ExtResource("1_4gy2k")
 centered = false
 
 [node name="Path2D" type="Path2D" parent="." unique_id=1408000179]

@@ -106,7 +106,8 @@ func deal_damage(source_info: Dictionary, target: Area2D,
 
 
 ## ── 伤害数字显示 ────────────────────────────────────────────────────────
-const MAX_DAMAGE_LABELS: int = 30   ## 同时最大伤害数字节点数
+## 同时最大伤害数字节点数（低画质直接关闭，不需要限流）
+var MAX_DAMAGE_LABELS: int = 30
 var _active_damage_labels: int = 0
 
 func _show_damage_number(target: Area2D, dmg: int, color: Color,

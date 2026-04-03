@@ -329,15 +329,9 @@ func _on_claim_pending_pressed() -> void:
 		_show_simple_dialog(tr("UI_CHEST_SLOTS_FULL"), tr("UI_CHEST_SLOTS_FULL_MSG"))
 
 
-func _show_simple_dialog(title_text: String, body_text: String) -> void:
-	var dlg := AcceptDialog.new()
-	dlg.title = title_text
-	dlg.dialog_text = body_text
-	dlg.get_label().add_theme_font_size_override("font_size", 28)
-	dlg.get_ok_button().add_theme_font_size_override("font_size", 26)
-	add_child(dlg)
-	dlg.popup_centered()
-	dlg.confirmed.connect(func(): dlg.queue_free())
+func _show_simple_dialog(_title_text: String, body_text: String) -> void:
+	var dlg := ConfirmDialog.show_dialog(self, body_text, tr("UI_SHOP_OK"), tr("UI_SHOP_OK"))
+	dlg.hide_cancel()
 
 
 # ── 木宝箱限时免费 ───────────────────────────────────────────────────

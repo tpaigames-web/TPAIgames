@@ -50,20 +50,28 @@ func get_entries() -> Array:
 
 func _build_tower_cards() -> void:
 	_tower_card_entries.clear()
+	print("[TowerCardPanel] build_cards: day=%d, test_mode=%s, tower_hbox=%s" % [GameManager.current_day, str(GameManager.test_mode), str(_tower_hbox)])
+	print("[TowerCardPanel] TOWER_RESOURCE_PATHS count: %d" % TowerResourceRegistry.TOWER_RESOURCE_PATHS.size())
+	print("[TowerCardPanel] unlocked_towers: %s" % str(CollectionManager.unlocked_towers))
 	for path in TowerResourceRegistry.TOWER_RESOURCE_PATHS:
 		var data: Resource = load(path)
 		if data == null:
+			print("[TowerCardPanel] SKIP: load failed for %s" % path)
 			continue
 		# 教学关只显示指定的 4 个炮台
 		if GameManager.current_day == 0 and not GameManager.test_mode:
 			if data.tower_id not in TUTORIAL_TOWERS:
+				print("[TowerCardPanel] SKIP tutorial filter: %s" % data.tower_id)
 				continue
 		# 测试模式下显示所有炮台，否则只显示已解锁（status=2）的
 		elif not GameManager.test_mode and CollectionManager.get_tower_status(data.tower_id) != 2:
+			print("[TowerCardPanel] SKIP not unlocked: %s status=%d" % [data.tower_id, CollectionManager.get_tower_status(data.tower_id)])
 			continue
+		print("[TowerCardPanel] ADD card: %s" % data.tower_id)
 		var card: VBoxContainer = _make_tower_card(data)
 		_tower_hbox.add_child(card)
 		_tower_card_entries.append({card = card, data = data})
+	print("[TowerCardPanel] Total cards built: %d" % _tower_card_entries.size())
 	_refresh_card_affordability()
 	# 测试模式：在炮台列表末尾追加敌人刷新按钮
 	if GameManager.test_mode:

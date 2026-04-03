@@ -15,7 +15,10 @@ var _vp_size: Vector2 = Vector2(1080, 1920)
 
 
 ## 创建并附加到父节点（插入到 bg_node 后面）
+## 低画质时不创建（直接返回 null 节省 43 个节点）
 static func create_and_attach(parent: Control, bg_node: Node = null) -> BgFxLayer:
+	if not SettingsManager.particles_enabled:
+		return null
 	var fx := BgFxLayer.new()
 	fx.name = "BgFxLayer"
 	fx.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)

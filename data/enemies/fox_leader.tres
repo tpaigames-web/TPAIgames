@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="EnemyData" format=3 uid="uid://bjgbhscjcwlyr"]
 
 [ext_resource type="Script" uid="uid://dapicbkaarem1" path="res://enemy/enemy_data.gd" id="1_foxl"]
+[ext_resource type="SpriteFrames" path="res://data/enemies/fox_frames.tres" id="fox_frames"]
 
 [resource]
 script = ExtResource("1_foxl")
@@ -10,7 +11,9 @@ display_emoji = "🦊"
 max_hp = 300
 move_speed = 190.0
 armor = 1
+sprite_frames = ExtResource("fox_frames")
 sprite_display_size = 120.0
+sprite_rotation_offset = -90.0
 damage_to_player = 3
 gold_reward = 24
 xp_reward = 24

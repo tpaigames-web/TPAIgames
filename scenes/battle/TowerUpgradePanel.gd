@@ -14,7 +14,7 @@ var _active_tower: Area2D = null
 ## key: "tower_id:path_idx"  →  占用该免费配额的炮台实例（Area2D）
 ## 若对应实例已失效（被售出），视为未占用
 var _free_upgrade_owners: Dictionary = {}
-var _info_dialog: AcceptDialog = null
+var _info_dialog: Node = null
 
 # UI refs — 通过 init() 注入
 var _hud: CanvasLayer
@@ -196,7 +196,9 @@ func _populate_upgrade_panel(tower: Area2D) -> void:
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	title.add_theme_font_size_override("font_size", 28)
 	header.add_child(title)
-	var sell_val := int(tower.stat_total_spent * 0.65)
+	# 临时炮台免费放置，售出价为 0（防止刷金漏洞）
+	var is_temp: bool = tower.get_meta("is_temp_tower", false)
+	var sell_val: int = 0 if is_temp else int(tower.stat_total_spent * 0.65)
 	var sell_btn := Button.new()
 	sell_btn.text = tr("UI_SELL_BTN") % sell_val
 	sell_btn.add_theme_font_size_override("font_size", 24)
@@ -345,17 +347,11 @@ func _show_tower_info(tower: Area2D) -> void:
 	# 关闭旧的详情弹窗
 	if is_instance_valid(_info_dialog):
 		_info_dialog.queue_free()
-	var dlg := AcceptDialog.new()
-	dlg.title = tr("UI_INFO_TITLE") % [data.tower_emoji, TowerResourceRegistry.tr_tower_name(data)]
-	dlg.dialog_text = text
-	dlg.exclusive = false   # 不阻止其他 UI 交互
-	add_child(dlg)
-	dlg.get_label().add_theme_font_size_override("font_size", 24)
-	dlg.get_ok_button().add_theme_font_size_override("font_size", 26)
+	var dlg := ConfirmDialog.show_dialog(self, text, tr("UI_SHOP_OK"), tr("UI_SHOP_OK"))
+	dlg.hide_cancel()
 	dlg.confirmed.connect(func(): _info_dialog = null)
 	dlg.canceled.connect(func(): _info_dialog = null)
 	_info_dialog = dlg
-	dlg.popup_centered()
 
 # ── 升级行构建 ───────────────────────────────────────────────────────────
 

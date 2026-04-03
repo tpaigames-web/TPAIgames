@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://d1v06w3dou4yn"]
+
+[ext_resource type="Script" uid="uid://8c73n8oi3bkk" path="res://map/path/PathTile.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://bungvql1hcpo7" path="res://map/path/path_straight_v2.png" id="2_tex"]
+
+[node name="PathStraightV2" type="Area2D" unique_id=2132646475]
+script = ExtResource("1_script")
+scale = Vector2(0.35, 0.35)
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=511089389]
+texture = ExtResource("2_tex")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=360813107]
+polygon = PackedVector2Array(-106, -211, 111, -209, 111, 209, -102, 209)

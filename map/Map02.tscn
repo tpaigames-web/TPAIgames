@@ -1,7 +1,15 @@
 [gd_scene format=3 uid="uid://map02"]
 
-[ext_resource type="Texture2D" uid="uid://ca8qrrgqlfgr8" path="res://assets/sprites/background/Map_01.png" id="1_33axt"]
+[ext_resource type="PackedScene" uid="uid://brd47jtu65w6o" path="res://map/path/PathStraightV.tscn" id="2_1155q"]
+[ext_resource type="PackedScene" uid="uid://ds4g6gj1ktidv" path="res://map/path/Home.tscn" id="2_gpeci"]
 [ext_resource type="Script" uid="uid://b6lxh6i8rkbkb" path="res://map/GoalArea.gd" id="3_goalarea"]
+[ext_resource type="PackedScene" uid="uid://cuuyppdvebiln" path="res://map/path/PathCross.tscn" id="4_qfr68"]
+[ext_resource type="PackedScene" uid="uid://bwyol04s72i0o" path="res://map/path/PathCornerTR.tscn" id="5_2bs1u"]
+[ext_resource type="PackedScene" uid="uid://cw65x3ke834u5" path="res://map/path/PathCornerTL.tscn" id="6_0b1r8"]
+[ext_resource type="PackedScene" uid="uid://qjhr5i4ysvmh" path="res://map/path/PathCornerBL.tscn" id="7_hwij4"]
+[ext_resource type="PackedScene" uid="uid://cq1wf7d5kfg6q" path="res://map/path/PathCornerBR.tscn" id="8_05qm4"]
+[ext_resource type="PackedScene" uid="uid://ce5bxmpn5d8kt" path="res://map/path/PathStraightH.tscn" id="9_5pr8j"]
+[ext_resource type="PackedScene" uid="uid://cq6eb4lw40j3" path="res://map/decor/static/Pond.tscn" id="10_qfr68"]
 
 [sub_resource type="GDScript" id="GDScript_07vl2"]
 script/source = "extends Node2D
@@ -28,14 +36,14 @@ func _unhandled_input(_event):
 	pass
 "
 
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ph8s5"]
+load_path = "res://.godot/imported/Map_1-23.png-84d21644a0ace808e369b5604856d18d.ctex"
+
 [sub_resource type="Curve2D" id="Curve2D_33axt"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 860, -26, 0, 0, 0, 0, 860, 78, 0, 0, 0, 0, 859, 184, 0, 0, 0, 0, 851, 219, 0, 0, 0, 0, 803, 230, 0, 0, 0, 0, 596, 219, 0, 0, 0, 0, 552, 240, 0, 0, 0, 0, 550, 375, 0, 0, 0, 0, 565, 408, 0, 0, 0, 0, 824, 411, 0, 0, 0, 0, 857, 426, 0, 0, 0, 0, 864, 457, 0, 0, 0, 0, 865, 544, 0, 0, 0, 0, 851, 569, 0, 0, 0, 0, 808, 572, 0, 0, 0, 0, 427, 570, 0, 0, 0, 0, 395, 567, 0, 0, 0, 0, 379, 529, 0, 0, 0, 0, 376, 342, 0, 0, 0, 0, 354, 303, 0, 0, 0, 0, 210, 295, 0, 0, 0, 0, 188, 309, 0, 0, 0, 0, 186, 346, 0, 0, 0, 0, 193, 714, 0, 0, 0, 0, 207, 739, 0, 0, 0, 0, 852, 743, 0, 0, 0, 0, 868, 774, 0, 0, 0, 0, 870, 895, 0, 0, 0, 0, 842, 922, 0, 0, 0, 0, 356, 918, 0, 0, 0, 0, 318, 927, 0, 0, 0, 0, 310, 960, 0, 0, 0, 0, 311, 1063, 0, 0, 0, 0, 329, 1098, 0, 0, 0, 0, 532, 1099, 0, 0, 0, 0, 546, 1129, 0, 0, 0, 0, 548, 1392)
+"points": PackedVector2Array(0, 0, 0, 0, 272, -68, 0, 0, 0, 0, 287, 294, 0, 0, 0, 0, 349, 351, 0, 0, 0, 0, 746, 350, 0, 0, 0, 0, 814, 416, 0, 0, 0, 0, 814, 907, 0, 0, 0, 0, 353, 912, 0, 0, 0, 0, 284, 851, 0, 0, 0, 0, 279.20132, 696.827, 0, 0, 0, 0, 323.82944, 646.41376, 0, 0, 0, 0, 482.5071, 647.24023, 0, 0, 0, 0, 536.2261, 700.9592, 0, 0, 0, 0, 544, 1298)
 }
-point_count = 37
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_goal"]
-radius = 80.0
+point_count = 13
 
 [node name="Map02" type="Node2D" unique_id=936421581]
 script = SubResource("GDScript_07vl2")
@@ -43,7 +51,7 @@ script = SubResource("GDScript_07vl2")
 [node name="Background" type="Sprite2D" parent="." unique_id=98173142]
 z_index = -10
 scale = Vector2(0.70312494, 0.69767433)
-texture = ExtResource("1_33axt")
+texture = SubResource("CompressedTexture2D_ph8s5")
 centered = false
 
 [node name="Path2D" type="Path2D" parent="." unique_id=1408000179]
@@ -65,11 +73,6 @@ collision_mask = 2
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="BlockArea" unique_id=532622452]
 position = Vector2(13, 19)
-polygon = PackedVector2Array(-7, 1777, 683, 1779, 668, 1529, 814, 1527, 824, 1582, 888, 1584, 892, 1623, 769, 1633, 769, 1697, 860, 1718, 920, 1671, 970, 1548, 1001, 1539, 1000, 1235, 835, 1237, 835, 1182, 954, 1162, 938, 1070, 606, 1061, 605, 1153, 766, 1173, 768, 1237, 582, 1215, 493, 1226, 436, 1221, 479, 1134, 406, 1105, 277, 1164, 211, 1132, 123, 1139, 48, 1190, 25, 1277, 16, 1353, 18, 1435, -10, 1511)
-
-[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="BlockArea" unique_id=307339523]
-position = Vector2(13, 19)
-polygon = PackedVector2Array(-12, 545, 81, 484, 59, 380, 112, 290, 160, 263, 144, 161, 181, 118, 226, 150, 212, 178, 249, 179, 265, 152, 310, 139, 337, 110, 368, 126, 357, 147, 386, 145, 421, 134, 482, 71, 516, 110, 515, 134, 531, 158, 579, 142, 577, 115, 595, 115, 597, 139, 622, 134, 634, 108, 648, 144, 663, 126, 700, 112, 755, 97, 798, 57, 800, -19, 896, -25, 887, 62, 998, 102, 1003, 147, 969, 145, 964, 194, 985, 261, 1035, 350, 1009, 430, 991, 475, 1064, 503, 1067, -21, -19, -24)
 
 [node name="TowerLayer" type="Node2D" parent="." unique_id=89830414]
 
@@ -83,6 +86,41 @@ collision_layer = 0
 collision_mask = 8
 script = ExtResource("3_goalarea")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="GoalArea" unique_id=2107801548]
-position = Vector2(-32, 12)
-shape = SubResource("CircleShape2D_goal")
+[node name="PathStraightV" parent="." unique_id=1896341 instance=ExtResource("2_1155q")]
+position = Vector2(541, 1161)
+
+[node name="Home" parent="." unique_id=736857870 instance=ExtResource("2_gpeci")]
+position = Vector2(568, 1420)
+
+[node name="PathCross" parent="." unique_id=1599340110 instance=ExtResource("4_qfr68")]
+position = Vector2(544, 911)
+
+[node name="PathCornerTR" parent="." unique_id=1567148728 instance=ExtResource("5_2bs1u")]
+position = Vector2(759, 859)
+
+[node name="PathCornerTL" parent="." unique_id=2074512084 instance=ExtResource("6_0b1r8")]
+position = Vector2(327, 854)
+
+[node name="PathCornerBL" parent="." unique_id=631729959 instance=ExtResource("7_hwij4")]
+position = Vector2(488, 694)
+
+[node name="PathCornerBR" parent="." unique_id=99563095 instance=ExtResource("8_05qm4")]
+position = Vector2(332, 690)
+
+[node name="PathStraightV2" parent="." unique_id=2067707204 instance=ExtResource("2_1155q")]
+position = Vector2(815, 632)
+
+[node name="PathCornerBL2" parent="." unique_id=458632756 instance=ExtResource("7_hwij4")]
+position = Vector2(763, 403)
+
+[node name="PathStraightH" parent="." unique_id=653631579 instance=ExtResource("9_5pr8j")]
+position = Vector2(543, 347)
+
+[node name="PathCornerTL2" parent="." unique_id=111341638 instance=ExtResource("6_0b1r8")]
+position = Vector2(324, 291)
+
+[node name="PathStraightV3" parent="." unique_id=1020009048 instance=ExtResource("2_1155q")]
+position = Vector2(270, 70)
+
+[node name="Pond" parent="." unique_id=1499760856 instance=ExtResource("10_qfr68")]
+position = Vector2(182, 1229)

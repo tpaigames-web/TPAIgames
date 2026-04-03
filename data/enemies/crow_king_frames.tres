@@ -1,0 +1,26 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://crow_king_sprite_frames"]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/enemy/Crow King/CrowKing_01.png" id="ck1"]
+[ext_resource type="Texture2D" path="res://assets/sprites/enemy/Crow King/CrowKing_02.png" id="ck2"]
+[ext_resource type="Texture2D" path="res://assets/sprites/enemy/Crow King/CrowKing_03.png" id="ck3"]
+[ext_resource type="Texture2D" path="res://assets/sprites/enemy/Crow King/CrowKing_04.png" id="ck4"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("ck1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("ck2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("ck3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("ck4")
+}],
+"loop": true,
+"name": &"default",
+"speed": 8.0
+}]

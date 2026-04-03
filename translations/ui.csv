@@ -1,5 +1,6 @@
 keys,zh,en,ms
 UI_SPAWN_TEXT,召唤 +%d,Spawn +%d,Panggil +%d
+UI_DAY_LOCKED,请先通关前面的关卡才能解锁 Day %d,Complete previous levels to unlock Day %d,Selesaikan tahap sebelumnya untuk membuka Day %d
 UI_HOME_BATTLE,战斗,Battle,Pertempuran
 UI_HOME_SHOP,商城,Shop,Kedai
 UI_HOME_ARSENAL,军火库,Arsenal,Gudang Senjata

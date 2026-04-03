@@ -139,7 +139,7 @@ func _on_day_pressed(day_idx: int) -> void:
 	else:
 		var home = get_tree().get_first_node_in_group("home_scene")
 		if home:
-			home.show_coming_soon()
+			home.show_locked(tr("UI_DAY_LOCKED") % day_idx)
 
 
 ## 关卡模式选择（支持所有解锁关卡）

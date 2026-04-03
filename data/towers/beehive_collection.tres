@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://cs8acmmyvm8t5" path="res://data/tower_upgrade_path.gd" id="2_tup"]
 [ext_resource type="PackedScene" uid="uid://bullet_bee" path="res://bullet/BulletBee.tscn" id="3_blt"]
 [ext_resource type="PackedScene" path="res://tower/BeehiveTower.tscn" id="tower_scn"]
+[ext_resource type="Texture2D" path="res://assets/sprites/tower/Beehive/Beehive_01.png" id="beehive_tex"]
 
 [sub_resource type="Resource" id="Path_0"]
 script = ExtResource("2_tup")
@@ -39,6 +40,7 @@ tower_scene = ExtResource("tower_scn")
 tower_id = "beehive"
 display_name = "蜂巢"
 tower_emoji = "🍯"
+base_texture = ExtResource("beehive_tex")
 rarity = 0
 base_damage = 0.0
 attack_speed = 1.0

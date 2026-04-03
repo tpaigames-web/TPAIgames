@@ -1,0 +1,13 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://map/InteractableDecor.gd" id="1_script"]
+
+[node name="Rock" type="Area2D"]
+script = ExtResource("1_script")
+display_emoji = "🪨"
+display_name = "石头"
+remove_cost = 400
+emoji_size = 56
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(-35, -20, 35, -20, 40, 15, -40, 15)

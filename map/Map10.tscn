@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://map10"]
 
-[ext_resource type="Texture2D" uid="uid://ca8qrrgqlfgr8" path="res://assets/sprites/background/Map_01.png" id="1_33axt"]
+[ext_resource type="Texture2D" uid="uid://ca8qrrgqlfgr8" path="res://assets/sprites/background/Map_1-23.png" id="1_33axt"]
 [ext_resource type="Script" uid="uid://b6lxh6i8rkbkb" path="res://map/GoalArea.gd" id="3_goalarea"]
 
 [sub_resource type="GDScript" id="GDScript_07vl2"]

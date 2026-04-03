@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="EnemyData" format=3 uid="uid://cbq2yq6gt1enq"]
 
 [ext_resource type="Script" uid="uid://dapicbkaarem1" path="res://enemy/enemy_data.gd" id="1_aboar"]
-[ext_resource type="SpriteFrames" path="res://data/enemies/boar_frames.tres" id="boar_frames"]
+[ext_resource type="SpriteFrames" path="res://data/enemies/hog_king_frames.tres" id="hog_king_frames"]
 
 [resource]
 script = ExtResource("1_aboar")
@@ -11,7 +11,7 @@ display_emoji = "🐗"
 max_hp = 700
 move_speed = 75.0
 armor = 3
-sprite_frames = ExtResource("boar_frames")
+sprite_frames = ExtResource("hog_king_frames")
 sprite_display_size = 140.0
 sprite_rotation_offset = -90.0
 damage_to_player = 5

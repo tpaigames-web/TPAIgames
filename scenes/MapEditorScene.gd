@@ -586,13 +586,13 @@ func _on_undo() -> void:
 
 # ── 清空 ──────────────────────────────────────────────────────────────
 func _on_clear() -> void:
-	var dlg := ConfirmationDialog.new()
-	dlg.title = "🧹 清空确认"
-	dlg.dialog_text = "清空地图上所有对象和航点？\n此操作可以通过「↩ 撤销」恢复。"
-	dlg.ok_button_text = "清空全部"
-	dlg.cancel_button_text = "取消"
+	var dlg := ConfirmDialog.show_dialog(
+		self,
+		"清空地图上所有对象和航点？\n此操作可以通过「撤销」恢复。",
+		"清空全部",
+		"取消"
+	)
 	dlg.confirmed.connect(func():
-		dlg.queue_free()
 		_push_undo()
 		for obj: PlacedObject in _placed_objects:
 			if is_instance_valid(obj): obj.queue_free()
@@ -602,25 +602,13 @@ func _on_clear() -> void:
 		_wp_drag_idx = -1
 		_rebuild_waypoint_visuals()
 	)
-	dlg.canceled.connect(func(): dlg.queue_free())
-	add_child(dlg)
-	dlg.get_label().add_theme_font_size_override("font_size", 28)
-	dlg.get_ok_button().add_theme_font_size_override("font_size", 26)
-	dlg.get_cancel_button().add_theme_font_size_override("font_size", 26)
-	dlg.popup_centered()
 
 # ── 加载地图 ──────────────────────────────────────────────────────────
 func _on_load() -> void:
 	var paths := MapData.list_saved_maps()
 	if paths.is_empty():
-		var dlg := AcceptDialog.new()
-		dlg.title = "📂 加载地图"
-		dlg.dialog_text = "暂无已保存的地图。\n请先保存一个地图。"
-		dlg.confirmed.connect(func(): dlg.queue_free())
-		add_child(dlg)
-		dlg.get_label().add_theme_font_size_override("font_size", 28)
-		dlg.get_ok_button().add_theme_font_size_override("font_size", 26)
-		dlg.popup_centered()
+		var dlg := ConfirmDialog.show_dialog(self, "暂无已保存的地图。\n请先保存一个地图。", tr("UI_SHOP_OK"), tr("UI_SHOP_OK"))
+		dlg.hide_cancel()
 		return
 
 	# 构建选择面板

@@ -105,6 +105,12 @@ var _shoot_timer: float = 0.0         ## 射击纹理显示剩余时间
 var _is_rotating_tower: bool = false   ## 是否为旋转塔（有 attack_texture）
 @export var shoot_flash_duration: float = 0.15  ## 射击图显示时长（秒）
 
+## 攻击动画循环（播种机等）
+var _attack_anim_enabled: bool = false  ## 是否启用攻击循环动画
+var _attack_anim_timer: float = 0.0     ## 帧切换计时器
+var _attack_anim_frame: int = 0         ## 当前帧 0=idle 1=shoot
+var _attack_texture_ref: Texture2D = null ## attack_texture 缓存引用
+
 ## 游戏内各升级路径当前层数（0=未升级；Arsenal 层数决定免费配额）
 var _in_game_path_levels: Array[int] = [0, 0, 0, 0]
 ## 攻击目标模式：0=第一个 1=靠近 2=强力 3=最后一个
@@ -253,6 +259,8 @@ func apply_tower_data():
 		_is_rotating_tower = td.attack_texture != null
 		_shoot_texture = td.shoot_texture
 		_ready_texture = td.ready_texture
+		_attack_anim_enabled = td.attack_anim_cycle and td.shoot_texture != null
+		_attack_texture_ref = td.attack_texture
 
 		if _is_rotating_tower:
 			# 旋转塔（弓弩等）：攻击层待机/射击在 _attack_spr 切换
@@ -299,7 +307,16 @@ func _auto_scale(spr: Sprite2D) -> void:
 	var sz: Vector2 = spr.texture.get_size()
 	var md: float = maxf(sz.x, sz.y)
 	if md > 0.0:
-		spr.scale = Vector2(100.0 / md, 100.0 / md)
+		spr.scale = Vector2(130.0 / md, 130.0 / md)
+
+
+## 抖动效果（放置、升级等事件触发）
+func shake(intensity: float = 8.0, duration: float = 0.3) -> void:
+	var orig: Vector2 = position
+	var tw := create_tween()
+	for i in 4:
+		tw.tween_property(self, "position", orig + Vector2(randf_range(-intensity, intensity), randf_range(-intensity, intensity)), duration / 8.0)
+		tw.tween_property(self, "position", orig, duration / 8.0)
 
 
 ## 放置预览碰撞检查节流计时器
@@ -335,15 +352,16 @@ func _process(delta):
 	if _ability:
 		_ability.ability_process(delta)
 
-	# 常驻范围圈模式需要持续重绘
-	if SettingsManager and SettingsManager.range_display == 2:
+	# 常驻范围圈：低画质跳过，其他模式只在选中时重绘（不每帧重绘）
+	if SettingsManager and SettingsManager.range_display == 2 and SettingsManager.quality >= 2:
 		queue_redraw()
 
-	# Buff 图标更新（每 0.5 秒刷新一次）
-	_buff_icon_timer += delta
-	if _buff_icon_timer >= 0.5:
-		_buff_icon_timer = 0.0
-		_refresh_buff_icons()
+	# Buff 图标更新（低画质跳过，其他每 1 秒刷新）
+	if SettingsManager.quality > 0:
+		_buff_icon_timer += delta
+		if _buff_icon_timer >= 1.0:
+			_buff_icon_timer = 0.0
+			_refresh_buff_icons()
 
 	# 英雄是被动地形单位，不执行攻击逻辑
 	var _td_hero := tower_data as TowerCollectionData
@@ -403,6 +421,18 @@ func _process(delta):
 	# 旋转塔：攻击图层实时朝向当前目标（图片默认朝上=12点方向，补偿 +PI/2）
 	if _is_rotating_tower and _attack_spr.visible and is_instance_valid(_current_target):
 		_attack_spr.rotation = (_current_target.global_position - global_position).angle() + PI / 2.0
+
+	# 攻击动画循环（播种机等：有目标时 attack_texture ↔ shoot_texture 交替）
+	if _attack_anim_enabled:
+		if is_instance_valid(_current_target) and _shoot_texture and _attack_texture_ref:
+			_attack_anim_timer -= delta
+			if _attack_anim_timer <= 0.0:
+				_attack_anim_timer = 0.2
+				_attack_anim_frame = 1 - _attack_anim_frame
+				_attack_spr.texture = _shoot_texture if _attack_anim_frame == 1 else _attack_texture_ref
+		elif _attack_texture_ref and _attack_spr.texture != _attack_texture_ref:
+			_attack_spr.texture = _attack_texture_ref
+			_attack_anim_frame = 0
 
 	# attack_speed == 0 表示不使用定时攻击（如陷阱型塔由能力脚本自行处理）
 	var _td_atk := tower_data as TowerCollectionData
@@ -979,7 +1009,7 @@ func _draw():
 	else:
 		color = Color(1, 0, 0, 0.4)
 
-	var radius = 50.0
+	var radius: float = 50.0
 	if terrain_radius > 0.0:
 		radius = terrain_radius
 	elif tower_data:

@@ -105,13 +105,19 @@ func _manage_bee_count() -> void:
 		desired = base_bee_count + 1
 
 	# 添加缺少的蜜蜂
+	var had_bees: int = _bees.size()
 	while _bees.size() < desired:
 		_spawn_one_bee(false)
+	# 新蜜蜂出现时蜂巢抖动
+	if _bees.size() > had_bees and tower.has_method("shake"):
+		tower.shake(6.0, 0.25)
 
 	# Path0 T4+: 蜂王
 	var want_king: bool = _lv(0) >= 4
 	if want_king and _bee_king == null:
 		_spawn_one_bee(true)
+		if tower.has_method("shake"):
+			tower.shake(10.0, 0.4)  # 蜂王出现抖动更强
 	elif not want_king and _bee_king != null:
 		_bee_king.queue_free()
 		_bee_king = null

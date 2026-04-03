@@ -157,8 +157,10 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="ProfileArea" type="Control" parent="TopBar" unique_id=1512701590]
-custom_minimum_size = Vector2(400, 100)
+custom_minimum_size = Vector2(450, 150)
 layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 0
 
 [node name="LabelBg" type="TextureRect" parent="TopBar/ProfileArea" unique_id=1469996424]
 layout_mode = 0
@@ -177,18 +179,19 @@ offset_left = 190.0
 offset_top = 79.0
 offset_right = 423.0
 offset_bottom = 155.0
-mouse_filter = 2
+mouse_filter = 1
 theme_override_constants/separation = 5
 
 [node name="NameLabel" type="Label" parent="TopBar/ProfileArea/PlayerInfo" unique_id=525290005]
 layout_mode = 2
+mouse_filter = 2
 theme_override_colors/font_color = Color(0.25, 0.18, 0.12, 1)
 theme_override_font_sizes/font_size = 32
 text = "UI_HOME_GUEST"
 
 [node name="LevelLabel" type="Label" parent="TopBar/ProfileArea/PlayerInfo" unique_id=1979285475]
 layout_mode = 2
-mouse_filter = 0
+mouse_filter = 2
 theme_override_colors/font_color = Color(0.4, 0.3, 0.2, 1)
 theme_override_font_sizes/font_size = 32
 text = "Lv. 1"
@@ -200,18 +203,15 @@ offset_top = 17.0
 offset_right = 190.0
 offset_bottom = 227.1
 mouse_filter = 2
-texture = ExtResource("ui_flag")
 expand_mode = 1
 stretch_mode = 5
 
 [node name="AvatarIcon" type="Label" parent="TopBar/ProfileArea/PlayerAvatar" unique_id=1641764633]
 layout_mode = 0
-offset_left = 69.0
-offset_top = 79.0
-offset_right = 129.0
-offset_bottom = 129.0
-theme_override_font_sizes/font_size = 38
-text = "🧑‍"
+offset_right = 80.0
+offset_bottom = 80.0
+theme_override_font_sizes/font_size = 1
+text = ""
 horizontal_alignment = 1
 vertical_alignment = 1
 

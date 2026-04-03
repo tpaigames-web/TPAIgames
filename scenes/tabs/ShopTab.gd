@@ -867,31 +867,28 @@ func _refresh_all_cards() -> void:
 
 # ── 确认 / 提示弹窗 ───────────────────────────────────────────────────
 func _show_confirm(message: String, on_confirm: Callable) -> void:
-	_pending_action = on_confirm
-	confirm_msg.text = message
-	cancel_btn.show()
-	confirm_btn.text = tr("UI_DIALOG_CONFIRM")
-	confirm_overlay.show()
+	var dlg := ConfirmDialog.show_dialog(
+		self, message,
+		tr("UI_DIALOG_CONFIRM"),
+		tr("UI_DIALOG_CANCEL")
+	)
+	dlg.confirmed.connect(on_confirm)
 
 func _show_alert(message: String) -> void:
-	_pending_action = Callable()
-	confirm_msg.text = message
-	cancel_btn.hide()
-	confirm_btn.text = tr("UI_SHOP_OK")
-	confirm_overlay.show()
+	var dlg := ConfirmDialog.show_dialog(
+		self, message,
+		tr("UI_SHOP_OK"),
+		tr("UI_SHOP_OK")
+	)
+	dlg.hide_cancel()
 
 func _on_confirm_yes() -> void:
-	confirm_overlay.hide()
-	cancel_btn.show()
-	confirm_btn.text = tr("UI_DIALOG_CONFIRM")
 	if _pending_action.is_valid():
 		_pending_action.call()
 	_pending_action = Callable()
 
 func _on_confirm_no() -> void:
-	confirm_overlay.hide()
-	cancel_btn.show()
-	confirm_btn.text = tr("UI_DIALOG_CONFIRM")
+	pass
 	_pending_action = Callable()
 
 func _on_overlay_input(event: InputEvent) -> void:

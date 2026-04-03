@@ -8,15 +8,13 @@
 script/source = "extends Node2D
 
 # ============================================
-# Map01 - BTD6 完全无网格版本
+# Map01 - 模块化地图
 # ============================================
-# 本地图不再负责：
-# - 网格系统
-# - 占格判断
-# - 建造合法性
-#
-# 所有建造逻辑改为：
-# Area2D 碰撞检测模式（BTD6方式）
+# 图层结构:
+# - BackgroundLayer: 地图底图
+# - DecorationLayer: 静态装饰（纯视觉）
+# - RemovableLayer:  可拆卸装饰（占地块，玩家可花金币移除）
+# - GoalLayer:       终点屋子（敌人到达时扣血）
 # ============================================
 
 
@@ -24,7 +22,6 @@ func _ready():
 	pass
 
 
-# 如以后需要地图级点击处理可在这里扩展
 func _unhandled_input(_event):
 	pass
 "
@@ -41,7 +38,9 @@ radius = 80.0
 [node name="Map01" type="Node2D" unique_id=936421581]
 script = SubResource("GDScript_07vl2")
 
-[node name="Background" type="Sprite2D" parent="." unique_id=98173142]
+[node name="BackgroundLayer" type="Node2D" parent="."]
+
+[node name="Background" type="Sprite2D" parent="BackgroundLayer" unique_id=98173142]
 z_index = -10
 scale = Vector2(0.70312494, 0.69767433)
 texture = ExtResource("1_33axt")
@@ -72,21 +71,27 @@ polygon = PackedVector2Array(-7, 1777, 683, 1779, 668, 1529, 814, 1527, 824, 158
 position = Vector2(13, 19)
 polygon = PackedVector2Array(-12, 545, 81, 484, 59, 380, 112, 290, 160, 263, 144, 161, 181, 118, 226, 150, 212, 178, 249, 179, 265, 152, 310, 139, 337, 110, 368, 126, 357, 147, 386, 145, 421, 134, 482, 71, 516, 110, 515, 134, 531, 158, 579, 142, 577, 115, 595, 115, 597, 139, 622, 134, 634, 108, 648, 144, 663, 126, 700, 112, 755, 97, 798, 57, 800, -19, 896, -25, 887, 62, 998, 102, 1003, 147, 969, 145, 964, 194, 985, 261, 1035, 350, 1009, 430, 991, 475, 1064, 503, 1067, -21, -19, -24)
 
-[node name="TowerLayer" type="Node2D" parent="." unique_id=89830414]
+[node name="DecorationLayer" type="Node2D" parent="."]
 
-[node name="EnemyLayer" type="Node2D" parent="." unique_id=92817383]
+[node name="RemovableLayer" type="Node2D" parent="."]
 
-[node name="UILayer" type="CanvasLayer" parent="." unique_id=863810912]
+[node name="DecorLog" parent="RemovableLayer" unique_id=1588318799 instance=ExtResource("3_nrn67")]
+position = Vector2(807, 304)
 
-[node name="GoalArea" type="Area2D" parent="." unique_id=1904182893]
+[node name="GoalLayer" type="Node2D" parent="."]
+
+[node name="GoalArea" type="Area2D" parent="GoalLayer" unique_id=1904182893]
 position = Vector2(580, 1309)
 collision_layer = 0
 collision_mask = 8
 script = ExtResource("3_goalarea")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="GoalArea" unique_id=2107801548]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GoalLayer/GoalArea" unique_id=2107801548]
 position = Vector2(-32, 12)
 shape = SubResource("CircleShape2D_goal")
 
-[node name="DecorLog" parent="." unique_id=1588318799 instance=ExtResource("3_nrn67")]
-position = Vector2(807, 304)
+[node name="TowerLayer" type="Node2D" parent="." unique_id=89830414]
+
+[node name="EnemyLayer" type="Node2D" parent="." unique_id=92817383]
+
+[node name="UILayer" type="CanvasLayer" parent="." unique_id=863810912]

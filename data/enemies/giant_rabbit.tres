@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="EnemyData" format=3 uid="uid://dd2uhqbmb46cf"]
 
 [ext_resource type="Script" uid="uid://dapicbkaarem1" path="res://enemy/enemy_data.gd" id="1_grabbit"]
+[ext_resource type="SpriteFrames" path="res://data/enemies/rabbit_frames.tres" id="rabbit_frames"]
 
 [resource]
 script = ExtResource("1_grabbit")
@@ -9,7 +10,9 @@ display_name = "大兔子"
 display_emoji = "🐇"
 max_hp = 280
 armor = 2
+sprite_frames = ExtResource("rabbit_frames")
 sprite_display_size = 110.0
+sprite_rotation_offset = -90.0
 damage_to_player = 3
 gold_reward = 15
 xp_reward = 15

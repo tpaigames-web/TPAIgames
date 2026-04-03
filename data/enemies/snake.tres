@@ -5,13 +5,14 @@
 
 [resource]
 script = ExtResource("1_snake")
-sprite_frames = ExtResource("2_frames")
 enemy_id = "snake"
 display_name = "毒蛇"
 display_emoji = "🐍"
 max_hp = 90
 armor = 1
-sprite_display_size = 85.0
+sprite_frames = ExtResource("2_frames")
+sprite_display_size = 95.0
+sprite_rotation_offset = -90.0
 damage_to_player = 2
 gold_reward = 9
 xp_reward = 9

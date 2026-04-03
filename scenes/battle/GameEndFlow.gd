@@ -42,15 +42,16 @@ func is_revive_pending() -> bool:
 func offer_revive() -> void:
 	_revive_pending = true
 	Engine.time_scale = 0.0
-	var dlg := ConfirmationDialog.new()
+	var dlg := ConfirmDialog.show_dialog(
+		_battle_scene,
+		tr("UI_REVIVE_DIALOG_MSG"),
+		tr("UI_REVIVE_WATCH_AD"),
+		tr("UI_REVIVE_GIVE_UP"),
+		true
+	)
 	_revive_dlg = dlg
-	dlg.title = tr("UI_REVIVE_TITLE")
-	dlg.dialog_text = tr("UI_REVIVE_DIALOG_MSG")
-	dlg.ok_button_text = tr("UI_REVIVE_WATCH_AD")
-	dlg.cancel_button_text = tr("UI_REVIVE_GIVE_UP")
 	dlg.confirmed.connect(func():
 		_revive_dlg = null
-		dlg.queue_free()
 		AdManager.show_rewarded_ad(
 			func(): _do_revive(),
 			func(): on_game_over()
@@ -58,14 +59,8 @@ func offer_revive() -> void:
 	)
 	dlg.canceled.connect(func():
 		_revive_dlg = null
-		dlg.queue_free()
 		on_game_over()
 	)
-	_battle_scene.add_child(dlg)
-	dlg.get_label().add_theme_font_size_override("font_size", 28)
-	dlg.get_ok_button().add_theme_font_size_override("font_size", 26)
-	dlg.get_cancel_button().add_theme_font_size_override("font_size", 26)
-	dlg.popup_centered()
 
 
 func _do_revive() -> void:
@@ -106,21 +101,17 @@ func on_game_over() -> void:
 	SaveManager.clear_battle_save()
 	SaveManager.save()
 	var carry_gold := GameManager.get_carry_out_gold()
-	var dlg := AcceptDialog.new()
-	dlg.title = tr("UI_DEFEAT_TITLE")
-	dlg.dialog_text = tr("UI_DEFEAT_MSG_FULL") % carry_gold + endless_line
+	var dlg := ConfirmDialog.show_dialog(
+		_battle_scene,
+		tr("UI_DEFEAT_MSG_FULL") % carry_gold + endless_line,
+		tr("UI_DIALOG_CONFIRM"),
+		tr("UI_DIALOG_CONFIRM")
+	)
+	dlg.hide_cancel()
 	dlg.confirmed.connect(func():
 		GameManager.challenge_mode = false
 		_battle_scene.get_tree().change_scene_to_file("res://scenes/HomeScene.tscn")
 	)
-	dlg.canceled.connect(func():
-		GameManager.challenge_mode = false
-		_battle_scene.get_tree().change_scene_to_file("res://scenes/HomeScene.tscn")
-	)
-	_battle_scene.add_child(dlg)
-	dlg.get_label().add_theme_font_size_override("font_size", 28)
-	dlg.get_ok_button().add_theme_font_size_override("font_size", 26)
-	dlg.popup_centered()
 	game_ended_signal.emit()
 
 
@@ -143,27 +134,19 @@ func on_victory() -> void:
 
 func _offer_double_reward() -> void:
 	var carry_gold := GameManager.get_carry_out_gold()
-	var dlg := ConfirmationDialog.new()
-	dlg.title = tr("UI_TUTORIAL_COMPLETE_TITLE")
-	dlg.dialog_text = tr("UI_VICTORY_REWARD_DESC") % [carry_gold, min(carry_gold * 2, GameManager.MAX_CARRY_OUT_GOLD * 2)]
-	dlg.ok_button_text = tr("UI_DOUBLE_REWARD_WATCH")
-	dlg.cancel_button_text = tr("UI_DOUBLE_REWARD_NORMAL")
+	var dlg := ConfirmDialog.show_dialog(
+		_battle_scene,
+		tr("UI_VICTORY_REWARD_DESC") % [carry_gold, min(carry_gold * 2, GameManager.MAX_CARRY_OUT_GOLD * 2)],
+		tr("UI_DOUBLE_REWARD_WATCH"),
+		tr("UI_DOUBLE_REWARD_NORMAL")
+	)
 	dlg.confirmed.connect(func():
-		dlg.queue_free()
 		AdManager.show_rewarded_ad(
 			func(): _finish_victory(true),
 			func(): _finish_victory(false)
 		)
 	)
-	dlg.canceled.connect(func():
-		dlg.queue_free()
-		_finish_victory(false)
-	)
-	_battle_scene.add_child(dlg)
-	dlg.get_label().add_theme_font_size_override("font_size", 28)
-	dlg.get_ok_button().add_theme_font_size_override("font_size", 26)
-	dlg.get_cancel_button().add_theme_font_size_override("font_size", 26)
-	dlg.popup_centered()
+	dlg.canceled.connect(func(): _finish_victory(false))
 
 
 func _finish_victory(double_reward: bool) -> void:
@@ -225,42 +208,37 @@ func _show_result_dialog(stars: String, star_desc: String,
 	var bonus_text := tr("UI_DOUBLE_BONUS") if double_reward else ""
 	var can_endless: bool = GameManager.current_day > 0 and not _wave_manager.is_endless
 
-	var dlg: AcceptDialog
-	if can_endless:
-		var cdlg := ConfirmationDialog.new()
-		cdlg.ok_button_text = tr("UI_ENDLESS_ENTER")
-		cdlg.cancel_button_text = tr("UI_RETURN_HOME")
-		cdlg.confirmed.connect(func():
-			cdlg.queue_free()
-			_enter_endless_mode()
-		)
-		cdlg.canceled.connect(func():
-			GameManager.challenge_mode = false
-			_battle_scene.get_tree().change_scene_to_file("res://scenes/HomeScene.tscn")
-		)
-		dlg = cdlg
-	else:
-		dlg = AcceptDialog.new()
-		dlg.confirmed.connect(func():
-			GameManager.challenge_mode = false
-			_battle_scene.get_tree().change_scene_to_file("res://scenes/HomeScene.tscn")
-		)
-
-	dlg.title = tr("UI_VICTORY_TITLE")
 	var endless_line := ""
 	if _wave_manager.is_endless:
 		endless_line = tr("UI_ENDLESS_BEST") % _wave_manager.current_wave
-	dlg.dialog_text = (
+	var msg: String = (
 		tr("UI_VICTORY_RESULT") % [stars, star_desc, carry_gold, bonus_text, xp_reward, bonus_text]
 		+ chest_line
 		+ endless_line
 	)
-	_battle_scene.add_child(dlg)
-	dlg.get_label().add_theme_font_size_override("font_size", 28)
-	dlg.get_ok_button().add_theme_font_size_override("font_size", 26)
-	if dlg is ConfirmationDialog:
-		dlg.get_cancel_button().add_theme_font_size_override("font_size", 26)
-	dlg.popup_centered()
+
+	if can_endless:
+		var dlg := ConfirmDialog.show_dialog(
+			_battle_scene, msg,
+			tr("UI_ENDLESS_ENTER"),
+			tr("UI_RETURN_HOME")
+		)
+		dlg.confirmed.connect(func(): _enter_endless_mode())
+		dlg.canceled.connect(func():
+			GameManager.challenge_mode = false
+			_battle_scene.get_tree().change_scene_to_file("res://scenes/HomeScene.tscn")
+		)
+	else:
+		var dlg := ConfirmDialog.show_dialog(
+			_battle_scene, msg,
+			tr("UI_RETURN_HOME"),
+			tr("UI_RETURN_HOME")
+		)
+		dlg.hide_cancel()
+		dlg.confirmed.connect(func():
+			GameManager.challenge_mode = false
+			_battle_scene.get_tree().change_scene_to_file("res://scenes/HomeScene.tscn")
+		)
 	game_ended_signal.emit()
 
 
@@ -275,11 +253,12 @@ func _enter_endless_mode() -> void:
 
 func _offer_full_slots_ad(stars: String, star_desc: String,
 		carry_gold: int, xp_reward: int, double_reward: bool) -> void:
-	var dlg := ConfirmationDialog.new()
-	dlg.title = tr("UI_CHEST_SLOTS_FULL_TITLE")
-	dlg.dialog_text = tr("UI_CHEST_SLOTS_FULL_MSG")
-	dlg.ok_button_text = tr("UI_CHEST_SLOTS_WATCH")
-	dlg.cancel_button_text = tr("UI_REVIVE_GIVE_UP")
+	var dlg := ConfirmDialog.show_dialog(
+		_battle_scene,
+		tr("UI_CHEST_SLOTS_FULL_MSG"),
+		tr("UI_CHEST_SLOTS_WATCH"),
+		tr("UI_REVIVE_GIVE_UP")
+	)
 	var on_ad_complete := func():
 		var r := randf()
 		var ct: int = 0
@@ -291,15 +270,8 @@ func _offer_full_slots_ad(stars: String, star_desc: String,
 	var on_ad_cancel := func():
 		_show_result_dialog(stars, star_desc, carry_gold, xp_reward, double_reward, tr("UI_CHEST_LOST"))
 	dlg.confirmed.connect(func():
-		dlg.queue_free()
 		AdManager.show_rewarded_ad(on_ad_complete, on_ad_cancel)
 	)
 	dlg.canceled.connect(func():
-		dlg.queue_free()
 		_show_result_dialog(stars, star_desc, carry_gold, xp_reward, double_reward, tr("UI_CHEST_LOST"))
 	)
-	_battle_scene.add_child(dlg)
-	dlg.get_label().add_theme_font_size_override("font_size", 28)
-	dlg.get_ok_button().add_theme_font_size_override("font_size", 26)
-	dlg.get_cancel_button().add_theme_font_size_override("font_size", 26)
-	dlg.popup_centered()

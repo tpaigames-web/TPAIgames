@@ -66,6 +66,9 @@ var _temp_tower_ids: Array[String] = []  # 本局已使用的临时炮台 tower_
 # _ready：初始化全局状态 → 创建子系统 → 连接信号
 # ══════════════════════════════════════════════════════════════════════════
 func _ready() -> void:
+	# ── 根据关卡加载对应地图 ──────────────────────────────────────────
+	_load_day_map()
+
 	# ── 重置全局战斗状态 ──────────────────────────────────────────────
 	if GameManager.test_mode:
 		GameManager.player_life = 999999
@@ -94,8 +97,16 @@ func _ready() -> void:
 	# ── 子弹对象池 ──────────────────────────────────────────────────
 	_bullet_pool = ObjectPool.new()
 	_bullet_pool.pool_scene = preload("res://bullet/Bullet.tscn")
-	_bullet_pool.initial_size = 30
-	_bullet_pool.max_size = 150
+	# 子弹池大小根据画质调整
+	if SettingsManager.quality == 0:
+		_bullet_pool.initial_size = 10
+		_bullet_pool.max_size = 40
+	elif SettingsManager.quality == 1:
+		_bullet_pool.initial_size = 20
+		_bullet_pool.max_size = 80
+	else:
+		_bullet_pool.initial_size = 30
+		_bullet_pool.max_size = 120
 	_bullet_pool.name = "BulletPool"
 	add_child(_bullet_pool)
 
@@ -114,6 +125,16 @@ func _ready() -> void:
 	pause_btn.disabled = true
 	build_manager.tower_placed.connect(_on_tower_placed)
 
+	# ── 测试用：直接胜利按钮（暂停按钮左边）────────────────────────
+	if GameManager.test_mode:
+		var win_btn := Button.new()
+		win_btn.text = "WIN"
+		win_btn.custom_minimum_size = Vector2(60, 40)
+		win_btn.add_theme_font_size_override("font_size", 18)
+		pause_btn.get_parent().add_child(win_btn)
+		pause_btn.get_parent().move_child(win_btn, pause_btn.get_index())
+		win_btn.pressed.connect(func(): _on_victory())
+
 	# ── 底部 Tab 按钮 ────────────────────────────────────────────────
 	_tower_tab_btn.pressed.connect(func(): _set_tab(0))
 	_hero_tab_btn.pressed.connect(func():  _set_tab(1))
@@ -130,7 +151,10 @@ func _ready() -> void:
 	if not GameManager.resume_battle and not _is_tutorial_mode:
 		call_deferred("_deferred_show_global_upgrade", 0)
 
-	# ── 自定义地图 ───────────────────────────────────────────────────
+	# ── 关卡地图图层加载 ─────────────────────────────────────────────
+	_load_map_visuals()
+
+	# ── 自定义地图（地图编辑器测试用） ───────────────────────────────
 	if GameManager.custom_map_path != "":
 		_replace_map_with_custom(GameManager.custom_map_path)
 		GameManager.custom_map_path = ""
@@ -469,15 +493,31 @@ func _on_tower_placed(tower: Area2D) -> void:
 	tower.bullet_pool = _bullet_pool
 	# 英雄炮台记录
 	var placed_td := tower.tower_data as TowerCollectionData
+	# 蜂巢放置抖动
+	if placed_td and placed_td.tower_id == "beehive" and tower.has_method("shake"):
+		tower.shake()
 	if placed_td and placed_td.is_hero:
 		_hero_system.register_hero(tower, wave_manager.current_wave)
 		build_manager.set_hero_placed(true)
 		_refresh_card_affordability()
+	# 临时炮台标记 + 移除卡片（每种只能放 1 次）
+	if placed_td and placed_td.tower_id in _temp_tower_ids:
+		tower.set_meta("is_temp_tower", true)
+		tower.stat_total_spent = 0  # 免费放置，售出价为 0
+		_remove_temp_tower_card(placed_td.tower_id)
 	# 新塔应用全局升级
 	_apply_upgrades_to_all_towers()
 	# 通知教学引导
 	if is_instance_valid(_tutorial_guide):
 		_tutorial_guide.notify_tower_placed(tower)
+
+
+## 移除临时炮台卡片（放置后从炮台栏删除，每种只能放 1 次）
+func _remove_temp_tower_card(tower_id: String) -> void:
+	for child in tower_hbox.get_children():
+		if child.get_meta("temp_tower_id", "") == tower_id:
+			child.queue_free()
+			return
 
 
 func _on_tower_tapped(tower: Area2D) -> void:
@@ -494,15 +534,13 @@ func _on_hero_sell_requested(tower: Area2D, refund: int, is_hero: bool) -> void:
 
 ## ── 临时炮台 ────────────────────────────────────────────────────────
 
-func _on_temp_tower_selected(tower_data: Resource, hero_config: Dictionary) -> void:
+func _on_temp_tower_selected(tower_data: Resource, _hero_config: Dictionary) -> void:
 	var td := tower_data as TowerCollectionData
 	if not td:
 		return
-	# 记录临时炮台 ID
+	# 记录临时炮台 ID（用于战斗结束提示）
 	if td.tower_id not in _temp_tower_ids:
 		_temp_tower_ids.append(td.tower_id)
-	# 临时添加到炮台栏（放置费用为 0）
-	_add_temp_tower_card(td, hero_config)
 
 
 func _add_temp_tower_card(td: TowerCollectionData, hero_config: Dictionary) -> void:
@@ -570,8 +608,9 @@ func _add_temp_tower_card(td: TowerCollectionData, hero_config: Dictionary) -> v
 	cost_lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	card.add_child(cost_lbl)
 
-	# 保存英雄配置到 meta，放置后可读取
+	# 保存配置到 meta
 	card.set_meta("hero_config", hero_config)
+	card.set_meta("temp_tower_id", td.tower_id)
 
 	# 拖拽放置（免费，cost=0）
 	var cap := td
@@ -705,22 +744,14 @@ func _show_temp_end_popup() -> void:
 	await get_tree().create_timer(0.5).timeout
 	if not is_inside_tree():
 		return
-	var dlg := ConfirmationDialog.new()
-	dlg.title = tr("UI_TEMP_END_TITLE")
-	dlg.dialog_text = tr("UI_TEMP_END_MSG")
-	dlg.ok_button_text = tr("UI_TEMP_GO_SHOP")
-	dlg.cancel_button_text = tr("UI_TEMP_LATER")
-	dlg.confirmed.connect(func():
-		dlg.queue_free()
-		GameManager.challenge_mode = false
-		get_tree().change_scene_to_file("res://scenes/HomeScene.tscn")
+	_show_custom_dialog(
+		tr("UI_TEMP_END_MSG"),
+		tr("UI_TEMP_GO_SHOP"),
+		tr("UI_TEMP_LATER"),
+		func():
+			GameManager.challenge_mode = false
+			get_tree().change_scene_to_file("res://scenes/HomeScene.tscn")
 	)
-	dlg.canceled.connect(func(): dlg.queue_free())
-	add_child(dlg)
-	dlg.get_label().add_theme_font_size_override("font_size", 28)
-	dlg.get_ok_button().add_theme_font_size_override("font_size", 26)
-	dlg.get_cancel_button().add_theme_font_size_override("font_size", 26)
-	dlg.popup_centered()
 
 
 func _on_tower_sold(tower: Area2D) -> void:
@@ -790,29 +821,29 @@ func _on_save_and_exit() -> void:
 		var info: Dictionary = SaveManager.load_battle()
 		var day_num: int = info.get("day", GameManager.current_day)
 		var mode_str: String = tr("UI_MODE_CHALLENGE_LABEL") if info.get("challenge_mode", false) else tr("UI_MODE_NORMAL_LABEL")
-		var confirm := AcceptDialog.new()
-		confirm.process_mode = Node.PROCESS_MODE_ALWAYS
-		confirm.dialog_text = tr("UI_SAVE_OVERWRITE") % [day_num, mode_str]
-		confirm.ok_button_text = tr("UI_SAVE_CONFIRM")
-		confirm.add_cancel_button(tr("UI_DIALOG_CANCEL"))
-		confirm.confirmed.connect(func(): confirm.queue_free(); _do_exit(true))
-		confirm.canceled.connect(func(): confirm.queue_free())
-		$HUD.add_child(confirm)
-		confirm.popup_centered()
+		_show_custom_dialog(
+			tr("UI_SAVE_OVERWRITE") % [day_num, mode_str],
+			tr("UI_SAVE_CONFIRM"),
+			tr("UI_DIALOG_CANCEL"),
+			func(): _do_exit(true),
+			Callable(),
+			$HUD,
+			true
+		)
 	else:
 		_do_exit(true)
 
 
 func _on_exit_no_save() -> void:
-	var confirm := AcceptDialog.new()
-	confirm.process_mode = Node.PROCESS_MODE_ALWAYS
-	confirm.dialog_text = tr("UI_EXIT_NO_SAVE_MSG")
-	confirm.ok_button_text = tr("UI_SAVE_CONFIRM")
-	confirm.add_cancel_button(tr("UI_DIALOG_CANCEL"))
-	confirm.confirmed.connect(func(): confirm.queue_free(); _do_exit_keep_save())
-	confirm.canceled.connect(func(): confirm.queue_free())
-	$HUD.add_child(confirm)
-	confirm.popup_centered()
+	_show_custom_dialog(
+		tr("UI_EXIT_NO_SAVE_MSG"),
+		tr("UI_SAVE_CONFIRM"),
+		tr("UI_DIALOG_CANCEL"),
+		func(): _do_exit_keep_save(),
+		Callable(),
+		$HUD,
+		true
+	)
 
 
 func _do_exit(save: bool) -> void:
@@ -1049,49 +1080,104 @@ func _on_decor_clicked(decor: InteractableDecor) -> void:
 		return
 	var cost: int = decor.remove_cost
 	var dname: String = decor.display_name
-	var dlg := ConfirmationDialog.new()
-	dlg.title              = tr("UI_DECOR_REMOVE_TITLE")
-	dlg.dialog_text        = tr("UI_DECOR_REMOVE_MSG") % [dname, cost]
-	dlg.ok_button_text     = tr("UI_DECOR_REMOVE_CONFIRM")
-	dlg.cancel_button_text = tr("UI_DIALOG_CANCEL")
-	dlg.confirmed.connect(func():
-		dlg.queue_free()
-		if GameManager.spend_gold(cost):
-			if is_instance_valid(decor):
-				decor.queue_free()
+	_show_custom_dialog(
+		tr("UI_DECOR_REMOVE_MSG") % [dname, cost],
+		tr("UI_DECOR_REMOVE_CONFIRM"),
+		tr("UI_DIALOG_CANCEL"),
+		func():
+			if GameManager.spend_gold(cost):
+				if is_instance_valid(decor):
+					decor.queue_free(),
+		Callable(),
+		$HUD,
+		false,
+		decor.global_position
 	)
-	dlg.canceled.connect(func(): dlg.queue_free())
-	add_child(dlg)
-	dlg.get_label().add_theme_font_size_override("font_size", 28)
-	dlg.get_ok_button().add_theme_font_size_override("font_size", 26)
-	dlg.get_cancel_button().add_theme_font_size_override("font_size", 26)
-	dlg.popup_centered()
 
 
 func _on_interactable_clicked(area: Area2D) -> void:
 	if not is_instance_valid(area):
 		return
-	var dlg := ConfirmationDialog.new()
-	dlg.title              = tr("UI_DECOR_REMOVE_TITLE")
-	dlg.dialog_text        = tr("UI_DECOR_REMOVE_GENERIC")
-	dlg.ok_button_text     = tr("UI_DECOR_REMOVE_CONFIRM")
-	dlg.cancel_button_text = tr("UI_DIALOG_CANCEL")
-	dlg.confirmed.connect(func():
-		dlg.queue_free()
-		if GameManager.spend_gold(500):
-			if is_instance_valid(area):
-				area.queue_free()
+	_show_custom_dialog(
+		tr("UI_DECOR_REMOVE_GENERIC"),
+		tr("UI_DECOR_REMOVE_CONFIRM"),
+		tr("UI_DIALOG_CANCEL"),
+		func():
+			if GameManager.spend_gold(500):
+				if is_instance_valid(area):
+					area.queue_free(),
+		Callable(),
+		null,
+		false,
+		area.global_position
 	)
-	dlg.canceled.connect(func(): dlg.queue_free())
-	add_child(dlg)
-	dlg.get_label().add_theme_font_size_override("font_size", 28)
-	dlg.get_ok_button().add_theme_font_size_override("font_size", 26)
-	dlg.get_cancel_button().add_theme_font_size_override("font_size", 26)
-	dlg.popup_centered()
 
 
 # ══════════════════════════════════════════════════════════════════════════
-# 自定义地图动态加载
+# 关卡地图图层加载（图片驱动）
+# ══════════════════════════════════════════════════════════════════════════
+const CONFIRM_DIALOG_SCENE = preload("res://ui/ConfirmDialog.tscn")
+
+## 通用弹窗 — 使用 ui/ConfirmDialog.tscn（可在编辑器中调整布局）
+func _show_custom_dialog(
+	message: String,
+	confirm_text: String,
+	cancel_text: String,
+	confirm_cb: Callable,
+	cancel_cb: Callable = Callable(),
+	parent_node: Node = null,
+	pause_safe: bool = false,
+	center_pos: Vector2 = Vector2.ZERO
+) -> void:
+	var dlg: ConfirmDialog = CONFIRM_DIALOG_SCENE.instantiate()
+	var parent: Node = parent_node if parent_node else self
+	parent.add_child(dlg)
+	dlg.setup(message, confirm_text, cancel_text)
+	if pause_safe:
+		dlg.set_pause_safe(true)
+	if center_pos != Vector2.ZERO:
+		dlg.set_center_position(center_pos)
+	dlg.confirmed.connect(func():
+		if confirm_cb.is_valid(): confirm_cb.call()
+	)
+	dlg.canceled.connect(func():
+		if cancel_cb.is_valid(): cancel_cb.call()
+	)
+
+
+## 根据 current_day 加载对应的地图场景（Map01~Map15）
+func _load_day_map() -> void:
+	var day: int = GameManager.current_day
+	if day <= 0:
+		return  # Day 0 教学关，用默认的 Map01
+
+	# Day 1=Map01, Day 2=Map02, ... Day 15=Map15, Day 16+=Map15
+	var map_index: int = clampi(day, 1, 15)
+	var map_path: String = "res://map/Map%02d.tscn" % map_index
+
+	if not ResourceLoader.exists(map_path):
+		return  # 地图文件不存在，保持默认
+
+	# 移除当前地图
+	var old_map: Node = get_node_or_null("TutorialMap")
+	if old_map:
+		remove_child(old_map)
+		old_map.queue_free()
+
+	# 加载新地图
+	var new_map: Node = load(map_path).instantiate()
+	new_map.name = "TutorialMap"  # 保持名称一致，其他系统通过名称引用
+	add_child(new_map)
+	move_child(new_map, 0)  # 放在最底层
+
+
+func _load_map_visuals() -> void:
+	# 地图已模块化 — 所有图层在 .tscn 中直接编辑，无需运行时替换
+	pass
+
+
+# ══════════════════════════════════════════════════════════════════════════
+# 自定义地图动态加载（地图编辑器测试用）
 # ══════════════════════════════════════════════════════════════════════════
 func _replace_map_with_custom(path: String) -> void:
 	GameManager.test_mode   = true

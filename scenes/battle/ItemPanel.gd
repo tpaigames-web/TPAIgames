@@ -16,6 +16,7 @@ const TEMP_TOWER_GEM_COST: int = 60
 var _item_card_entries: Array = []
 var _temp_card_entries: Array = []   # 临时炮台卡片
 var _buy_card: Control = null        # 购买随机临时炮台按钮
+var _used_temp_indices: Array[int] = []  # 本局已使用的临时炮台索引（每种每局限1次）
 var _item_preview: Node2D = null
 var _item_drag_data: ItemData = null
 var _item_dragging: bool = false
@@ -130,53 +131,148 @@ func _make_temp_tower_card(entry: Dictionary, index: int) -> VBoxContainer:
 	var tower_id: String = entry.get("tower_id", "")
 	var rarity: int = int(entry.get("rarity", 0))
 
-	# 加载炮台数据获取 emoji
 	var tower_data: Resource = _load_tower_data(tower_id)
 	var emoji: String = "📦"
 	if tower_data:
 		emoji = tower_data.get("tower_emoji") if tower_data.get("tower_emoji") else "📦"
 
 	var card := VBoxContainer.new()
-	card.custom_minimum_size = Vector2(140, 220)
+	card.custom_minimum_size = Vector2(100, 0)
 	card.add_theme_constant_override("separation", 4)
+	card.mouse_filter = Control.MOUSE_FILTER_STOP
 
 	# 稀有度色条
 	var color_bar := ColorRect.new()
-	color_bar.custom_minimum_size = Vector2(140, 6)
+	color_bar.custom_minimum_size = Vector2(100, 4)
 	color_bar.color = TowerResourceRegistry.RARITY_COLORS[clampi(rarity, 0, 4)]
+	color_bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	card.add_child(color_bar)
 
-	# emoji
-	var emoji_lbl := Label.new()
-	emoji_lbl.text = emoji
-	emoji_lbl.add_theme_font_size_override("font_size", 48)
-	emoji_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	card.add_child(emoji_lbl)
+	# 图片区
+	var img := Panel.new()
+	img.custom_minimum_size = Vector2(100, 140)
+	img.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	if tower_data and tower_data.get("collection_texture"):
+		var tex := TextureRect.new()
+		tex.texture = tower_data.collection_texture
+		tex.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
+		tex.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		tex.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		tex.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		img.add_child(tex)
+	else:
+		var emoji_lbl := Label.new()
+		emoji_lbl.text = emoji
+		emoji_lbl.add_theme_font_size_override("font_size", 48)
+		emoji_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		emoji_lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		emoji_lbl.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		emoji_lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		img.add_child(emoji_lbl)
+	card.add_child(img)
 
 	# 名称
 	var name_lbl := Label.new()
 	name_lbl.text = TowerResourceRegistry.get_temp_tower_display_name(entry)
 	name_lbl.add_theme_font_size_override("font_size", 18)
 	name_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	name_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	name_lbl.clip_text = true
+	name_lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	card.add_child(name_lbl)
 
-	# "临时" 标记
+	# "临时" + "免费"
 	var badge := Label.new()
 	badge.text = tr("UI_TEMP_BADGE")
 	badge.add_theme_font_size_override("font_size", 16)
 	badge.add_theme_color_override("font_color", Color(1.0, 0.85, 0.0))
 	badge.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	card.add_child(badge)
 
-	# 使用按钮
-	var use_btn := Button.new()
-	use_btn.text = tr("UI_ITEM_USE")
-	use_btn.custom_minimum_size = Vector2(130, 50)
-	use_btn.add_theme_font_size_override("font_size", 20)
+	var cost_lbl := Label.new()
+	cost_lbl.text = tr("UI_TEMP_FREE_PLACE")
+	cost_lbl.add_theme_font_size_override("font_size", 18)
+	cost_lbl.add_theme_color_override("font_color", Color(0.3, 1.0, 0.4))
+	cost_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	cost_lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	card.add_child(cost_lbl)
+
 	var captured_index: int = index
-	use_btn.pressed.connect(func(): _on_temp_tower_use(captured_index))
-	card.add_child(use_btn)
+
+	if index in _used_temp_indices:
+		# 本局已使用 → 变灰
+		card.modulate = Color(0.5, 0.5, 0.5, 0.7)
+		cost_lbl.text = tr("UI_TEMP_USED")
+		cost_lbl.add_theme_color_override("font_color", Color(0.6, 0.6, 0.6))
+	elif tower_data:
+		# 直接拖拽放置（和普通炮台一样）
+		var cap_td: Resource = tower_data
+		var cap_hero_config: Dictionary = {
+			"is_hero": entry.get("is_hero", false),
+			"hero_level": int(entry.get("hero_level", 0)),
+			"hero_directions": entry.get("hero_directions", []),
+		}
+		card.set_meta("temp_tower_id", tower_id)
+		card.set_meta("temp_index", captured_index)
+		card.gui_input.connect(func(e: InputEvent) -> void:
+			if captured_index in _used_temp_indices:
+				return
+			if e is InputEventMouseButton and e.button_index == MOUSE_BUTTON_LEFT:
+				if e.pressed:
+					_battle_scene.build_manager.select_tower(cap_td)
+					card.set_meta("press_pos", e.global_position)
+					card.set_meta("dragging", false)
+					card.set_meta("locked_cost", 0)
+					card.set_meta("temp_hero_config", cap_hero_config)
+				else:
+					if card.get_meta("dragging", false):
+						_battle_scene.build_manager.release_drag()
+						# 放置成功 → 从背包永久删除 + 保存
+						_used_temp_indices.append(captured_index)
+						UserManager.remove_temp_tower(captured_index)
+						SaveManager.save()
+						temp_tower_selected.emit(cap_td, cap_hero_config)
+						_rebuild_temp_cards()
+					else:
+						_battle_scene.build_manager.cancel_selection()
+					card.set_meta("dragging", false)
+			elif e is InputEventMouseMotion and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+				var pp: Vector2 = card.get_meta("press_pos", e.global_position)
+				if not card.get_meta("dragging", false):
+					if e.global_position.distance_to(pp) >= 40.0:
+						card.set_meta("dragging", true)
+						_battle_scene.build_manager.start_drag_at(e.global_position, 0)
+				else:
+					_battle_scene.build_manager.move_preview_to(e.global_position)
+			elif e is InputEventScreenTouch:
+				if e.pressed:
+					_battle_scene.build_manager.select_tower(cap_td)
+					card.set_meta("press_pos", e.position)
+					card.set_meta("dragging", false)
+					card.set_meta("locked_cost", 0)
+					card.set_meta("temp_hero_config", cap_hero_config)
+				else:
+					if card.get_meta("dragging", false):
+						_battle_scene.build_manager.release_drag()
+						_used_temp_indices.append(captured_index)
+						UserManager.remove_temp_tower(captured_index)
+						SaveManager.save()
+						temp_tower_selected.emit(cap_td, cap_hero_config)
+						_rebuild_temp_cards()
+					else:
+						_battle_scene.build_manager.cancel_selection()
+					card.set_meta("dragging", false)
+			elif e is InputEventScreenDrag:
+				var pp: Vector2 = card.get_meta("press_pos", e.position)
+				if not card.get_meta("dragging", false):
+					if e.position.distance_to(pp) >= 40.0:
+						card.set_meta("dragging", true)
+						var vp_pos: Vector2 = card.get_viewport().get_mouse_position()
+						_battle_scene.build_manager.start_drag_at(vp_pos, 0)
+				else:
+					var vp_pos: Vector2 = card.get_viewport().get_mouse_position()
+					_battle_scene.build_manager.move_preview_to(vp_pos)
+		)
 
 	return card
 
@@ -215,32 +311,7 @@ func _make_buy_temp_card() -> VBoxContainer:
 	return card
 
 
-## ── 临时炮台使用 ─────────────────────────────────────────────────────
-func _on_temp_tower_use(index: int) -> void:
-	if index < 0 or index >= UserManager.temp_tower_inventory.size():
-		return
-	var entry: Dictionary = UserManager.temp_tower_inventory[index]
-	var tower_id: String = entry.get("tower_id", "")
-	var tower_data: Resource = _load_tower_data(tower_id)
-	if tower_data == null:
-		return
-
-	# 构建英雄配置
-	var hero_config: Dictionary = {
-		"is_hero": entry.get("is_hero", false),
-		"hero_level": int(entry.get("hero_level", 0)),
-		"hero_directions": entry.get("hero_directions", []),
-	}
-
-	# 从背包移除
-	UserManager.remove_temp_tower(index)
-	SaveManager.save()
-
-	# 通知 BattleScene
-	temp_tower_selected.emit(tower_data, hero_config)
-
-	# 刷新（卡片消失）
-	_rebuild_temp_cards()
+## 临时炮台现在直接在道具栏拖拽放置，不再需要"使用"按钮
 
 
 ## ── 购买随机临时炮台 ─────────────────────────────────────────────────
@@ -259,13 +330,13 @@ func _on_buy_temp_tower() -> void:
 		return
 
 	# 确认购买弹窗
-	var dlg := ConfirmationDialog.new()
-	dlg.title = tr("UI_TEMP_BUY_CONFIRM_TITLE")
-	dlg.dialog_text = tr("UI_TEMP_BUY_CONFIRM_MSG") % [TEMP_TOWER_GEM_COST, UserManager.gems]
-	dlg.ok_button_text = tr("UI_ITEM_PURCHASE_CONFIRM")
-	dlg.cancel_button_text = tr("UI_DIALOG_CANCEL")
+	var dlg := ConfirmDialog.show_dialog(
+		_battle_scene,
+		tr("UI_TEMP_BUY_CONFIRM_MSG") % [TEMP_TOWER_GEM_COST, UserManager.gems],
+		tr("UI_ITEM_PURCHASE_CONFIRM"),
+		tr("UI_DIALOG_CANCEL")
+	)
 	dlg.confirmed.connect(func():
-		dlg.queue_free()
 		if UserManager.spend_gems(TEMP_TOWER_GEM_COST):
 			var entry: Dictionary = TempTowerGenerator.generate_random()
 			UserManager.add_temp_tower(entry)
@@ -273,12 +344,6 @@ func _on_buy_temp_tower() -> void:
 			_rebuild_temp_cards()
 			_show_temp_tower_reveal(entry)
 	)
-	dlg.canceled.connect(func(): dlg.queue_free())
-	_battle_scene.add_child(dlg)
-	dlg.get_label().add_theme_font_size_override("font_size", 28)
-	dlg.get_ok_button().add_theme_font_size_override("font_size", 26)
-	dlg.get_cancel_button().add_theme_font_size_override("font_size", 26)
-	dlg.popup_centered()
 
 
 ## 显示获得的临时炮台（简短提示）
@@ -339,26 +404,20 @@ func _on_item_pressed(data: ItemData) -> void:
 
 
 func _show_item_purchase_confirm(data: ItemData) -> void:
-	var dlg := ConfirmationDialog.new()
-	dlg.title = tr("UI_ITEM_PURCHASE_TITLE")
-	dlg.dialog_text = tr("UI_ITEM_PURCHASE_MSG") % [
-		data.emoji, TowerResourceRegistry.tr_item_name(data), data.gem_cost, UserManager.gems]
-	dlg.ok_button_text = tr("UI_ITEM_PURCHASE_CONFIRM")
-	dlg.cancel_button_text = tr("UI_DIALOG_CANCEL")
+	var dlg := ConfirmDialog.show_dialog(
+		_battle_scene,
+		tr("UI_ITEM_PURCHASE_MSG") % [
+			data.emoji, TowerResourceRegistry.tr_item_name(data), data.gem_cost, UserManager.gems],
+		tr("UI_ITEM_PURCHASE_CONFIRM"),
+		tr("UI_DIALOG_CANCEL")
+	)
 	dlg.confirmed.connect(func():
-		dlg.queue_free()
 		if UserManager.spend_gems(data.gem_cost):
 			SaveManager.save()
 			_start_item_drag(data)
 		else:
 			refresh_cards()
 	)
-	dlg.canceled.connect(func(): dlg.queue_free())
-	_battle_scene.add_child(dlg)
-	dlg.get_label().add_theme_font_size_override("font_size", 28)
-	dlg.get_ok_button().add_theme_font_size_override("font_size", 26)
-	dlg.get_cancel_button().add_theme_font_size_override("font_size", 26)
-	dlg.popup_centered()
 
 
 ## ── 道具拖拽放置（通用） ──────────────────────────────────────────────
@@ -483,7 +542,10 @@ func _spawn_active_mine(mine_pos: Vector2, data: ItemData) -> void:
 				if is_instance_valid(enemy):
 					var dist: float = enemy.global_position.distance_to(mine.global_position)
 					if dist <= blast_r:
-						enemy.take_damage(damage)
+						CombatService.deal_damage(
+								{"source_tower": null, "armor_penetration": 0, "pierce_giant": false, "ignore_dodge": false},
+								enemy, float(damage), []
+							)
 			lbl.text = "💥"
 			mine.monitoring = false
 			var tw := mine.create_tween()

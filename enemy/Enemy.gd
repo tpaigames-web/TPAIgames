@@ -128,7 +128,7 @@ func apply_enemy_data() -> void:
 	hp    = enemy_data.max_hp
 	speed = enemy_data.move_speed
 
-	var target: float = enemy_data.sprite_display_size if enemy_data.sprite_display_size > 0.0 else 100.0
+	var target: float = enemy_data.sprite_display_size * 1.3 if enemy_data.sprite_display_size > 0.0 else 130.0
 
 	if enemy_data.sprite_frames:
 		# ── 动画帧模式（优先） ──
@@ -193,8 +193,8 @@ func _process(delta: float) -> void:
 	_process_effects(delta)
 	_process_regen(delta)
 	_update_debuff_display()
-	# 地鼠挖洞状态机
-	if enemy_data and enemy_data.can_bypass_traps:
+	# 地鼠挖洞状态机（仅地鼠和巨型地鼠，不包括兔子等其他绕过陷阱的敌人）
+	if enemy_data and enemy_data.enemy_id in ["mole", "giant_mole"]:
 		_mole_process(delta)
 	# 毒蛙跳跃状态机
 	if enemy_data and enemy_data.regen_per_second > 0 and enemy_data.is_dot_immune:
@@ -284,20 +284,26 @@ func _mole_process(_delta: float) -> void:
 			pass
 
 
+## 陷阱炮台缓存（避免每帧扫描全场景树）
+static var _trap_tower_cache: Array = []
+static var _trap_cache_frame: int = -1
+
 func _detect_trap_ahead() -> bool:
+	# 每帧只刷新一次缓存（所有地鼠共享）
+	var frame: int = Engine.get_process_frames()
+	if frame != _trap_cache_frame:
+		_trap_cache_frame = frame
+		_trap_tower_cache.clear()
+		for tower in get_tree().get_nodes_in_group("tower"):
+			if not is_instance_valid(tower):
+				continue
+			var td = tower.get("tower_data")
+			if td and td.get("place_on_path_only") and not tower.get("is_preview"):
+				_trap_tower_cache.append(tower)
+	# 用缓存检测
 	var my_pos: Vector2 = global_position
-	for tower in get_tree().get_nodes_in_group("tower"):
-		if not is_instance_valid(tower):
-			continue
-		var td = tower.get("tower_data")
-		if td == null:
-			continue
-		if not td.get("place_on_path_only"):
-			continue
-		if tower.get("is_preview"):
-			continue
-		var dist: float = my_pos.distance_to(tower.global_position)
-		if dist < MOLE_TRAP_DETECT_RANGE:
+	for tower in _trap_tower_cache:
+		if is_instance_valid(tower) and my_pos.distance_to(tower.global_position) < MOLE_TRAP_DETECT_RANGE:
 			return true
 	return false
 
@@ -709,6 +715,10 @@ func _play_death_anim() -> void:
 		_debuff_lbl.visible = false
 	if is_instance_valid(_armor_lbl):
 		_armor_lbl.visible = false
+	# 低画质：直接消失，不播动画
+	if SettingsManager.quality == 0:
+		queue_free()
+		return
 	# 闪白 → 缩小 + 淡出
 	var tw := create_tween()
 	tw.tween_property(self, "modulate", Color(3, 3, 3, 1), 0.06)  # 闪白

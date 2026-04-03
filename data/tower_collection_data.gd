@@ -25,6 +25,8 @@ class_name TowerCollectionData extends Resource
 @export var ready_texture: Texture2D
 ## 动画帧资源（循环播放，优先于静态贴图；用于风车等需要动画的炮台）
 @export var anim_frames: SpriteFrames
+## 攻击时循环播放 attack_texture ↔ shoot_texture（用于播种机等需要攻击动画+旋转的塔）
+@export var attack_anim_cycle: bool = false
 
 ## 稀有度：0=白 1=绿 2=蓝 3=紫 4=橙（与宝箱稀有度体系一致）
 @export_enum("白", "绿", "蓝", "紫", "橙") var rarity: int = 0

@@ -3,10 +3,11 @@ extends CanvasLayer
 const LEVEL_UP_PANEL = preload("res://scenes/profile/LevelUpPanel.tscn")
 
 const AVATAR_PATHS: Array[String] = [
-	"res://assets/sprites/tower/scarecrow.png",
-	"res://assets/sprites/enemy/rat_small.png",
-	"res://assets/sprites/enemy/squirrel.png",
+	"res://assets/sprites/ui/avatar/avatar_01.png",
+	"res://assets/sprites/ui/avatar/avatar_02.png",
+	"res://assets/sprites/ui/avatar/avatar_03.png",
 ]
+const AVATAR_FRAME: String = "res://assets/sprites/ui/avatar.png"
 const AVATAR_EMOJIS: Array[String] = ["🌾", "🐭", "🐿"]
 
 # ── 节点引用 ────────────────────────────────────────────
@@ -132,19 +133,28 @@ func _update_xp_bar() -> void:
 
 func _update_avatar_display() -> void:
 	var idx := UserManager.selected_avatar
-	# 始终显示对应 emoji（图片加载成功后会覆盖）
 	avatar_emoji.text = AVATAR_EMOJIS[idx]
 	var tex = load(AVATAR_PATHS[idx])
-	avatar_texture.texture = tex  # null 时 TextureRect 透明，emoji 可见
+	avatar_texture.texture = tex
+	# 固定头像大小
+	avatar_texture.custom_minimum_size = Vector2(50, 50)
+	avatar_texture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	avatar_texture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	# 设置底框
+	var frame_tex = load(AVATAR_FRAME)
+	if frame_tex and avatar_btn:
+		avatar_btn.icon = frame_tex
 
 # ── 头像选择器 ───────────────────────────────────────────
 func _setup_avatar_picker() -> void:
 	for i in avatar_texs.size():
-		# 先设 emoji（永远可见作为底色）
 		picker_emojis[i].text = AVATAR_EMOJIS[i]
 		var tex = load(AVATAR_PATHS[i])
 		if tex:
 			avatar_texs[i].texture = tex
+			avatar_texs[i].custom_minimum_size = Vector2(40, 40)
+			avatar_texs[i].expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+			avatar_texs[i].stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		avatar_opts[i].pressed.connect(_on_avatar_selected.bind(i))
 
 func _on_avatar_selected(index: int) -> void:

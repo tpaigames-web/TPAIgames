@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="EnemyData" format=3 uid="uid://ce0qp3ajlxwoq"]
 
 [ext_resource type="Script" uid="uid://dapicbkaarem1" path="res://enemy/enemy_data.gd" id="1_2edje"]
+[ext_resource type="SpriteFrames" path="res://data/enemies/squirrel_frames.tres" id="squirrel_frames"]
 
 [resource]
 script = ExtResource("1_2edje")
@@ -10,7 +11,9 @@ display_emoji = "🐿️"
 max_hp = 80
 move_speed = 140.0
 armor = 1
+sprite_frames = ExtResource("squirrel_frames")
 sprite_display_size = 80.0
+sprite_rotation_offset = -90.0
 damage_to_player = 2
 gold_reward = 7
 xp_reward = 6

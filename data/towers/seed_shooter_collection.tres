@@ -4,6 +4,8 @@
 [ext_resource type="Script" uid="uid://cs8acmmyvm8t5" path="res://data/tower_upgrade_path.gd" id="2_tup"]
 [ext_resource type="PackedScene" uid="uid://bullet_seed" path="res://bullet/BulletSeed.tscn" id="3_blt"]
 [ext_resource type="PackedScene" path="res://tower/SeedShooterTower.tscn" id="tower_scn"]
+[ext_resource type="Texture2D" path="res://assets/sprites/tower/Seeds/Seeds_01.png" id="seeds_idle"]
+[ext_resource type="Texture2D" path="res://assets/sprites/tower/Seeds/Seeds_02.png" id="seeds_shoot"]
 
 [sub_resource type="Resource" id="Path_0"]
 script = ExtResource("2_tup")
@@ -40,6 +42,9 @@ tower_id = "seed_shooter"
 use_hitscan = true
 display_name = "播种机"
 tower_emoji = "🌱"
+attack_texture = ExtResource("seeds_idle")
+shoot_texture = ExtResource("seeds_shoot")
+attack_anim_cycle = true
 rarity = 2
 base_damage = 15.0
 attack_speed = 0.9

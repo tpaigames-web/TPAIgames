@@ -25,6 +25,8 @@ var tab_nodes: Array = [null, null, null, null, null]
 
 @onready var player_name_label: Label  = $TopBar/ProfileArea/PlayerInfo/NameLabel
 @onready var level_label: Label        = $TopBar/ProfileArea/PlayerInfo/LevelLabel
+@onready var _player_avatar: TextureRect = $TopBar/ProfileArea/PlayerAvatar
+@onready var _avatar_icon: Label = $TopBar/ProfileArea/PlayerAvatar/AvatarIcon
 @onready var gold_label: Label         = $TopBar/CurrencyWrapper/CurrencyRow/GoldItem/GoldLabel
 @onready var gems_label: Label         = $TopBar/CurrencyWrapper/CurrencyRow/GemItem/GemsLabel
 @onready var vouchers_label: Label     = $TopBar/CurrencyWrapper/CurrencyRow/VoucherItem/VouchersLabel
@@ -71,6 +73,7 @@ func _ready() -> void:
 	# 延迟一帧再刷新高亮，避免布局覆盖 position
 	await get_tree().process_frame
 	_update_nav_highlight()
+	# 头像区域点击 → 打开个人资料
 	$TopBar/ProfileArea.gui_input.connect(_on_profile_area_input)
 	# 左侧快捷按钮（签到 + 升级通行证）
 	_setup_left_side_buttons()
@@ -137,12 +140,48 @@ func _check_ad_reward() -> void:
 		_ad_offer_btn.visible = false
 
 
+const HOME_AVATAR_PATHS: Array[String] = [
+	"res://assets/sprites/ui/avatar/avatar_01.png",
+	"res://assets/sprites/ui/avatar/avatar_02.png",
+	"res://assets/sprites/ui/avatar/avatar_03.png",
+]
+
 func _update_player_info() -> void:
 	player_name_label.text = UserManager.player_name
 	level_label.text = "Lv. %d" % UserManager.level
 	gold_label.text = _abbrev_number(UserManager.gold)
 	gems_label.text = _abbrev_number(UserManager.gems)
 	vouchers_label.text = _abbrev_number(UserManager.vouchers)
+	# 更新头像
+	_update_home_avatar()
+
+func _update_home_avatar() -> void:
+	var idx: int = clampi(UserManager.selected_avatar, 0, HOME_AVATAR_PATHS.size() - 1)
+	# 底框保持原大小
+	var frame_tex: Texture2D = load("res://assets/sprites/ui/avatar.png")
+	if frame_tex and _player_avatar:
+		_player_avatar.texture = frame_tex
+		_player_avatar.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		_player_avatar.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	# 头像图片（比底框小，居中显示）
+	var avatar_tex: Texture2D = load(HOME_AVATAR_PATHS[idx])
+	if avatar_tex and _player_avatar:
+		_avatar_icon.text = ""
+		var avatar_img: TextureRect = _player_avatar.get_node_or_null("AvatarImg")
+		if not avatar_img:
+			avatar_img = TextureRect.new()
+			avatar_img.name = "AvatarImg"
+			avatar_img.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+			avatar_img.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+			avatar_img.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			_player_avatar.add_child(avatar_img)
+		avatar_img.texture = avatar_tex
+		# 头像比底框小，居中偏移（底框80x80时头像40x40）
+		var frame_size: Vector2 = _player_avatar.size
+		var avatar_size: float = frame_size.x * 0.55
+		var margin: float = (frame_size.x - avatar_size) / 2.0
+		avatar_img.position = Vector2(margin, margin)
+		avatar_img.size = Vector2(avatar_size, avatar_size)
 
 
 ## 数字缩写：5位数以上缩写
@@ -359,7 +398,8 @@ func show_locked(reason: String) -> void:
 # ───── 个人资料面板 ─────
 
 func _on_profile_area_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+	if (event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT) \
+	or (event is InputEventScreenTouch and event.pressed):
 		_open_profile_panel()
 
 func _open_profile_panel() -> void:
@@ -422,25 +462,15 @@ func _show_ad_offer() -> void:
 
 
 func _on_ad_offer_pressed() -> void:
-	# 弹出奖励选择
-	var dlg := ConfirmationDialog.new()
-	dlg.title = tr("UI_FREE_REWARD_TITLE")
-	dlg.dialog_text = tr("UI_FREE_REWARD_DESC")
-	dlg.ok_button_text = tr("UI_FREE_REWARD_WATCH")
-	dlg.cancel_button_text = tr("UI_DIALOG_CANCEL")
-	dlg.get_label().add_theme_font_size_override("font_size", 26)
-	dlg.get_ok_button().add_theme_font_size_override("font_size", 24)
-	dlg.get_cancel_button().add_theme_font_size_override("font_size", 24)
-
+	var dlg := ConfirmDialog.show_dialog(
+		self,
+		tr("UI_FREE_REWARD_DESC"),
+		tr("UI_FREE_REWARD_WATCH"),
+		tr("UI_DIALOG_CANCEL")
+	)
 	dlg.confirmed.connect(func():
-		dlg.queue_free()
 		AdManager.show_rewarded_ad(_on_ad_reward_complete, _on_ad_reward_cancel)
 	)
-	dlg.canceled.connect(func():
-		dlg.queue_free()
-	)
-	get_tree().root.add_child(dlg)
-	dlg.popup_centered()
 
 
 func _on_ad_reward_complete() -> void:
@@ -473,14 +503,8 @@ func _on_ad_reward_complete() -> void:
 	_update_player_info()
 
 	# 显示奖励结果
-	var result_dlg := AcceptDialog.new()
-	result_dlg.title = tr("UI_REWARD_TITLE")
-	result_dlg.dialog_text = msg
-	result_dlg.get_label().add_theme_font_size_override("font_size", 28)
-	result_dlg.get_ok_button().add_theme_font_size_override("font_size", 26)
-	get_tree().root.add_child(result_dlg)
-	result_dlg.popup_centered()
-	result_dlg.confirmed.connect(func(): result_dlg.queue_free())
+	var result_dlg := ConfirmDialog.show_dialog(self, msg, tr("UI_SHOP_OK"), tr("UI_SHOP_OK"))
+	result_dlg.hide_cancel()
 
 	# 记录领取时间戳（真实时钟），按钮自动在下个周期再出现
 	UserManager.last_ad_reward_time = int(Time.get_unix_time_from_system())

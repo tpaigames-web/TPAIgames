@@ -245,13 +245,14 @@ func _on_enemy_want_spawn(etype: String, count: int, prog: float) -> void:
 
 		path_follow.add_child(enemy)
 
-		# 召唤出生动画：从小缩放+透明 → 正常（类似死亡反转）
-		enemy.scale = Vector2(0.3, 0.3)
-		enemy.modulate = Color(1, 1, 1, 0)
-		var spawn_tw := enemy.create_tween()
-		spawn_tw.set_parallel(true)
-		spawn_tw.tween_property(enemy, "scale", Vector2(1, 1), 0.3).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
-		spawn_tw.tween_property(enemy, "modulate:a", 1.0, 0.2)
+		# 召唤出生动画（低画质跳过）
+		if SettingsManager.quality > 0:
+			enemy.scale = Vector2(0.3, 0.3)
+			enemy.modulate = Color(1, 1, 1, 0)
+			var spawn_tw := enemy.create_tween()
+			spawn_tw.set_parallel(true)
+			spawn_tw.tween_property(enemy, "scale", Vector2(1, 1), 0.3).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
+			spawn_tw.tween_property(enemy, "modulate:a", 1.0, 0.2)
 
 		active_enemies += 1
 		enemy.tree_exited.connect(_on_enemy_dead)

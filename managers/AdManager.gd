@@ -122,23 +122,15 @@ func _on_rewarded_closed() -> void:
 # ═══════════════════════════════════════════════════════════════════════
 
 func _show_placeholder_ad(on_complete: Callable, on_cancel: Callable) -> void:
-	var dlg := ConfirmationDialog.new()
-	dlg.title = "📺 广告"
-	dlg.dialog_text = "（模拟激励广告）\n\n点击「领取奖励」获得广告奖励"
-	dlg.ok_button_text = "✅ 领取奖励"
-	dlg.cancel_button_text = "✕ 跳过广告"
+	var dlg := ConfirmDialog.show_dialog(
+		get_tree().get_root(),
+		"（模拟激励广告）\n\n点击「领取奖励」获得广告奖励",
+		"领取奖励",
+		"跳过广告"
+	)
 	dlg.confirmed.connect(func():
-		dlg.queue_free()
-		if on_complete.is_valid():
-			on_complete.call()
+		if on_complete.is_valid(): on_complete.call()
 	)
 	dlg.canceled.connect(func():
-		dlg.queue_free()
-		if on_cancel.is_valid():
-			on_cancel.call()
+		if on_cancel.is_valid(): on_cancel.call()
 	)
-	get_tree().get_root().add_child(dlg)
-	dlg.get_label().add_theme_font_size_override("font_size", 32)
-	dlg.get_ok_button().add_theme_font_size_override("font_size", 32)
-	dlg.get_cancel_button().add_theme_font_size_override("font_size", 32)
-	dlg.popup_centered()

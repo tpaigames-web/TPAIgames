@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://ds4g6gj1ktidv"]
+
+[ext_resource type="Texture2D" uid="uid://bd3ndineeayt7" path="res://map/path/Home.png" id="1_tex"]
+[ext_resource type="Script" uid="uid://b6lxh6i8rkbkb" path="res://map/GoalArea.gd" id="2_goal"]
+
+[sub_resource type="CircleShape2D" id="goal_shape"]
+radius = 157.20369
+
+[node name="Home" type="Node2D" unique_id=736857870]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=693012210]
+position = Vector2(0, 1)
+scale = Vector2(1.4766948, 1.476695)
+texture = ExtResource("1_tex")
+
+[node name="GoalArea" type="Area2D" parent="." unique_id=697788683]
+collision_layer = 0
+collision_mask = 8
+script = ExtResource("2_goal")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GoalArea" unique_id=82450802]
+shape = SubResource("goal_shape")
